@@ -1,0 +1,85 @@
+name: Deploy React TypeScript App to AWS EC2
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: yarn ci
+      
+    - name: Run tests
+      run: yarn test -- --passWithNoTests
+      
+    - name: Build application
+      run: yarn build
+      env:
+        CI: false # Prevents treating warnings as errors
+      
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+        
+    - name: Install SSH key
+      uses: webfactory/ssh-agent@v0.7.0
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        
+    - name: Add host key
+      run: |
+        mkdir -p ~/.ssh
+        ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+        
+    - name: Deploy to EC2
+      env:
+        EC2_HOST: ${{ secrets.EC2_HOST }}
+        EC2_USER: ${{ secrets.EC2_USER }}
+      run: |
+        # Compress build directory
+        tar -czf build.tar.gz -C dist .
+        
+        # Copy build files to EC2
+        scp build.tar.gz $EC2_USER@$EC2_HOST:~/
+        
+        # Deploy script via SSH
+        ssh $EC2_USER@$EC2_HOST << 'EOF'
+          # Create backup of existing files
+          if [ -d "/var/www/frontend" ]; then
+            sudo mv /var/www/frontend /var/www/frontend-backup-$(date +%Y%m%d%H%M%S)
+          fi
+          
+          # Create fresh directory
+          sudo mkdir -p /var/www/frontend
+          
+          # Extract build files
+          sudo tar -xzf ~/build.tar.gz -C /var/www/frontend
+          
+          # Set permissions
+          sudo chown -R nginx:nginx /var/www/frontend
+          
+          # Clean up
+          rm ~/build.tar.gz
+          
+          # Restart Nginx
+          sudo systemctl restart nginx
+          
+          # Report result
+          echo "Deployment completed successfully!"
+        EOF
