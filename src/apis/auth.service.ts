@@ -1,0 +1,183 @@
+import {
+  CurrentSessionRes,
+  LoginUserBody,
+  LoginUserRes,
+  LogoutRes,
+  RegisterUserBody,
+  RegisterUserRes,
+  VerifyEmailBody,
+  VerifyEmailRes,
+  SendOtpRes,
+  GetProfileRes,
+  ForgotPasswordBody,
+  ForgotPasswordRes,
+  ResetPasswordBody,
+  ResetPasswordRes,
+  DeleteAccountRes,
+  CreateAdminBody,
+  CreateAdminRes,
+  GetUsersRes,
+} from "@/interfaces";
+import { ApiService } from "./api.service";
+import { AUTH_URLS } from "./endpoints";
+
+export class AuthApiService {
+  private static instance: AuthApiService;
+  private readonly apiService: ApiService;
+
+  private readonly urls: typeof AUTH_URLS = AUTH_URLS;
+
+  constructor() {
+    this.apiService = new ApiService("auth");
+  }
+
+  static getInstance(): AuthApiService {
+    if (!this.instance) {
+      this.instance = new AuthApiService();
+    }
+    return this.instance;
+  }
+
+  getCurrentSession = () => {
+    return this.apiService.get<CurrentSessionRes>(this.urls.CURRENT_SESSION);
+  };
+
+  getProfile = () => {
+    return this.apiService.get<GetProfileRes>(this.urls.GET_PROFILE);
+  };
+
+  logout = () => {
+    return this.apiService.post<null, LogoutRes>(this.urls.LOGOUT);
+  };
+
+  loginUser = (data: LoginUserBody) => {
+    return this.apiService.post<LoginUserBody, LoginUserRes>(
+      this.urls.LOGIN_USER,
+      data
+    );
+  };
+
+  registerUser = (data: RegisterUserBody) => {
+    return this.apiService.post<RegisterUserBody, RegisterUserRes>(
+      this.urls.REGISTER_USER,
+      data
+    );
+  };
+
+  verifyEmail = (data: VerifyEmailBody) => {
+    return this.apiService.post<VerifyEmailBody, VerifyEmailRes>(
+      this.urls.USER_VERIFY_EMAIL,
+      data
+    );
+  };
+
+  sendVerificationCode = () => {
+    return this.apiService.get<SendOtpRes>(this.urls.USER_SEND_OTP);
+  };
+
+  /**
+   * Check if user account exist and tries to email a reset token
+   * @param data
+   * @returns {Promise<ForgotPasswordRes>}
+   */
+  userForgotPassword = (
+    data: ForgotPasswordBody
+  ): Promise<ForgotPasswordRes> => {
+    return this.apiService.post<ForgotPasswordBody, ForgotPasswordRes>(
+      this.urls.USER_FORGOT_PASSWORD,
+      data
+    );
+  };
+
+  /**
+   * Reset user password
+   * @param data
+   * @returns {Promise<ResetPasswordRes>}
+   */
+  resetUserPassword = (data: ResetPasswordBody): Promise<ResetPasswordRes> => {
+    return this.apiService.update<ResetPasswordBody, ResetPasswordRes>(
+      this.urls.USER_RESET_PASSWORD,
+      data
+    );
+  };
+
+  /**
+   * Delete user's account from blacksight
+   * @returns {Promise<DeleteAccountRes>}
+   */
+  deleteUserAccount = (): Promise<DeleteAccountRes> => {
+    return this.apiService.delete<DeleteAccountRes>(
+      this.urls.USER_DELETE_ACCOUNT
+    );
+  };
+
+  /**
+   * Login as an admin
+   * @param data
+   * @returns {Promise<LoginUserRes>}
+   */
+  loginAdmin = (data: LoginUserBody): Promise<LoginUserRes> => {
+    return this.apiService.post<LoginUserBody, LoginUserRes>(
+      this.urls.LOGIN_ADMIN,
+      data
+    );
+  };
+
+  /**
+   * Create as admin.
+   * @description Requires super admin access
+   * @param data
+   * @returns {Promise<CreateAdminRes>}
+   */
+  createAdmin = (data: CreateAdminBody): Promise<CreateAdminRes> => {
+    return this.apiService.post<CreateAdminBody, CreateAdminRes>(
+      this.urls.CREATE_ADMIN,
+      data
+    );
+  };
+
+  /**
+   * Get records of users in the database
+   * @params params
+   * @returns {Promise<GetUsersRes>}
+   */
+  getUsers = (params?: {}): Promise<GetUsersRes> => {
+    return this.apiService.get<GetUsersRes>(this.urls.GET_USERS, params);
+  };
+
+  /**
+   * Get records of admins in the database.
+   * @description Requires super admin access
+   * @params params
+   * @returns {Promise<GetUsersRes>}
+   */
+  getAdmins = (params?: {}): Promise<GetUsersRes> => {
+    return this.apiService.get<GetUsersRes>(this.urls.GET_ADMINS, params);
+  };
+
+  /**
+   * Check if admin account exist and tries to email a reset token
+   * @param data
+   * @returns {Promise<ForgotPasswordRes>}
+   */
+  adminForgotPassword = (
+    data: ForgotPasswordBody
+  ): Promise<ForgotPasswordRes> => {
+    return this.apiService.post<ForgotPasswordBody, ForgotPasswordRes>(
+      this.urls.ADMIN_FORGOT_PASSWORD,
+      data
+    );
+  };
+
+  /**
+   * Reset admin password
+   * @param data
+   * @returns {Promise<ResetPasswordRes>}
+   */
+  resetAdminPassword = (data: ResetPasswordBody): Promise<ResetPasswordRes> => {
+    return this.apiService.update<ResetPasswordBody, ResetPasswordRes>(
+      this.urls.ADMIN_RESET_PASSWORD,
+      data
+    );
+  };
+}
