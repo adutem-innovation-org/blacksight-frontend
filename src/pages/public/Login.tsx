@@ -71,7 +71,7 @@ export const Login = () => {
       if (signInErrors) {
         validation.setErrors(signInErrors);
       }
-      let tmo = setTimeout(() => {
+      const tmo = setTimeout(() => {
         dispatch(resetSignInUser());
         clearTimeout(tmo);
       }, 1400);
@@ -82,12 +82,11 @@ export const Login = () => {
 
   return (
     <React.Fragment>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center">
         <img
-          src="https://firebasestorage.googleapis.com/v0/b/philipthedeveloper-p.appspot.com/o/blacksight%2Fblacksight-rs.jpg?alt=media&token=cac59c0d-afb6-42f5-829a-e590555a4ed8"
-          className="w-12 h-12 rounded-full"
+          src="https://firebasestorage.googleapis.com/v0/b/philipthedeveloper-p.appspot.com/o/blacksight%2Fblacksight-logo-horizontal.png?alt=media&token=6a479ca2-ad7a-48a2-a6ad-11a29f676995"
+          className="max-h-10 object-contain"
         />
-        <p className="font-semibold text-lg text-blue-900">Blacksight</p>
       </div>
 
       {/* Form */}

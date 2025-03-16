@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Button, FormGroup, InfoBlock, ResendOtp, Spinner } from "@/components";
 import { useRetryTimeout, useStore } from "@/hooks";
 import { VerifyEmailBody } from "@/interfaces";
@@ -67,7 +68,7 @@ export const VerifyAccount = () => {
       if (verifyEmailErrors) {
         validation.setErrors(verifyEmailErrors);
       }
-      let tmo = setTimeout(() => {
+      const tmo = setTimeout(() => {
         dispatch(resetVerifyEmail());
         clearTimeout(tmo);
       }, 1400);
@@ -85,7 +86,7 @@ export const VerifyAccount = () => {
   useEffect(() => {
     if (sendOtpErrorMessage) {
       toast.error(sendOtpErrorMessage);
-      let tmo = setTimeout(() => {
+      const tmo = setTimeout(() => {
         dispatch(resetSendOtp());
         clearTimeout(tmo);
       }, 1400);
@@ -94,12 +95,11 @@ export const VerifyAccount = () => {
 
   return (
     <React.Fragment>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center">
         <img
-          src="https://firebasestorage.googleapis.com/v0/b/philipthedeveloper-p.appspot.com/o/blacksight%2Fblacksight-rs.jpg?alt=media&token=cac59c0d-afb6-42f5-829a-e590555a4ed8"
-          className="w-12 h-12 rounded-full"
+          src="https://firebasestorage.googleapis.com/v0/b/philipthedeveloper-p.appspot.com/o/blacksight%2Fblacksight-logo-horizontal.png?alt=media&token=6a479ca2-ad7a-48a2-a6ad-11a29f676995"
+          className="max-h-10 object-contain"
         />
-        <p className="font-semibold text-lg text-blue-900">Blacksight</p>
       </div>
 
       {/* Form */}
