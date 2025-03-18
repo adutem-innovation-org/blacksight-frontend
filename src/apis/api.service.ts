@@ -34,7 +34,6 @@ export class ApiService {
   };
 
   get = <ResData>(url: string, params?: {}) => {
-    console.log(this.apiClient.defaults.headers);
     return this.apiClient.get<any, ResData>(url, { params });
   };
 

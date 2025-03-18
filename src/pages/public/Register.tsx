@@ -1,13 +1,13 @@
 import { Button, FormGroup, InfoBlock, Spinner } from "@/components";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import googleIcon from "@/assets/images/google.png";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import { useStore } from "@/hooks";
+import { useGoogleAuth, useStore } from "@/hooks";
 import { emailRegex, passwordRegex } from "@/constants";
 import { RegisterUserBody } from "@/interfaces";
-import { resetSignUpUser, signUpUser } from "@/store";
+import { resetContinueWithGoogle, resetSignUpUser, signUpUser } from "@/store";
 import { UserTypes } from "@/enums";
 import { getAuthUser } from "@/helpers";
 import toast from "react-hot-toast";
@@ -17,9 +17,19 @@ export const Register = () => {
   const params = useParams() as { basePath: UserTypes };
 
   const { dispatch, getState } = useStore();
+  const { googleLogin, gettingOauthData } = useGoogleAuth();
 
-  const { isSignedUp, signUpErrors, signUpErrorMessage, signingUp } =
-    getState("Auth");
+  const {
+    isSignedUp,
+    signUpErrors,
+    signUpErrorMessage,
+    signingUp,
+    gapiReady,
+    authenticatingWithGoogle,
+    googleAuthSuccess,
+    googleAuthErrorMessage,
+    googleAuthErrors,
+  } = getState("Auth");
 
   const initialValues = {
     firstName: "",
@@ -59,6 +69,7 @@ export const Register = () => {
     },
   });
 
+  // Successful authentication
   useEffect(() => {
     const handleSignupSuccessful = () => {
       if (isSignedUp) {
@@ -76,6 +87,23 @@ export const Register = () => {
   }, [isSignedUp]);
 
   useEffect(() => {
+    const handleSignupSuccessful = () => {
+      if (googleAuthSuccess) {
+        dispatch(resetContinueWithGoogle());
+        const user = getAuthUser();
+        if (user) {
+          if (user.isEmailVerified || user.userType === UserTypes.ADMIN)
+            return navigate("/dashboard", { replace: true });
+          return navigate(`/user/verify-email`);
+        }
+      }
+    };
+
+    handleSignupSuccessful();
+  }, [googleAuthSuccess]);
+
+  // Failed authentication
+  useEffect(() => {
     if (signUpErrorMessage) {
       toast.error(signUpErrorMessage);
       if (signUpErrors) {
@@ -87,6 +115,19 @@ export const Register = () => {
       }, 1400);
     }
   }, [signUpErrorMessage]);
+
+  useEffect(() => {
+    if (googleAuthErrorMessage) {
+      toast.error(googleAuthErrorMessage);
+      if (googleAuthErrors) {
+        validation.setErrors(googleAuthErrors);
+      }
+      const tmo = setTimeout(() => {
+        dispatch(resetContinueWithGoogle());
+        clearTimeout(tmo);
+      }, 1400);
+    }
+  }, [googleAuthErrorMessage]);
 
   const { handleChange, handleBlur, values } = validation;
 
@@ -122,7 +163,7 @@ export const Register = () => {
             placeholder="Enter your first name"
             size="lg"
             name="firstName"
-            disabled={signingUp}
+            disabled={signingUp || authenticatingWithGoogle}
             onBlur={handleBlur}
             onChange={handleChange}
             value={values.firstName}
@@ -134,7 +175,7 @@ export const Register = () => {
             placeholder="Enter your last name"
             size="lg"
             name="lastName"
-            disabled={signingUp}
+            disabled={signingUp || authenticatingWithGoogle}
             onBlur={handleBlur}
             onChange={handleChange}
             value={values.lastName}
@@ -146,7 +187,7 @@ export const Register = () => {
             placeholder="Enter your email"
             size="lg"
             name="email"
-            disabled={signingUp}
+            disabled={signingUp || authenticatingWithGoogle}
             onBlur={handleBlur}
             onChange={handleChange}
             value={values.email}
@@ -158,7 +199,7 @@ export const Register = () => {
             placeholder="Enter your password"
             size="lg"
             name="password"
-            disabled={signingUp}
+            disabled={signingUp || authenticatingWithGoogle}
             onBlur={handleBlur}
             onChange={handleChange}
             value={values.password}
@@ -170,16 +211,16 @@ export const Register = () => {
             placeholder="Confirm password"
             size="lg"
             name="confirmPassword"
-            disabled={signingUp}
+            disabled={signingUp || authenticatingWithGoogle}
             onBlur={handleBlur}
             onChange={handleChange}
             value={values.confirmPassword}
             validation={validation}
           />
 
-          {signUpErrorMessage && (
+          {(signUpErrorMessage || googleAuthErrorMessage) && (
             <InfoBlock variant={"error"} className="mt-8">
-              {signUpErrorMessage}
+              {signUpErrorMessage || googleAuthErrorMessage}
             </InfoBlock>
           )}
 
@@ -187,7 +228,7 @@ export const Register = () => {
             className="w-full cursor-pointer mt-10"
             variant={"default"}
             size={"md"}
-            disabled={signingUp}
+            disabled={signingUp || gettingOauthData || authenticatingWithGoogle}
           >
             {signingUp ? <Spinner type="form" /> : "Sign Up"}
           </Button>
@@ -197,9 +238,20 @@ export const Register = () => {
               size={"md"}
               variant={"outline"}
               type="button"
+              disabled={
+                signingUp ||
+                gettingOauthData ||
+                !gapiReady ||
+                authenticatingWithGoogle
+              }
+              onClick={() => googleLogin()}
             >
               <img src={googleIcon} className="w-6 h-6" />
-              Sign In with Google
+              {authenticatingWithGoogle ? (
+                <Spinner type="form" />
+              ) : (
+                "Sign In with Google"
+              )}
             </Button>
           )}
         </form>
@@ -212,6 +264,7 @@ export const Register = () => {
             Already have an account?
           </p>
           <Link
+            aria-disabled={authenticatingWithGoogle || signingUp}
             to={`/${params.basePath}/signin`}
             className="text-sm text-blue-900 font-semibold"
           >

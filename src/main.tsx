@@ -4,20 +4,38 @@ import App from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
 import { ApiService } from "./apis/api.service.ts";
 import { Provider } from "react-redux";
-import { store } from "./store";
+import { changeGapiState, store } from "./store";
 import { Toaster } from "react-hot-toast";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { config } from "./config";
+import { useStore } from "./hooks/useStore.ts";
 
 ApiService.setAuthorization(sessionStorage.getItem("blacksight_access_token"));
 
+const Main = () => {
+  const { dispatch } = useStore();
+
+  const updateGapiState = () => dispatch(changeGapiState(true));
+
+  return (
+    <GoogleOAuthProvider
+      clientId={config.google.clientId}
+      onScriptLoadSuccess={updateGapiState}
+    >
+      <BrowserRouter>
+        <Toaster
+          position="top-right"
+          reverseOrder={false}
+          toastOptions={{ duration: 1400 }}
+        />
+        <App />
+      </BrowserRouter>
+    </GoogleOAuthProvider>
+  );
+};
+
 createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
-    <BrowserRouter>
-      <Toaster
-        position="top-right"
-        reverseOrder={false}
-        toastOptions={{ duration: 1400 }}
-      />
-      <App />
-    </BrowserRouter>
+    <Main />
   </Provider>
 );

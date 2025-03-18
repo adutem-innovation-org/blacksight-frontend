@@ -1,4 +1,5 @@
 import { AuthState } from "@/interfaces";
+import { PayloadAction } from "@reduxjs/toolkit";
 
 export const resetSignInUserReducer = (state: AuthState) => {
   state.isSignedIn = false;
@@ -40,4 +41,18 @@ export const resetPasswordResetReducer = (state: AuthState) => {
   state.passwordReset = false;
   state.resetPasswordErrors = {};
   state.resetPasswordErrorMessage = "";
+};
+
+export const resetContinueWithGoogleReducer = (state: AuthState) => {
+  state.authenticatingWithGoogle = false;
+  state.googleAuthSuccess = false;
+  state.googleAuthErrors = {};
+  state.googleAuthErrorMessage = "";
+};
+
+export const changeGapiStateReducer = (
+  state: AuthState,
+  action: PayloadAction<boolean>
+) => {
+  state.gapiReady = action.payload;
 };

@@ -33,4 +33,11 @@ export type AuthState = {
   passwordReset: boolean;
   resetPasswordErrors: Record<string, string>;
   resetPasswordErrorMessage: string;
+
+  // Google login
+  authenticatingWithGoogle: boolean;
+  googleAuthSuccess: boolean;
+  googleAuthErrors: Record<string, string>;
+  googleAuthErrorMessage: string;
+  gapiReady: boolean;
 };

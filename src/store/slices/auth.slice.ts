@@ -1,6 +1,7 @@
 import { initialAuthState } from "@/constants/store";
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  continueWithGoogleBuilder,
   forgotPasswordBuilder,
   resetPasswordBuilder,
   sendOtpBuilder,
@@ -9,6 +10,8 @@ import {
   verifyEmailBuilder,
 } from "../builders";
 import {
+  changeGapiStateReducer,
+  resetContinueWithGoogleReducer,
   resetForgotPasswordReducer,
   resetPasswordResetReducer,
   resetsendOtpReducer,
@@ -26,6 +29,8 @@ const authSlice = createSlice({
     resetSendOtp: resetsendOtpReducer,
     resetForgotPassword: resetForgotPasswordReducer,
     resetPasswordReset: resetPasswordResetReducer,
+    resetContinueWithGoogle: resetContinueWithGoogleReducer,
+    changeGapiState: changeGapiStateReducer,
   },
   initialState: initialAuthState,
   extraReducers: (builder) => {
@@ -35,6 +40,7 @@ const authSlice = createSlice({
     sendOtpBuilder(builder);
     forgotPasswordBuilder(builder);
     resetPasswordBuilder(builder);
+    continueWithGoogleBuilder(builder);
   },
 });
 
@@ -46,4 +52,6 @@ export const {
   resetSendOtp,
   resetForgotPassword,
   resetPasswordReset,
+  resetContinueWithGoogle,
+  changeGapiState,
 } = authSlice.actions;

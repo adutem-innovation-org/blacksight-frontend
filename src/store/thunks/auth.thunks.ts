@@ -4,6 +4,7 @@ import { UserTypes } from "@/enums";
 import { saveSession } from "@/helpers";
 import {
   ForgotPasswordBody,
+  GoogleLoginBody,
   LoginUserBody,
   RegisterUserBody,
   ResetPasswordBody,
@@ -94,6 +95,20 @@ export const resetPassword = createAsyncThunk(
           ? authApiService.resetAdminPassword
           : authApiService.resetUserPassword;
       return await resetPasswordApi(data.body);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(JSON.stringify(error));
+    }
+  }
+);
+
+export const continueWithGoogle = createAsyncThunk(
+  "continue_with_google",
+  async (data: GoogleLoginBody, thunkAPI) => {
+    try {
+      const response = await authApiService.googleAuth(data);
+      ApiService.setAuthorization(response.token);
+      saveSession(response.token, response.user);
+      return { message: "Successful" };
     } catch (error) {
       return thunkAPI.rejectWithValue(JSON.stringify(error));
     }

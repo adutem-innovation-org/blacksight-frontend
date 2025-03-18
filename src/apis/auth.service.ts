@@ -17,9 +17,12 @@ import {
   CreateAdminBody,
   CreateAdminRes,
   GetUsersRes,
+  GoogleLoginBody,
+  GoogleLoginRes,
 } from "@/interfaces";
 import { ApiService } from "./api.service";
 import { AUTH_URLS } from "./endpoints";
+import axios from "axios";
 
 export class AuthApiService {
   private static instance: AuthApiService;
@@ -60,6 +63,13 @@ export class AuthApiService {
   registerUser = (data: RegisterUserBody) => {
     return this.apiService.post<RegisterUserBody, RegisterUserRes>(
       this.urls.REGISTER_USER,
+      data
+    );
+  };
+
+  googleAuth = (data: GoogleLoginBody) => {
+    return this.apiService.post<GoogleLoginBody, GoogleLoginRes>(
+      this.urls.USER_GOOGLE_AUTH,
       data
     );
   };
@@ -179,5 +189,16 @@ export class AuthApiService {
       this.urls.ADMIN_RESET_PASSWORD,
       data
     );
+  };
+
+  /**
+   * Get user info from google access token
+   * @param access_token
+   * @returns
+   */
+  getOAuthData = (access_token: string) => {
+    return axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
+      headers: { Authorization: `Bearer ${access_token}` },
+    });
   };
 }

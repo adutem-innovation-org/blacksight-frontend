@@ -1,3 +1,4 @@
+import { AuthApiService } from "@/apis";
 import { UserData } from "@/interfaces";
 
 export const saveSession = (token: string, user: UserData) => {
@@ -10,4 +11,20 @@ export const getAuthUser = (): UserData | null => {
   if (!userJSON) return null;
   const userData = JSON.parse(userJSON);
   return userData;
+};
+
+export const getOAuthReqBody = async (access_token: string) => {
+  const authApiService = AuthApiService.getInstance();
+  const { data } = (await authApiService.getOAuthData(access_token)) as {
+    data: any;
+  };
+  if (!data) throw new Error("Could not authenticate user");
+  return {
+    id: data.sub,
+    accessToken: access_token,
+    email: data.email,
+    firstName: data.given_name,
+    lastName: data.family_name,
+    photoUrl: data.picture,
+  };
 };

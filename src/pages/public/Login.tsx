@@ -6,8 +6,8 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import { emailRegex, passwordRegex } from "@/constants";
 import { LoginUserBody } from "@/interfaces";
-import { useStore } from "@/hooks";
-import { resetSignInUser, signInUser } from "@/store";
+import { useGoogleAuth, useStore } from "@/hooks";
+import { resetContinueWithGoogle, resetSignInUser, signInUser } from "@/store";
 import { UserTypes } from "@/enums";
 import toast from "react-hot-toast";
 import { getAuthUser } from "@/helpers";
@@ -17,8 +17,19 @@ export const Login = () => {
   const navigate = useNavigate();
   const { dispatch, getState } = useStore();
 
-  const { signingIn, isSignedIn, signInErrors, signInErrorMessage } =
-    getState("Auth");
+  const {
+    signingIn,
+    isSignedIn,
+    signInErrors,
+    signInErrorMessage,
+    gapiReady,
+    authenticatingWithGoogle,
+    googleAuthSuccess,
+    googleAuthErrorMessage,
+    googleAuthErrors,
+  } = getState("Auth");
+
+  const { googleLogin, gettingOauthData } = useGoogleAuth();
 
   const defaultValues = {
     email: "",
@@ -50,6 +61,7 @@ export const Login = () => {
     },
   });
 
+  // Successful authentication
   useEffect(() => {
     const handleSignInSuccessful = () => {
       if (isSignedIn) {
@@ -66,6 +78,23 @@ export const Login = () => {
   }, [isSignedIn]);
 
   useEffect(() => {
+    const handleSignupSuccessful = () => {
+      if (googleAuthSuccess) {
+        dispatch(resetContinueWithGoogle());
+        const user = getAuthUser();
+        if (user) {
+          if (user.isEmailVerified || user.userType === UserTypes.ADMIN)
+            return navigate("/dashboard", { replace: true });
+          return navigate(`/user/verify-email`);
+        }
+      }
+    };
+
+    handleSignupSuccessful();
+  }, [googleAuthSuccess]);
+
+  // Failed authentication
+  useEffect(() => {
     if (signInErrorMessage) {
       toast.error(signInErrorMessage);
       if (signInErrors) {
@@ -77,6 +106,19 @@ export const Login = () => {
       }, 1400);
     }
   }, [signInErrorMessage]);
+
+  useEffect(() => {
+    if (googleAuthErrorMessage) {
+      toast.error(googleAuthErrorMessage);
+      if (googleAuthErrors) {
+        validation.setErrors(googleAuthErrors);
+      }
+      const tmo = setTimeout(() => {
+        dispatch(resetContinueWithGoogle());
+        clearTimeout(tmo);
+      }, 1400);
+    }
+  }, [googleAuthErrorMessage]);
 
   const { handleChange, handleBlur, values } = validation;
 
@@ -149,9 +191,9 @@ export const Login = () => {
             </Link>
           </div>
 
-          {signInErrorMessage && (
+          {(signInErrorMessage || googleAuthErrorMessage) && (
             <InfoBlock variant={"error"} className="mt-8">
-              {signInErrorMessage}
+              {signInErrorMessage || googleAuthErrorMessage}
             </InfoBlock>
           )}
 
@@ -159,19 +201,31 @@ export const Login = () => {
             className="w-full cursor-pointer mt-10"
             variant={"default"}
             size={"md"}
-            disabled={signingIn}
+            disabled={signingIn || gettingOauthData || authenticatingWithGoogle}
           >
             {signingIn ? <Spinner type="form" /> : "Sign In"}
           </Button>
+
           {params.basePath === UserTypes.USER && (
             <Button
               className="w-full cursor-pointer mt-4 flex items-center gap-2"
               size={"md"}
+              type="button"
               variant={"outline"}
-              disabled={signingIn}
+              disabled={
+                signingIn ||
+                gettingOauthData ||
+                !gapiReady ||
+                authenticatingWithGoogle
+              }
+              onClick={() => googleLogin()}
             >
               <img src={googleIcon} className="w-6 h-6" />
-              Sign In with Google
+              {authenticatingWithGoogle ? (
+                <Spinner type="form" />
+              ) : (
+                "Sign In with Google"
+              )}
             </Button>
           )}
         </form>
@@ -184,6 +238,7 @@ export const Login = () => {
             Don't have an account?
           </p>
           <Link
+            aria-disabled={authenticatingWithGoogle || signingIn}
             to={`/${params.basePath}/signup`}
             className="text-sm text-blue-900 font-semibold"
           >

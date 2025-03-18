@@ -13,6 +13,7 @@ export const USER_RESET_PASSWORD = "/user/reset-password";
 export const USER_SEND_OTP = "/user/send-otp";
 export const USER_VERIFY_EMAIL = "/user/verify-email";
 export const USER_DELETE_ACCOUNT = "/user/delete";
+export const USER_GOOGLE_AUTH = "/google";
 
 // Admin
 export const LOGIN_ADMIN = "/admin/login";

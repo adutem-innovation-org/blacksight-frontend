@@ -35,4 +35,11 @@ export const initialAuthState: AuthState = {
   passwordReset: false,
   resetPasswordErrors: {},
   resetPasswordErrorMessage: "",
+
+  // Google Auth
+  authenticatingWithGoogle: false,
+  googleAuthSuccess: false,
+  googleAuthErrors: {},
+  googleAuthErrorMessage: "",
+  gapiReady: false,
 };
