@@ -1,12 +1,17 @@
 import { ChevronLeft, ChevronRight, EllipsisVertical } from "lucide-react";
 import { useProfile, useStore } from "@/hooks";
-import { changeSidebarState, changeTab } from "@/store";
-import { SideBarStateEnum } from "@/enums";
+import {
+  changeSidebarMobileState,
+  changeSidebarState,
+  changeTab,
+} from "@/store";
+import { SideBarMobileStateEnum, SideBarStateEnum } from "@/enums";
 import { cn } from "@/lib/utils";
 import brandLogo from "@/assets/images/blacksight-logo.png";
 import { sideTabs, SideTabType } from "@/constants";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import man from "@/assets/images/man.png";
+import styled from "styled-components";
 
 const SidebarHeader = () => {
   const { dispatch, getState } = useStore();
@@ -35,7 +40,7 @@ const SidebarHeader = () => {
         </div>
         <p
           className={cn("text-gray-900 text-sm", {
-            hidden: sidebarState === SideBarStateEnum.COLLAPSED,
+            "sm:hidden": sidebarState === SideBarStateEnum.COLLAPSED,
           })}
         >
           Blacksight
@@ -44,9 +49,9 @@ const SidebarHeader = () => {
 
       <button
         className={cn(
-          "p-1 text-gray-900 cursor-pointer bg-gray-100 rounded-sm mx-auto",
+          "p-1 text-gray-900 cursor-pointer bg-gray-100 rounded-sm mx-auto hidden sm:block",
           {
-            hidden: sidebarState === SideBarStateEnum.EXPANDED,
+            "sm:hidden": sidebarState === SideBarStateEnum.EXPANDED,
           }
         )}
         onClick={expandSidebar}
@@ -55,9 +60,9 @@ const SidebarHeader = () => {
       </button>
       <button
         className={cn(
-          "p-1 text-gray-900 cursor-pointer bg-gray-100 rounded-sm",
+          "p-1 text-gray-900 cursor-pointer bg-gray-100 rounded-sm hidden sm:block",
           {
-            hidden: sidebarState === SideBarStateEnum.COLLAPSED,
+            "sm:hidden": sidebarState === SideBarStateEnum.COLLAPSED,
           }
         )}
         onClick={collapseSidebar}
@@ -74,7 +79,10 @@ const TabItem = ({ name, iconClass, tabId }: SideTabType) => {
 
   const isActiveTab = useMemo(() => currentTab === tabId, [currentTab]);
 
-  const changeCurrentTab = () => dispatch(changeTab(tabId));
+  const changeCurrentTab = () => {
+    dispatch(changeTab(tabId));
+    dispatch(changeSidebarMobileState(SideBarMobileStateEnum.HIDDEN));
+  };
 
   return (
     <button
@@ -97,7 +105,7 @@ const TabItem = ({ name, iconClass, tabId }: SideTabType) => {
       <span
         className={cn("font-sfpro text-base text-gray-800", {
           "text-brand": isActiveTab,
-          hidden: sidebarState === SideBarStateEnum.COLLAPSED,
+          "sm:hidden": sidebarState === SideBarStateEnum.COLLAPSED,
         })}
       >
         {name}
@@ -144,7 +152,7 @@ const SidebarFooter = () => {
               className="w-full h-full object-cover"
             />
           </div>
-          <div className={cn({ hidden: isSidederCollapsed })}>
+          <div className={cn({ "sm:*:hidden": isSidederCollapsed })}>
             <h4 className="font-semibold text-sm text-gray-800 mb-0.5 overflow-hidden text-ellipsis">
               {user?.firstName} {user?.lastName}
             </h4>
@@ -155,7 +163,7 @@ const SidebarFooter = () => {
         </div>
         <button
           type="button"
-          className={cn("text-gray-300", { hidden: isSidederCollapsed })}
+          className={cn("text-gray-800", { "sm:hidden": isSidederCollapsed })}
         >
           <EllipsisVertical />
         </button>
@@ -165,12 +173,39 @@ const SidebarFooter = () => {
 };
 
 export const Sidebar = () => {
+  const { getState, dispatch } = useStore();
+  const { sidebarMobileState } = getState("Layout");
+
+  const hideSidebar = () =>
+    dispatch(changeSidebarMobileState(SideBarMobileStateEnum.HIDDEN));
+
   return (
     // Removed rounded-2xl
-    <div className="w-full h-full bg-white md:flex flex-col hidden overflow-hidden">
-      <SidebarHeader />
-      <SidebarTabs />
-      <SidebarFooter />
-    </div>
+    <React.Fragment>
+      {sidebarMobileState === SideBarMobileStateEnum.VISIBLE && (
+        <button
+          className="w-dvw h-dvh bg-black opacity-30 sm:hidden fixed top-0 right-0 left-0 bottom-0 z-40"
+          onClick={hideSidebar}
+        ></button>
+      )}
+      <SidebarContainer
+        className={
+          "w-[250px] sm:w-full h-full bg-white flex flex-col overflow-hidden fixed sm:relative top-0 bottom-0 left-0 shadow-2xl sm:shadow-none rounded-r-3xl sm:rounded-none"
+        }
+        hiddenState={sidebarMobileState === SideBarMobileStateEnum.HIDDEN}
+      >
+        <SidebarHeader />
+        <SidebarTabs />
+        <SidebarFooter />
+      </SidebarContainer>
+    </React.Fragment>
   );
 };
+
+const SidebarContainer = styled.div<{ hiddenState: boolean }>`
+  @media screen and (max-width: 640px) {
+    transform: translateX(${(props) => (props.hiddenState ? "-250px" : "0px")});
+    transition: 0.4s ease;
+    z-index: 40;
+  }
+`;

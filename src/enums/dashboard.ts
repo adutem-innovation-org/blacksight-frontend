@@ -11,3 +11,8 @@ export enum SideBarStateEnum {
   COLLAPSED = "collapsed",
   EXPANDED = "expanded",
 }
+
+export enum SideBarMobileStateEnum {
+  HIDDEN = "hidden",
+  VISIBLE = "visible",
+}
