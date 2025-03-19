@@ -1,4 +1,5 @@
 import { createRoot } from "react-dom/client";
+import "@mantine/core/styles.css";
 import "./index.css";
 import App from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
@@ -9,6 +10,7 @@ import { Toaster } from "react-hot-toast";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { config } from "./config";
 import { useStore } from "./hooks/useStore.ts";
+import { MantineProvider } from "@mantine/core";
 
 ApiService.setAuthorization(sessionStorage.getItem("blacksight_access_token"));
 
@@ -23,12 +25,14 @@ const Main = () => {
       onScriptLoadSuccess={updateGapiState}
     >
       <BrowserRouter>
-        <Toaster
-          position="top-right"
-          reverseOrder={false}
-          toastOptions={{ duration: 1400 }}
-        />
-        <App />
+        <MantineProvider>
+          <Toaster
+            position="top-right"
+            reverseOrder={false}
+            toastOptions={{ duration: 1400 }}
+          />
+          <App />
+        </MantineProvider>
       </BrowserRouter>
     </GoogleOAuthProvider>
   );

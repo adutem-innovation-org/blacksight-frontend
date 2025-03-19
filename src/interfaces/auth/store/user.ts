@@ -6,6 +6,7 @@ export type UserData = {
   firstName: string;
   lastName: string;
   email: string;
+  imageUrl?: string;
   isActive: boolean;
   isEmailVerified: boolean;
   isSuperAdmin: boolean;

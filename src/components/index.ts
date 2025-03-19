@@ -2,3 +2,7 @@ export * from "./form";
 export * from "./tooltips";
 export * from "./InfoBlock";
 export * from "./progress";
+export * from "./tabs";
+export * from "./nav";
+export * from "./design";
+export * from "./cards";

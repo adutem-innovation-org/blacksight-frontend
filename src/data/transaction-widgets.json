@@ -1,0 +1,40 @@
+[
+    {
+        "title": "Total revenue",
+        "period": "This month",
+        "prefix": "$",
+        "count": 10500.5,
+        "shouldCountUp": false,
+        "showProgressRing": false
+    },
+    {
+        "title": "Active Users",
+        "period": "This month",
+        "count": 1500,
+        "showProgressRing": true,
+        "progressRingColor": "#F43F5E",
+        "percentage": 78
+    },
+    {
+        "title": "Active Bots",
+        "period": "This month",
+        "count": 114,
+        "showProgressRing": true,
+        "progressRingColor": "#34D399",
+        "percentage": 48
+    },
+    {
+        "title": "Appointments",
+        "period": "This month",
+        "count": 1100,
+        "showProgressRing": true,
+        "progressRingColor": "#FBBF24",
+        "percentage": 9
+    },
+    {
+        "title": "Admin",
+        "period": "This month",
+        "count": 2,
+        "shouldCountUp": false
+    }
+]
