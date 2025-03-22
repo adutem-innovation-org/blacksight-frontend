@@ -7,7 +7,7 @@ import {
 } from "@/store";
 import { SideBarMobileStateEnum, SideBarStateEnum } from "@/enums";
 import { cn } from "@/lib/utils";
-import brandLogo from "@/assets/images/blacksight-logo.png";
+import brandLogo from "@/assets/images/blacksight_logo_side.png";
 import { sideTabs, SideTabType } from "@/constants";
 import React, { useMemo } from "react";
 import man from "@/assets/images/man.png";
@@ -35,16 +35,9 @@ const SidebarHeader = () => {
       )}
     >
       <div className="flex items-center gap-2">
-        <div className={cn("w-12 h-12 p-2 bg-gray-100 rounded-[12px]")}>
-          <img src={brandLogo} alt="" className="w-full h-full" />
+        <div className={cn("h-12 flex-1 mr-2 flex items-center")}>
+          <img src={brandLogo} alt="" className="w-full object-contain h-8" />
         </div>
-        <p
-          className={cn("text-gray-900 text-sm", {
-            "sm:hidden": sidebarState === SideBarStateEnum.COLLAPSED,
-          })}
-        >
-          Blacksight
-        </p>
       </div>
 
       <button
@@ -124,7 +117,7 @@ const SidebarTabs = () => {
 
   return (
     <div className="p-4 overflow-auto h-full bg-red">
-      <div className={cn("flex flex-col items-center gap-3")}>
+      <div className={cn("flex flex-col items-center gap-2")}>
         {userSideTabs.map((tab) => (
           <TabItem {...tab} />
         ))}
@@ -153,7 +146,7 @@ const SidebarFooter = () => {
             />
           </div>
           <div className={cn({ "sm:*:hidden": isSidederCollapsed })}>
-            <h4 className="font-semibold text-sm text-gray-800 mb-0.5 overflow-hidden text-ellipsis">
+            <h4 className="font-semibold text-sm text-gray-800 mb-0.5 overflow-hidden text-ellipsis max-w-32 whitespace-nowrap">
               {user?.firstName} {user?.lastName}
             </h4>
             <p className="text-xs max-w-32 text-ellipsis overflow-hidden text-gray-800">

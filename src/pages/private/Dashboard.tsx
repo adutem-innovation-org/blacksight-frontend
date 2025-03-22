@@ -7,7 +7,7 @@ import styled from "styled-components";
 
 export const Dashboard = () => {
   const { getState, dispatch } = useStore();
-  const { sidebarState } = getState("Layout");
+  const { sidebarState, currentTab } = getState("Layout");
 
   const showSidebar = () =>
     dispatch(changeSidebarMobileState(SideBarMobileStateEnum.VISIBLE));
@@ -19,12 +19,25 @@ export const Dashboard = () => {
         className="w-full h-full grid grid-rows-1"
       >
         <Sidebar />
-        <div className="sm:hidden flex p-4 bg-white mb-4 left-0 right-0 top-0 fixed h-20 z-35">
-          <button onClick={showSidebar}>
-            <LayoutDashboard />
-          </button>
+
+        <div className="w-full h-full overflow-hidden">
+          {/* Mobile header */}
+          <div className="sm:hidden flex p-4 bg-white mb-4 left-0 right-0 top-0 fixed h-20 z-35">
+            <button onClick={showSidebar}>
+              <LayoutDashboard />
+            </button>
+          </div>
+
+          {/* Dashboard header */}
+          <div className="hidden sm:flex h-20 bg-white border-l items-center px-4">
+            <h2 className="capitalize font-urbanist font-semibold text-2xl sm:text-3xl text-brand">
+              {currentTab}
+            </h2>
+          </div>
+
+          {/* Dashboard tabs */}
+          <DashboardTabs />
         </div>
-        <DashboardTabs />
       </DashboardLayoutContainer>
     </div>
   );

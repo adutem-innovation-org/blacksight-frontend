@@ -23,14 +23,12 @@ export const AnalyticsCard = ({
   showProgressRing = true,
 }: AnalyticsCardProps) => {
   return (
-    <div className="bg-white rounded-2xl flex justify-between py-5 px-6 items-center">
-      <div className="flex flex-col gap-2">
+    <div className="bg-white card flex justify-between py-5 px-6 items-center">
+      <div className="flex flex-col gap-3">
         <div className="flex items-center gap-1">
-          <p className="font-sfpro-medium text-gray-900 text-[13px] leading-[18px]">
-            {title}
-          </p>
-          <div className="w-[2px] h-[2px] rounded-full bg-gray-900"></div>
-          <p className="font-sfpro-medium text-gray-400 text-[13px] leading-[18px]">
+          <p className="font-sfpro-medium text-gray-400 text-base">{title}</p>
+          <div className="w-[4px] h-[4px] rounded-full bg-gray-900 hidden"></div>
+          <p className="font-sfpro-medium text-gray-400 text-[13px] leading-[18px] hidden">
             {period}
           </p>
         </div>

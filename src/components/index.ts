@@ -6,3 +6,4 @@ export * from "./tabs";
 export * from "./nav";
 export * from "./design";
 export * from "./cards";
+export * from "./tables";

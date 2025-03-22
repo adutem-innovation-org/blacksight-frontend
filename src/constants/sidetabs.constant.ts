@@ -50,5 +50,10 @@ export const sideTabs: Record<UserTypes, SideTabType[]> = {
       tabId: DashboardTabsEnum.WORKSPACE,
       iconClass: "fi fi-sr-admin-alt",
     },
+    {
+      name: "Subscriptions",
+      tabId: DashboardTabsEnum.SUBSCRIPTIONS,
+      iconClass: "fi fi-sr-usd-circle",
+    },
   ],
 };
