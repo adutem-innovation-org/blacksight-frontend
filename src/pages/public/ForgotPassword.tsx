@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Button, FormGroup, InfoBlock, Spinner } from "@/components";
 import { UserTypes } from "@/enums";
 import { ForgotPasswordBody } from "@/interfaces";
@@ -10,6 +9,7 @@ import { emailRegex } from "@/constants";
 import { useStore } from "@/hooks";
 import { forgotPassword, resetForgotPassword } from "@/store";
 import toast from "react-hot-toast";
+import blacksightLogo from "@/assets/images/blacksight_logo_side.png";
 
 export const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -76,10 +76,7 @@ export const ForgotPassword = () => {
   return (
     <React.Fragment>
       <div className="flex items-center">
-        <img
-          src="https://firebasestorage.googleapis.com/v0/b/philipthedeveloper-p.appspot.com/o/blacksight%2Fblacksight-logo-horizontal.png?alt=media&token=6a479ca2-ad7a-48a2-a6ad-11a29f676995"
-          className="max-h-10 object-contain"
-        />
+        <img src={blacksightLogo} className="max-h-10 object-contain" />
       </div>
 
       {/* Form */}

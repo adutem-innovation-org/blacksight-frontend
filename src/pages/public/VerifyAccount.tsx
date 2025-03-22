@@ -8,6 +8,7 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import { resetSendOtp, resetVerifyEmail, sendOtp, verifyEmail } from "@/store";
 import toast from "react-hot-toast";
+import blacksightLogo from "@/assets/images/blacksight_logo_side.png";
 
 export const VerifyAccount = () => {
   const navigate = useNavigate();
@@ -96,10 +97,7 @@ export const VerifyAccount = () => {
   return (
     <React.Fragment>
       <div className="flex items-center">
-        <img
-          src="https://firebasestorage.googleapis.com/v0/b/philipthedeveloper-p.appspot.com/o/blacksight%2Fblacksight-logo-horizontal.png?alt=media&token=6a479ca2-ad7a-48a2-a6ad-11a29f676995"
-          className="max-h-10 object-contain"
-        />
+        <img src={blacksightLogo} className="max-h-10 object-contain" />
       </div>
 
       {/* Form */}
