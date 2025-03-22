@@ -1,0 +1,30 @@
+[
+    {
+        "day": "Mon",
+        "bookings": 20
+    },
+    {
+        "day": "Tue",
+        "bookings": 35
+    },
+    {
+        "day": "Wed",
+        "bookings": 50
+    },
+    {
+        "day": "Thu",
+        "bookings": 40
+    },
+    {
+        "day": "Fri",
+        "bookings": 60
+    },
+    {
+        "day": "Sat",
+        "bookings": 80
+    },
+    {
+        "day": "Sun",
+        "bookings": 45
+    }
+]

@@ -1,0 +1,30 @@
+[
+    {
+        "day": "Mon",
+        "responseTime": 1200
+    },
+    {
+        "day": "Tue",
+        "responseTime": 900
+    },
+    {
+        "day": "Wed",
+        "responseTime": 1500
+    },
+    {
+        "day": "Thu",
+        "responseTime": 1300
+    },
+    {
+        "day": "Fri",
+        "responseTime": 800
+    },
+    {
+        "day": "Sat",
+        "responseTime": 700
+    },
+    {
+        "day": "Sun",
+        "responseTime": 950
+    }
+]

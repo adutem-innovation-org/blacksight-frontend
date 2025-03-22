@@ -7,3 +7,4 @@ export * from "./nav";
 export * from "./design";
 export * from "./cards";
 export * from "./tables";
+export * from "./charts";

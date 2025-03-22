@@ -7,11 +7,13 @@ export const DashboardTableLayoutDiv = styled.div`
   flex: 1;
   flex-direction: column;
   gap: 1rem;
-  overflow: auto;
+  // overflow: auto;
+  overflow: scroll;
+  height: 100%;
 
-  @media (min-width: 768px) {
-    overflow: hidden;
-  }
+  // @media (min-width: 768px) {
+  //   overflow: hidden;
+  // }
 `;
 
 export const DashboardContent = ({
@@ -24,7 +26,7 @@ export const DashboardContent = ({
   return (
     <DashboardContentContainer
       className={cn(
-        "w-full elative pt-24 sm:pt-4 p-4 flex flex-col relative",
+        "w-full h-max mt-20 sm:mt-0 p-4 flex flex-col relative",
         className
       )}
       {...props}
@@ -33,7 +35,7 @@ export const DashboardContent = ({
 };
 
 export const DashboardContentContainer = styled.div`
-  @media screen and (min-width: 640px) {
-    height: calc(100dvh - 80px);
-  }
+  // @media screen and (min-width: 640px) {
+  //   height: calc(100dvh - 80px);
+  // }
 `;

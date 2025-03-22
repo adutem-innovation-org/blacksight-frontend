@@ -14,8 +14,15 @@ export const DashboardTabs = () => {
   const { currentTab } = getState("Layout");
 
   return (
-    <Tabs value={currentTab} className="w-full h-full" keepMounted={false}>
-      <Tabs.Panel value={DashboardTabsEnum.ANALYTICS} className="w-full h-full">
+    <Tabs
+      value={currentTab}
+      className="w-full h-max min-h-full"
+      keepMounted={false}
+    >
+      <Tabs.Panel
+        value={DashboardTabsEnum.ANALYTICS}
+        className="w-full h-full overflow-auto"
+      >
         <AnalyticsTab />
       </Tabs.Panel>
       <Tabs.Panel
