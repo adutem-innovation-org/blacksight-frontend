@@ -2,7 +2,7 @@ import { getAuthUser } from "@/helpers";
 import { UserData } from "@/interfaces";
 import { useEffect, useState } from "react";
 
-export const useProfile = (...deps: any[]) => {
+export const useProfile = (deps?: any[]) => {
   const [user, setUser] = useState<UserData | null>(null);
   const [loadingProfile, setLoadingProfile] = useState(true);
 
@@ -19,7 +19,7 @@ export const useProfile = (...deps: any[]) => {
     };
 
     fetchProfile();
-  }, [deps]);
+  }, deps ?? []);
 
   return { user, loadingProfile };
 };
