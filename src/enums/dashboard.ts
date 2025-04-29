@@ -6,6 +6,8 @@ export enum DashboardTabsEnum {
   ACCOUNTS = "accounts",
   WORKSPACE = "workspace",
   SUBSCRIPTIONS = "subscriptions",
+  REMINDER = "reminder",
+  PROFILE = "profile",
 }
 
 export enum SideBarStateEnum {
@@ -16,4 +18,11 @@ export enum SideBarStateEnum {
 export enum SideBarMobileStateEnum {
   HIDDEN = "hidden",
   VISIBLE = "visible",
+}
+
+export enum ProfileTabsEnum {
+  MY_PROFILE = "my-profile",
+  SECURTIY = "security",
+  BILLING = "billing",
+  DATA_EXPORT = "data-export",
 }

@@ -125,7 +125,9 @@
             "name": "Chukwu Okafor",
             "email": "chukwuokafor@gmail.com",
             "imageUrl": "https://firebasestorage.googleapis.com/v0/b/philipthedeveloper-p.appspot.com/o/olivia%20rhye.jpeg?alt=media&token=19ef8327-5598-42e0-af24-06bace98c934"
-        }
+        },
+        "lastLoginAt": "06 Mar 2025 04:33",
+        "nextSubscriptionDate": "05 Oct 2025 00:00"
     },
     {
         "id": "436c3231232",
@@ -253,6 +255,8 @@
             "name": "Chukwu Okafor",
             "email": "chukwuokafor@gmail.com",
             "imageUrl": "https://firebasestorage.googleapis.com/v0/b/philipthedeveloper-p.appspot.com/o/olivia%20rhye.jpeg?alt=media&token=19ef8327-5598-42e0-af24-06bace98c934"
-        }
+        },
+        "lastLoginAt": "06 Mar 2025 04:33",
+        "nextSubscriptionDate": "05 Oct 2025 00:00"
     }
 ]

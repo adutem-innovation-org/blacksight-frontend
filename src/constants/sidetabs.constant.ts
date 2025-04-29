@@ -11,17 +11,22 @@ export const sideTabs: Record<UserTypes, SideTabType[]> = {
     {
       name: "Analytics",
       tabId: DashboardTabsEnum.ANALYTICS,
-      iconClass: "fi fi-sr-chart-pie",
+      iconClass: "fi fi-rr-chart-pie",
     },
     {
       name: "Bots",
       tabId: DashboardTabsEnum.BOTS,
-      iconClass: "fi fi-sr-chatbot-speech-bubble",
+      iconClass: "fi fi-rr-chatbot-speech-bubble",
     },
     {
       name: "Database",
       tabId: DashboardTabsEnum.KNOWLEDGE_BASE,
-      iconClass: "fi fi-sr-database",
+      iconClass: "fi fi-rr-database",
+    },
+    {
+      name: "Reminder",
+      tabId: DashboardTabsEnum.REMINDER,
+      iconClass: "fi fi-rr-bell-ring",
     },
   ],
   admin: [

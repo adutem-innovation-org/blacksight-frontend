@@ -32,7 +32,15 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.129 0.042 264.695);
   --primary: oklch(0.208 0.042 265.755);
-  --brand: #1c398e;
+  --brand: #4990f8;
+  --brand-70: #498ff8b4;
+  --brand-60: #498ff89a;
+  --brand-50: #498ff880;
+  --brand-40: #498ff867;
+  --brand-30: #498ff84d;
+  --brand-20: #498ff834;
+  --brand-10: #498ff81c;
+  /* --brand: #1c398e; */
   --primary-foreground: oklch(0.984 0.003 247.858);
   --secondary: oklch(0.968 0.007 247.896);
   --secondary-foreground: oklch(0.208 0.042 265.755);
@@ -59,6 +67,9 @@
   --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
   --sidebar-border: oklch(0.929 0.013 255.508);
   --sidebar-ring: oklch(0.704 0.04 256.788);
+
+  /* Fonts */
+  --dmsans: "DM Sans", sans-serif;
   --caladea: "Caladea", serif;
   --urbanist: "Urbanist", sans-serif;
   --sfpro-light: "SFPro-Light", sans-serif;
@@ -74,7 +85,6 @@
   --popover: oklch(0.129 0.042 264.695);
   --popover-foreground: oklch(0.984 0.003 247.858);
   --primary: oklch(0.984 0.003 247.858);
-  --brand: #1c398e;
   --primary-foreground: oklch(0.208 0.042 265.755);
   --secondary: oklch(0.279 0.041 260.031);
   --secondary-foreground: oklch(0.984 0.003 247.858);
@@ -110,7 +120,17 @@
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
+
+  /* Colors */
   --color-brand: var(--brand);
+  --color-brand-10: var(--brand-10);
+  --color-brand-20: var(--brand-20);
+  --color-brand-30: var(--brand-30);
+  --color-brand-40: var(--brand-40);
+  --color-brand-50: var(--brand-50);
+  --color-brand-60: var(--brand-60);
+  --color-brand-70: var(--brand-70);
+
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
@@ -140,6 +160,9 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Fonts */
+  --font-dmsans: var(--dmsans);
 }
 
 body {
@@ -188,6 +211,53 @@ input::-ms-reveal {
   appearance: none;
   -webkit-appearance: none;
   display: none;
+}
+
+/***
+====== MANTINE INPUT ============
+*/
+
+.mantine-Input-input.mantine-DateInput-input,
+.mantine-Input-input.mantine-MultiSelect-input {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  height: 52px;
+  border-width: 1px;
+  border-color: #f3f4f6;
+  background-color: #f9fafb;
+  border-radius: 12px;
+  position: relative;
+  font-family: var(--sfpro);
+  font-size: 14px;
+  line-height: 20px;
+  color: #6b7280;
+
+  &:hover {
+    background-color: #f3f4f6;
+  }
+}
+
+.mantine-Input-input.mantine-MultiSelect-input {
+  display: flex;
+  align-items: center;
+}
+
+.mantine-Popover-dropdown.mantine-MultiSelect-dropdown {
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0px 4px 16px 0px #0000001f;
+  padding: 10px 8px;
+}
+
+.mantine-Popover-dropdown.mantine-MultiSelect-dropdown
+  .mantine-MultiSelect-options
+  .mantine-MultiSelect-option {
+  border-radius: 0.5rem;
+  /* padding: 4px 8px; */
+
+  &:hover {
+    background-color: #dbeafe;
+  }
 }
 
 @layer base {

@@ -8,17 +8,15 @@ import { AccountsTab } from "./Accounts";
 import { AppointmentsTab } from "./Appointments";
 import { WorkspaceTab } from "./Workspace";
 import { SubscriptionsTab } from "./Subscriptions";
+import { ReminderTab } from "./ReminderTab";
+import { ProfileTab } from "./ProfileTab";
 
 export const DashboardTabs = () => {
   const { getState } = useStore();
   const { currentTab } = getState("Layout");
 
   return (
-    <Tabs
-      value={currentTab}
-      className="w-full h-max min-h-full"
-      keepMounted={false}
-    >
+    <Tabs value={currentTab} className="w-full flex-1" keepMounted={false}>
       <Tabs.Panel
         value={DashboardTabsEnum.ANALYTICS}
         className="w-full h-full overflow-auto"
@@ -51,6 +49,12 @@ export const DashboardTabs = () => {
         className="w-full h-full"
       >
         <SubscriptionsTab />
+      </Tabs.Panel>
+      <Tabs.Panel value={DashboardTabsEnum.REMINDER} className="w-full h-full">
+        <ReminderTab />
+      </Tabs.Panel>
+      <Tabs.Panel value={DashboardTabsEnum.PROFILE} className="w-full h-full">
+        <ProfileTab />
       </Tabs.Panel>
     </Tabs>
   );

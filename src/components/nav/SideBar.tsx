@@ -8,14 +8,23 @@ import {
 import { SideBarMobileStateEnum, SideBarStateEnum } from "@/enums";
 import { cn } from "@/lib/utils";
 import brandLogo from "@/assets/images/blacksight_logo_side.png";
+import brandLogoVertical from "@/assets/images/blacksight_logo.png";
 import { sideTabs, SideTabType } from "@/constants";
 import React, { useMemo } from "react";
 import man from "@/assets/images/man.png";
 import styled from "styled-components";
+import {
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+  Tooltip,
+} from "../ui/tooltip";
 
 const SidebarHeader = () => {
   const { dispatch, getState } = useStore();
   const { sidebarState } = getState("Layout");
+
+  const isSidebarCollapsed = sidebarState === SideBarStateEnum.COLLAPSED;
 
   const expandSidebar = () => {
     dispatch(changeSidebarState(SideBarStateEnum.EXPANDED));
@@ -27,17 +36,24 @@ const SidebarHeader = () => {
 
   return (
     <div
-      className={cn(
-        "p-4 flex items-center border-b justify-between border-b-gray-100 gap-4",
-        {
-          "flex-wrap": sidebarState === SideBarStateEnum.COLLAPSED,
-        }
-      )}
+      className={cn("p-4 px-5 flex items-center justify-between gap-4", {
+        "flex-wrap": isSidebarCollapsed,
+      })}
     >
-      <div className="flex items-center gap-2">
-        <div className={cn("h-12 flex-1 mr-2 flex items-center")}>
+      <div
+        className={cn("h-12 flex items-center", {
+          "mx-auto": isSidebarCollapsed,
+        })}
+      >
+        {isSidebarCollapsed ? (
+          <img
+            src={brandLogoVertical}
+            alt=""
+            className="w-full object-contain h-8"
+          />
+        ) : (
           <img src={brandLogo} alt="" className="w-full object-contain h-8" />
-        </div>
+        )}
       </div>
 
       <button
@@ -72,38 +88,50 @@ const TabItem = ({ name, iconClass, tabId }: SideTabType) => {
 
   const isActiveTab = useMemo(() => currentTab === tabId, [currentTab]);
 
+  const isSidebarCollapsed = sidebarState === SideBarStateEnum.COLLAPSED;
+
   const changeCurrentTab = () => {
     dispatch(changeTab(tabId));
     dispatch(changeSidebarMobileState(SideBarMobileStateEnum.HIDDEN));
   };
 
   return (
-    <button
-      type="button"
-      className={cn(
-        "flex flex-start gap-2 items-center cursor-pointer w-full rounded-xl px-2 py-1 transition-colors hover:bg-gray-100 duration-500",
-        {
-          "bg-gray-100": isActiveTab,
-        }
-      )}
-      onClick={changeCurrentTab}
-    >
-      <div className="h-10 w-10 rounded-md flex justify-center items-center">
-        <i
-          className={cn(iconClass, "text-gray-800 flex text-2xl", {
-            "text-brand": isActiveTab,
-          })}
-        ></i>
-      </div>
-      <span
-        className={cn("font-sfpro text-base text-gray-800", {
-          "text-brand": isActiveTab,
-          "sm:hidden": sidebarState === SideBarStateEnum.COLLAPSED,
-        })}
-      >
-        {name}
-      </span>
-    </button>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger className="w-full">
+          <li
+            className={cn(
+              "flex flex-start gap-2 items-center cursor-pointer w-full px-2 py-3 rounded-[12px] duration-300",
+              {
+                "bg-gray-200": isActiveTab,
+                "px-4 py-4": isSidebarCollapsed,
+                // "hover:bg-gray-100": !isActiveTab,
+              }
+            )}
+            onClick={changeCurrentTab}
+          >
+            <div className="w-10 rounded-md flex justify-center items-center">
+              <i
+                className={cn(iconClass, "text-gray-800 flex text-2xl", {
+                  "text-brand": isActiveTab,
+                })}
+              ></i>
+            </div>
+            <span
+              className={cn("font-dmsans text-sm text-gray-800 font-semibold", {
+                "text-brand": isActiveTab,
+                "sm:hidden": isSidebarCollapsed,
+              })}
+            >
+              {name}
+            </span>
+          </li>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>{name}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };
 
@@ -116,12 +144,12 @@ const SidebarTabs = () => {
   );
 
   return (
-    <div className="p-4 overflow-auto h-full bg-red">
-      <div className={cn("flex flex-col items-center gap-2")}>
+    <div className="px-5 py-8 overflow-auto h-full bg-red">
+      <ul className={cn("flex flex-col items-center gap-2")}>
         {userSideTabs.map((tab) => (
           <TabItem {...tab} />
         ))}
-      </div>
+      </ul>
     </div>
   );
 };
@@ -183,13 +211,13 @@ export const Sidebar = () => {
       )}
       <SidebarContainer
         className={
-          "w-[250px] sm:w-full h-full bg-white flex flex-col overflow-hidden fixed sm:relative top-0 bottom-0 left-0 shadow-2xl sm:shadow-none rounded-r-3xl sm:rounded-none"
+          "w-[250px] sm:w-full h-full bg-white flex flex-col overflow-hidden fixed sm:relative top-0 bottom-0 left-0 shadow-2xl sm:shadow-none rounded-r-3xl sm:rounded-none sm:border-r sm:border-r-gray-200"
         }
         hiddenState={sidebarMobileState === SideBarMobileStateEnum.HIDDEN}
       >
         <SidebarHeader />
         <SidebarTabs />
-        <SidebarFooter />
+        {/* <SidebarFooter /> */}
       </SidebarContainer>
     </React.Fragment>
   );

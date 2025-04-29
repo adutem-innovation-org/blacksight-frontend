@@ -6,6 +6,11 @@ export const saveSession = (token: string, user: UserData) => {
   sessionStorage.setItem("blacksight_access_token", token);
 };
 
+export const clearSession = () => {
+  sessionStorage.removeItem("blacksight_auth_user");
+  sessionStorage.removeItem("blacksight_access_token");
+};
+
 export const getAuthUser = (): UserData | null => {
   const userJSON = sessionStorage.getItem("blacksight_auth_user");
   if (!userJSON) return null;

@@ -1,0 +1,134 @@
+[
+    {
+        "_id": "1c73fa41956",
+        "userId": "1c73fa41956",
+        "tag": "New E-book user",
+        "channel": "email",
+        "emails": [
+            "example@gmail.com",
+            "example2@gmail.com"
+        ],
+        "type": "payment",
+        "isActive": true,
+        "isBulk": false,
+        "reminderSent": false,
+        "remindAt": "08 Aug 2025 12:11"
+    },
+    {
+        "_id": "c73fa41956a",
+        "userId": "c73fa41956a",
+        "tag": "2023 Superbowl friends",
+        "channel": "email",
+        "emails": [
+            "example@gmail.com",
+            "example2@gmail.com"
+        ],
+        "type": "appointment",
+        "isActive": true,
+        "isBulk": true,
+        "reminderSent": false,
+        "remindAt": "08 Aug 2025 12:11"
+    },
+    {
+        "_id": "73fa41956ae",
+        "userId": "73fa41956ae",
+        "tag": "2024 Empowerment Applicants",
+        "channel": "sms",
+        "phones": [
+            "+2349070707070",
+            "+2349171717171"
+        ],
+        "type": "appointment",
+        "isActive": true,
+        "isBulk": true,
+        "reminderSent": false,
+        "remindAt": "08 Aug 2025 12:11"
+    },
+    {
+        "_id": "3fa41956ae8",
+        "userId": "3fa41956ae8",
+        "tag": "YOGA user 202192",
+        "channel": "sms",
+        "phone": "+2349070707070",
+        "type": "payment",
+        "isActive": true,
+        "isBulk": false,
+        "reminderSent": false,
+        "remindAt": "08 Aug 2025 12:11"
+    },
+    {
+        "_id": "fa41956ae84",
+        "userId": "fa41956ae84",
+        "tag": "YOGA user 212922",
+        "channel": "email",
+        "email": "example@gmail.com",
+        "type": "appointment",
+        "isActive": true,
+        "isBulk": false,
+        "reminderSent": false,
+        "remindAt": "08 Aug 2025 12:11"
+    },
+    {
+        "_id": "a41956ae84b",
+        "userId": "a41956ae84b",
+        "tag": "Gym set 045",
+        "channel": "email",
+        "email": [
+            "johndoe@gmail.com",
+            "janedoe@gmail.com"
+        ],
+        "type": "appointment",
+        "isActive": true,
+        "isBulk": true,
+        "reminderSent": false,
+        "remindAt": "08 Aug 2025 12:11"
+    },
+    {
+        "_id": "41956ae84b9",
+        "userId": "41956ae84b9",
+        "tag": "Gym user 201322",
+        "channel": "sms",
+        "phone": "+2348000000000",
+        "type": "payment",
+        "isActive": true,
+        "isBulk": false,
+        "reminderSent": false,
+        "remindAt": "08 Aug 2025 12:11"
+    },
+    {
+        "_id": "1956ae84b98",
+        "userId": "1956ae84b98",
+        "tag": "Workout group friend 4",
+        "channel": "email",
+        "email": "friend4@gmail.com",
+        "type": "appointment",
+        "isActive": true,
+        "isBulk": false,
+        "reminderSent": false,
+        "remindAt": "08 Aug 2025 12:11"
+    },
+    {
+        "_id": "956ae84b987",
+        "userId": "956ae84b987",
+        "tag": "Gym friend LA",
+        "channel": "email",
+        "email": "gymfriendla@gmail.com",
+        "type": "payment",
+        "isActive": true,
+        "isBulk": false,
+        "reminderSent": false,
+        "remindAt": "08 Aug 2025 12:11"
+    },
+    {
+        "_id": "56ae84b987e",
+        "userId": "56ae84b987e",
+        "tag": "Outreach Barnabas",
+        "channel": "sms",
+        "phone": "+2348123456789",
+        "type": "appointment",
+        "isActive": true,
+        "isBulk": false,
+        "reminderSent": false,
+        "remindAt": "08 Aug 2025 12:11"
+    }
+]

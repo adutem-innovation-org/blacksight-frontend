@@ -1,10 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { authReducer, layoutReducer } from "./slices";
+import { authReducer, layoutReducer, reminderReducer } from "./slices";
 
 export const store = configureStore({
   reducer: {
     Auth: authReducer,
     Layout: layoutReducer,
+    Reminder: reminderReducer,
   },
 });
 

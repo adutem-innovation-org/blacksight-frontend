@@ -1,10 +1,15 @@
 import { Input } from "./Input";
 import React, { PropsWithChildren } from "react";
 import { PasswordInput } from "./PasswordInput";
+import { ComboboxItem, ComboboxLikeRenderOptionInput } from "@mantine/core";
+import { DateInput } from "./DateInput";
+import { MultiSelectInput } from "./MultiSelectInput";
+import { SelectInput } from "./SelectInput";
 
 interface FormGroupProps {
-  type: "text" | "select" | "radio" | "password";
+  type: "text" | "select" | "radio" | "password" | "date" | "multi-select";
   groupLabel?: string;
+  label?: string;
   placeholder?: string;
   onChange?: (e: any) => void;
   size?: "sm" | "md" | "lg";
@@ -15,6 +20,12 @@ interface FormGroupProps {
   onBlur: (e: any) => any;
   validation: any;
   maxLength?: number;
+  minDate?: Date;
+  multiSelectInputData?: Array<string>;
+  renderOptions?: (
+    item: ComboboxLikeRenderOptionInput<ComboboxItem>
+  ) => React.ReactNode;
+  options?: string[];
 }
 
 export const FormGroup = ({
@@ -22,6 +33,7 @@ export const FormGroup = ({
   size,
   name,
   groupLabel,
+  label,
   placeholder,
   onChange,
   onBlur,
@@ -29,6 +41,11 @@ export const FormGroup = ({
   validation,
   value,
   maxLength,
+  minDate,
+  multiSelectInputData,
+  renderOptions,
+  defaultValue,
+  options,
 }: FormGroupProps) => {
   switch (type) {
     case "text":
@@ -70,12 +87,35 @@ export const FormGroup = ({
       return (
         <GroupContainer>
           <Label>{groupLabel}</Label>
-          <Input
-            hasAction={false}
-            type={type}
+          <SelectInput
+            validation={validation}
+            defaultValue={defaultValue}
+            options={options}
+            size={size}
             placeholder={placeholder}
+          />
+        </GroupContainer>
+      );
+    case "date":
+      return (
+        <GroupContainer>
+          <Label>{groupLabel}</Label>
+          <DateInput
+            placeholder={placeholder || label}
             onChange={onChange}
-            value={value}
+            minDate={minDate}
+          />
+        </GroupContainer>
+      );
+    case "multi-select":
+      return (
+        <GroupContainer>
+          <Label>{groupLabel}</Label>
+          <MultiSelectInput
+            label={label}
+            placeholder={placeholder || label}
+            data={multiSelectInputData || []}
+            renderOptions={renderOptions}
           />
         </GroupContainer>
       );

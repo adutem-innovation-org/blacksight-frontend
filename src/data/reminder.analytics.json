@@ -1,0 +1,33 @@
+[
+    {
+        "id": "totalReminders",
+        "title": "Total reminders",
+        "count": 450,
+        "shouldCountUp": false,
+        "showProgressRing": false
+    },
+    {
+        "id": "activeReminders",
+        "title": "Active reminders",
+        "count": 187,
+        "showProgressRing": true,
+        "progressRingColor": "#34D399",
+        "percentage": 40
+    },
+    {
+        "id": "paymentReminders",
+        "title": "Payment",
+        "count": 200,
+        "showProgressRing": true,
+        "progressRingColor": "#34D399",
+        "percentage": 44
+    },
+    {
+        "id": "appointmentReminders",
+        "title": "Appointment",
+        "count": 250,
+        "showProgressRing": true,
+        "progressRingColor": "#34D399",
+        "percentage": 46
+    }
+]

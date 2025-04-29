@@ -1,2 +1,2 @@
-export * from "./Dropdown";
+export * from "./dropdowns";
 export * from "./drawers";

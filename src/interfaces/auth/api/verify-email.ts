@@ -1,4 +1,4 @@
-import { ApiSuccessResponse } from "./api-response";
+import { ApiSuccessResponse } from "@/interfaces/api-response";
 
 export type VerifyEmailBody = {
   otp: string;

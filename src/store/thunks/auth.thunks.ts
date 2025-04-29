@@ -1,7 +1,7 @@
 import { AuthApiService } from "@/apis";
 import { ApiService } from "@/apis/api.service";
 import { UserTypes } from "@/enums";
-import { saveSession } from "@/helpers";
+import { clearSession, saveSession } from "@/helpers";
 import {
   ForgotPasswordBody,
   GoogleLoginBody,
@@ -114,3 +114,12 @@ export const continueWithGoogle = createAsyncThunk(
     }
   }
 );
+
+export const logout = createAsyncThunk("logout", (_: void, thunkAPI) => {
+  try {
+    clearSession();
+    return true;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
+  }
+});

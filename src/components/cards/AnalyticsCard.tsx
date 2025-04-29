@@ -3,7 +3,7 @@ import { ProgressRing } from "../progress";
 
 interface AnalyticsCardProps {
   title: string;
-  period: string;
+  period?: string;
   prefix?: string;
   count: number;
   shouldCountUp?: boolean;
@@ -14,7 +14,6 @@ interface AnalyticsCardProps {
 
 export const AnalyticsCard = ({
   title,
-  period,
   count,
   prefix,
   percentage,
@@ -28,9 +27,6 @@ export const AnalyticsCard = ({
         <div className="flex items-center gap-1">
           <p className="font-sfpro-medium text-gray-400 text-base">{title}</p>
           <div className="w-[4px] h-[4px] rounded-full bg-gray-900 hidden"></div>
-          <p className="font-sfpro-medium text-gray-400 text-[13px] leading-[18px] hidden">
-            {period}
-          </p>
         </div>
         {shouldCountUp ? (
           <CountUp

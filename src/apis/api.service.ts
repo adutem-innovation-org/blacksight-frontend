@@ -1,5 +1,5 @@
 import { config } from "@/config";
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import {
   errorInterceptor,
   requestInterceptor,
@@ -39,6 +39,20 @@ export class ApiService {
 
   post = <ReqData, ResData>(url: string, data?: ReqData) => {
     return this.apiClient.post<any, ResData, ReqData>(url, data);
+  };
+
+  postWithFile = <ReqData, ResData>(url: string, data?: ReqData) => {
+    const config = {
+      headers: {
+        ...axios.defaults.headers,
+        "Content-Type": "multipart/form-data",
+      },
+    };
+    return axios.post<ResData, ResData>(
+      url,
+      data,
+      config as AxiosRequestConfig<FormData>
+    );
   };
 
   put = <ReqData, ResData>(url: string, data?: ReqData) => {

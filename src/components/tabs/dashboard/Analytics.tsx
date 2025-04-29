@@ -13,7 +13,7 @@ export const AnalyticsTab = () => {
   return (
     <React.Fragment>
       <DashboardContent>
-        <DashboardTableLayoutDiv className="no-scrollbar">
+        <DashboardTableLayoutDiv className="no-scrollbar overflow-auto">
           <div
             className={`grid grid-cols-1 ${
               "custom-grid-md-" + analytics.length
@@ -23,7 +23,7 @@ export const AnalyticsTab = () => {
               <AnalyticsCard {...data} />
             ))}
           </div>
-          <div className="bg-transparent overflow-auto md:flex-1 grid gap-4 pb-8">
+          <div className="bg-transparent md:flex-1 grid gap-4">
             <div
               className="grid grid-cols-1 md:grid-cols-2 gap-4"
               style={{ gridAutoRows: "400px" }}
