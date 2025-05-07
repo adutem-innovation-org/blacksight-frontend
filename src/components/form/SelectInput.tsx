@@ -9,6 +9,7 @@ import {
 import { cn } from "@/lib/utils";
 import { cva, VariantProps } from "class-variance-authority";
 import { Tooltip } from "../tooltips";
+import { useFormik } from "formik";
 
 const inputVariants = cva(
   "w-full flex px-4 items-center gap-3 border border-[#F3F4F6] bg-[#042f5b0d] hover:bg-[#042f5b0d] rounded-[12px] relative cursor-pointer font-sfpro",
@@ -27,21 +28,21 @@ const inputVariants = cva(
 );
 
 type Props = {
-  validation: any;
-  // validation: Pick<
-  //     ReturnType<typeof useFormik>,
-  //     | "handleChange"
-  //     | "handleBlur"
-  //     | "errors"
-  //     | "touched"
-  //     | "values"
-  //     | "setFieldValue"
-  //   >;
+  validation: Pick<
+    ReturnType<typeof useFormik>,
+    | "handleChange"
+    | "handleBlur"
+    | "errors"
+    | "touched"
+    | "errors"
+    | "values"
+    | "setFieldValue"
+  >;
   defaultValue?: string;
   placeholder?: string;
   options?: string[];
   error?: string;
-  name?: string;
+  name: string;
 } & VariantProps<typeof inputVariants>;
 
 export const SelectInputComp = ({
@@ -54,11 +55,12 @@ export const SelectInputComp = ({
 }: Props) => {
   return (
     <Select
-      onValueChange={(newValue: string) =>
-        validation.setFieldValue(name, newValue)
-      }
+      onValueChange={(newValue: string) => {
+        validation.setFieldValue(name, newValue);
+      }}
       defaultValue={defaultValue}
       name={name}
+      value={validation.values[name]}
     >
       <CustomSelectTrigger className={cn(inputVariants({ size }))}>
         <SelectValue placeholder={placeholder} />

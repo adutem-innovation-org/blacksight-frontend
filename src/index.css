@@ -218,13 +218,16 @@ input::-ms-reveal {
 */
 
 .mantine-Input-input.mantine-DateInput-input,
-.mantine-Input-input.mantine-MultiSelect-input {
+.mantine-Input-input.mantine-MultiSelect-input,
+.mantine-Input-input.mantine-DateTimePicker-input {
   padding-left: 0.75rem;
   padding-right: 0.75rem;
   height: 52px;
-  border-width: 1px;
-  border-color: #f3f4f6;
-  background-color: #f9fafb;
+  border: none;
+  /* border-width: 1px; */
+  /* border-color: #f3f4f6; */
+  /* background-color: #f9fafb; */
+  background-color: transparent;
   border-radius: 12px;
   position: relative;
   font-family: var(--sfpro);

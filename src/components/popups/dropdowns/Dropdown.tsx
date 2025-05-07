@@ -124,7 +124,7 @@ export const CustomDropdownItem = ({
         "flex items-center cursor-pointer gap-2.5 px-2 py-1 rounded-lg hover:bg-blue-50",
         className
       )}
-      onClick={() => onClick?.()}
+      onClick={(e) => onClick?.(e)}
     >
       {childrenPosition === "behind" && children}
       <p className="text-gray-900 text-sm font-sfpro pointer-events-none leading-[20px]">

@@ -32,7 +32,7 @@ export type PasswordInputProps = {
   onFocus?: any;
   disabled?: boolean;
   value: string;
-  error?: string;
+  error?: any;
   className?: string;
 } & VariantProps<typeof passwordVariants>;
 

@@ -154,9 +154,6 @@ export const Login = () => {
             size="lg"
             name="email"
             disabled={signingIn}
-            onBlur={handleBlur}
-            onChange={handleChange}
-            value={values.email}
             validation={validation}
           />
           <FormGroup
@@ -166,9 +163,6 @@ export const Login = () => {
             size="lg"
             name="password"
             disabled={signingIn}
-            onBlur={handleBlur}
-            onChange={handleChange}
-            value={values.password}
             validation={validation}
           />
           <div className="flex justify-between items-center mt-3">

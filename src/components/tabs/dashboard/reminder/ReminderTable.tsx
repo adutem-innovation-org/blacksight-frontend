@@ -48,12 +48,13 @@ import {
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Pagination, Group } from "@mantine/core";
-import reminderData from "@/data/reminders.json";
+// import reminderData from "@/data/reminders.json";
 import pinLogo from "@/assets/svgs/pin.svg";
 import { Reminder } from "@/interfaces";
 import { cn } from "@/lib/utils";
+import { useStore } from "@/hooks";
 
-const reminders = reminderData as Reminder[];
+// const reminders = reminderData as Reminder[];
 
 export const columns: ColumnDef<Reminder>[] = [
   {
@@ -224,10 +225,21 @@ export const columns: ColumnDef<Reminder>[] = [
             <CustomDropdownItem
               // onClick={() => navigator.clipboard.writeText(payment.id)}
               placeholder="Edit"
+              onClick={(e: any) => {
+                e.stopPropagation();
+              }}
             />
-            <CustomDropdownItem placeholder="Delete" />
+            <CustomDropdownItem
+              placeholder="Delete"
+              onClick={(e: any) => {
+                e.stopPropagation();
+              }}
+            />
             <CustomDropdownItem
               placeholder={row.getValue("isActive") ? "Deactivate" : "Activate"}
+              onClick={(e: any) => {
+                e.stopPropagation();
+              }}
             />
           </DropdownMenuContent>
         </DropdownMenu>
@@ -251,6 +263,8 @@ export function ReminderTable({
   viewReminderDetails,
   openCreateForm,
 }: DashboardTableProps) {
+  const { getState } = useStore();
+  const { reminders } = getState("Reminder");
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -264,7 +278,7 @@ export function ReminderTable({
   });
 
   const table = useReactTable({
-    data: reminders,
+    data: reminders || [],
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -291,11 +305,9 @@ export function ReminderTable({
         <div className="flex items-center gap-4 flex-1">
           <SearchInput
             placeholder="Search..."
-            value={
-              (table.getColumn("status")?.getFilterValue() as string) ?? ""
-            }
+            value={(table.getColumn("tag")?.getFilterValue() as string) ?? ""}
             onChange={(event: any) =>
-              table.getColumn("status")?.setFilterValue(event.target.value)
+              table.getColumn("tag")?.setFilterValue(event.target.value)
             }
             className="max-w-80"
           />

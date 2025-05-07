@@ -11,6 +11,10 @@ type MultiSelectInputProps = {
   renderOptions?: (
     item: ComboboxLikeRenderOptionInput<ComboboxItem>
   ) => React.ReactNode;
+  onChange?: any;
+  onBlur?: any;
+  name: string;
+  value?: any;
 };
 
 export const MultiSelectInput = ({
@@ -18,6 +22,10 @@ export const MultiSelectInput = ({
   placeholder,
   data,
   renderOptions,
+  onChange,
+  onBlur,
+  value,
+  name,
 }: MultiSelectInputProps) => {
   return (
     <MultiSelect
@@ -27,6 +35,10 @@ export const MultiSelectInput = ({
       placeholder={placeholder}
       searchable
       checkIconPosition="left"
+      onChange={onChange}
+      value={value}
+      name={name}
+      onBlur={onBlur}
     />
   );
 };

@@ -72,15 +72,16 @@ export const ResetPassword = () => {
       .oneOf([yup.ref("password")], "Passwords must match"),
   });
 
-  const { handleBlur, handleChange, handleSubmit, values, ...validation } =
-    useFormik<ResetPasswordBody & { confirmPassword: string }>({
-      enableReinitialize: false,
-      initialValues,
-      validationSchema: resetPasswordSchema,
-      onSubmit: (values) => {
-        dispatch(resetPassword({ userTypes: params.basePath, body: values }));
-      },
-    });
+  const { handleSubmit, ...validation } = useFormik<
+    ResetPasswordBody & { confirmPassword: string }
+  >({
+    enableReinitialize: false,
+    initialValues,
+    validationSchema: resetPasswordSchema,
+    onSubmit: (values) => {
+      dispatch(resetPassword({ userTypes: params.basePath, body: values }));
+    },
+  });
 
   const resendOtp = () => {
     resetRetryTimeout();
@@ -176,9 +177,6 @@ export const ResetPassword = () => {
             size="lg"
             name="email"
             disabled={true}
-            value={values.email}
-            onBlur={handleBlur}
-            onChange={handleChange}
             validation={validation}
           />
           <FormGroup
@@ -188,9 +186,6 @@ export const ResetPassword = () => {
             placeholder="Enter code"
             size="lg"
             disabled={resettingPassword || sendingRecoveryOtp}
-            value={values.code}
-            onBlur={handleBlur}
-            onChange={handleChange}
             validation={validation}
             maxLength={6}
           />
@@ -201,9 +196,6 @@ export const ResetPassword = () => {
             placeholder="Enter password"
             size="lg"
             disabled={resettingPassword || sendingRecoveryOtp}
-            value={values.password}
-            onBlur={handleBlur}
-            onChange={handleChange}
             validation={validation}
           />
           <FormGroup
@@ -213,9 +205,6 @@ export const ResetPassword = () => {
             placeholder="Enter password"
             size="lg"
             disabled={resettingPassword || sendingRecoveryOtp}
-            value={values.confirmPassword}
-            onBlur={handleBlur}
-            onChange={handleChange}
             validation={validation}
           />
 

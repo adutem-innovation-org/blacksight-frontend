@@ -162,9 +162,6 @@ export const Register = () => {
             size="lg"
             name="firstName"
             disabled={signingUp || authenticatingWithGoogle}
-            onBlur={handleBlur}
-            onChange={handleChange}
-            value={values.firstName}
             validation={validation}
           />
           <FormGroup
@@ -174,9 +171,6 @@ export const Register = () => {
             size="lg"
             name="lastName"
             disabled={signingUp || authenticatingWithGoogle}
-            onBlur={handleBlur}
-            onChange={handleChange}
-            value={values.lastName}
             validation={validation}
           />
           <FormGroup
@@ -186,9 +180,6 @@ export const Register = () => {
             size="lg"
             name="email"
             disabled={signingUp || authenticatingWithGoogle}
-            onBlur={handleBlur}
-            onChange={handleChange}
-            value={values.email}
             validation={validation}
           />
           <FormGroup
@@ -198,9 +189,6 @@ export const Register = () => {
             size="lg"
             name="password"
             disabled={signingUp || authenticatingWithGoogle}
-            onBlur={handleBlur}
-            onChange={handleChange}
-            value={values.password}
             validation={validation}
           />
           <FormGroup
@@ -210,9 +198,6 @@ export const Register = () => {
             size="lg"
             name="confirmPassword"
             disabled={signingUp || authenticatingWithGoogle}
-            onBlur={handleBlur}
-            onChange={handleChange}
-            value={values.confirmPassword}
             validation={validation}
           />
 

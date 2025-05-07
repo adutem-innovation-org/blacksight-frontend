@@ -10,7 +10,13 @@ import {
   ReminderTable,
 } from "./reminder";
 import { useStore } from "@/hooks";
-import { getReminderAnalytics, resetGetReminderAnalytics } from "@/store";
+import {
+  getAllReminders,
+  getReminderAnalytics,
+  resetGetReminderAnalytics,
+} from "@/store";
+import { EmptyTableTemplate } from "@/components/templates";
+import notificationIcon from "@/assets/images/notification.png";
 
 const Header = () => {
   const { getState } = useStore();
@@ -38,9 +44,20 @@ const Header = () => {
 
   return (
     <header className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 md:gap-5">
-      {reminderAnalyticsData.map(({ count, id, ...data }) => (
-        <AnalyticsCard {...data} count={reminderAnalytics![id]} />
-      ))}
+      {reminderAnalyticsData.map(({ id, ...data }) => {
+        let percentage;
+        let count = reminderAnalytics![id];
+        let totalCount = reminderAnalytics!["totalReminders"];
+        if (id !== "totalReminders")
+          percentage = Math.round((count / totalCount) * 100);
+        return (
+          <AnalyticsCard
+            {...data}
+            count={reminderAnalytics![id]}
+            percentage={percentage}
+          />
+        );
+      })}
     </header>
   );
 };
@@ -51,7 +68,8 @@ export const ReminderTab = () => {
     fetchingReminderAnalytics,
     reminderAnalyticsFetched,
     reminderAnalytics,
-    fetchReminderAnalyticsErrorMessage,
+    fetchingAllReminders,
+    reminders,
   } = getState("Reminder");
 
   const [isReminderDetailsDrawerOpen, setIsReminderDetailsDrawerOpen] =
@@ -80,28 +98,40 @@ export const ReminderTab = () => {
     }
   }, []);
 
+  // Get reminders
+  useEffect(() => {
+    if (!reminders && !fetchingAllReminders) {
+      dispatch(getAllReminders());
+    }
+  }, []);
+
   useEffect(() => {
     if (reminderAnalyticsFetched) {
       dispatch(resetGetReminderAnalytics());
     }
   }, [reminderAnalyticsFetched]);
 
-  useEffect(() => {
-    if (fetchReminderAnalyticsErrorMessage) {
-    }
-  }, [fetchReminderAnalyticsErrorMessage]);
-
-  if (fetchingReminderAnalytics) return <Loader />;
+  if (fetchingReminderAnalytics || fetchingAllReminders) return <Loader />;
 
   return (
     <DashboardContent>
       <div className="flex flex-col gap-4 h-full overflow-hidden">
         <Header />
 
-        <ReminderTable
-          viewReminderDetails={viewReminderDetails}
-          openCreateForm={openCreateForm}
-        />
+        {!reminders || reminders.length === 0 ? (
+          <EmptyTableTemplate
+            imageSrc={notificationIcon}
+            title="No Reminders Available"
+            ctaText="Create Reminder"
+            description="You currently have no payment or appointment reminders."
+            onClickCta={openCreateForm}
+          />
+        ) : (
+          <ReminderTable
+            viewReminderDetails={viewReminderDetails}
+            openCreateForm={openCreateForm}
+          />
+        )}
 
         <ReminderDetailsDrawer
           isOpen={isReminderDetailsDrawerOpen}

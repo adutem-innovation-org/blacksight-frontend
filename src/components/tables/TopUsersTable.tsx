@@ -171,10 +171,10 @@ export const TopUsersTable = () => {
           <SearchInput
             placeholder="Search..."
             value={
-              (table.getColumn("status")?.getFilterValue() as string) ?? ""
+              (table.getColumn("userId")?.getFilterValue() as string) ?? ""
             }
             onChange={(event: any) =>
-              table.getColumn("status")?.setFilterValue(event.target.value)
+              table.getColumn("userId")?.setFilterValue(event.target.value)
             }
             className="max-w-80 h-11"
           />

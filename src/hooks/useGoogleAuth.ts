@@ -19,7 +19,12 @@ export const useGoogleAuth = () => {
       try {
         setGettingOauthData(true);
         const data = await getOAuthReqBody(tokenResponse.access_token);
-        dispatch(continueWithGoogle(data));
+        dispatch(
+          continueWithGoogle({
+            ...data,
+            lastName: data.lastName || data.firstName,
+          })
+        );
       } catch (error: unknown) {
         toast.error((error as any)?.message || "An unknown error occurred");
       } finally {

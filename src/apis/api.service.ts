@@ -44,11 +44,11 @@ export class ApiService {
   postWithFile = <ReqData, ResData>(url: string, data?: ReqData) => {
     const config = {
       headers: {
-        ...axios.defaults.headers,
+        ...this.apiClient.defaults.headers,
         "Content-Type": "multipart/form-data",
       },
     };
-    return axios.post<ResData, ResData>(
+    return this.apiClient.post<ResData, ResData>(
       url,
       data,
       config as AxiosRequestConfig<FormData>

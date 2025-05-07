@@ -143,9 +143,6 @@ export const VerifyAccount = () => {
             size="lg"
             name="otp"
             disabled={verifyingEmail || sendingOtp}
-            onBlur={handleBlur}
-            onChange={handleChange}
-            value={values.otp}
             validation={validation}
             maxLength={6}
           />

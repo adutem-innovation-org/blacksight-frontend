@@ -114,10 +114,7 @@ export const ForgotPassword = () => {
             placeholder="Enter your email"
             size="lg"
             name="email"
-            onBlur={handleBlur}
-            onChange={handleChange}
             validation={validation}
-            value={values.email}
             disabled={sendingRecoveryOtp}
           />
 

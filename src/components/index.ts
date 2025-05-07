@@ -8,3 +8,4 @@ export * from "./design";
 export * from "./cards";
 export * from "./tables";
 export * from "./charts";
+export * from "./templates";

@@ -32,7 +32,7 @@ export type InputProps = {
   onFocus?: any;
   disabled?: boolean;
   value: string;
-  error?: string;
+  error?: any;
   hasAction?: boolean;
   hasIcon?: boolean;
   placeholderClassNames?: string;
