@@ -49,9 +49,12 @@ export const AnalyticsCard = ({
           </h4>
         )}
       </div>
-      {showProgressRing && percentage && progressRingColor && (
+      {showProgressRing && progressRingColor && (
         <div>
-          <ProgressRing percentage={percentage} color={progressRingColor} />
+          <ProgressRing
+            percentage={percentage ?? 0}
+            color={progressRingColor}
+          />
         </div>
       )}
     </div>
