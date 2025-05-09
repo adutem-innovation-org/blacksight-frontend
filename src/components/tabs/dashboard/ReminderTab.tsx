@@ -49,7 +49,7 @@ const Header = () => {
         let count = reminderAnalytics![id];
         let totalCount = reminderAnalytics!["totalReminders"];
         if (id !== "totalReminders")
-          percentage = Math.round((count / totalCount) * 100);
+          percentage = Math.round((count / (totalCount || 1)) * 100);
         return (
           <AnalyticsCard
             {...data}
