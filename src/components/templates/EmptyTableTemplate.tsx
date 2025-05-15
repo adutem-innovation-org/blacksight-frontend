@@ -4,16 +4,18 @@ type Props = {
   title: string;
   description: string;
   ctaText: string;
-  onClickCta: () => void;
+  onClickCta?: () => void;
   imageSrc?: string;
+  showCta?: boolean;
 };
 
-export const EmptyTableTemplate = ({
+export const EmptyRecordsTemplate = ({
   title,
   description,
   ctaText,
   onClickCta,
   imageSrc,
+  showCta,
 }: Props) => {
   return (
     <div className="bg-white rounded-[12px] flex-1">
@@ -26,9 +28,11 @@ export const EmptyTableTemplate = ({
         )}
         <h2 className="text-xl font-semibold">{title}</h2>
         <p className="text-sm max-w-[350px]">{description}</p>
-        <Button onClick={onClickCta} className="h-11" variant={"brand"}>
-          {ctaText}
-        </Button>
+        {showCta && (
+          <Button onClick={onClickCta} className="h-11" variant={"brand"}>
+            {ctaText}
+          </Button>
+        )}
       </div>
     </div>
   );

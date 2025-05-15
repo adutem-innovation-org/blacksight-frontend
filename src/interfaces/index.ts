@@ -5,3 +5,5 @@ export * from "./subscription";
 export * from "./analytics";
 export * from "./api-response";
 export * from "./reminder";
+export * from "./knowledge-base";
+export * from "./bot";

@@ -14,51 +14,66 @@ export const sideTabs: Record<UserTypes, SideTabType[]> = {
       iconClass: "fi fi-rr-chart-pie",
     },
     {
+      name: "Knowledge Base",
+      tabId: DashboardTabsEnum.KNOWLEDGE_BASE,
+      iconClass: "fi fi-rr-folder-open",
+    },
+    {
       name: "Bots",
       tabId: DashboardTabsEnum.BOTS,
       iconClass: "fi fi-rr-chatbot-speech-bubble",
     },
     {
-      name: "Database",
-      tabId: DashboardTabsEnum.KNOWLEDGE_BASE,
-      iconClass: "fi fi-rr-database",
+      name: "Appointments",
+      tabId: DashboardTabsEnum.APPOINTMENTS,
+      iconClass: "fi fi-rr-reservation-table",
     },
     {
       name: "Reminder",
       tabId: DashboardTabsEnum.REMINDER,
       iconClass: "fi fi-rr-bell-ring",
     },
+    {
+      name: "Meeting Providers",
+      tabId: DashboardTabsEnum.PROVIDERS,
+      iconClass: "fi fi-rr-reservation-smartphone",
+    },
   ],
   admin: [
     {
       name: "Analytics",
       tabId: DashboardTabsEnum.ANALYTICS,
-      iconClass: "fi fi-sr-chart-pie",
+      iconClass: "fi fi-rr-chart-pie",
     },
     {
       name: "Bots",
       tabId: DashboardTabsEnum.BOTS,
-      iconClass: "fi fi-sr-chatbot-speech-bubble",
+      iconClass: "fi fi-rr-chatbot-speech-bubble",
     },
     {
-      name: "Database",
+      name: "Knowledge Base",
       tabId: DashboardTabsEnum.KNOWLEDGE_BASE,
-      iconClass: "fi fi-sr-database",
+      iconClass: "fi fi-rr-database",
     },
     {
       name: "Accounts",
       tabId: DashboardTabsEnum.ACCOUNTS,
-      iconClass: "fi fi-sr-users-alt",
+      iconClass: "fi fi-rr-users-alt",
     },
     {
       name: "Workspace",
       tabId: DashboardTabsEnum.WORKSPACE,
-      iconClass: "fi fi-sr-admin-alt",
+      iconClass: "fi fi-rr-admin-alt",
+    },
+    {
+      name: "Activities",
+      tabId: DashboardTabsEnum.ACTIVITIES,
+      iconClass: "fi fi-rr-daily-calendar",
     },
     {
       name: "Subscriptions",
       tabId: DashboardTabsEnum.SUBSCRIPTIONS,
-      iconClass: "fi fi-sr-usd-circle",
+      iconClass: "fi fi-rr-usd-circle",
     },
   ],
 };

@@ -10,13 +10,18 @@ import { WorkspaceTab } from "./Workspace";
 import { SubscriptionsTab } from "./Subscriptions";
 import { ReminderTab } from "./ReminderTab";
 import { ProfileTab } from "./ProfileTab";
+import { ProvidersTab } from "./Providers";
 
 export const DashboardTabs = () => {
   const { getState } = useStore();
   const { currentTab } = getState("Layout");
 
   return (
-    <Tabs value={currentTab} className="w-full flex-1" keepMounted={false}>
+    <Tabs
+      value={currentTab}
+      className="w-full flex-1 relative"
+      keepMounted={false}
+    >
       <Tabs.Panel
         value={DashboardTabsEnum.ANALYTICS}
         className="w-full h-full overflow-auto"
@@ -32,14 +37,20 @@ export const DashboardTabs = () => {
       <Tabs.Panel value={DashboardTabsEnum.ACCOUNTS} className="w-full h-full">
         <AccountsTab />
       </Tabs.Panel>
-      <Tabs.Panel value={DashboardTabsEnum.BOTS} className="w-full h-full">
-        <BotsTab />
-      </Tabs.Panel>
       <Tabs.Panel
         value={DashboardTabsEnum.KNOWLEDGE_BASE}
         className="w-full h-full"
       >
         <KnowledgeBaseTab />
+      </Tabs.Panel>
+      <Tabs.Panel value={DashboardTabsEnum.BOTS} className="w-full h-full">
+        <BotsTab />
+      </Tabs.Panel>
+      <Tabs.Panel value={DashboardTabsEnum.PROVIDERS} className="w-full h-full">
+        <ProvidersTab />
+      </Tabs.Panel>
+      <Tabs.Panel value={DashboardTabsEnum.REMINDER} className="w-full h-full">
+        <ReminderTab />
       </Tabs.Panel>
       <Tabs.Panel value={DashboardTabsEnum.WORKSPACE} className="w-full h-full">
         <WorkspaceTab />
@@ -50,9 +61,7 @@ export const DashboardTabs = () => {
       >
         <SubscriptionsTab />
       </Tabs.Panel>
-      <Tabs.Panel value={DashboardTabsEnum.REMINDER} className="w-full h-full">
-        <ReminderTab />
-      </Tabs.Panel>
+
       <Tabs.Panel value={DashboardTabsEnum.PROFILE} className="w-full h-full">
         <ProfileTab />
       </Tabs.Panel>

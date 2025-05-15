@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { getCreateReminderSectionFields } from "@/constants";
+import { getCreateReminderSectionFields } from "@/helpers";
 import { ReminderChannels, ReminderTypes } from "@/enums";
 import { useStore } from "@/hooks";
 import { reminderSchema } from "@/schemas";

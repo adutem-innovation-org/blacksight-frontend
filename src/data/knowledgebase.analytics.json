@@ -1,0 +1,14 @@
+[
+    {
+        "id": "totalKnowledgeBases",
+        "title": "Total Knowledge Bases",
+        "shouldCountUp": false,
+        "showProgressRing": false
+    },
+    {
+        "id": "activeKnowledgeBases",
+        "title": "Active Knowledge Bases",
+        "shouldProgressRing": true,
+        "progressRingColor": "#34D399"
+    }
+]

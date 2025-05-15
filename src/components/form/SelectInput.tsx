@@ -40,18 +40,23 @@ type Props = {
   >;
   defaultValue?: string;
   placeholder?: string;
-  options?: string[];
-  error?: string;
+  options?: string[] | Record<string, any>[];
+  error?: any;
   name: string;
+  noOptionsContent?: any;
+  disabled?: boolean;
 } & VariantProps<typeof inputVariants>;
 
 export const SelectInputComp = ({
   validation,
   defaultValue,
   placeholder,
-  options,
+  options = [],
   size,
   name,
+  noOptionsContent,
+  error,
+  disabled,
 }: Props) => {
   return (
     <Select
@@ -62,16 +67,23 @@ export const SelectInputComp = ({
       name={name}
       value={validation.values[name]}
     >
-      <CustomSelectTrigger className={cn(inputVariants({ size }))}>
+      <CustomSelectTrigger
+        className={cn(inputVariants({ size }), {
+          error: !!error,
+          disabled: disabled,
+        })}
+        disabled={disabled}
+      >
         <SelectValue placeholder={placeholder} />
       </CustomSelectTrigger>
       <SelectContent
         className={cn("z-[100000010] text-gray-800 border-[lightgray]")}
       >
+        {options?.length === 0 && noOptionsContent && noOptionsContent}
         {options &&
           options.map((opt) => (
             <SelectItem
-              value={opt}
+              value={typeof opt === "string" ? opt : opt.value}
               className={cn(
                 "px-4 py-2 cursor-pointer text-gray-800 font-sfpro"
               )}
@@ -79,8 +91,12 @@ export const SelectInputComp = ({
               aria-role="button"
             >
               <span className="text-sm text-cartwey-black-40">
-                {opt[0].toUpperCase()}
-                {opt.slice(1)}
+                {typeof opt === "string"
+                  ? opt[0].toUpperCase()
+                  : opt.placeholder[0].toUpperCase()}
+                {typeof opt === "string"
+                  ? opt.slice(1)
+                  : opt.placeholder.slice(1)}
               </span>
             </SelectItem>
           ))}
@@ -90,16 +106,21 @@ export const SelectInputComp = ({
 };
 
 const CustomSelectTrigger = styled(SelectTrigger)`
-  &.focus {
+  &[data-state="open"] {
     outline: none !important;
-    border: 1px solid lightgray;
+    border: 1px solid #2563eb;
     box-shadow: none;
   }
 
-  &::focus {
-    outline: none !important;
-    border: 1px solid lightgray;
-    box-shadow: none;
+  &.error:not(.disabled),
+  &.error:not(.disabled):focus {
+    border: 1px solid #e11d48;
+  }
+
+  &.disabled {
+    pointer-events: none;
+    border: 1px solid #e11d48;
+    background-color: #f9fafb;
   }
 
   span {
@@ -117,7 +138,7 @@ export const SelectInput = ({ error, ...rest }: Props) => {
       className="left-0 translate-x-0 max-w-full"
       disabled={!error}
     >
-      <SelectInputComp {...rest} />
+      <SelectInputComp {...rest} error={error} />
     </Tooltip>
   );
 };

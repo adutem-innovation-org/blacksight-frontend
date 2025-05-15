@@ -15,7 +15,7 @@ import {
   getReminderAnalytics,
   resetGetReminderAnalytics,
 } from "@/store";
-import { EmptyTableTemplate } from "@/components/templates";
+import { EmptyRecordsTemplate } from "@/components/templates";
 import notificationIcon from "@/assets/images/notification.png";
 
 const Header = () => {
@@ -119,7 +119,7 @@ export const ReminderTab = () => {
         <Header />
 
         {!reminders || reminders.length === 0 ? (
-          <EmptyTableTemplate
+          <EmptyRecordsTemplate
             imageSrc={notificationIcon}
             title="No Reminders Available"
             ctaText="Create Reminder"

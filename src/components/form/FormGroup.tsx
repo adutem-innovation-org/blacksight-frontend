@@ -50,13 +50,15 @@ interface FormGroupProps {
   renderOptions?: (
     item: ComboboxLikeRenderOptionInput<ComboboxItem>
   ) => React.ReactNode;
-  options?: string[];
+  options?: string[] | Record<string, any>[];
   containerClassName?: string;
   handleFileChange?: any;
   hidden?: boolean;
   inputRef?: any;
   accept?: string;
   removeSelectedFile?: (name: string) => void;
+  info?: string;
+  noOptionsContent?: any;
 }
 
 export const FormGroup = ({
@@ -80,12 +82,29 @@ export const FormGroup = ({
   inputRef,
   accept,
   removeSelectedFile,
+  info,
+  noOptionsContent,
 }: FormGroupProps) => {
+  const InfoTooltip = (
+    <Tooltip
+      content={info}
+      position={"bottom"}
+      tooltipContainerClassName="w-full"
+      arrowPosition="start"
+      className="left-0 translate-x-0 max-w-full text-primary"
+      disabled={!info}
+    >
+      <Info className="text-brand !w-4 !h-4 cursor-pointer" />
+    </Tooltip>
+  );
   switch (type) {
     case "text":
       return (
         <GroupContainer className={containerClassName}>
-          <Label>{groupLabel}</Label>
+          <div className="flex gap-1.5 items-center">
+            <Label className="min-w-max">{groupLabel}</Label>
+            {info && InfoTooltip}
+          </div>
           <Input
             hasAction={false}
             type={type}
@@ -120,7 +139,10 @@ export const FormGroup = ({
     case "select":
       return (
         <GroupContainer className={containerClassName}>
-          <Label>{groupLabel}</Label>
+          <div className="flex gap-1.5 items-center">
+            <Label className="min-w-max">{groupLabel}</Label>
+            {info && InfoTooltip}
+          </div>
           <SelectInput
             validation={validation}
             defaultValue={defaultValue}
@@ -128,6 +150,9 @@ export const FormGroup = ({
             size={size}
             placeholder={placeholder}
             name={name}
+            noOptionsContent={noOptionsContent}
+            error={validation.touched[name] && validation.errors[name]}
+            disabled={disabled}
           />
         </GroupContainer>
       );
@@ -211,7 +236,10 @@ export const FormGroup = ({
         <GroupContainer
           className={`${containerClassName} flex-row justify-between items-center`}
         >
-          <Label>{groupLabel}</Label>
+          <div className="flex gap-1.5 items-center">
+            <Label className="min-w-max">{groupLabel}</Label>
+            {info && InfoTooltip}
+          </div>
           <Switch
             name={name}
             checked={validation.values[name]}
@@ -241,7 +269,7 @@ export const FormGroup = ({
       return (
         <GroupContainer className={containerClassName}>
           <div className="flex gap-1.5 items-center">
-            <Label>{groupLabel}</Label>
+            <Label className="min-w-max">{groupLabel}</Label>
             {error && ErrorTooltip}
           </div>
           <FileInput
@@ -295,17 +323,21 @@ const GroupContainer = (
   );
 };
 
-const Label = (
-  props: PropsWithChildren &
-    React.DetailedHTMLProps<
-      React.LabelHTMLAttributes<HTMLLabelElement>,
-      HTMLLabelElement
-    >
-) => {
+const Label = ({
+  className,
+  ...props
+}: PropsWithChildren &
+  React.DetailedHTMLProps<
+    React.LabelHTMLAttributes<HTMLLabelElement>,
+    HTMLLabelElement
+  >) => {
   return (
     <label
       htmlFor={props.htmlFor}
-      className="font-urbanist font-semibold text-base text-black"
+      className={cn(
+        "font-urbanist font-semibold text-base text-black",
+        className
+      )}
     >
       {props.children}
     </label>

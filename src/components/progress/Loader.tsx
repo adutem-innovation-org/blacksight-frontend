@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { Spinner } from "./Spinner";
 
 interface LoaderProps
@@ -6,16 +7,33 @@ interface LoaderProps
     HTMLDivElement
   > {
   type?: string;
+  text1?: string;
+  text2?: string;
 }
 
-export const Loader = ({ type = "base", ...props }: LoaderProps) => {
+export const Loader = ({
+  type = "base",
+  text1,
+  text2,
+  className,
+  ...props
+}: LoaderProps) => {
   return (
     <div
-      className="w-full h-full flex justify-center items-center absolute top-0 left-0 right-0 bottom-0 z-[100000]"
+      className={cn(
+        "w-full h-full flex justify-center items-center absolute top-0 left-0 right-0 bottom-0 z-[100000]",
+        className
+      )}
       {...props}
     >
-      <div className="">
+      <div className="text-center flex-col items-center">
         <Spinner classNames="h-[40px]" type={type} />
+        {text1 && (
+          <h4 className="font-semibold font-lg text-brand mt-2">{text1}</h4>
+        )}
+        {text2 && (
+          <p className="text-sm max-w-[300px] mt-1 font-medium">{text2}</p>
+        )}
       </div>
     </div>
   );

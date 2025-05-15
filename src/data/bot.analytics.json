@@ -1,0 +1,14 @@
+[
+    {
+        "id": "totalBots",
+        "title": "Total Bots",
+        "shouldCountUp": false,
+        "showProgressRing": false
+    },
+    {
+        "id": "activeBots",
+        "title": "Active Bots",
+        "shouldProgressRing": true,
+        "progressRingColor": "#34D399"
+    }
+]

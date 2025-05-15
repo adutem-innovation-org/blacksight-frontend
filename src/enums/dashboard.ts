@@ -8,6 +8,8 @@ export enum DashboardTabsEnum {
   SUBSCRIPTIONS = "subscriptions",
   REMINDER = "reminder",
   PROFILE = "profile",
+  ACTIVITIES = "activities",
+  PROVIDERS = "meeting providers",
 }
 
 export enum SideBarStateEnum {
