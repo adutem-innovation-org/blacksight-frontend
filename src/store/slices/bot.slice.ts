@@ -4,6 +4,7 @@ import {
   resetConfigureBotReducer,
   resetGetAllBotsReducer,
   resetGetBotAnalyticsReducer,
+  setCurrentBotReducer,
 } from "../reducers";
 import {
   configureBotBuilder,
@@ -18,6 +19,7 @@ const botSlice = createSlice({
     resetGetBotAnalytics: resetGetBotAnalyticsReducer,
     resetGetAllBots: resetGetAllBotsReducer,
     resetConfigureBot: resetConfigureBotReducer,
+    setCurrentBot: setCurrentBotReducer,
   },
   extraReducers(builder) {
     getBotAnalyticsBuilder(builder);
@@ -27,5 +29,9 @@ const botSlice = createSlice({
 });
 
 export const botReducer = botSlice.reducer;
-export const { resetGetAllBots, resetGetBotAnalytics, resetConfigureBot } =
-  botSlice.actions;
+export const {
+  resetGetAllBots,
+  resetGetBotAnalytics,
+  resetConfigureBot,
+  setCurrentBot,
+} = botSlice.actions;

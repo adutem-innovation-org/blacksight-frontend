@@ -1,4 +1,5 @@
 import {
+  BotTabsEnum,
   DashboardTabsEnum,
   SideBarMobileStateEnum,
   SideBarStateEnum,
@@ -25,4 +26,11 @@ export const changeTabReducer = (
   action: PayloadAction<DashboardTabsEnum>
 ) => {
   state.currentTab = action.payload;
+};
+
+export const changeBotTabReducer = (
+  state: LayoutState,
+  action: PayloadAction<BotTabsEnum>
+) => {
+  state.activeBotTab = action.payload;
 };

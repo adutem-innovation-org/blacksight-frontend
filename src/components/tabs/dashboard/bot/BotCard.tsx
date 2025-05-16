@@ -1,17 +1,25 @@
 import { Badge } from "@/components/badge";
 import { Button } from "@/components/form";
 import { botImages } from "@/constants";
+import { BotTabsEnum } from "@/enums";
 import { getRandomArrayItem } from "@/helpers";
 import { Bot } from "@/interfaces";
+import { changeBotTab, setCurrentBot } from "@/store";
 import { EllipsisVertical } from "lucide-react";
 import { useMemo } from "react";
+import { useStore } from "react-redux";
 
 interface BotCardProps {
   bot: Bot;
 }
 
 export const BotCard = ({ bot }: BotCardProps) => {
+  const { dispatch } = useStore();
   const imageUrl = useMemo(() => getRandomArrayItem(botImages), []);
+  const goToPlayground = () => {
+    dispatch(setCurrentBot(bot));
+    dispatch(changeBotTab(BotTabsEnum.PLAYGROUND));
+  };
   return (
     <div className="bg-white rounded-md overflow-hidden flex flex-col shadow-md">
       {/* Bot image container */}
@@ -43,6 +51,7 @@ export const BotCard = ({ bot }: BotCardProps) => {
         <Button
           variant={"primary"}
           className="cursor-pointer py-1 h-11 hover:bg-primary/80"
+          onClick={goToPlayground}
         >
           Launch
         </Button>

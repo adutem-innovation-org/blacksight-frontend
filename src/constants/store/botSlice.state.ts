@@ -18,4 +18,7 @@ export const initialBotState: BotState = {
   botConfigured: false,
   configureBotErrors: {},
   configureBotErrorMessage: "",
+
+  // Playground
+  currentBot: null,
 };

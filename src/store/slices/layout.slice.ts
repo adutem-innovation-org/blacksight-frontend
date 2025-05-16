@@ -1,6 +1,7 @@
 import { initialLayoutState } from "@/constants";
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  changeBotTabReducer,
   changeSidebarMobileStateReducer,
   changeSidebarStateReducer,
   changeTabReducer,
@@ -13,9 +14,14 @@ const layoutSlice = createSlice({
     changeSidebarState: changeSidebarStateReducer,
     changeSidebarMobileState: changeSidebarMobileStateReducer,
     changeTab: changeTabReducer,
+    changeBotTab: changeBotTabReducer,
   },
 });
 
 export const layoutReducer = layoutSlice.reducer;
-export const { changeSidebarState, changeTab, changeSidebarMobileState } =
-  layoutSlice.actions;
+export const {
+  changeSidebarState,
+  changeTab,
+  changeSidebarMobileState,
+  changeBotTab,
+} = layoutSlice.actions;

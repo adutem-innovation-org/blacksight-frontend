@@ -1,4 +1,5 @@
-import { BotState } from "@/interfaces";
+import { Bot, BotState } from "@/interfaces";
+import { PayloadAction } from "@reduxjs/toolkit";
 
 export const resetGetBotAnalyticsReducer = (state: BotState) => {
   state.fetchingBotAnalytics = false;
@@ -17,4 +18,11 @@ export const resetConfigureBotReducer = (state: BotState) => {
   state.botConfigured = false;
   state.configureBotErrors = {};
   state.configureBotErrorMessage = "";
+};
+
+export const setCurrentBotReducer = (
+  state: BotState,
+  action: PayloadAction<Bot | null>
+) => {
+  state.currentBot = action.payload;
 };

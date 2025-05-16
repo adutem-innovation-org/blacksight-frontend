@@ -19,4 +19,7 @@ export type BotState = {
   botConfigured: boolean;
   configureBotErrors: Record<string, string>;
   configureBotErrorMessage: string;
+
+  // Playground
+  currentBot: Bot | null;
 };

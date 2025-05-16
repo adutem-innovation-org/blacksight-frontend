@@ -1,4 +1,5 @@
 import {
+  BotTabsEnum,
   DashboardTabsEnum,
   SideBarMobileStateEnum,
   SideBarStateEnum,
@@ -9,4 +10,5 @@ export const initialLayoutState: LayoutState = {
   currentTab: DashboardTabsEnum.ANALYTICS,
   sidebarState: SideBarStateEnum.COLLAPSED,
   sidebarMobileState: SideBarMobileStateEnum.HIDDEN,
+  activeBotTab: BotTabsEnum.ANALYTICS,
 };
