@@ -3,14 +3,25 @@ import { useStore } from "@/hooks";
 import { Bot } from "@/interfaces";
 import { Send, Settings2 } from "lucide-react";
 
-const ChatBotHeader = ({ currentBot }: { currentBot: Bot }) => {
+const ChatBotHeader = ({
+  currentBot,
+  openBotConfig,
+}: {
+  currentBot: Bot;
+  openBotConfig: () => void;
+}) => {
   return (
     <div className="bg-transparent p-4 pt-4 pb-0">
       <div className="flex items-center justify-between">
         <p className="tracking-tight font-dmsans text-white">
           {currentBot.name}
         </p>
-        <Button variant="outline" size={"icon"} className="rounded-full">
+        <Button
+          variant="outline"
+          size={"icon"}
+          className="rounded-full"
+          onClick={openBotConfig}
+        >
           <Settings2 />
         </Button>
       </div>
@@ -44,7 +55,7 @@ const Conversations = () => {
   );
 };
 
-export const ChatBot = () => {
+export const ChatBot = ({ openBotConfig }: { openBotConfig: () => void }) => {
   const { getState } = useStore();
   const { currentBot } = getState("Bot");
   return (
@@ -53,7 +64,7 @@ export const ChatBot = () => {
         <p className="text-2xl font-dmsans tracking-tight">Chatbot</p>
       </div>
       <div className="bg-white bg-linear-to-br from-indigo-500 to-sky-500 shadow-[0px_4px_16px_0px_#0000001f] rounded-4xl overflow-hidden w-full flex-1 p-1 flex flex-col gap-4">
-        <ChatBotHeader currentBot={currentBot!} />
+        <ChatBotHeader currentBot={currentBot!} openBotConfig={openBotConfig} />
         <Conversations />
       </div>
     </div>
