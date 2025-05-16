@@ -9,7 +9,7 @@ import {
   ReminderDetailsDrawer,
   ReminderTable,
 } from "./reminder";
-import { useStore } from "@/hooks";
+import { useProfile, useStore } from "@/hooks";
 import {
   getAllReminders,
   getReminderAnalytics,
@@ -17,6 +17,7 @@ import {
 } from "@/store";
 import { EmptyRecordsTemplate } from "@/components/templates";
 import notificationIcon from "@/assets/images/notification.png";
+import { UserTypes } from "@/enums";
 
 const Header = () => {
   const { getState } = useStore();
@@ -71,6 +72,7 @@ export const ReminderTab = () => {
     fetchingAllReminders,
     reminders,
   } = getState("Reminder");
+  const { user } = useProfile();
 
   const [isReminderDetailsDrawerOpen, setIsReminderDetailsDrawerOpen] =
     useState(() => false);
@@ -125,6 +127,7 @@ export const ReminderTab = () => {
             ctaText="Create Reminder"
             description="You currently have no payment or appointment reminders."
             onClickCta={openCreateForm}
+            showCta={user?.userType === UserTypes.USER}
           />
         ) : (
           <ReminderTable
