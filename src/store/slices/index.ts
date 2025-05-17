@@ -3,3 +3,4 @@ export * from "./layout.slice";
 export * from "./reminder.slice";
 export * from "./knowledgebase.slice";
 export * from "./bot.slice";
+export * from "./analytics.slice";

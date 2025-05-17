@@ -1,6 +1,6 @@
 export type AnalyticsState = {
   fetchingAnalytics: boolean;
   analyticsFetched: boolean;
-  analytics: Array<any>;
+  analytics: Record<string, number> | null;
   fetchAnalyticsError: string;
 };

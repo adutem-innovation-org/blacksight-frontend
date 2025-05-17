@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import {
+  analyticsReducer,
   authReducer,
   botReducer,
   knowledgeBaseReducer,
@@ -9,11 +10,12 @@ import {
 
 export const store = configureStore({
   reducer: {
+    Analytics: analyticsReducer,
     Auth: authReducer,
+    Bot: botReducer,
+    KnowledgeBase: knowledgeBaseReducer,
     Layout: layoutReducer,
     Reminder: reminderReducer,
-    KnowledgeBase: knowledgeBaseReducer,
-    Bot: botReducer,
   },
 });
 
