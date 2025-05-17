@@ -11,6 +11,9 @@ export type UserData = {
   isEmailVerified: boolean;
   isSuperAdmin: boolean;
   userType: UserTypes;
+  hasConnectedGoogleMeet?: boolean;
+  hasConnectedZoomMeet?: boolean;
+  hasConnectedMircosoftTeams?: boolean;
   lastLogin: string;
   createdAt: string;
   passwordChangedAt: string;
