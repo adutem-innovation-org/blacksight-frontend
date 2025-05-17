@@ -1,10 +1,12 @@
 import CountUp from "react-countup";
 import { ProgressRing } from "../progress";
+import { cn } from "@/lib/utils";
 
-interface AnalyticsCardProps {
+export interface AnalyticsCardProps {
   title: string;
   period?: string;
   prefix?: string;
+  icon?: string;
   count: number;
   shouldCountUp?: boolean;
   showProgressRing?: boolean;
@@ -14,6 +16,7 @@ interface AnalyticsCardProps {
 
 export const AnalyticsCard = ({
   title,
+  icon,
   count,
   prefix,
   percentage,
@@ -25,7 +28,10 @@ export const AnalyticsCard = ({
     <div className="bg-white rounded-sm flex justify-between py-5 px-6 items-center">
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-1">
-          <p className="font-sfpro-medium text-gray-400 text-base">{title}</p>
+          <p className="font-sfpro-medium text-gray-400 text-base flex items-center gap-2">
+            {icon && <i className={cn(icon, "flex text-xl")} />}
+            {title}
+          </p>
           <div className="w-[4px] h-[4px] rounded-full bg-gray-900 hidden"></div>
         </div>
         {shouldCountUp ? (

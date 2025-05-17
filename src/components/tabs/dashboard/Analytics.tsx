@@ -1,28 +1,76 @@
-import { AnalyticsCard } from "@/components/cards";
+import { AnalyticsCard, AnalyticsCardProps } from "@/components/cards";
 import { BookingVolumeChart, ResponseTimeChart } from "@/components/charts";
 import { PopularBookingTimeChart } from "@/components/charts/PopularResponseTime";
 import { DashboardContent, DashboardTableLayoutDiv } from "@/components/design";
 import { Button } from "@/components/form";
+import { Loader } from "@/components/progress";
 import { TopUsersTable } from "@/components/tables";
-import analyticsData from "@/data/transaction-widgets.json";
-import React from "react";
+import analyticsData from "@/data/analytics.json";
+import { UserTypes } from "@/enums";
+import { useProfile, useStore } from "@/hooks";
+import { getAnalytics } from "@/store";
+import React, { useEffect, useMemo } from "react";
+import { data } from "react-router-dom";
 
-const analytics = analyticsData;
+const AnalyticsHeader = () => {
+  const { getState } = useStore();
+  const { analytics, fetchingAnalytics, fetchAnalyticsError } =
+    getState("Analytics");
+  const { user } = useProfile();
+
+  const formattedAnalytics = useMemo(() => {
+    if (!user || !analytics) return [];
+    return analyticsData[user.userType].map((data) => ({
+      ...data,
+      count: analytics[data.id],
+    }));
+  }, [analytics, user]);
+
+  return (
+    <header className="w-full">
+      {fetchAnalyticsError ? (
+        <div className="flex justify-center items-center h-30 font-dmsans font-semibold">
+          An error occured. Please try again.
+        </div>
+      ) : fetchingAnalytics ? (
+        <div className="relative h-30 flex-1">
+          <Loader />
+        </div>
+      ) : !analytics ? (
+        <div className="flex justify-center items-center h-30 font-dmsans font-semibold">
+          No data available at the moment
+        </div>
+      ) : (
+        <div
+          className={`grid grid-cols-1 ${
+            "custom-grid-md-" + formattedAnalytics.length
+          } gap-6 md:gap-5`}
+        >
+          {formattedAnalytics.map((data) => (
+            <AnalyticsCard {...data} />
+          ))}
+        </div>
+      )}
+    </header>
+  );
+};
 
 export const AnalyticsTab = () => {
+  const { dispatch, getState } = useStore();
+  const { analytics, fetchingAnalytics } = getState("Analytics");
+  const { user } = useProfile();
+
+  useEffect(() => {
+    if (user && !analytics && !fetchingAnalytics) {
+      dispatch(getAnalytics(user.userType));
+    }
+  }, [user]);
+
   return (
     <React.Fragment>
       <DashboardContent>
         <DashboardTableLayoutDiv className="no-scrollbar overflow-auto">
-          <div
-            className={`grid grid-cols-1 ${
-              "custom-grid-md-" + analytics.length
-            } gap-6 md:gap-5`}
-          >
-            {analytics.map((data) => (
-              <AnalyticsCard {...data} />
-            ))}
-          </div>
+          <AnalyticsHeader />
           <div className="bg-transparent md:flex-1 grid gap-4">
             <div
               className="grid grid-cols-1 md:grid-cols-2 gap-4"
