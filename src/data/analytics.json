@@ -1,0 +1,69 @@
+{
+    "admin": [
+        {
+            "id": "totalUsers",
+            "title": "Total users",
+            "icon": "fi fi-rr-users",
+            "shouldCountUp": false,
+            "showProgressRing": false
+        },
+        {
+            "id": "totalAppointments",
+            "title": "Appointments",
+            "icon": "fi fi-rr-folder-open",
+            "shouldCountUp": false,
+            "shouldProgressRing": false
+        },
+        {
+            "id": "totalBots",
+            "title": "Bots",
+            "icon": "fi fi-rr-chatbot-speech-bubble",
+            "shouldCountUp": false,
+            "shouldProgressRing": false
+        },
+        {
+            "id": "totalAdmins",
+            "title": "Admins",
+            "icon": "fi fi-rr-users-alt",
+            "shouldCountUp": false,
+            "shouldProgressRing": false
+        }
+    ],
+    "user": [
+        {
+            "id": "totalAppointments",
+            "title": "Appointments",
+            "icon": "fi fi-rr-reservation-table text-[#2563EB]",
+            "shouldCountUp": false,
+            "shouldProgressRing": false
+        },
+        {
+            "id": "totalReminders",
+            "title": "Reminders",
+            "icon": "fi fi-rr-bell-ring text-[#B45309]",
+            "shouldCountUp": false,
+            "showProgressRing": false
+        },
+        {
+            "id": "totalKnowledgeBase",
+            "title": "Knowledge bases",
+            "icon": "fi fi-rr-folder-open text-[#6D28D9]",
+            "shouldCountUp": false,
+            "showProgressRing": false
+        },
+        {
+            "id": "totalBots",
+            "title": "Bots",
+            "icon": "fi fi-rr-chatbot-speech-bubble text-[#047857]",
+            "shouldCountUp": false,
+            "shouldProgressRing": false
+        },
+        {
+            "id": "totalConversations",
+            "title": "Conversations",
+            "icon": "fi fi-rr-messages text-[#BE123C]",
+            "shouldCountUp": false,
+            "shouldProgressRing": false
+        }
+    ]
+}

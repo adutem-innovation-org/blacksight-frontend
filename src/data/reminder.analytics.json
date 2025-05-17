@@ -2,12 +2,14 @@
     {
         "id": "totalReminders",
         "title": "Total reminders",
+        "icon": "fi fi-rr-bell-ring text-[#B45309]",
         "shouldCountUp": false,
         "showProgressRing": false
     },
     {
         "id": "activeReminders",
         "title": "Active reminders",
+        "icon": "fi fi-rr-settings text-[#2563EB]",
         "showProgressRing": true,
         "progressRingColor": "#34D399",
         "percentage": 40
@@ -15,6 +17,7 @@
     {
         "id": "paymentReminders",
         "title": "Payment",
+        "icon": "fi fi-rr-usd-circle text-[#6D28D9]",
         "showProgressRing": true,
         "progressRingColor": "#34D399",
         "percentage": 44
@@ -22,6 +25,7 @@
     {
         "id": "appointmentReminders",
         "title": "Appointment",
+        "icon": "fi fi-rr-reservation-table text-yellow-500",
         "showProgressRing": true,
         "progressRingColor": "#34D399",
         "percentage": 46

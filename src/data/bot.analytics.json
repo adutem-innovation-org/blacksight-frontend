@@ -2,12 +2,14 @@
     {
         "id": "totalBots",
         "title": "Total Bots",
+        "icon": "fi fi-rr-chatbot-speech-bubble text-[#047857]",
         "shouldCountUp": false,
         "showProgressRing": false
     },
     {
         "id": "activeBots",
         "title": "Active Bots",
+        "icon": "fi fi-rr-settings text-[#B45309]",
         "shouldProgressRing": true,
         "progressRingColor": "#34D399"
     }
