@@ -1,0 +1,30 @@
+[
+    {
+        "id": "pendingAppointments",
+        "title": "Pending",
+        "icon": "fi fi-rr-dot-pending text-[#B45309]",
+        "shouldCountUp": false,
+        "showProgressRing": false
+    },
+    {
+        "id": "scheduledAppointments",
+        "title": "Scheduled",
+        "icon": "fi fi-rr-daily-calendar text-[#2563EB]",
+        "showProgressRing": true,
+        "progressRingColor": "#34D399"
+    },
+    {
+        "id": "cancelledAppointments",
+        "title": "Cancelled",
+        "icon": "fi fi-rr-calendar-xmark text-[#6D28D9]",
+        "showProgressRing": true,
+        "progressRingColor": "#34D399"
+    },
+    {
+        "id": "completedAppointments",
+        "title": "Completed",
+        "icon": "fi fi-rr-progress-complete text-yellow-500",
+        "showProgressRing": true,
+        "progressRingColor": "#34D399"
+    }
+]

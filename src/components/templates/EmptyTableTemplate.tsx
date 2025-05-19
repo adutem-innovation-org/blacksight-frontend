@@ -3,7 +3,7 @@ import { Button } from "../form";
 type Props = {
   title: string;
   description: string;
-  ctaText: string;
+  ctaText?: string;
   onClickCta?: () => void;
   imageSrc?: string;
   showCta?: boolean;

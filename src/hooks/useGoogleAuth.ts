@@ -50,6 +50,7 @@ export const useGoogleAuth = () => {
   const googleLogin = useGoogleLogin({
     onSuccess: handleOAuthSuccess,
     onError: handleOAuthError,
+    scope: "email profile",
   });
 
   return { googleLogin, gettingOauthData };

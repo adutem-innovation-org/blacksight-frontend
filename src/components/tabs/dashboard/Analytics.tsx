@@ -32,10 +32,6 @@ const AnalyticsHeader = () => {
         <div className="flex justify-center items-center h-30 font-dmsans font-semibold">
           An error occured. Please try again.
         </div>
-      ) : fetchingAnalytics ? (
-        <div className="relative h-30 flex-1">
-          <Loader />
-        </div>
       ) : !analytics ? (
         <div className="flex justify-center items-center h-30 font-dmsans font-semibold">
           No data available at the moment
@@ -65,6 +61,8 @@ export const AnalyticsTab = () => {
       dispatch(getAnalytics(user.userType));
     }
   }, [user]);
+
+  if (fetchingAnalytics) return <Loader />;
 
   return (
     <React.Fragment>

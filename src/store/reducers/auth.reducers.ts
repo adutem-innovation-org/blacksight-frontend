@@ -56,3 +56,8 @@ export const changeGapiStateReducer = (
 ) => {
   state.gapiReady = action.payload;
 };
+
+export const resetGetProfileReducer = (state: AuthState) => {
+  state.fetchingProfile = false;
+  state.profileFetched = false;
+};

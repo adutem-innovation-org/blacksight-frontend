@@ -16,25 +16,14 @@ import {
   getAllBots,
   getAllKnowledgeBases,
   getBotAnalytics,
+  getConnectedProviders,
   resetConfigureBot,
+  resetGetAllKnowledgeBases,
+  resetGetConnectedProviders,
 } from "@/store";
 import { useFormik } from "formik";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import toast from "react-hot-toast";
-
-type FormSectionProps = {
-  validation: Pick<
-    ReturnType<typeof useFormik>,
-    | "handleChange"
-    | "handleBlur"
-    | "errors"
-    | "touched"
-    | "errors"
-    | "values"
-    | "setFieldValue"
-    | "setFieldTouched"
-  >;
-};
 
 const EmptySelectOptions = ({
   description,
@@ -83,8 +72,18 @@ export const ConfigureBotForm = ({
     configureBotErrorMessage,
     configureBotErrors,
   } = getState("Bot");
-  const { knowledgeBases, fetchingAllKnowledgeBases } =
-    getState("KnowledgeBase");
+  const {
+    knowledgeBases,
+    fetchingAllKnowledgeBases,
+    allKnowledgeBasesFetched,
+    fetchAllKnowledgeBasesErrorMessage,
+  } = getState("KnowledgeBase");
+  const {
+    fetchingConnectedProviders,
+    connectedProviders,
+    fetchConnectedProvidersError,
+    connectedProvidersFetched,
+  } = getState("MeetingProvider");
 
   const knowledgeBaseOptions = useMemo(() => {
     return knowledgeBases && knowledgeBases.length !== 0
@@ -95,9 +94,19 @@ export const ConfigureBotForm = ({
       : [];
   }, [knowledgeBases]);
 
+  const connectedProviderOptions = useMemo(() => {
+    return connectedProviders && connectedProviders.length !== 0
+      ? connectedProviders.map((cProvider) => ({
+          placeholder: cProvider.provider,
+          value: cProvider._id,
+        }))
+      : [];
+  }, [connectedProviders]);
+
   const goToKnowledgeBase = () => {
     return dispatch(changeTab(DashboardTabsEnum.KNOWLEDGE_BASE));
   };
+
   const goToBookingProviders = () => {
     return dispatch(changeTab(DashboardTabsEnum.PROVIDERS));
   };
@@ -117,19 +126,40 @@ export const ConfigureBotForm = ({
   const validation = useFormik({
     enableReinitialize: false,
     initialValues,
-    validationSchema: botSchema([]), // Update to properly connect to meeting provider list
+    validationSchema: botSchema(), // Update to properly connect to meeting provider list
     onSubmit: (values) => {
       if (!values.scheduleMeeting) delete values.meetingProviderId;
       dispatch(configureBot(values));
     },
   });
 
-  // Fetch analytics and knowledge base on tab open
+  // Fetch knowledge base on tab open
   useEffect(() => {
     if (!knowledgeBases && !fetchingAllKnowledgeBases) {
       dispatch(getAllKnowledgeBases());
     }
   }, []);
+
+  // Reset fetch all knowledge bases
+  useEffect(() => {
+    if (allKnowledgeBasesFetched || fetchAllKnowledgeBasesErrorMessage) {
+      dispatch(resetGetAllKnowledgeBases());
+    }
+  }, [allKnowledgeBasesFetched, fetchAllKnowledgeBasesErrorMessage]);
+
+  // Fetch connected meeting providers on tab open
+  useEffect(() => {
+    if (!connectedProviders && !fetchingConnectedProviders) {
+      dispatch(getConnectedProviders());
+    }
+  }, []);
+
+  // Reset fetch connected meeting providers on tab opne
+  useEffect(() => {
+    if (connectedProvidersFetched && fetchConnectedProvidersError) {
+      dispatch(resetGetConnectedProviders());
+    }
+  }, [connectedProvidersFetched, fetchConnectedProvidersError]);
 
   useEffect(() => {
     if (botConfigured) {
@@ -230,11 +260,13 @@ export const ConfigureBotForm = ({
                 name="meetingProviderId"
                 validation={validation}
                 containerClassName="gap-2 mt-4"
+                options={connectedProviderOptions}
                 noOptionsContent={
                   <EmptySelectOptions
-                    ctaText="Setup provider"
                     description="You are yet to setup meeting providers."
                     onClickCta={goToBookingProviders}
+                    ctaText="Setup provider"
+                    loading={fetchingConnectedProviders}
                   />
                 }
               />

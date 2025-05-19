@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   continueWithGoogleBuilder,
   forgotPasswordBuilder,
+  getProfileBuilder,
   resetPasswordBuilder,
   sendOtpBuilder,
   signInUserBuilder,
@@ -13,6 +14,7 @@ import {
   changeGapiStateReducer,
   resetContinueWithGoogleReducer,
   resetForgotPasswordReducer,
+  resetGetProfileReducer,
   resetPasswordResetReducer,
   resetsendOtpReducer,
   resetSignInUserReducer,
@@ -31,6 +33,7 @@ const authSlice = createSlice({
     resetPasswordReset: resetPasswordResetReducer,
     resetContinueWithGoogle: resetContinueWithGoogleReducer,
     changeGapiState: changeGapiStateReducer,
+    resetGetProfile: resetGetProfileReducer,
   },
   initialState: initialAuthState,
   extraReducers: (builder) => {
@@ -41,6 +44,7 @@ const authSlice = createSlice({
     forgotPasswordBuilder(builder);
     resetPasswordBuilder(builder);
     continueWithGoogleBuilder(builder);
+    getProfileBuilder(builder);
   },
 });
 

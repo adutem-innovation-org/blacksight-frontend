@@ -7,6 +7,8 @@ interface ProviderCardProps {
   description: string;
   icon: string;
   connected: boolean;
+  onConnect: () => void;
+  onDisconnect: () => void;
 }
 
 export const ProviderCard = ({
@@ -14,6 +16,8 @@ export const ProviderCard = ({
   description,
   icon,
   connected,
+  onConnect,
+  onDisconnect,
 }: ProviderCardProps) => {
   return (
     <div className="border-2 rounded-md p-4 py-5 flex flex-col gap-6">
@@ -51,6 +55,7 @@ export const ProviderCard = ({
           }
         )}
         variant={"outline"}
+        onClick={() => (connected ? onDisconnect() : onConnect())}
       >
         <i
           className={cn("flex", {

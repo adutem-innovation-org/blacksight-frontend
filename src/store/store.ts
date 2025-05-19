@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import {
   analyticsReducer,
+  appointmentReducer,
   authReducer,
   botReducer,
   knowledgeBaseReducer,
   layoutReducer,
+  meetingProviderReducer,
   reminderReducer,
 } from "./slices";
 
@@ -16,6 +18,8 @@ export const store = configureStore({
     KnowledgeBase: knowledgeBaseReducer,
     Layout: layoutReducer,
     Reminder: reminderReducer,
+    MeetingProvider: meetingProviderReducer,
+    Appointment: appointmentReducer,
   },
 });
 

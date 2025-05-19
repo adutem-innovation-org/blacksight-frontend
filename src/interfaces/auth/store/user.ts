@@ -13,7 +13,7 @@ export type UserData = {
   userType: UserTypes;
   hasConnectedGoogleMeet?: boolean;
   hasConnectedZoomMeet?: boolean;
-  hasConnectedMircosoftTeams?: boolean;
+  hasConnectedMicrosoftTeams?: boolean;
   lastLogin: string;
   createdAt: string;
   passwordChangedAt: string;

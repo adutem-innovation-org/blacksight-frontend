@@ -123,3 +123,15 @@ export const logout = createAsyncThunk("logout", (_: void, thunkAPI) => {
     return thunkAPI.rejectWithValue(error);
   }
 });
+
+export const getProfile = createAsyncThunk(
+  "get_profile",
+  async (_: void, thunkAPI) => {
+    try {
+      const data = await authApiService.getProfile();
+      sessionStorage.setItem("blacksight_auth_user", JSON.stringify(data.user));
+    } catch (error) {
+      return thunkAPI.rejectWithValue(JSON.stringify(error));
+    }
+  }
+);

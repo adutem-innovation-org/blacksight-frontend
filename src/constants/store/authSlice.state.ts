@@ -42,4 +42,8 @@ export const initialAuthState: AuthState = {
   googleAuthErrors: {},
   googleAuthErrorMessage: "",
   gapiReady: false,
+
+  // Get Profile
+  fetchingProfile: false,
+  profileFetched: false,
 };

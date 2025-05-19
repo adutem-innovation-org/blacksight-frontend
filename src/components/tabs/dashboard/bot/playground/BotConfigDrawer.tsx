@@ -1,6 +1,8 @@
 import { Button } from "@/components/form";
 import { Sheet, SheetContent, SheetHeader } from "@/components/ui/sheet";
 import { Bot } from "@/interfaces";
+import { botSchema } from "@/schemas";
+import { useFormik } from "formik";
 import { Upload, X } from "lucide-react";
 import styled from "styled-components";
 
@@ -58,22 +60,29 @@ export function BotConfigDrawer({
   onOpenChange,
   currentBot,
 }: BotConfigDrawerProps) {
+  const initialValues = {
+    knowledgeBaseId: currentBot.knowledgeBaseId,
+    scheduleMeeting: currentBot.scheduleMeeting,
+    meetingProviderId: currentBot.meetingProviderId,
+    welcomeMessage:
+      currentBot?.welcomeMessage ?? "Hello there.\nHow can I help you today?",
+  };
+
+  const validations = useFormik({
+    enableReinitialize: false,
+    initialValues,
+    validationSchema: botSchema(),
+    onSubmit: (values) => {},
+  });
+
   return (
     <Sheet open={isOpen} onOpenChange={onOpenChange} modal={true}>
-      <CustomSheetContent className="rounded-2xl p-0">
+      <CustomSheetContent className="rounded-2xl p-0 gap-8">
         <SheetHeaderComp currentBot={currentBot} onOpenChange={onOpenChange} />
-        <div>
-          <div className="px-8 pb-4 mt-10 flex justify-between items-end">
-            <p className="font-urbanist font-semibold text-lg text-gray-900">
-              Bot configuration
-            </p>
-            <Button variant={"outline"}>
-              <Upload className="text-gray-800 outine-gray-800" />
-              <p className="font-sfpro-medium text-sm text-gray-800">
-                Save config
-              </p>
-            </Button>
-          </div>
+        <div className="px-8">
+          <p className="font-urbanist font-semibold text-lg text-gray-900">
+            Bot configuration
+          </p>
         </div>
       </CustomSheetContent>
     </Sheet>

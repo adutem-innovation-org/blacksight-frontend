@@ -19,7 +19,7 @@ export const InstructionEditor = ({
   const [isFocused, setIsFocused] = useState(false);
   const { currentBot } = getState("Bot");
   const [instructions, setInstructions] = useState(
-    () => currentBot?.instructions.join("\n\n") || ""
+    () => currentBot?.instructions || ""
   );
 
   const handleInputFocus = () => {

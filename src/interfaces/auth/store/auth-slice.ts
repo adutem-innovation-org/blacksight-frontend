@@ -40,4 +40,8 @@ export type AuthState = {
   googleAuthErrors: Record<string, string>;
   googleAuthErrorMessage: string;
   gapiReady: boolean;
+
+  // Get Profile
+  fetchingProfile: boolean;
+  profileFetched: boolean;
 };
