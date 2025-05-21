@@ -3,6 +3,7 @@ import { UserTypes } from "@/enums";
 export type UserData = {
   _id: string;
   id: string;
+  businessId: string;
   firstName: string;
   lastName: string;
   email: string;

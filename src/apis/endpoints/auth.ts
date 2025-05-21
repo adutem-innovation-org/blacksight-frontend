@@ -2,6 +2,7 @@
 // General
 export const CURRENT_SESSION = "/session";
 export const CHANGE_PASSWORD = "/change-password";
+export const SETUP_PASSWORD = "/setup-password";
 export const GET_PROFILE = "/profile";
 export const LOGOUT = "/logout";
 

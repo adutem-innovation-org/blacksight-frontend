@@ -6,7 +6,7 @@ export const profileTabs = [
     tabId: ProfileTabsEnum.MY_PROFILE,
   },
   {
-    name: "Security",
+    name: "API Key & Security",
     tabId: ProfileTabsEnum.SECURTIY,
   },
   {

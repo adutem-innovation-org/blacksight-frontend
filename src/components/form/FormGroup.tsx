@@ -13,10 +13,12 @@ import { MultipleValueTextInput } from "./MultiValueTextInput";
 import { Info } from "lucide-react";
 import { Tooltip } from "../tooltips";
 import { DateValue } from "@mantine/dates";
+import { Textarea } from "./Textarea";
 
 interface FormGroupProps {
   type:
     | "text"
+    | "textarea"
     | "select"
     | "radio"
     | "password"
@@ -108,6 +110,26 @@ export const FormGroup = ({
           <Input
             hasAction={false}
             type={type}
+            placeholder={placeholder}
+            onChange={validation.handleChange}
+            onBlur={validation.handleBlur}
+            size={size}
+            name={name}
+            disabled={disabled}
+            value={validation.values[name]}
+            error={validation.touched[name] && validation.errors[name]}
+            maxLength={maxLength}
+          />
+        </GroupContainer>
+      );
+    case "textarea":
+      return (
+        <GroupContainer className={containerClassName}>
+          <div className="flex gap-1.5 items-center">
+            <Label className="min-w-max">{groupLabel}</Label>
+            {info && InfoTooltip}
+          </div>
+          <Textarea
             placeholder={placeholder}
             onChange={validation.handleChange}
             onBlur={validation.handleBlur}

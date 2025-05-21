@@ -1,6 +1,10 @@
+import { Button } from "@/components/form";
+import { Loader } from "@/components/progress";
 import { useStore } from "@/hooks";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { resetUpdateBotInstructions, updateBotInstructions } from "@/store";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const InstructionEditorHeader = () => {
   return (
@@ -15,7 +19,12 @@ export const InstructionEditor = ({
 }: {
   disabled?: boolean;
 }) => {
-  const { getState } = useStore();
+  const { dispatch, getState } = useStore();
+  const {
+    updatingBotInstructions,
+    botInstructionsUpdated,
+    updateBotInstructionsErrorMessage,
+  } = getState("Bot");
   const [isFocused, setIsFocused] = useState(false);
   const { currentBot } = getState("Bot");
   const [instructions, setInstructions] = useState(
@@ -30,34 +39,65 @@ export const InstructionEditor = ({
     setIsFocused(false);
   };
 
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    if (instructions.trim().length === 0) {
+      setInstructions(currentBot?.instructions || "");
+    }
+    dispatch(
+      updateBotInstructions({ id: currentBot?._id!, data: { instructions } })
+    );
+  };
+
+  useEffect(() => {
+    if (botInstructionsUpdated) {
+      toast.success("Bot instruction updated");
+      dispatch(resetUpdateBotInstructions());
+    }
+  }, [botInstructionsUpdated]);
+
+  useEffect(() => {
+    if (updateBotInstructionsErrorMessage) {
+      toast.error(updateBotInstructionsErrorMessage);
+      dispatch(resetUpdateBotInstructions());
+    }
+  }, [updateBotInstructionsErrorMessage]);
+
   return (
     <div className="h-full col-span-3 flex flex-col">
       <InstructionEditorHeader />
-      <div
-        className={cn(
-          "h-full w-full flex p-4 items-center gap-3 border border-[#F3F4F6] bg-[#042f5b0d] hover:bg-[#042f5b0d] rounded-[12px] relative cursor-pointer flex-1",
-          {
-            "border-[#2563EB]": isFocused,
-            "bg-[#F9FAFB]": disabled,
-            "border-[#F3F4F6]": disabled,
-            "pointer-events-none": disabled,
-          }
-        )}
+      <form
+        className="flex flex-col flex-1 gap-3 relative"
+        onSubmit={handleSubmit}
       >
-        <textarea
-          onBlur={handleInputBlur}
-          onFocus={handleInputFocus}
+        {updatingBotInstructions && <Loader />}
+        <div
           className={cn(
-            "w-full p-0 outline-none outline-[0px] border-none border-[0px] bg-transparent h-full shadow-none font-normal text-sm text-[#1F2937] placeholder:text-[#6B7280] font-sfpro not-focus:text-[#1f293771]",
+            "w-full flex p-4 items-center gap-3 border border-[#F3F4F6] bg-[#042f5b0d] hover:bg-[#042f5b0d] rounded-[12px] relative cursor-pointer flex-1",
             {
-              "text-[#D1D5DB]": disabled,
-              "placeholder:text-[#D1D5DB]": disabled,
+              "border-[#2563EB]": isFocused,
+              "bg-[#F9FAFB]": disabled,
+              "border-[#F3F4F6]": disabled,
+              "pointer-events-none": disabled,
             }
           )}
-          value={instructions}
-          onChange={(e) => setInstructions(e.target.value)}
-        />
-      </div>
+        >
+          <textarea
+            onBlur={handleInputBlur}
+            onFocus={handleInputFocus}
+            className={cn(
+              "w-full p-0 outline-none outline-[0px] border-none border-[0px] bg-transparent h-full shadow-none font-normal text-sm text-[#1F2937] placeholder:text-[#6B7280] font-sfpro not-focus:text-[#1f293771]",
+              {
+                "text-[#D1D5DB]": disabled,
+                "placeholder:text-[#D1D5DB]": disabled,
+              }
+            )}
+            value={instructions}
+            onChange={(e) => setInstructions(e.target.value)}
+          />
+        </div>
+        <Button>Save Instructions</Button>
+      </form>
     </div>
   );
 };

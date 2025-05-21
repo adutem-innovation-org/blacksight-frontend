@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-export const botSchema = () =>
+export const botSchema = (isWelcomeMessageOptional: boolean = true) =>
   yup.object({
     name: yup.string().required("Please provide name"),
     knowledgeBaseId: yup.string().required("Please provide knowledge source"),
@@ -13,4 +13,7 @@ export const botSchema = () =>
       then: (schema) => schema.required("Please select a meeting provider"),
       otherwise: (schema) => schema.notRequired(),
     }),
+    welcomeMessage: isWelcomeMessageOptional
+      ? yup.string()
+      : yup.string().required("Please provide welcome message.").trim(),
   });

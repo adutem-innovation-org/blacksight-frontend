@@ -61,3 +61,10 @@ export const resetGetProfileReducer = (state: AuthState) => {
   state.fetchingProfile = false;
   state.profileFetched = false;
 };
+
+export const resetUpdatePasswordReducer = (state: AuthState) => {
+  state.changingPassword = false;
+  state.passwordChanged = false;
+  state.changePasswordErrorMessage = "";
+  state.changePasswordErrors = {};
+};

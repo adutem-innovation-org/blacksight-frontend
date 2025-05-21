@@ -25,7 +25,7 @@ import { useFormik } from "formik";
 import { useEffect, useMemo } from "react";
 import toast from "react-hot-toast";
 
-const EmptySelectOptions = ({
+export const EmptySelectOptions = ({
   description,
   onClickCta,
   ctaText,

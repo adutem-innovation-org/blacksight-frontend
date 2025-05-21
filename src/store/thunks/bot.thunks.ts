@@ -1,5 +1,9 @@
 import { BotApiService } from "@/apis";
-import { ConfigureBotBody } from "@/interfaces";
+import {
+  ConfigureBotBody,
+  UpdateBotConfigBody,
+  UpdateBotInstructionsBody,
+} from "@/interfaces";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { data } from "react-router-dom";
 
@@ -37,6 +41,33 @@ export const configureBot = createAsyncThunk(
       return response.bot;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(JSON.stringify(error));
+    }
+  }
+);
+
+export const updateBotConfig = createAsyncThunk(
+  "update_bot_config",
+  async ({ id, data }: { id: string; data: UpdateBotConfigBody }, thunkAPI) => {
+    try {
+      const res = await botApiService.updateBotConfig(id, data);
+      return res.bot;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message as string);
+    }
+  }
+);
+
+export const updateBotInstructions = createAsyncThunk(
+  "update_bot_instructions",
+  async (
+    { id, data }: { id: string; data: UpdateBotInstructionsBody },
+    thunkAPI
+  ) => {
+    try {
+      const res = await botApiService.updateBotInstructions(id, data);
+      return res.bot;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message as string);
     }
   }
 );

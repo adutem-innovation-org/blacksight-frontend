@@ -19,6 +19,10 @@ import {
   GetUsersRes,
   GoogleLoginBody,
   GoogleLoginRes,
+  ChangePasswordBody,
+  ChangePasswordRes,
+  SetupPasswordBody,
+  SetupPasswordRes,
 } from "@/interfaces";
 import { ApiService } from "./api.service";
 import { AUTH_URLS } from "./endpoints";
@@ -107,6 +111,30 @@ export class AuthApiService {
   resetUserPassword = (data: ResetPasswordBody): Promise<ResetPasswordRes> => {
     return this.apiService.update<ResetPasswordBody, ResetPasswordRes>(
       this.urls.USER_RESET_PASSWORD,
+      data
+    );
+  };
+
+  /**
+   * Change user password
+   * @param data
+   * @returns {Promise<ChangePasswordRes>}
+   */
+  changePassword = (data: ChangePasswordBody): Promise<ChangePasswordRes> => {
+    return this.apiService.update<ChangePasswordBody, ChangePasswordRes>(
+      this.urls.CHANGE_PASSWORD,
+      data
+    );
+  };
+
+  /**
+   * Setup password for users without password
+   * @params data
+   * @returns {Promise<SetupPasswordRes>}
+   */
+  setupPassword = (data: SetupPasswordBody): Promise<SetupPasswordRes> => {
+    return this.apiService.post<SetupPasswordBody, SetupPasswordRes>(
+      this.urls.SETUP_PASSWORD,
       data
     );
   };

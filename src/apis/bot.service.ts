@@ -3,6 +3,10 @@ import {
   ConfigureBotBody,
   ConfigureBotRes,
   GetBotsRes,
+  UpdateBotConfigBody,
+  UpdateBotConfigRes,
+  UpdateBotInstructionsBody,
+  UpdateBotInstructionsRes,
 } from "@/interfaces";
 import { ApiService } from "./api.service";
 import { BOT_URLS } from "./endpoints";
@@ -37,5 +41,19 @@ export class BotApiService {
       this.urls.CONFIGURE_BOT,
       data
     );
+  };
+
+  updateBotConfig = (id: string, data: UpdateBotConfigBody) => {
+    return this.apiService.update<UpdateBotConfigBody, UpdateBotConfigRes>(
+      `/${id}`,
+      data
+    );
+  };
+
+  updateBotInstructions = (id: string, data: UpdateBotInstructionsBody) => {
+    return this.apiService.update<
+      UpdateBotInstructionsBody,
+      UpdateBotInstructionsRes
+    >(`${this.urls.UPDATE_BOT_INSTRUCTIONS}/${id}`, data);
   };
 }

@@ -36,6 +36,12 @@ export const initialAuthState: AuthState = {
   resetPasswordErrors: {},
   resetPasswordErrorMessage: "",
 
+  // Change password & Setup password
+  changingPassword: false,
+  passwordChanged: false,
+  changePasswordErrors: {},
+  changePasswordErrorMessage: "",
+
   // Google Auth
   authenticatingWithGoogle: false,
   googleAuthSuccess: false,

@@ -1,10 +1,25 @@
-import { Button } from "@/components/form";
+import { Button, FormGroup } from "@/components/form";
 import { Sheet, SheetContent, SheetHeader } from "@/components/ui/sheet";
 import { Bot } from "@/interfaces";
 import { botSchema } from "@/schemas";
 import { useFormik } from "formik";
 import { Upload, X } from "lucide-react";
 import styled from "styled-components";
+import { EmptySelectOptions } from "../ConfigureBotForm";
+import { useStore } from "@/hooks";
+import { useEffect, useMemo } from "react";
+import {
+  changeTab,
+  getAllKnowledgeBases,
+  getConnectedProviders,
+  resetGetAllKnowledgeBases,
+  resetGetConnectedProviders,
+  resetUpdateBotConfig,
+  updateBotConfig,
+} from "@/store";
+import { DashboardTabsEnum } from "@/enums";
+import { Loader } from "@/components/progress";
+import toast from "react-hot-toast";
 
 interface SheetHeaderCompProps {
   currentBot: Bot;
@@ -60,29 +75,230 @@ export function BotConfigDrawer({
   onOpenChange,
   currentBot,
 }: BotConfigDrawerProps) {
-  const initialValues = {
+  const { dispatch, getState } = useStore();
+  const {
+    updatingBotConfig,
+    botConfigUpdated,
+    updateBotConfigErrorMessage,
+    updateBotConfigErrors,
+  } = getState("Bot");
+  const {
+    knowledgeBases,
+    fetchingAllKnowledgeBases,
+    allKnowledgeBasesFetched,
+    fetchAllKnowledgeBasesErrorMessage,
+  } = getState("KnowledgeBase");
+  const {
+    fetchingConnectedProviders,
+    connectedProviders,
+    fetchConnectedProvidersError,
+    connectedProvidersFetched,
+  } = getState("MeetingProvider");
+
+  const knowledgeBaseOptions = useMemo(() => {
+    return knowledgeBases && knowledgeBases.length !== 0
+      ? knowledgeBases.map((kBase) => ({
+          placeholder: kBase.tag || "Unconfigured",
+          value: kBase._id,
+        }))
+      : [];
+  }, [knowledgeBases]);
+
+  const connectedProviderOptions = useMemo(() => {
+    return connectedProviders && connectedProviders.length !== 0
+      ? connectedProviders.map((cProvider) => ({
+          placeholder: cProvider.provider,
+          value: cProvider._id,
+        }))
+      : [];
+  }, [connectedProviders]);
+
+  const goToKnowledgeBase = () => {
+    return dispatch(changeTab(DashboardTabsEnum.KNOWLEDGE_BASE));
+  };
+
+  const goToBookingProviders = () => {
+    return dispatch(changeTab(DashboardTabsEnum.PROVIDERS));
+  };
+
+  const initialValues: {
+    name: string;
+    knowledgeBaseId: string;
+    scheduleMeeting: boolean;
+    meetingProviderId?: string;
+    welcomeMessage: string;
+  } = {
+    name: currentBot.name,
     knowledgeBaseId: currentBot.knowledgeBaseId,
     scheduleMeeting: currentBot.scheduleMeeting,
     meetingProviderId: currentBot.meetingProviderId,
-    welcomeMessage:
-      currentBot?.welcomeMessage ?? "Hello there.\nHow can I help you today?",
+    welcomeMessage: currentBot?.welcomeMessage,
   };
 
-  const validations = useFormik({
+  const validation = useFormik({
     enableReinitialize: false,
     initialValues,
-    validationSchema: botSchema(),
-    onSubmit: (values) => {},
+    validationSchema: botSchema(false),
+    onSubmit: (values) => {
+      if (!values.scheduleMeeting) delete values.meetingProviderId;
+      dispatch(updateBotConfig({ id: currentBot._id, data: values }));
+    },
   });
+
+  // Checks if there is any disperity between the current values and the form values
+  const canUpdateConfig = useMemo(() => {
+    const currentKeys = Object.keys(validation.values);
+
+    for (const key of currentKeys) {
+      if (
+        currentBot[key as keyof typeof currentBot] !==
+        validation.values[key as keyof typeof validation.values]
+      ) {
+        return true; // Exit early on the first mismatch
+      }
+    }
+
+    return false; // No mismatches found
+  }, [validation.values]);
+
+  // Fetch knowledge base on tab open
+  useEffect(() => {
+    if (!knowledgeBases && !fetchingAllKnowledgeBases) {
+      dispatch(getAllKnowledgeBases());
+    }
+  }, []);
+
+  // Reset fetch all knowledge bases
+  useEffect(() => {
+    if (allKnowledgeBasesFetched || fetchAllKnowledgeBasesErrorMessage) {
+      dispatch(resetGetAllKnowledgeBases());
+    }
+  }, [allKnowledgeBasesFetched, fetchAllKnowledgeBasesErrorMessage]);
+
+  // Fetch connected meeting providers on tab open
+  useEffect(() => {
+    if (!connectedProviders && !fetchingConnectedProviders) {
+      dispatch(getConnectedProviders());
+    }
+  }, []);
+
+  // Reset fetch connected meeting providers on tab opne
+  useEffect(() => {
+    if (connectedProvidersFetched && fetchConnectedProvidersError) {
+      dispatch(resetGetConnectedProviders());
+    }
+  }, [connectedProvidersFetched, fetchConnectedProvidersError]);
+
+  useEffect(() => {
+    if (botConfigUpdated) {
+      toast.success("Bot configurations updated");
+      // Reset update config state
+      dispatch(resetUpdateBotConfig());
+      // Close drawer
+      onOpenChange(false);
+    }
+  }, [botConfigUpdated]);
+
+  useEffect(() => {
+    if (updateBotConfigErrorMessage) {
+      toast.error(updateBotConfigErrorMessage);
+      if (Object.keys(updateBotConfigErrors ?? {}).length) {
+        validation.setErrors(updateBotConfigErrors);
+      }
+      dispatch(resetUpdateBotConfig());
+    }
+  }, [updateBotConfigErrorMessage]);
 
   return (
     <Sheet open={isOpen} onOpenChange={onOpenChange} modal={true}>
       <CustomSheetContent className="rounded-2xl p-0 gap-8">
+        {updatingBotConfig && <Loader />}
         <SheetHeaderComp currentBot={currentBot} onOpenChange={onOpenChange} />
         <div className="px-8">
-          <p className="font-urbanist font-semibold text-lg text-gray-900">
-            Bot configuration
-          </p>
+          {/* config form */}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              validation.handleSubmit();
+              return false;
+            }}
+          >
+            <FormGroup
+              type="text"
+              groupLabel="Bot name"
+              placeholder="Enter a desired bot name."
+              size="md"
+              name="name"
+              validation={validation}
+              containerClassName="gap-2 mt-4"
+            />
+            <FormGroup
+              type="textarea"
+              groupLabel="Welcome message"
+              placeholder="Enter bot welcome message"
+              size="md"
+              name="welcomeMessage"
+              validation={validation}
+              containerClassName="gap-2 mt-4"
+            />
+            <FormGroup
+              type="select"
+              groupLabel="Knowledge base"
+              placeholder="Pick a knowledge base"
+              info="This is where your bot get information about your business from."
+              size="md"
+              name="knowledgeBaseId"
+              validation={validation}
+              containerClassName="gap-2 mt-4"
+              options={knowledgeBaseOptions}
+              noOptionsContent={
+                <EmptySelectOptions
+                  description="You are yet to add a knowledge base."
+                  onClickCta={goToKnowledgeBase}
+                  ctaText="Add knowledge base"
+                  loading={fetchingAllKnowledgeBases}
+                />
+              }
+            />
+            <FormGroup
+              type="switch"
+              groupLabel="Schedule meetings automatically?"
+              placeholder="Schedule meetings"
+              info="Decide whatever or not an automatic google meet or zoom meet should be created for you as soon as the appointment is booked."
+              size="md"
+              name="scheduleMeeting"
+              validation={validation}
+              containerClassName="gap-2 mt-4"
+            />
+            {validation.values.scheduleMeeting && (
+              <FormGroup
+                type="select"
+                groupLabel="Meeting Provider"
+                placeholder="Select a meeting provider"
+                info="Select a meeting provider, this is where your appointments are scheduled."
+                size="md"
+                name="meetingProviderId"
+                validation={validation}
+                containerClassName="gap-2 mt-4"
+                options={connectedProviderOptions}
+                noOptionsContent={
+                  <EmptySelectOptions
+                    description="You are yet to setup meeting providers."
+                    onClickCta={goToBookingProviders}
+                    ctaText="Setup provider"
+                    loading={fetchingConnectedProviders}
+                  />
+                }
+              />
+            )}
+            <Button
+              className="w-full cursor-pointer mt-10"
+              type="submit"
+              disabled={updatingBotConfig || !canUpdateConfig}
+            >
+              Safe configuration
+            </Button>
+          </form>
         </div>
       </CustomSheetContent>
     </Sheet>

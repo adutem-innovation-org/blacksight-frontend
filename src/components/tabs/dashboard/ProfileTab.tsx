@@ -10,7 +10,7 @@ export const ProfileTab = () => {
   return (
     <React.Fragment>
       <DashboardContent>
-        <DashboardTableLayoutDiv className="no-scrollbar overflow-auto">
+        <DashboardTableLayoutDiv className="no-scrollbar overflow-hidden">
           <div>
             <h2 className="font-medium text-2xl text-gray-800">
               Account Settings
@@ -18,13 +18,13 @@ export const ProfileTab = () => {
           </div>
 
           {/* Content */}
-          <div className="bg-white w-full h-full rounded-md p-6 grid grid-cols-[180px_1fr]">
+          <div className="bg-white w-full flex-1 rounded-md grid grid-cols-[234px_1fr] overflow-hidden grid-rows-1">
             <ProfileSideMenu
               activeTab={activeTab}
               setActiveTab={setActiveTab}
             />
 
-            <div>
+            <div className="">
               <ProfileTabs activeTab={activeTab} />
             </div>
           </div>

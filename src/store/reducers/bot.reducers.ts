@@ -26,3 +26,17 @@ export const setCurrentBotReducer = (
 ) => {
   state.currentBot = action.payload;
 };
+
+export const resetUpdateBotConfigReducer = (state: BotState) => {
+  state.updatingBotConfig = false;
+  state.botConfigUpdated = false;
+  state.updateBotConfigErrors = {};
+  state.updateBotConfigErrorMessage = "";
+};
+
+export const resetUpdateBotInstructionsReducer = (state: BotState) => {
+  state.updatingBotInstructions = false;
+  state.botInstructionsUpdated = false;
+  state.updateBotConfigErrors = {};
+  state.updateBotInstructionsErrorMessage = "";
+};

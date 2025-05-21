@@ -1,4 +1,5 @@
 export * from "./change-password";
+export * from "./setup-password";
 export * from "./current-session";
 export * from "./forgot-password";
 export * from "./get-profile";

@@ -21,4 +21,17 @@ export const initialBotState: BotState = {
 
   // Playground
   currentBot: null,
+  currentConversation: null,
+
+  // Update bot configuration
+  updatingBotConfig: false,
+  botConfigUpdated: false,
+  updateBotConfigErrors: {},
+  updateBotConfigErrorMessage: "",
+
+  // Update bot instructions
+  updatingBotInstructions: false,
+  botInstructionsUpdated: false,
+  updateBotInstructionsErrors: {},
+  updateBotInstructionsErrorMessage: "",
 };

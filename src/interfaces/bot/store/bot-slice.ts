@@ -22,4 +22,17 @@ export type BotState = {
 
   // Playground
   currentBot: Bot | null;
+  currentConversation: any[] | null;
+
+  // Update bot configuration
+  updatingBotConfig: boolean;
+  botConfigUpdated: boolean;
+  updateBotConfigErrors: Record<string, string>;
+  updateBotConfigErrorMessage: string;
+
+  // Update bot instructions
+  updatingBotInstructions: boolean;
+  botInstructionsUpdated: boolean;
+  updateBotInstructionsErrors: Record<string, string>;
+  updateBotInstructionsErrorMessage: string;
 };

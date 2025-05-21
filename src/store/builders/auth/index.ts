@@ -6,3 +6,4 @@ export * from "./forgot-password.builder";
 export * from "./reset-password.builder";
 export * from "./google-login.builder";
 export * from "./get-profile.builder";
+export * from "./changesetup-password.builder";

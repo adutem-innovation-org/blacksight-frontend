@@ -3,11 +3,13 @@ import { ApiService } from "@/apis/api.service";
 import { UserTypes } from "@/enums";
 import { clearSession, saveSession } from "@/helpers";
 import {
+  ChangePasswordBody,
   ForgotPasswordBody,
   GoogleLoginBody,
   LoginUserBody,
   RegisterUserBody,
   ResetPasswordBody,
+  SetupPasswordBody,
   VerifyEmailBody,
 } from "@/interfaces";
 import { createAsyncThunk } from "@reduxjs/toolkit";
@@ -97,6 +99,30 @@ export const resetPassword = createAsyncThunk(
       return await resetPasswordApi(data.body);
     } catch (error) {
       return thunkAPI.rejectWithValue(JSON.stringify(error));
+    }
+  }
+);
+
+export const changePassword = createAsyncThunk(
+  "change_password",
+  async (body: ChangePasswordBody, { rejectWithValue }) => {
+    try {
+      await authApiService.changePassword(body);
+      return true;
+    } catch (error) {
+      return rejectWithValue(JSON.stringify(error));
+    }
+  }
+);
+
+export const setupPassword = createAsyncThunk(
+  "setup_password",
+  async (body: SetupPasswordBody, { rejectWithValue }) => {
+    try {
+      await authApiService.setupPassword(body);
+      return true;
+    } catch (error) {
+      return rejectWithValue(JSON.stringify(error));
     }
   }
 );
