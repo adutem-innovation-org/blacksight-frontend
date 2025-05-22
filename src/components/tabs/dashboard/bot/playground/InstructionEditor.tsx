@@ -64,16 +64,16 @@ export const InstructionEditor = ({
   }, [updateBotInstructionsErrorMessage]);
 
   return (
-    <div className="h-full col-span-3 flex flex-col">
+    <div className="flex-1 basis-3/5 flex flex-col">
       <InstructionEditorHeader />
       <form
-        className="flex flex-col flex-1 gap-3 relative"
+        className="flex flex-col flex-1 gap-3 relative overflow-hidden"
         onSubmit={handleSubmit}
       >
         {updatingBotInstructions && <Loader />}
         <div
           className={cn(
-            "w-full flex p-4 items-center gap-3 border border-[#F3F4F6] bg-[#042f5b0d] hover:bg-[#042f5b0d] rounded-[12px] relative cursor-pointer flex-1",
+            "w-full flex p-4 items-center gap-3 border border-[#F3F4F6] bg-[#042f5b0d] hover:bg-[#042f5b0d] rounded-[12px] relative cursor-pointer flex-1 overflow-hidden",
             {
               "border-[#2563EB]": isFocused,
               "bg-[#F9FAFB]": disabled,
@@ -86,7 +86,7 @@ export const InstructionEditor = ({
             onBlur={handleInputBlur}
             onFocus={handleInputFocus}
             className={cn(
-              "w-full p-0 outline-none outline-[0px] border-none border-[0px] bg-transparent h-full shadow-none font-normal text-sm text-[#1F2937] placeholder:text-[#6B7280] font-sfpro not-focus:text-[#1f293771]",
+              "w-full p-0 outline-none outline-[0px] border-none border-[0px] bg-transparent h-full shadow-none font-normal text-sm text-[#1F2937] placeholder:text-[#6B7280] font-sfpro not-focus:text-[#1f293771] resize-none",
               {
                 "text-[#D1D5DB]": disabled,
                 "placeholder:text-[#D1D5DB]": disabled,

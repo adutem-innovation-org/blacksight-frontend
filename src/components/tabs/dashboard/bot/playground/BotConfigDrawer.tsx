@@ -68,12 +68,14 @@ interface BotConfigDrawerProps {
   isOpen: boolean;
   onOpenChange: (value: boolean) => void;
   currentBot: Bot;
+  currentConversation: { entity: "user" | "bot"; text: string }[] | null;
 }
 
 export function BotConfigDrawer({
   isOpen,
   onOpenChange,
   currentBot,
+  currentConversation,
 }: BotConfigDrawerProps) {
   const { dispatch, getState } = useStore();
   const {

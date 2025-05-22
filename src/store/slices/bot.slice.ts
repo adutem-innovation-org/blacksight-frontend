@@ -1,6 +1,8 @@
 import { initialBotState } from "@/constants";
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  clearCurrentConversationReducer,
+  newMessageReducer,
   resetConfigureBotReducer,
   resetGetAllBotsReducer,
   resetGetBotAnalyticsReducer,
@@ -26,6 +28,8 @@ const botSlice = createSlice({
     setCurrentBot: setCurrentBotReducer,
     resetUpdateBotConfig: resetUpdateBotConfigReducer,
     resetUpdateBotInstructions: resetUpdateBotInstructionsReducer,
+    newMessage: newMessageReducer,
+    clearCurrentConversation: clearCurrentConversationReducer,
   },
   extraReducers(builder) {
     getBotAnalyticsBuilder(builder);
@@ -44,4 +48,6 @@ export const {
   setCurrentBot,
   resetUpdateBotConfig,
   resetUpdateBotInstructions,
+  newMessage,
+  clearCurrentConversation,
 } = botSlice.actions;

@@ -40,3 +40,15 @@ export const resetUpdateBotInstructionsReducer = (state: BotState) => {
   state.updateBotConfigErrors = {};
   state.updateBotInstructionsErrorMessage = "";
 };
+
+export const newMessageReducer = (
+  state: BotState,
+  action: PayloadAction<{ entity: "user" | "bot"; text: string }>
+) => {
+  state.currentConversation = state.currentConversation || [];
+  state.currentConversation.push(action.payload);
+};
+
+export const clearCurrentConversationReducer = (state: BotState) => {
+  state.currentConversation = null;
+};

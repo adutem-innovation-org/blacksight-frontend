@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { BotTabsEnum } from "@/enums";
 import { useStore } from "@/hooks";
-import { changeBotTab, setCurrentBot } from "@/store";
+import { changeBotTab, clearCurrentConversation, setCurrentBot } from "@/store";
 import { ArrowLeft, ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import { InstructionEditor } from "./InstructionEditor";
@@ -62,13 +62,14 @@ export const PlaygroundHeader = ({ goBack }: { goBack: () => void }) => {
 export const BotPlaygroundTab = () => {
   const { dispatch, getState } = useStore();
   const [botConfigOpen, setBotConfigOpen] = useState(() => false);
-  const { currentBot } = getState("Bot");
+  const { currentBot, currentConversation } = getState("Bot");
 
   const openBotConfig = () => setBotConfigOpen(true);
 
   const goBack = () => {
-    dispatch(changeBotTab(BotTabsEnum.ANALYTICS)),
-      dispatch(setCurrentBot(null));
+    dispatch(changeBotTab(BotTabsEnum.ANALYTICS));
+    dispatch(setCurrentBot(null));
+    dispatch(clearCurrentConversation());
   };
 
   useEffect(() => {
@@ -80,13 +81,14 @@ export const BotPlaygroundTab = () => {
   return (
     <div className="flex flex-col h-full overflow-hidden bg-white rounded-[12px]">
       <PlaygroundHeader goBack={goBack} />
-      <div className="flex-1 grid grid-cols-5 px-10 py-8 gap-10">
+      <div className="flex-1 flex px-10 py-8 gap-10 overflow-hidden">
         <InstructionEditor />
         <ChatBot openBotConfig={openBotConfig} />
         <BotConfigDrawer
           isOpen={botConfigOpen}
           onOpenChange={setBotConfigOpen}
           currentBot={currentBot!}
+          currentConversation={currentConversation}
         />
       </div>
     </div>
