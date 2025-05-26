@@ -1,6 +1,8 @@
 import { BotApiService } from "@/apis";
 import {
+  AskChatbotBody,
   ConfigureBotBody,
+  StartConversationBody,
   UpdateBotConfigBody,
   UpdateBotInstructionsBody,
 } from "@/interfaces";
@@ -68,6 +70,60 @@ export const updateBotInstructions = createAsyncThunk(
       return res.bot;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message as string);
+    }
+  }
+);
+
+export const startConversation = createAsyncThunk(
+  "start_conversation",
+  async (data: StartConversationBody, { rejectWithValue }) => {
+    try {
+      const res = await botApiService.startConversation(data);
+      return res;
+    } catch (error: any) {
+      return rejectWithValue(error.message as string);
+    }
+  }
+);
+
+export const askChatbot = createAsyncThunk(
+  "ask_chatbot",
+  async (data: AskChatbotBody, { rejectWithValue, getState }) => {
+    try {
+      const res = await botApiService.askChatbot(data);
+      return res.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message as string);
+    }
+  }
+);
+
+export const getTrainingConversation = createAsyncThunk(
+  "get_training_conversation",
+  async (botId: string, { rejectWithValue }) => {
+    try {
+      const res = await botApiService.getTrainingConversation(botId);
+      return res;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const clearTrainingConversation = createAsyncThunk(
+  "clear_training_conversation",
+  async (
+    { botId, conversationId }: { botId: string; conversationId: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      const res = await botApiService.clearTrainingConversation(
+        botId,
+        conversationId
+      );
+      return res.conversation;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
     }
   }
 );

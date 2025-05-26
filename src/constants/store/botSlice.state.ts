@@ -22,6 +22,7 @@ export const initialBotState: BotState = {
   // Playground
   currentBot: null,
   currentConversation: null,
+  currentConversationId: null,
 
   // Update bot configuration
   updatingBotConfig: false,
@@ -34,4 +35,22 @@ export const initialBotState: BotState = {
   botInstructionsUpdated: false,
   updateBotInstructionsErrors: {},
   updateBotInstructionsErrorMessage: "",
+
+  // Start conversation
+  startingConversation: false,
+  startConversationError: "",
+
+  // Ask chatbot
+  askingChatbot: false,
+  askChatbotError: "",
+
+  // Get training conversation
+  fetchingTrainingConversation: false,
+  trainingConversationFetched: false,
+  fetchTrainingConversationError: "",
+
+  // Clear training conversation
+  clearingTrainingConversation: false,
+  trainingConversationCleared: false,
+  clearTrainingConversationError: "",
 };

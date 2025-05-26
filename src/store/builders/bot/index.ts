@@ -3,3 +3,7 @@ export * from "./get-all-bots.builder";
 export * from "./configure-bot.builder";
 export * from "./update-bot-config.builder";
 export * from "./update-bot-instructions.builder";
+export * from "./ask-chatbot.builder";
+export * from "./start-conversation.builder";
+export * from "./get-training-conversation.builder";
+export * from "./clear-training-conversation.builder";

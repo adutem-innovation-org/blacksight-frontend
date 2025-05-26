@@ -9,11 +9,19 @@ import {
   resetUpdateBotConfigReducer,
   resetUpdateBotInstructionsReducer,
   setCurrentBotReducer,
+  resetStartConversationReducer,
+  resetAskChatbotReducer,
+  resetGetTrainingConversationReducer,
+  resetClearTrainingConversationReducer,
 } from "../reducers";
 import {
+  askChatbotBuilder,
+  clearTrainingConversationBuilder,
   configureBotBuilder,
   getAllBotsBuilder,
   getBotAnalyticsBuilder,
+  getTrainingConversationBuilder,
+  startConversationBuilder,
   updateBotConfigBuilder,
   updateBotInstructionsBuilder,
 } from "../builders";
@@ -30,6 +38,10 @@ const botSlice = createSlice({
     resetUpdateBotInstructions: resetUpdateBotInstructionsReducer,
     newMessage: newMessageReducer,
     clearCurrentConversation: clearCurrentConversationReducer,
+    resetStartConversation: resetStartConversationReducer,
+    resetAskChatbot: resetAskChatbotReducer,
+    resetGetTrainingConversation: resetGetTrainingConversationReducer,
+    resetClearTrainingConversation: resetClearTrainingConversationReducer,
   },
   extraReducers(builder) {
     getBotAnalyticsBuilder(builder);
@@ -37,6 +49,10 @@ const botSlice = createSlice({
     configureBotBuilder(builder);
     updateBotConfigBuilder(builder);
     updateBotInstructionsBuilder(builder);
+    startConversationBuilder(builder);
+    askChatbotBuilder(builder);
+    getTrainingConversationBuilder(builder);
+    clearTrainingConversationBuilder(builder);
   },
 });
 
@@ -50,4 +66,6 @@ export const {
   resetUpdateBotInstructions,
   newMessage,
   clearCurrentConversation,
+  resetClearTrainingConversation,
+  resetGetTrainingConversation,
 } = botSlice.actions;

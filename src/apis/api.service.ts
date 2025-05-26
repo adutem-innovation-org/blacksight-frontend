@@ -37,17 +37,25 @@ export class ApiService {
     return this.apiClient.get<any, ResData>(url, { params });
   };
 
-  post = <ReqData, ResData>(url: string, data?: ReqData) => {
-    return this.apiClient.post<any, ResData, ReqData>(url, data);
+  post = <ReqData, ResData>(
+    url: string,
+    data?: ReqData,
+    config?: AxiosRequestConfig
+  ) => {
+    return this.apiClient.post<any, ResData, ReqData>(url, data, config);
   };
 
-  postWithFile = <ReqData, ResData>(url: string, data?: ReqData, configs?: AxiosRequestConfig) => {
+  postWithFile = <ReqData, ResData>(
+    url: string,
+    data?: ReqData,
+    configs?: AxiosRequestConfig
+  ) => {
     const config = {
       headers: {
         ...this.apiClient.defaults.headers,
         "Content-Type": "multipart/form-data",
       },
-      ...configs
+      ...configs,
     };
     return this.apiClient.post<ResData, ResData>(
       url,

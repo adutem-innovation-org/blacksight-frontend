@@ -1,3 +1,4 @@
+import { RoleEnum } from "@/enums";
 import { Bot, BotState } from "@/interfaces";
 import { PayloadAction } from "@reduxjs/toolkit";
 
@@ -43,7 +44,7 @@ export const resetUpdateBotInstructionsReducer = (state: BotState) => {
 
 export const newMessageReducer = (
   state: BotState,
-  action: PayloadAction<{ entity: "user" | "bot"; text: string }>
+  action: PayloadAction<{ role: RoleEnum; content: string }>
 ) => {
   state.currentConversation = state.currentConversation || [];
   state.currentConversation.push(action.payload);
@@ -51,4 +52,27 @@ export const newMessageReducer = (
 
 export const clearCurrentConversationReducer = (state: BotState) => {
   state.currentConversation = null;
+  state.currentConversationId = null;
+};
+
+export const resetStartConversationReducer = (state: BotState) => {
+  state.startingConversation = false;
+  state.startConversationError = "";
+};
+
+export const resetAskChatbotReducer = (state: BotState) => {
+  state.askingChatbot = false;
+  state.askChatbotError = "";
+};
+
+export const resetClearTrainingConversationReducer = (state: BotState) => {
+  state.clearingTrainingConversation = false;
+  state.trainingConversationCleared = false;
+  state.clearTrainingConversationError = "";
+};
+
+export const resetGetTrainingConversationReducer = (state: BotState) => {
+  state.fetchingTrainingConversation = false;
+  state.trainingConversationFetched = false;
+  state.fetchTrainingConversationError = "";
 };

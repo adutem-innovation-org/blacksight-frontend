@@ -22,6 +22,7 @@ export type BotState = {
 
   // Playground
   currentBot: Bot | null;
+  currentConversationId: string | null;
   currentConversation: any[] | null;
 
   // Update bot configuration
@@ -35,4 +36,22 @@ export type BotState = {
   botInstructionsUpdated: boolean;
   updateBotInstructionsErrors: Record<string, string>;
   updateBotInstructionsErrorMessage: string;
+
+  // Start conversation
+  startingConversation: boolean;
+  startConversationError: string;
+
+  // Ask chatbot
+  askingChatbot: boolean;
+  askChatbotError: string;
+
+  // Get training conversation
+  fetchingTrainingConversation: boolean;
+  trainingConversationFetched: boolean;
+  fetchTrainingConversationError: string;
+
+  // Clear training conversation
+  clearingTrainingConversation: boolean;
+  trainingConversationCleared: boolean;
+  clearTrainingConversationError: string;
 };

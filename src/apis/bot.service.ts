@@ -1,8 +1,14 @@
 import {
+  AskChatbotBody,
+  AskChatbotRes,
   BotAnalyticsRes,
+  ClearTrainingConversationRes,
   ConfigureBotBody,
   ConfigureBotRes,
   GetBotsRes,
+  GetTrainingConversationRes,
+  StartConversationBody,
+  StartConversationRes,
   UpdateBotConfigBody,
   UpdateBotConfigRes,
   UpdateBotInstructionsBody,
@@ -55,5 +61,32 @@ export class BotApiService {
       UpdateBotInstructionsBody,
       UpdateBotInstructionsRes
     >(`${this.urls.UPDATE_BOT_INSTRUCTIONS}/${id}`, data);
+  };
+
+  getTrainingConversation = (botId: string) => {
+    return this.apiService.get<GetTrainingConversationRes>(
+      `${this.urls.TRAINING_CONVERSATION}/${botId}`
+    );
+  };
+
+  clearTrainingConversation = (botId: string, conversationId: string) => {
+    return this.apiService.delete<ClearTrainingConversationRes>(
+      `${this.urls.TRAINING_CONVERSATION}/${botId}/${conversationId}`
+    );
+  };
+
+  startConversation = (data: StartConversationBody) => {
+    return this.apiService.post<StartConversationBody, StartConversationRes>(
+      this.urls.START_CONVERSATION,
+      data
+    );
+  };
+
+  askChatbot = (data: AskChatbotBody) => {
+    return this.apiService.post<AskChatbotBody, AskChatbotRes>(
+      this.urls.ASK_CHATBOT,
+      data,
+      { timeout: 40000 }
+    );
   };
 }

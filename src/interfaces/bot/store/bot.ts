@@ -1,4 +1,4 @@
-import { BotStatus } from "@/enums";
+import { BotStatus, RoleEnum } from "@/enums";
 
 export type Bot = {
   _id: string;
@@ -17,4 +17,16 @@ export type Bot = {
   };
   createdAt: string;
   updatedAt: string;
+};
+
+export type Message = {
+  role: RoleEnum;
+  content: string;
+};
+
+export type Conversation = {
+  botId: string;
+  businessId: string;
+  conversationId: string;
+  messages: Message[];
 };
