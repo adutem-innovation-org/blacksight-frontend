@@ -277,7 +277,7 @@ export const ChatBot = ({ openBotConfig }: { openBotConfig: () => void }) => {
 
   useEffect(() => {
     if (fetchTrainingConversationError) {
-      toast.error(fetchTrainingConversationError);
+      // toast.error(fetchTrainingConversationError);
       dispatch(resetGetTrainingConversation());
       if (
         (!currentConversation || currentConversation.length === 0) &&
