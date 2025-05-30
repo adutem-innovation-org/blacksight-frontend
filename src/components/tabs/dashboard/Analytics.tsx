@@ -22,7 +22,7 @@ const AnalyticsHeader = () => {
     if (!user || !analytics) return [];
     return analyticsData[user.userType].map((data) => ({
       ...data,
-      count: analytics[data.id],
+      count: analytics.data[data.id],
     }));
   }, [analytics, user]);
 
@@ -82,7 +82,7 @@ export const AnalyticsTab = () => {
                   </p>
                 </div>
                 <div className="h-full rounded-xl flex items-end justify-start pt-5">
-                  <BookingVolumeChart />
+                  <BookingVolumeChart stat={analytics?.bookingStat} />
                 </div>
               </div>
 

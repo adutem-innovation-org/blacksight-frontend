@@ -13,7 +13,7 @@ export const getAnalytics = createAsyncThunk(
           ? analyticsApiService.getBusinessAnalytics
           : analyticsApiService.getAdminAnalytics;
       const data = await analyticsApiHandler();
-      return data.data;
+      return data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message);
     }
