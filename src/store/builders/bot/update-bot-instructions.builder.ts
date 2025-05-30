@@ -22,7 +22,7 @@ export const updateBotInstructionsBuilder = (
   });
 
   builder.addCase(updateBotInstructions.rejected, (state, action) => {
-    const error = JSON.parse(action.payload as string);
+    const error = action.payload as any;
     state.updatingBotInstructions = false;
     state.botInstructionsUpdated = false;
     state.updateBotInstructionsErrors = error.errors;

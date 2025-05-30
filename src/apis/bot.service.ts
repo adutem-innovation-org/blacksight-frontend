@@ -5,6 +5,8 @@ import {
   ClearTrainingConversationRes,
   ConfigureBotBody,
   ConfigureBotRes,
+  DeactivateBotRes,
+  DeleteBotRes,
   GetBotsRes,
   GetTrainingConversationRes,
   StartConversationBody,
@@ -61,6 +63,18 @@ export class BotApiService {
       UpdateBotInstructionsBody,
       UpdateBotInstructionsRes
     >(`${this.urls.UPDATE_BOT_INSTRUCTIONS}/${id}`, data);
+  };
+
+  deactivateBot = (botId: string) => {
+    return this.apiService.update<any, DeactivateBotRes>(
+      `${this.urls.DEACTIVATE_BOT}/${botId}`
+    );
+  };
+
+  deleteBot = (botId: string) => {
+    return this.apiService.delete<DeleteBotRes>(
+      `${this.urls.DELETE_BOT}/${botId}`
+    );
   };
 
   getTrainingConversation = (botId: string) => {

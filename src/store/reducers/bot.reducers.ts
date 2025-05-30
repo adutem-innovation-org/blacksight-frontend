@@ -42,6 +42,18 @@ export const resetUpdateBotInstructionsReducer = (state: BotState) => {
   state.updateBotInstructionsErrorMessage = "";
 };
 
+export const resetDeactivateBotReducer = (state: BotState) => {
+  state.deactivatingBot = false;
+  state.botDeactivated = false;
+  state.deactivateBotError = "";
+};
+
+export const resetDeleteBotReducer = (state: BotState) => {
+  state.deletingBot = false;
+  state.botDeleted = false;
+  state.deleteBotError = "";
+};
+
 export const newMessageReducer = (
   state: BotState,
   action: PayloadAction<{ role: RoleEnum; content: string }>

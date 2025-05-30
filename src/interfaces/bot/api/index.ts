@@ -7,3 +7,5 @@ export * from "./start-conversation";
 export * from "./ask-chatbot";
 export * from "./get-training-conversation";
 export * from "./clear-training-conversation";
+export * from "./deactivate-bot";
+export * from "./delete-bot";

@@ -1,25 +1,96 @@
 import { Badge } from "@/components/badge";
 import { Button } from "@/components/form";
+import { CustomDropdownItem } from "@/components/popups";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { botImages } from "@/constants";
 import { BotTabsEnum } from "@/enums";
 import { getRandomArrayItem } from "@/helpers";
 import { Bot } from "@/interfaces";
 import { changeBotTab, setCurrentBot } from "@/store";
-import { EllipsisVertical } from "lucide-react";
-import { useMemo } from "react";
+import { Ban, Cog, EllipsisVertical, Trash2 } from "lucide-react";
+import { useMemo, useState } from "react";
 import { useStore } from "react-redux";
+
+type ActionsProps = {
+  onEditConfiguration: () => void;
+  onDelete: () => void;
+  onDeactivate: () => void;
+};
+
+const Actions = ({
+  onEditConfiguration,
+  onDelete,
+  onDeactivate,
+}: ActionsProps) => {
+  return (
+    <DropdownMenu modal={false}>
+      <DropdownMenuTrigger className="border-none outline-none cursor-pointer hover:bg-gray-100 p-1 rounded-md">
+        <EllipsisVertical />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        className="px-2 py-2.5 rounded-lg border-none min-w-50 bg-white z-1000 shadow-[0px_4px_16px_0px_#0000001f]"
+        align="end"
+      >
+        <CustomDropdownItem
+          placeholder="Edit Configuration"
+          childrenPosition="behind"
+          className={"py-2"}
+          onClick={onEditConfiguration}
+        >
+          <Cog />
+        </CustomDropdownItem>
+        <CustomDropdownItem
+          placeholder="Deactivate"
+          childrenPosition="behind"
+          className={"py-2"}
+          onClick={onDeactivate}
+        >
+          <Ban />
+        </CustomDropdownItem>
+        <CustomDropdownItem
+          placeholder="Delete"
+          childrenPosition="behind"
+          className={"py-2"}
+          onClick={onDelete}
+        >
+          <Trash2 />
+        </CustomDropdownItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
 
 interface BotCardProps {
   bot: Bot;
+  editConfiguration: (bot: Bot) => void;
+  onDeleteBot: (bot: Bot) => void;
+  onDeactivateBot: (bot: Bot) => void;
 }
 
-export const BotCard = ({ bot }: BotCardProps) => {
+export const BotCard = ({
+  bot,
+  editConfiguration,
+  onDeleteBot,
+  onDeactivateBot,
+}: BotCardProps) => {
   const { dispatch } = useStore();
   const imageUrl = useMemo(() => getRandomArrayItem(botImages), []);
+
   const goToPlayground = () => {
     dispatch(setCurrentBot(bot));
     dispatch(changeBotTab(BotTabsEnum.PLAYGROUND));
   };
+
+  const onEditConfiguration = () => editConfiguration(bot);
+
+  const onDelete = () => onDeleteBot(bot);
+
+  const onDeactivate = () => onDeactivateBot(bot);
+
   return (
     <div className="bg-white rounded-md overflow-hidden flex flex-col shadow-md">
       {/* Bot image container */}
@@ -28,7 +99,11 @@ export const BotCard = ({ bot }: BotCardProps) => {
         <div className="absolute z-50 top-0 left-0 w-full h-full p-4">
           <div className="flex justify-between">
             <Badge className="capitalize">{bot.status}</Badge>
-            <EllipsisVertical />
+            <Actions
+              onEditConfiguration={onEditConfiguration}
+              onDelete={onDelete}
+              onDeactivate={onDeactivate}
+            />
           </div>
         </div>
         <img src={imageUrl} className="w-[90%] h-[200px] object-contain" />

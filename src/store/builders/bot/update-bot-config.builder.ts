@@ -22,7 +22,7 @@ export const updateBotConfigBuilder = (
   });
 
   builder.addCase(updateBotConfig.rejected, (state, action) => {
-    const error = JSON.parse(action.payload as string);
+    const error = action.payload as any;
     state.updatingBotConfig = false;
     state.botConfigUpdated = false;
     state.updateBotConfigErrors = error.errors;

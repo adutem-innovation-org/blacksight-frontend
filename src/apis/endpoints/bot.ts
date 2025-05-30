@@ -8,3 +8,6 @@ export const START_CONVERSATION = "/conversation/training/start";
 export const ASK_CHATBOT = "/conversation/training/ask-chatbot";
 
 export const TRAINING_CONVERSATION = "/conversation/training";
+
+export const DELETE_BOT = "/delete";
+export const DEACTIVATE_BOT = "/deactivate";

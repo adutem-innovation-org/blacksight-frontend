@@ -62,7 +62,7 @@ export const PlaygroundHeader = ({ goBack }: { goBack: () => void }) => {
 export const BotPlaygroundTab = () => {
   const { dispatch, getState } = useStore();
   const [botConfigOpen, setBotConfigOpen] = useState(() => false);
-  const { currentBot, currentConversation } = getState("Bot");
+  const { currentBot } = getState("Bot");
 
   const openBotConfig = () => setBotConfigOpen(true);
 
@@ -88,7 +88,6 @@ export const BotPlaygroundTab = () => {
           isOpen={botConfigOpen}
           onOpenChange={setBotConfigOpen}
           currentBot={currentBot!}
-          currentConversation={currentConversation}
         />
       </div>
     </div>

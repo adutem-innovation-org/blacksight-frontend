@@ -8,36 +8,38 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useStore } from "@/hooks";
 
-interface DeleteKnowledgeBaseDialogProps {
+interface DeleteDialogProps {
   isOpen: boolean;
   onOpenChange: (value: boolean) => void;
   cancelDeleteOperation: () => void;
   confirmDeleteOperation: () => void;
+  loading: boolean;
+  title?: string;
+  description?: string;
 }
 
-export const DeleteKnowledgeBaseDialog = ({
+export const DeleteDialog = ({
   isOpen,
   onOpenChange,
   cancelDeleteOperation,
   confirmDeleteOperation,
-}: DeleteKnowledgeBaseDialogProps) => {
-  const { getState } = useStore();
-  const { deletingKnowledgeBase } = getState("KnowledgeBase");
-
-  console.log(deletingKnowledgeBase);
+  loading,
+  title,
+  description,
+}: DeleteDialogProps) => {
   return (
     <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
       <AlertDialogContent onOpenAutoFocus={(e) => e.preventDefault()}>
-        {deletingKnowledgeBase && <Loader />}
+        {loading && <Loader />}
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>
+            {title || "Are you absolutely sure?"}
+          </AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            knowledge base and deactivate every bot that are connect to it only.
+            {description ||
+              "This action cannot be undone. This will permanently delete this resource and it's associated data"}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

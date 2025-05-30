@@ -1,6 +1,7 @@
 import { BotApiService } from "@/apis";
 import {
   AskChatbotBody,
+  Bot,
   ConfigureBotBody,
   StartConversationBody,
   UpdateBotConfigBody,
@@ -54,7 +55,7 @@ export const updateBotConfig = createAsyncThunk(
       const res = await botApiService.updateBotConfig(id, data);
       return res.bot;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message as string);
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
@@ -69,7 +70,7 @@ export const updateBotInstructions = createAsyncThunk(
       const res = await botApiService.updateBotInstructions(id, data);
       return res.bot;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message as string);
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
@@ -122,6 +123,31 @@ export const clearTrainingConversation = createAsyncThunk(
         conversationId
       );
       return res.conversation;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deactivateBot = createAsyncThunk<
+  Bot,
+  string,
+  { rejectValue: string }
+>("deactivate_bot", async (id: string, { rejectWithValue }) => {
+  try {
+    const res = await botApiService.deactivateBot(id);
+    return res.bot;
+  } catch (error: any) {
+    return rejectWithValue(error.message);
+  }
+});
+
+export const deleteBot = createAsyncThunk<Bot, string, { rejectValue: string }>(
+  "delete_bot",
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const res = await botApiService.deleteBot(id);
+      return res.bot;
     } catch (error: any) {
       return rejectWithValue(error.message);
     }

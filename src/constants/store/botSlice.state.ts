@@ -36,6 +36,16 @@ export const initialBotState: BotState = {
   updateBotInstructionsErrors: {},
   updateBotInstructionsErrorMessage: "",
 
+  // Deactivate bot
+  deactivatingBot: false,
+  botDeactivated: false,
+  deactivateBotError: "",
+
+  // Delete bot
+  deletingBot: false,
+  botDeleted: false,
+  deleteBotError: "",
+
   // Start conversation
   startingConversation: false,
   startConversationError: "",

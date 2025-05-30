@@ -68,14 +68,12 @@ interface BotConfigDrawerProps {
   isOpen: boolean;
   onOpenChange: (value: boolean) => void;
   currentBot: Bot;
-  currentConversation: { entity: "user" | "bot"; text: string }[] | null;
 }
 
 export function BotConfigDrawer({
   isOpen,
   onOpenChange,
   currentBot,
-  currentConversation,
 }: BotConfigDrawerProps) {
   const { dispatch, getState } = useStore();
   const {
@@ -202,6 +200,7 @@ export function BotConfigDrawer({
   }, [botConfigUpdated]);
 
   useEffect(() => {
+    console.log("Failed", updateBotConfigErrorMessage, updateBotConfigErrors);
     if (updateBotConfigErrorMessage) {
       toast.error(updateBotConfigErrorMessage);
       if (Object.keys(updateBotConfigErrors ?? {}).length) {

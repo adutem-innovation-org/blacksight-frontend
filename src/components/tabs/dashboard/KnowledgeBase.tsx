@@ -15,13 +15,13 @@ import { Loader } from "@/components/progress";
 import { EmptyRecordsTemplate } from "@/components/templates";
 import {
   AddKnowledgeBaseForm,
-  DeleteKnowledgeBaseDialog,
   KnowledgeBaseDetailsDrawer,
   KnowledgeBaseTable,
 } from "./knowledge-base";
 import { UserTypes } from "@/enums";
 import databaseIcon from "@/assets/images/database.png";
 import toast from "react-hot-toast";
+import { DeleteDialog } from "@/components/popups";
 
 const Header = ({ openCreateForm }: { openCreateForm: () => void }) => {
   const { user } = useProfile();
@@ -125,7 +125,10 @@ export const KnowledgeBaseTab = () => {
     closeDeleteModal();
     setKnowledgeBaseToDelete(null);
     // Reset pointer event on page ✅ Radix bug
-    setTimeout(() => (document.body.style.pointerEvents = ""), 100);
+    let tmo = setTimeout(() => {
+      document.body.style.pointerEvents = "";
+      clearTimeout(tmo);
+    }, 100);
   };
 
   const confirmDeleteOperation = () => {
@@ -201,11 +204,13 @@ export const KnowledgeBaseTab = () => {
           onOpenChange={setCreateFormOpen}
         />
         {knowledgeBaseToDelete && (
-          <DeleteKnowledgeBaseDialog
+          <DeleteDialog
             isOpen={deleteModalOpen}
             onOpenChange={setDeleteModalOpen}
             cancelDeleteOperation={endDeleteOperation}
             confirmDeleteOperation={confirmDeleteOperation}
+            loading={deletingKnowledgeBase}
+            description="This action cannot be undone. This will permanently delete your knowledge base and deactivate every bot that are connect to it only."
           />
         )}
       </div>

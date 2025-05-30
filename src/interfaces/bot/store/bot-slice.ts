@@ -37,6 +37,16 @@ export type BotState = {
   updateBotInstructionsErrors: Record<string, string>;
   updateBotInstructionsErrorMessage: string;
 
+  // Deactivate bot
+  deactivatingBot: boolean;
+  botDeactivated: boolean;
+  deactivateBotError: string;
+
+  // Delete bot
+  deletingBot: boolean;
+  botDeleted: boolean;
+  deleteBotError: string;
+
   // Start conversation
   startingConversation: boolean;
   startConversationError: string;
