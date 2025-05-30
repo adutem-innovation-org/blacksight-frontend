@@ -1,4 +1,5 @@
 import { ReminderState } from "@/interfaces";
+import { stat } from "fs";
 
 export const resetGetReminderAnalyticsReducer = (state: ReminderState) => {
   state.fetchingReminderAnalytics = false;
@@ -17,4 +18,23 @@ export const resetCreateReminderReducer = (state: ReminderState) => {
   state.reminderCreated = false;
   state.createReminderErrors = {};
   state.createReminderErrorMessage = "";
+};
+
+export const resetUpdateReminderReducer = (state: ReminderState) => {
+  state.updatingReminder = false;
+  state.reminderUpdated = false;
+  state.updateReminderErrorMessage = "";
+  state.updateReminderErrors = {};
+};
+
+export const resetUpdateReminderStatusReducer = (state: ReminderState) => {
+  state.updatingReminderStatus = false;
+  state.reminderStatusUpdated = false;
+  state.updateReminderStatusError = "";
+};
+
+export const resetDeleteReminderReducer = (state: ReminderState) => {
+  state.deletingReminder = false;
+  state.reminderDeleted = false;
+  state.deleteReminderError = "";
 };

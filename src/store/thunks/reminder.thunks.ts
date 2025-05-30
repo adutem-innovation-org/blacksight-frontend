@@ -1,4 +1,5 @@
 import { ReminderApiService } from "@/apis";
+import { Reminder } from "@/interfaces";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const reminderApiService = ReminderApiService.getInstance();
@@ -38,3 +39,54 @@ export const createReminder = createAsyncThunk(
     }
   }
 );
+
+export const updateReminder = createAsyncThunk<
+  Reminder,
+  { id: string; data: FormData },
+  { rejectValue: { message: string; errors?: Record<string, string> } }
+>(
+  "update_reminder",
+  async ({ id, data }: { id: string; data: FormData }, { rejectWithValue }) => {
+    try {
+      const response = await reminderApiService.updateReminder(id, data);
+      return response.reminder;
+    } catch (error: any) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const updateReminderStatus = createAsyncThunk<
+  Reminder,
+  { id: string; status: boolean },
+  { rejectValue: string }
+>(
+  "update_reminder_status",
+  async (
+    { id, status }: { id: string; status: boolean },
+    { rejectWithValue }
+  ) => {
+    try {
+      const updateApi = status
+        ? reminderApiService.activateReminder
+        : reminderApiService.deactivateReminder;
+      const response = await updateApi(id);
+      return response.reminder;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deleteReminder = createAsyncThunk<
+  Reminder,
+  string,
+  { rejectValue: string }
+>("delete_reminder", async (id: string, { rejectWithValue }) => {
+  try {
+    const res = await reminderApiService.deleteReminder(id);
+    return res.reminder;
+  } catch (error: any) {
+    return rejectWithValue(error.message);
+  }
+});

@@ -38,23 +38,30 @@ import {
   ArrowDownToLine,
   ArrowLeft,
   ArrowRight,
+  Ban,
   Calendar,
   ChevronDown,
+  CircleFadingArrowUp,
   Ellipsis,
   ListFilter,
+  PencilLine,
   Settings,
+  Trash2,
   X,
 } from "lucide-react";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Pagination, Group } from "@mantine/core";
-// import reminderData from "@/data/reminders.json";
 import pinLogo from "@/assets/svgs/pin.svg";
 import { Reminder } from "@/interfaces";
 import { cn } from "@/lib/utils";
 import { useStore } from "@/hooks";
 
-// const reminders = reminderData as Reminder[];
+type ColumnMeta = {
+  onEditReminder: (reminder: Reminder) => void;
+  setActiveStatus: (reminder: Reminder, status: boolean) => void;
+  onDeleteReminder: (reminder: Reminder) => void;
+};
 
 export const columns: ColumnDef<Reminder>[] = [
   {
@@ -167,7 +174,6 @@ export const columns: ColumnDef<Reminder>[] = [
       return filterOptions.includes(columnValue);
     },
   },
-
   {
     accessorKey: "remindAt",
     header: ({ column }) => {
@@ -210,10 +216,14 @@ export const columns: ColumnDef<Reminder>[] = [
   {
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => {
+    cell: ({ row, table }) => {
+      const meta = table.options.meta as ColumnMeta;
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger className="border-none outline-none">
+        <DropdownMenu modal={false}>
+          <DropdownMenuTrigger
+            className="border-none outline-none"
+            onClick={(e) => e.stopPropagation()}
+          >
             <Button variant="ghost" className="h-8 w-8 p-0">
               <Ellipsis />
             </Button>
@@ -223,24 +233,38 @@ export const columns: ColumnDef<Reminder>[] = [
             align="end"
           >
             <CustomDropdownItem
-              // onClick={() => navigator.clipboard.writeText(payment.id)}
               placeholder="Edit"
               onClick={(e: any) => {
                 e.stopPropagation();
+                meta?.onEditReminder(row.original);
               }}
-            />
-            <CustomDropdownItem
-              placeholder="Delete"
-              onClick={(e: any) => {
-                e.stopPropagation();
-              }}
-            />
+              childrenPosition="behind"
+              className={"py-2"}
+            >
+              <PencilLine />
+            </CustomDropdownItem>
             <CustomDropdownItem
               placeholder={row.getValue("isActive") ? "Deactivate" : "Activate"}
               onClick={(e: any) => {
                 e.stopPropagation();
+                meta?.setActiveStatus(row.original, !row.getValue("isActive"));
               }}
-            />
+              childrenPosition="behind"
+              className={"py-2"}
+            >
+              {row.getValue("isActive") ? <Ban /> : <CircleFadingArrowUp />}
+            </CustomDropdownItem>
+            <CustomDropdownItem
+              placeholder="Delete"
+              onClick={(e: any) => {
+                e.stopPropagation();
+                meta?.onDeleteReminder(row.original);
+              }}
+              childrenPosition="behind"
+              className={"py-2"}
+            >
+              <Trash2 />
+            </CustomDropdownItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -257,11 +281,17 @@ const badgeVariantMap: Record<string, any> = {
 interface DashboardTableProps {
   viewReminderDetails: (data: Reminder) => void;
   openCreateForm: () => void;
+  onEditReminder: (reminder: Reminder) => void;
+  setActiveStatus: (reminder: Reminder, status: boolean) => void;
+  onDeleteReminder: (reminder: Reminder) => void;
 }
 
 export function ReminderTable({
   viewReminderDetails,
   openCreateForm,
+  onEditReminder,
+  setActiveStatus,
+  onDeleteReminder,
 }: DashboardTableProps) {
   const { getState } = useStore();
   const { reminders } = getState("Reminder");
@@ -280,6 +310,11 @@ export function ReminderTable({
   const table = useReactTable({
     data: reminders || [],
     columns,
+    meta: {
+      onEditReminder,
+      setActiveStatus,
+      onDeleteReminder,
+    },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),

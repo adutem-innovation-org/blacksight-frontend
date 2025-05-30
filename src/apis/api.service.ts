@@ -72,6 +72,26 @@ export class ApiService {
     return this.apiClient.patch<any, ResData, ReqData>(url, data);
   };
 
+  updateWithFile = <ReqData, ResData>(
+    url: string,
+    data?: ReqData,
+    configs?: AxiosRequestConfig
+  ) => {
+    const config = {
+      headers: {
+        ...this.apiClient.defaults.headers,
+        "Content-Type": "multipart/form-data",
+      },
+      ...configs,
+    };
+
+    return this.apiClient.patch<ResData, ResData>(
+      url,
+      data,
+      config as AxiosRequestConfig<FormData>
+    );
+  };
+
   delete = <ResData>(url: string, config?: {}) => {
     return this.apiClient.delete<any, ResData>(url, { ...config });
   };

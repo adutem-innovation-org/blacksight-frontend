@@ -18,4 +18,20 @@ export const initialReminderState: ReminderState = {
   reminderCreated: false,
   createReminderErrors: {},
   createReminderErrorMessage: "",
+
+  // Update reminder
+  updatingReminder: false,
+  reminderUpdated: false,
+  updateReminderErrors: {},
+  updateReminderErrorMessage: "",
+
+  // Update reminder status
+  updatingReminderStatus: false,
+  reminderStatusUpdated: false,
+  updateReminderStatusError: "",
+
+  // Delete reminder
+  deletingReminder: false,
+  reminderDeleted: false,
+  deleteReminderError: "",
 };

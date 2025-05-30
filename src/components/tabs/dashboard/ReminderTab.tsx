@@ -8,16 +8,24 @@ import {
   CreateReminderForm,
   ReminderDetailsDrawer,
   ReminderTable,
+  UpdateReminderDrawer,
 } from "./reminder";
 import { useProfile, useStore } from "@/hooks";
 import {
+  deleteReminder,
   getAllReminders,
   getReminderAnalytics,
+  resetDeleteReminder,
   resetGetReminderAnalytics,
+  resetUpdateReminderStatus,
+  updateReminderStatus,
 } from "@/store";
 import { EmptyRecordsTemplate } from "@/components/templates";
 import notificationIcon from "@/assets/images/notification.png";
 import { UserTypes } from "@/enums";
+import { resetDocumentElement } from "@/helpers";
+import toast from "react-hot-toast";
+import { DeleteDialog } from "@/components/popups";
 
 const Header = () => {
   const { getState } = useStore();
@@ -71,29 +79,87 @@ export const ReminderTab = () => {
     reminderAnalytics,
     fetchingAllReminders,
     reminders,
+
+    // Update reminder status
+    updatingReminderStatus,
+    reminderStatusUpdated,
+    updateReminderStatusError,
+
+    // Delete reminder
+    deletingReminder,
+    reminderDeleted,
+    deleteReminderError,
   } = getState("Reminder");
   const { user } = useProfile();
 
+  // Create reminder
+  const [createFormOpen, setCreateFormOpen] = useState(() => false);
+  const openCreateForm = () => setCreateFormOpen(true);
+
+  // Reminder details
   const [isReminderDetailsDrawerOpen, setIsReminderDetailsDrawerOpen] =
     useState(() => false);
   const [reminderDetails, setReminderDetails] = useState<Reminder | null>(null);
-
-  const [createFormOpen, setCreateFormOpen] = useState(() => false);
-
-  const openCreateForm = () => setCreateFormOpen(true);
-
   const onOpenChange = (value: boolean) => {
     if (!value) {
       setReminderDetails(null);
     }
     setIsReminderDetailsDrawerOpen(value);
   };
-
   const viewReminderDetails = (data: Reminder) => {
     setReminderDetails(data);
     setIsReminderDetailsDrawerOpen(true);
   };
 
+  // Update reminder
+  const [updateDrawerOpen, setUpdateDrawerOpen] = useState(false);
+  const [reminderToUpdate, setReminderToUpdate] = useState<Reminder | null>(
+    null
+  );
+
+  const openUpdateDrawer = () => setUpdateDrawerOpen(true);
+  const closeUpdateDrawer = () => setUpdateDrawerOpen(false);
+
+  const onUpdateDrawerOpenChange = (val: boolean) => {
+    if (!val) setReminderToUpdate(null);
+    closeUpdateDrawer();
+  };
+
+  const onEditReminder = (reminder: Reminder) => {
+    setReminderToUpdate(reminder);
+    openUpdateDrawer();
+  };
+
+  // Delete reminder
+  const [reminderToDelete, setReminderToDelete] = useState<Reminder | null>();
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+
+  const openDeleteDialog = () => setDeleteDialogOpen(true);
+  const closeDeleteDialog = () => setDeleteDialogOpen(false);
+
+  const onDeleteReminder = (reminder: Reminder) => {
+    setReminderToDelete(reminder);
+    openDeleteDialog();
+  };
+
+  const endDeleteOperation = () => {
+    closeDeleteDialog();
+    setReminderToDelete(null);
+    resetDocumentElement();
+  };
+
+  const confirmDeleteOperation = () => {
+    if (reminderToDelete) {
+      dispatch(deleteReminder(reminderToDelete._id));
+    }
+  };
+
+  // Set active status
+  const setActiveStatus = (reminder: Reminder, status: boolean) => {
+    dispatch(updateReminderStatus({ id: reminder._id, status }));
+  };
+
+  // Get reminder analytics
   useEffect(() => {
     if (!reminderAnalytics && !fetchingReminderAnalytics) {
       dispatch(getReminderAnalytics());
@@ -113,12 +179,43 @@ export const ReminderTab = () => {
     }
   }, [reminderAnalyticsFetched]);
 
+  // Update reminder active status effects
+  useEffect(() => {
+    if (reminderStatusUpdated) {
+      toast.success("Reminder status updated");
+      // Get latest analytics
+      dispatch(getReminderAnalytics());
+      dispatch(resetUpdateReminderStatus());
+    }
+  }, [reminderStatusUpdated]);
+
+  useEffect(() => {
+    if (updateReminderStatusError) {
+      toast.error(updateReminderStatusError);
+      // Reset states
+      dispatch(resetUpdateReminderStatus());
+    }
+  }, [updateReminderStatusError]);
+
+  // Delete reminder
+  useEffect(() => {
+    if (reminderDeleted) {
+      toast.success("Reminder deleted");
+      // Get the lastest analytics
+      dispatch(getReminderAnalytics());
+      dispatch(resetDeleteReminder());
+      // Close dialog, reset states and restore pointer event to document element
+      endDeleteOperation();
+    }
+  }, [reminderDeleted]);
+
   if (fetchingReminderAnalytics || fetchingAllReminders) return <Loader />;
 
   return (
     <DashboardContent>
       <div className="flex flex-col gap-4 h-full overflow-hidden">
         <Header />
+        {updatingReminderStatus && <Loader text1="Updating reminder status" />}
 
         {!reminders || reminders.length === 0 ? (
           <EmptyRecordsTemplate
@@ -133,6 +230,9 @@ export const ReminderTab = () => {
           <ReminderTable
             viewReminderDetails={viewReminderDetails}
             openCreateForm={openCreateForm}
+            onDeleteReminder={onDeleteReminder}
+            setActiveStatus={setActiveStatus}
+            onEditReminder={onEditReminder}
           />
         )}
 
@@ -146,6 +246,27 @@ export const ReminderTab = () => {
           isOpen={createFormOpen}
           onOpenChange={setCreateFormOpen}
         />
+
+        {/* Delete reminder dialog */}
+        {reminderToDelete && (
+          <DeleteDialog
+            isOpen={deleteDialogOpen}
+            onOpenChange={setDeleteDialogOpen}
+            cancelDeleteOperation={endDeleteOperation}
+            confirmDeleteOperation={confirmDeleteOperation}
+            loading={deletingReminder}
+            description={`This action cannot be undone. Are you sure you want to proceed to delete this reminder. Tag: ${reminderToDelete.tag}`}
+          />
+        )}
+
+        {/* Update reminder drawer */}
+        {reminderToUpdate && (
+          <UpdateReminderDrawer
+            isOpen={updateDrawerOpen}
+            onOpenChange={onUpdateDrawerOpenChange}
+            reminder={reminderToUpdate}
+          />
+        )}
       </div>
     </DashboardContent>
   );

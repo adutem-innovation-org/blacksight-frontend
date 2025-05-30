@@ -64,8 +64,8 @@ export const CustomDateInput = ({
         onFocus={handleInputFocus}
         disabled={disabled}
         name={name}
-        value={value}
-        minDate={minDate}
+        value={value && new Date(value)}
+        minDate={new Date()}
         popoverProps={{ withinPortal: false }}
       />
       <Calendar className="absolute right-3 stroke-gray-400 w-4 h-4" />

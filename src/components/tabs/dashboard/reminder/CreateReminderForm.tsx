@@ -76,7 +76,7 @@ const CreateReminderFormSectionOne = ({ validation }: FormSectionProps) => {
   );
 };
 
-const BulkUploadFields = ({
+export const BulkUploadFields = ({
   validation,
   onSelectFile,
   removeSelectedFile,
