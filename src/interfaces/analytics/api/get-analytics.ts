@@ -12,7 +12,7 @@ export interface GetBusinessAnalyticsRes extends ApiSuccessResponse {
     totalConversations: number;
     totalKnowledgeBase: number;
   };
-  bookingAnalytics: Array<BookingStat> | null;
+  bookingStat: Array<BookingStat> | null;
 }
 
 export interface GetAdminAnalyticsRes extends ApiSuccessResponse {
@@ -22,4 +22,5 @@ export interface GetAdminAnalyticsRes extends ApiSuccessResponse {
     totalBots: number;
     totalAdmins: number;
   };
+  bookingStat: Array<BookingStat> | null;
 }
