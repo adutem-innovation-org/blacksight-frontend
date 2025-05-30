@@ -1,4 +1,4 @@
-import { AnalyticsCard, AnalyticsCardProps } from "@/components/cards";
+import { AnalyticsCard } from "@/components/cards";
 import { BookingVolumeChart, ResponseTimeChart } from "@/components/charts";
 import { PopularBookingTimeChart } from "@/components/charts/PopularResponseTime";
 import { DashboardContent, DashboardTableLayoutDiv } from "@/components/design";
@@ -6,11 +6,9 @@ import { Button } from "@/components/form";
 import { Loader } from "@/components/progress";
 import { TopUsersTable } from "@/components/tables";
 import analyticsData from "@/data/analytics.json";
-import { UserTypes } from "@/enums";
 import { useProfile, useStore } from "@/hooks";
 import { getAnalytics } from "@/store";
 import React, { useEffect, useMemo } from "react";
-import { data } from "react-router-dom";
 
 const AnalyticsHeader = () => {
   const { getState } = useStore();

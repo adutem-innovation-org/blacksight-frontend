@@ -16,7 +16,7 @@ import { NoChartData } from "./NoChartData";
 export const BookingVolumeChart = ({
   stat,
 }: {
-  stat?: Record<string, string | number>[];
+  stat?: Record<string, string | number>[] | null;
 }) => {
   return (
     <ResponsiveContainer width="100%" height={"100%"} className={"-ml-5"}>
