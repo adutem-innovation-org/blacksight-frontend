@@ -142,7 +142,7 @@ export const BotList = ({ bots }: BotListProps) => {
 
   useEffect(() => {
     if (updateBotStatusError) {
-      toast.error(updateBotStatusError);
+      toast.error(updateBotStatusError, { duration: 2500 });
       dispatch(resetUpdateBotStatus());
     }
   }, [updateBotStatusError]);
