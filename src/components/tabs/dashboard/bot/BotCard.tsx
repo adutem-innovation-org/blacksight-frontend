@@ -10,6 +10,7 @@ import { botImages } from "@/constants";
 import { BotTabsEnum } from "@/enums";
 import { getRandomArrayItem } from "@/helpers";
 import { Bot } from "@/interfaces";
+import { cn } from "@/lib/utils";
 import { changeBotTab, setCurrentBot } from "@/store";
 import {
   Ban,
@@ -19,6 +20,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { useMemo, useState } from "react";
+import toast from "react-hot-toast";
 import { useStore } from "react-redux";
 
 type ActionsProps = {
@@ -89,6 +91,7 @@ export const BotCard = ({
   const imageUrl = useMemo(() => getRandomArrayItem(botImages), []);
 
   const goToPlayground = () => {
+    if (!bot.isActive) return toast.error("Cannot launch inactive bot.");
     dispatch(setCurrentBot(bot));
     dispatch(changeBotTab(BotTabsEnum.PLAYGROUND));
   };
@@ -133,8 +136,10 @@ export const BotCard = ({
         </div>
 
         <Button
-          variant={"primary"}
-          className="cursor-pointer py-1 h-11 hover:bg-primary/80"
+          variant={bot.isActive ? "primary" : "secondary"}
+          className={cn("cursor-pointer py-1 h-11", {
+            "hover:bg-primary/80": bot.isActive,
+          })}
           onClick={goToPlayground}
         >
           Launch
