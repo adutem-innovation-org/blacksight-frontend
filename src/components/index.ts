@@ -9,3 +9,4 @@ export * from "./cards";
 export * from "./tables";
 export * from "./charts";
 export * from "./templates";
+export * from "./popups";

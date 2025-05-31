@@ -1,4 +1,4 @@
-import { Button } from "@/components";
+import { Button, NotificationDropdown } from "@/components";
 import { useProfile, useStore } from "@/hooks";
 import man from "@/assets/images/man.png";
 import {
@@ -24,12 +24,7 @@ export const DashboardHeader = ({ currentTab }: Props) => {
 
       {/* Right header content */}
       <div className="flex items-center gap-3">
-        <Button
-          size={"icon"}
-          className="bg-transparent flex items-center justify-center text-brand cursor-pointer"
-        >
-          <i className="fi fi-rr-bell text-2xl flex"></i>
-        </Button>
+        <NotificationDropdown />
 
         <HeaderDropDown />
       </div>
