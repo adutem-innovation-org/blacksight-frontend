@@ -131,9 +131,9 @@ export const BotList = ({ bots }: BotListProps) => {
   // Deactivate bot effects
   useEffect(() => {
     if (botStatusUpdated) {
-      toast.success("Bot deactivated"),
-        // Get the latest bot analytics for user
-        dispatch(getBotAnalytics());
+      toast.success("Bot status updated");
+      // Get the latest bot analytics for user
+      dispatch(getBotAnalytics());
       dispatch(resetUpdateBotStatus());
       // Close dialog, reset states and add pointer event to document element
       endDeactivateOperation();

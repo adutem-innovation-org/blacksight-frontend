@@ -19,6 +19,11 @@ export const initialKnowledgeBaseState: KnowledgeBaseState = {
   addKnowledgeBaseErrors: {},
   addKnowledgeBaseErrorMessage: "",
 
+  // Update KB status
+  updatingKBStatus: false,
+  kbStatusUpdated: false,
+  updateKBStatusError: "",
+
   // Delete knowledge base
   deletingKnowledgeBase: false,
   knowledgeBaseDeleted: false,

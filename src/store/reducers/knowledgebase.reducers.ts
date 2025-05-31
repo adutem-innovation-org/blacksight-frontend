@@ -26,3 +26,9 @@ export const resetDeleteKnowledgeBaseReducer = (state: KnowledgeBaseState) => {
   state.knowledgeBaseDeleted = false;
   state.deleteKnowledgeBaseErrorMessage = "";
 };
+
+export const resetUpdateKBStatusReducer = (state: KnowledgeBaseState) => {
+  state.updatingKBStatus = false;
+  state.kbStatusUpdated = false;
+  state.updateKBStatusError = "";
+};

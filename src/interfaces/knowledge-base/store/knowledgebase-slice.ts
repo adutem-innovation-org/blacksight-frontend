@@ -20,6 +20,11 @@ export type KnowledgeBaseState = {
   addKnowledgeBaseErrors: Record<string, string>;
   addKnowledgeBaseErrorMessage: string;
 
+  // Update KB status
+  updatingKBStatus: boolean;
+  kbStatusUpdated: boolean;
+  updateKBStatusError: string;
+
   // Delete knowledge base
   deletingKnowledgeBase: boolean;
   knowledgeBaseDeleted: boolean;

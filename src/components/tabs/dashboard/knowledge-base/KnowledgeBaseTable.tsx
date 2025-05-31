@@ -38,11 +38,14 @@ import {
   ArrowDownToLine,
   ArrowLeft,
   ArrowRight,
+  Ban,
   Calendar,
   ChevronDown,
+  CircleFadingArrowUp,
   Ellipsis,
   ListFilter,
   Settings,
+  Trash2,
   X,
 } from "lucide-react";
 import React, { useState } from "react";
@@ -55,6 +58,7 @@ import { useStore } from "@/hooks";
 
 type ColumnMeta = {
   onDeleteKnowledgeBase: (data: KnowledgeBase) => void;
+  setActiveStatus: (kb: KnowledgeBase, status: boolean) => void;
 };
 
 export const columns: ColumnDef<KnowledgeBase>[] = [
@@ -187,13 +191,22 @@ export const columns: ColumnDef<KnowledgeBase>[] = [
                 e.stopPropagation();
                 meta?.onDeleteKnowledgeBase(row.original);
               }}
-            />
+              childrenPosition="behind"
+              className={"py-2"}
+            >
+              <Trash2 />
+            </CustomDropdownItem>
             <CustomDropdownItem
               placeholder={row.getValue("isActive") ? "Deactivate" : "Activate"}
               onClick={(e: any) => {
                 e.stopPropagation();
+                meta?.setActiveStatus(row.original, !row.getValue("isActive"));
               }}
-            />
+              childrenPosition="behind"
+              className={"py-2"}
+            >
+              {row.getValue("isActive") ? <Ban /> : <CircleFadingArrowUp />}
+            </CustomDropdownItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -210,11 +223,13 @@ const badgeVariantMap: Record<string, any> = {
 interface DashboardTableProps {
   viewKnowledgeBaseDetails: (data: KnowledgeBase) => void;
   onDeleteKnowledgeBase: (data: KnowledgeBase) => void;
+  setActiveStatus: (kb: KnowledgeBase, status: boolean) => void;
 }
 
 export function KnowledgeBaseTable({
   viewKnowledgeBaseDetails,
   onDeleteKnowledgeBase,
+  setActiveStatus,
 }: DashboardTableProps) {
   const { getState } = useStore();
   const { knowledgeBases } = getState("KnowledgeBase");
@@ -235,6 +250,7 @@ export function KnowledgeBaseTable({
     columns,
     meta: {
       onDeleteKnowledgeBase,
+      setActiveStatus,
     },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,

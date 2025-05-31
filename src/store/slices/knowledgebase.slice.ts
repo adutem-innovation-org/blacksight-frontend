@@ -4,6 +4,7 @@ import {
   resetGetAllKnowledgeBasesReducer,
   resetGetKnowledgeBaseAnalyticsReducer,
   resetDeleteKnowledgeBaseReducer,
+  resetUpdateKBStatusReducer,
 } from "../reducers";
 import { initialKnowledgeBaseState } from "@/constants";
 import {
@@ -12,6 +13,7 @@ import {
   getAllKnowledgeBasesBuilder,
   getKnowledgeBaseAnalyticsBuilder,
 } from "../builders";
+import { updateKBStatusBuilder } from "../builders/knowledge-base/update-kb-status.builder";
 
 const knowledgeBaseSlice = createSlice({
   name: "KnowledgeBase",
@@ -21,12 +23,14 @@ const knowledgeBaseSlice = createSlice({
     resetGetAllKnowledgeBases: resetGetAllKnowledgeBasesReducer,
     resetGetKnowledgeBaseAnalytics: resetGetKnowledgeBaseAnalyticsReducer,
     resetDeleteKnowledgeBase: resetDeleteKnowledgeBaseReducer,
+    resetUpdateKBStatus: resetUpdateKBStatusReducer,
   },
   extraReducers(builder) {
     getKnowledgeBaseAnalyticsBuilder(builder);
     getAllKnowledgeBasesBuilder(builder);
     addKnowledgeBaseBuilder(builder);
     deleteKnowledgeBaseBuilder(builder);
+    updateKBStatusBuilder(builder);
   },
 });
 
@@ -36,4 +40,5 @@ export const {
   resetGetAllKnowledgeBases,
   resetGetKnowledgeBaseAnalytics,
   resetDeleteKnowledgeBase,
+  resetUpdateKBStatus,
 } = knowledgeBaseSlice.actions;

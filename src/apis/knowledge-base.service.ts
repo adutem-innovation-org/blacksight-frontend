@@ -4,6 +4,7 @@ import {
   DeleteKnowledgeBaseRes,
   GetKNowledgeBasesRes,
   KnowledgeBaseAnalyticsRes,
+  UpdateKBStatusRes,
 } from "@/interfaces";
 import { ApiService } from "./api.service";
 import { KNOWLEDGE_BASE_URLS } from "./endpoints";
@@ -42,6 +43,18 @@ export class KnowledgeBaseApiService {
       AddKnowledgeBaseBody,
       AddKnowledgeBaseRes
     >(this.urls.ADD_KNOWLEDGE_BASE, data, { timeout: 100000 });
+  };
+
+  deactivateKB = (id: string) => {
+    return this.apiService.update<any, UpdateKBStatusRes>(
+      `${this.urls.DEACTIVATE_KNOWLEDGE_BASE}/${id}`
+    );
+  };
+
+  activateKB = (id: string) => {
+    return this.apiService.update<any, UpdateKBStatusRes>(
+      `${this.urls.ACTIVATE_KNOWLEDGE_BASE}/${id}`
+    );
   };
 
   deleteKnowledgeBase = (id: string) => {
