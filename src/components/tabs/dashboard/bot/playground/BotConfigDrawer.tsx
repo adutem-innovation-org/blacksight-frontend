@@ -200,7 +200,6 @@ export function BotConfigDrawer({
   }, [botConfigUpdated]);
 
   useEffect(() => {
-    console.log("Failed", updateBotConfigErrorMessage, updateBotConfigErrors);
     if (updateBotConfigErrorMessage) {
       toast.error(updateBotConfigErrorMessage);
       if (Object.keys(updateBotConfigErrors ?? {}).length) {

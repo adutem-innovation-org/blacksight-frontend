@@ -122,6 +122,7 @@ export const clearTrainingConversation = createAsyncThunk(
         botId,
         conversationId
       );
+      console.log(res);
       return res.conversation;
     } catch (error: any) {
       return rejectWithValue(error.message);

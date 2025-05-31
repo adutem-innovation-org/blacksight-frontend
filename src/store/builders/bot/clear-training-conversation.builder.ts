@@ -12,6 +12,7 @@ export const clearTrainingConversationBuilder = (
   builder.addCase(clearTrainingConversation.fulfilled, (state, action) => {
     state.clearingTrainingConversation = false;
     state.trainingConversationCleared = true;
+    console.log(action.payload);
     if (state.currentConversationId === action.payload.conversationId) {
       state.currentConversation = [];
     }
