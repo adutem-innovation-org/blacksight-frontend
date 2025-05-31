@@ -42,10 +42,10 @@ export const resetUpdateBotInstructionsReducer = (state: BotState) => {
   state.updateBotInstructionsErrorMessage = "";
 };
 
-export const resetDeactivateBotReducer = (state: BotState) => {
-  state.deactivatingBot = false;
-  state.botDeactivated = false;
-  state.deactivateBotError = "";
+export const resetUpdateBotStatusReducer = (state: BotState) => {
+  state.updatingBotStatus = false;
+  state.botStatusUpdated = false;
+  state.updateBotStatusError = "";
 };
 
 export const resetDeleteBotReducer = (state: BotState) => {

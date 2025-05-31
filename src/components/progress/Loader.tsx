@@ -9,6 +9,7 @@ interface LoaderProps
   type?: string;
   text1?: string;
   text2?: string;
+  extrudeChildren?: boolean;
 }
 
 export const Loader = ({
@@ -16,6 +17,7 @@ export const Loader = ({
   text1,
   text2,
   className,
+  extrudeChildren = false,
   ...props
 }: LoaderProps) => {
   return (
@@ -26,7 +28,11 @@ export const Loader = ({
       )}
       {...props}
     >
-      <div className="text-center flex-col items-center">
+      <div
+        className={cn("text-center flex-col items-center", {
+          " bg-white p-8 rounded-md drop-shadow-2xl ": extrudeChildren,
+        })}
+      >
         <Spinner classNames="h-[40px]" type={type} />
         {text1 && (
           <h4 className="font-semibold font-lg text-brand mt-2">{text1}</h4>

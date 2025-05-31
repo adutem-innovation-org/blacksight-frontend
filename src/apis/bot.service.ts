@@ -5,7 +5,6 @@ import {
   ClearTrainingConversationRes,
   ConfigureBotBody,
   ConfigureBotRes,
-  DeactivateBotRes,
   DeleteBotRes,
   GetBotsRes,
   GetTrainingConversationRes,
@@ -15,6 +14,7 @@ import {
   UpdateBotConfigRes,
   UpdateBotInstructionsBody,
   UpdateBotInstructionsRes,
+  UpdateBotStatusRes,
 } from "@/interfaces";
 import { ApiService } from "./api.service";
 import { BOT_URLS } from "./endpoints";
@@ -66,8 +66,14 @@ export class BotApiService {
   };
 
   deactivateBot = (botId: string) => {
-    return this.apiService.update<any, DeactivateBotRes>(
+    return this.apiService.update<any, UpdateBotStatusRes>(
       `${this.urls.DEACTIVATE_BOT}/${botId}`
+    );
+  };
+
+  activateBot = (botId: string) => {
+    return this.apiService.update<any, UpdateBotStatusRes>(
+      `${this.urls.ACTIVATE_BOT}/${botId}`
     );
   };
 

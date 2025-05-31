@@ -130,18 +130,27 @@ export const clearTrainingConversation = createAsyncThunk(
   }
 );
 
-export const deactivateBot = createAsyncThunk<
+export const updateBotStatus = createAsyncThunk<
   Bot,
-  string,
+  { id: string; status: boolean },
   { rejectValue: string }
->("deactivate_bot", async (id: string, { rejectWithValue }) => {
-  try {
-    const res = await botApiService.deactivateBot(id);
-    return res.bot;
-  } catch (error: any) {
-    return rejectWithValue(error.message);
+>(
+  "update_bot_status",
+  async (
+    { id, status }: { id: string; status: boolean },
+    { rejectWithValue }
+  ) => {
+    try {
+      const updateApi = status
+        ? botApiService.activateBot
+        : botApiService.deactivateBot;
+      const res = await updateApi(id);
+      return res.bot;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
   }
-});
+);
 
 export const deleteBot = createAsyncThunk<Bot, string, { rejectValue: string }>(
   "delete_bot",

@@ -11,20 +11,28 @@ import { BotTabsEnum } from "@/enums";
 import { getRandomArrayItem } from "@/helpers";
 import { Bot } from "@/interfaces";
 import { changeBotTab, setCurrentBot } from "@/store";
-import { Ban, Cog, EllipsisVertical, Trash2 } from "lucide-react";
+import {
+  Ban,
+  CircleFadingArrowUp,
+  Cog,
+  EllipsisVertical,
+  Trash2,
+} from "lucide-react";
 import { useMemo, useState } from "react";
 import { useStore } from "react-redux";
 
 type ActionsProps = {
   onEditConfiguration: () => void;
   onDelete: () => void;
-  onDeactivate: () => void;
+  setActiveStatus: (status: boolean) => void;
+  isActive: boolean;
 };
 
 const Actions = ({
   onEditConfiguration,
   onDelete,
-  onDeactivate,
+  setActiveStatus,
+  isActive,
 }: ActionsProps) => {
   return (
     <DropdownMenu modal={false}>
@@ -44,12 +52,12 @@ const Actions = ({
           <Cog />
         </CustomDropdownItem>
         <CustomDropdownItem
-          placeholder="Deactivate"
+          placeholder={isActive ? "Deactivate" : "Activate"}
           childrenPosition="behind"
           className={"py-2"}
-          onClick={onDeactivate}
+          onClick={() => setActiveStatus(!isActive)}
         >
-          <Ban />
+          {isActive ? <Ban /> : <CircleFadingArrowUp />}
         </CustomDropdownItem>
         <CustomDropdownItem
           placeholder="Delete"
@@ -68,14 +76,14 @@ interface BotCardProps {
   bot: Bot;
   editConfiguration: (bot: Bot) => void;
   onDeleteBot: (bot: Bot) => void;
-  onDeactivateBot: (bot: Bot) => void;
+  setActiveStatus: (bot: Bot, status: boolean) => void;
 }
 
 export const BotCard = ({
   bot,
   editConfiguration,
   onDeleteBot,
-  onDeactivateBot,
+  setActiveStatus,
 }: BotCardProps) => {
   const { dispatch } = useStore();
   const imageUrl = useMemo(() => getRandomArrayItem(botImages), []);
@@ -89,7 +97,7 @@ export const BotCard = ({
 
   const onDelete = () => onDeleteBot(bot);
 
-  const onDeactivate = () => onDeactivateBot(bot);
+  const onSetActiveStatus = (status: boolean) => setActiveStatus(bot, status);
 
   return (
     <div className="bg-white rounded-md overflow-hidden flex flex-col shadow-md">
@@ -102,7 +110,8 @@ export const BotCard = ({
             <Actions
               onEditConfiguration={onEditConfiguration}
               onDelete={onDelete}
-              onDeactivate={onDeactivate}
+              setActiveStatus={onSetActiveStatus}
+              isActive={bot.isActive}
             />
           </div>
         </div>

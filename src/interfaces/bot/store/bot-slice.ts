@@ -37,10 +37,10 @@ export type BotState = {
   updateBotInstructionsErrors: Record<string, string>;
   updateBotInstructionsErrorMessage: string;
 
-  // Deactivate bot
-  deactivatingBot: boolean;
-  botDeactivated: boolean;
-  deactivateBotError: string;
+  // Update bot status
+  updatingBotStatus: boolean;
+  botStatusUpdated: boolean;
+  updateBotStatusError: string;
 
   // Delete bot
   deletingBot: boolean;

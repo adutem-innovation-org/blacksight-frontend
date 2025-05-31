@@ -11,3 +11,4 @@ export const TRAINING_CONVERSATION = "/conversation/training";
 
 export const DELETE_BOT = "/delete";
 export const DEACTIVATE_BOT = "/deactivate";
+export const ACTIVATE_BOT = "/activate";

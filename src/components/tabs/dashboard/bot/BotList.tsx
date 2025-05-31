@@ -5,14 +5,15 @@ import { useCallback, useEffect, useState } from "react";
 import { BotConfigDrawer } from "./playground";
 import { useStore } from "@/hooks";
 import {
-  deactivateBot,
+  updateBotStatus,
   deleteBot,
   getBotAnalytics,
-  resetDeactivateBot,
+  resetUpdateBotStatus,
   resetDeleteBot,
 } from "@/store";
 import toast from "react-hot-toast";
 import { DeactivateDialog, DeleteDialog } from "@/components/popups";
+import { Loader } from "@/components/progress";
 
 interface BotListProps {
   bots: Bot[];
@@ -24,9 +25,9 @@ export const BotList = ({ bots }: BotListProps) => {
     deletingBot,
     botDeleted,
     deleteBotError,
-    deactivatingBot,
-    botDeactivated,
-    deactivateBotError,
+    updatingBotStatus,
+    botStatusUpdated,
+    updateBotStatusError,
   } = getState("Bot");
 
   const resetDocumentElement = useCallback(() => {
@@ -76,9 +77,14 @@ export const BotList = ({ bots }: BotListProps) => {
   };
 
   // Deactivate event
-  const onDeactivateBot = (bot: Bot) => {
-    setBotToDeactivate(bot);
-    openDeactivateDialog();
+  const setActiveStatus = (bot: Bot, status: boolean) => {
+    if (!status) {
+      // User is trying to deactivate
+      setBotToDeactivate(bot);
+      openDeactivateDialog();
+    } else {
+      dispatch(updateBotStatus({ id: bot._id, status }));
+    }
   };
 
   const endDeactivateOperation = () => {
@@ -89,7 +95,7 @@ export const BotList = ({ bots }: BotListProps) => {
 
   const confirmDeactivateOperation = () => {
     if (botToDeactivate) {
-      dispatch(deactivateBot(botToDeactivate._id));
+      dispatch(updateBotStatus({ id: botToDeactivate._id, status: false }));
     }
   };
 
@@ -124,32 +130,36 @@ export const BotList = ({ bots }: BotListProps) => {
 
   // Deactivate bot effects
   useEffect(() => {
-    if (botDeactivated) {
+    if (botStatusUpdated) {
       toast.success("Bot deactivated"),
         // Get the latest bot analytics for user
         dispatch(getBotAnalytics());
-      dispatch(resetDeactivateBot());
+      dispatch(resetUpdateBotStatus());
       // Close dialog, reset states and add pointer event to document element
       endDeactivateOperation();
     }
-  }, [botDeactivated]);
+  }, [botStatusUpdated]);
 
   useEffect(() => {
-    if (deactivateBotError) {
-      toast.error(deactivateBotError);
-      dispatch(resetDeactivateBot());
+    if (updateBotStatusError) {
+      toast.error(updateBotStatusError);
+      dispatch(resetUpdateBotStatus());
     }
-  }, [deactivateBotError]);
+  }, [updateBotStatusError]);
 
   return (
     <div className={cn("overflow-hidden flex-1 bg-transparent")}>
+      {updatingBotStatus && !deactivateDialogOpen && (
+        <Loader text1="Activating bot..." extrudeChildren />
+      )}
+
       <div className="h-full overflow-auto grid bg-transparent auto-rows-[400px] grid-cols-1 md:grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-6 md:gap-5 no-scrollbar">
         {bots.map((bot) => (
           <BotCard
             bot={bot}
             editConfiguration={openBotConfig}
             onDeleteBot={onDeleteBot}
-            onDeactivateBot={onDeactivateBot}
+            setActiveStatus={setActiveStatus}
           />
         ))}
       </div>
@@ -179,7 +189,7 @@ export const BotList = ({ bots }: BotListProps) => {
           onOpenChange={setDeactivateDialogOpen}
           cancelOperation={endDeactivateOperation}
           confirmOperation={confirmDeactivateOperation}
-          loading={deactivatingBot}
+          loading={updatingBotStatus}
         />
       )}
     </div>

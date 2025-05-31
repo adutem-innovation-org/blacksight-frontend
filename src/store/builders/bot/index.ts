@@ -7,5 +7,5 @@ export * from "./ask-chatbot.builder";
 export * from "./start-conversation.builder";
 export * from "./get-training-conversation.builder";
 export * from "./clear-training-conversation.builder";
-export * from "./deactivate-bot.builder";
+export * from "./update-bot-status.builder";
 export * from "./delete-bot.builder";
