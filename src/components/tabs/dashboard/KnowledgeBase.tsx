@@ -249,7 +249,7 @@ export const KnowledgeBaseTab = () => {
         <Header openCreateForm={openCreateForm} />
 
         {updatingKBStatus && !deactivateDialogOpen && (
-          <Loader text1="Updating reminder status" />
+          <Loader text1="Activating knowledge base" />
         )}
 
         {!knowledgeBases || knowledgeBases.length === 0 ? (
