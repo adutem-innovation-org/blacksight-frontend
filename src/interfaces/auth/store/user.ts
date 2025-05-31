@@ -1,5 +1,12 @@
 import { UserTypes } from "@/enums";
 
+type AddressInfo = {
+  country: string;
+  state: string;
+  city: string;
+  zipCode: string;
+};
+
 export type UserData = {
   _id: string;
   id: string;
@@ -7,6 +14,7 @@ export type UserData = {
   firstName: string;
   lastName: string;
   email: string;
+  phone: string;
   imageUrl?: string;
   isActive: boolean;
   isEmailVerified: boolean;
@@ -18,4 +26,5 @@ export type UserData = {
   lastLogin: string;
   createdAt: string;
   passwordChangedAt: string;
+  addressInfo: AddressInfo;
 };

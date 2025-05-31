@@ -14,3 +14,5 @@ export * from "./delete-account";
 export * from "./create-admin";
 export * from "./get-admins";
 export * from "./get-users";
+export * from "./update-address";
+export * from "./update-profile";

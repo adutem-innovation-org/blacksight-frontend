@@ -14,6 +14,7 @@ import { Info } from "lucide-react";
 import { Tooltip } from "../tooltips";
 import { DateValue } from "@mantine/dates";
 import { Textarea } from "./Textarea";
+import { PhoneInput } from "./PhoneInput";
 
 interface FormGroupProps {
   type:
@@ -27,7 +28,8 @@ interface FormGroupProps {
     | "multi-select"
     | "switch"
     | "file-input"
-    | "multivalue-input";
+    | "multivalue-input"
+    | "phone";
   groupLabel?: string;
   label?: string;
   placeholder?: string;
@@ -305,6 +307,27 @@ export const FormGroup = ({
             value={validation.values[name]}
             removeSelectedFile={removeSelectedFile}
             error={validation.touched[name] && validation.errors[name]}
+          />
+        </GroupContainer>
+      );
+    }
+    case "phone": {
+      return (
+        <GroupContainer className={containerClassName}>
+          <div className="flex gap-1.5 items-center">
+            <Label className="min-w-max">{groupLabel}</Label>
+            {info && InfoTooltip}
+          </div>
+          <PhoneInput
+            placeholder={placeholder || label}
+            onChange={validation.handleChange}
+            onBlur={validation.handleBlur}
+            name={name}
+            size={size}
+            disabled={disabled}
+            value={validation.values[name]}
+            error={validation.touched[name] && validation.errors[name]}
+            maxLength={maxLength}
           />
         </GroupContainer>
       );

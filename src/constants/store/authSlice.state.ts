@@ -42,6 +42,18 @@ export const initialAuthState: AuthState = {
   changePasswordErrors: {},
   changePasswordErrorMessage: "",
 
+  // Update profile
+  updatingProfile: false,
+  profileUpdated: false,
+  updateProfileErrors: {},
+  updateProfileErrorMessage: "",
+
+  // Update address
+  updatingAddress: false,
+  addressUpdated: false,
+  updateAddressErrors: {},
+  updateAddressErrorMessage: "",
+
   // Google Auth
   authenticatingWithGoogle: false,
   googleAuthSuccess: false,

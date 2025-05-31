@@ -15,6 +15,8 @@ export const USER_SEND_OTP = "/user/send-otp";
 export const USER_VERIFY_EMAIL = "/user/verify-email";
 export const USER_DELETE_ACCOUNT = "/user/delete";
 export const USER_GOOGLE_AUTH = "/google";
+export const USER_UPDATE_PROFILE = "/user/update-profile";
+export const USER_UPDATE_ADDRESS = "/user/update-address";
 
 // Admin
 export const LOGIN_ADMIN = "/admin/login";

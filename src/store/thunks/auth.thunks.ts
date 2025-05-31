@@ -10,6 +10,8 @@ import {
   RegisterUserBody,
   ResetPasswordBody,
   SetupPasswordBody,
+  UpdateAddressBody,
+  UpdateProfileBody,
   VerifyEmailBody,
 } from "@/interfaces";
 import { createAsyncThunk } from "@reduxjs/toolkit";
@@ -126,6 +128,32 @@ export const setupPassword = createAsyncThunk(
     }
   }
 );
+
+export const updateProfile = createAsyncThunk<
+  undefined,
+  UpdateProfileBody,
+  { rejectValue: { errors?: Record<string, string>; message: string } }
+>("update_profile", async (body: UpdateProfileBody, { rejectWithValue }) => {
+  try {
+    const res = await authApiService.updateProfile(body);
+    sessionStorage.setItem("blacksight_auth_user", JSON.stringify(res.user));
+  } catch (error: any) {
+    return rejectWithValue(error);
+  }
+});
+
+export const updateAddress = createAsyncThunk<
+  undefined,
+  UpdateAddressBody,
+  { rejectValue: { errors?: Record<string, string>; message: string } }
+>("update_address", async (body: UpdateAddressBody, { rejectWithValue }) => {
+  try {
+    const res = await authApiService.updateAddress(body);
+    sessionStorage.setItem("blacksight_auth_user", JSON.stringify(res.user));
+  } catch (error: any) {
+    return rejectWithValue(error);
+  }
+});
 
 export const continueWithGoogle = createAsyncThunk(
   "continue_with_google",

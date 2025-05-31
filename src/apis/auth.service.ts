@@ -23,6 +23,10 @@ import {
   ChangePasswordRes,
   SetupPasswordBody,
   SetupPasswordRes,
+  UpdateProfileBody,
+  UpdateProfileRes,
+  UpdateAddressRes,
+  UpdateAddressBody,
 } from "@/interfaces";
 import { ApiService } from "./api.service";
 import { AUTH_URLS } from "./endpoints";
@@ -146,6 +150,28 @@ export class AuthApiService {
   deleteUserAccount = (): Promise<DeleteAccountRes> => {
     return this.apiService.delete<DeleteAccountRes>(
       this.urls.USER_DELETE_ACCOUNT
+    );
+  };
+
+  /**
+   * Update user profile
+   * @returns {Promise<UpdateProfileRes>}
+   */
+  updateProfile = (data: UpdateProfileBody): Promise<UpdateProfileRes> => {
+    return this.apiService.update<UpdateProfileBody, UpdateProfileRes>(
+      this.urls.USER_UPDATE_PROFILE,
+      data
+    );
+  };
+
+  /**
+   * Update user adddress
+   * @returns {Promise<UpdateAddressRes>}
+   */
+  updateAddress = (data: UpdateAddressBody): Promise<UpdateAddressRes> => {
+    return this.apiService.update<UpdateAddressBody, UpdateAddressRes>(
+      this.urls.USER_UPDATE_ADDRESS,
+      data
     );
   };
 

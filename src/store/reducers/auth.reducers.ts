@@ -68,3 +68,17 @@ export const resetUpdatePasswordReducer = (state: AuthState) => {
   state.changePasswordErrorMessage = "";
   state.changePasswordErrors = {};
 };
+
+export const resetUpdateProfileReducer = (state: AuthState) => {
+  state.updatingProfile = false;
+  state.profileUpdated = false;
+  state.updateProfileErrorMessage = "";
+  state.updateProfileErrors = {};
+};
+
+export const resetUpdateAddressReducer = (state: AuthState) => {
+  state.updatingAddress = false;
+  state.addressUpdated = false;
+  state.updateAddressErrorMessage = "";
+  state.updateAddressErrors = {};
+};

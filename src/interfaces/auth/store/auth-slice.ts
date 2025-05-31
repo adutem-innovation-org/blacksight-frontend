@@ -40,6 +40,18 @@ export type AuthState = {
   changePasswordErrors: Record<string, string>;
   changePasswordErrorMessage: string;
 
+  // Update profile
+  updatingProfile: boolean;
+  profileUpdated: boolean;
+  updateProfileErrors: Record<string, string>;
+  updateProfileErrorMessage: string;
+
+  // Update address
+  updatingAddress: boolean;
+  addressUpdated: boolean;
+  updateAddressErrors: Record<string, string>;
+  updateAddressErrorMessage: string;
+
   // Google login
   authenticatingWithGoogle: boolean;
   googleAuthSuccess: boolean;
