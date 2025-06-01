@@ -66,7 +66,7 @@ type ColumnMeta = {
 export const columns: ColumnDef<Reminder>[] = [
   {
     accessorKey: "_id",
-    header: "Reminder id",
+    header: "Reminder ID",
     cell: ({ row }) => <div>{row.getValue("_id")}</div>,
   },
   {
@@ -533,6 +533,14 @@ type TableSettingProps = {
   table: TableType<Reminder>;
 };
 
+const headerMap: Record<string, string> = {
+  tag: "Tag",
+  channel: "Channel",
+  type: "Type",
+  isActive: "Status",
+  remindAt: "Remind At",
+};
+
 function TableSettings({ table }: TableSettingProps) {
   const [tableSettingsOpen, setTableSettingsOpen] = useState(false);
 
@@ -562,13 +570,13 @@ function TableSettings({ table }: TableSettingProps) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="mb-1.5 h-[1px] bg-gray-200" />
         <CustomDropdownMenuCheckboxItem
-          key={"subscriptionType"}
+          key={"_id"}
           checked={true}
           disabled
           className="capitalize mx-2 py-2 cursor-pointer font-sfpro"
         >
           <div className="flex justify-between items-center flex-1">
-            {"Subscription type"}
+            {"Reminder ID"}
 
             <img src={pinLogo} />
           </div>
@@ -579,7 +587,7 @@ function TableSettings({ table }: TableSettingProps) {
             (column) =>
               column.getCanHide() &&
               // !["clientName", "invoiceId"].includes(column.id)
-              !["actions"].includes(column.id)
+              !["actions", "_id"].includes(column.id)
           )
           .map((column) => {
             return (
@@ -590,15 +598,7 @@ function TableSettings({ table }: TableSettingProps) {
                 className="capitalize mx-2 py-2 cursor-pointer font-sfpro"
               >
                 <div className="flex justify-between items-center flex-1">
-                  <>
-                    {column.columnDef?.header &&
-                    typeof column.columnDef?.header === "string"
-                      ? column.columnDef.header
-                      : column.id === "subscriptionDate"
-                      ? "subscription date"
-                      : column.id}
-                  </>
-
+                  <>{headerMap[column.id] ?? column.id}</>
                   <img src={pinLogo} />
                 </div>
               </CustomDropdownMenuCheckboxItem>
