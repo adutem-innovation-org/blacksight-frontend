@@ -17,6 +17,7 @@ import {
 import { Mic, Send, Settings2 } from "lucide-react";
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
+import remarkBreaks from "remark-breaks";
 
 const ChatBotHeader = ({
   currentBot,
@@ -200,7 +201,11 @@ const Message = ({ role, content }: { role: RoleEnum; content: string }) => {
           "rounded-md rounded-tr-none shadow-[-2px_2px_4px_#0000001a]": !isBot,
         })}
       >
-        <ReactMarkdown skipHtml children={content} />
+        <ReactMarkdown
+          skipHtml
+          children={content.replace(/\n/g, `  \n`)}
+          remarkPlugins={[remarkBreaks]}
+        />
       </div>
     </div>
   );
