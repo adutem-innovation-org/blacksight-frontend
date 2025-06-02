@@ -16,7 +16,7 @@ import {
 } from "@/store";
 import { Mic, Send, Settings2 } from "lucide-react";
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
-import toast from "react-hot-toast";
+import ReactMarkdown from "react-markdown";
 
 const ChatBotHeader = ({
   currentBot,
@@ -200,7 +200,7 @@ const Message = ({ role, content }: { role: RoleEnum; content: string }) => {
           "rounded-md rounded-tr-none shadow-[-2px_2px_4px_#0000001a]": !isBot,
         })}
       >
-        {content}
+        <ReactMarkdown skipHtml children={content} />
       </div>
     </div>
   );
