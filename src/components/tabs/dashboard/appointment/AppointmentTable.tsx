@@ -1,6 +1,7 @@
 import { Button, SearchInput } from "@/components/form";
 import {
   CustomDropdownMenuCheckboxItem,
+  DataExportDropdown,
   SortingDropDown,
   TableFilterDropdown,
 } from "@/components/popups";
@@ -50,6 +51,8 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/badge";
 import { cn } from "@/lib/utils";
+import { AppointmentStatus } from "@/enums";
+import { downloadCSV, downloadExcel, transformForExport } from "@/helpers";
 
 export const columns: ColumnDef<Appointment>[] = [
   {
@@ -210,6 +213,13 @@ const badgeVariantMap: Record<string, any> = {
   scheduled: "primary",
 };
 
+const formatters = {
+  appointmentDate: (date: string) =>
+    date ? new Date(date).toDateString() : "",
+  createdAt: (date: string) => (date ? new Date(date).toUTCString() : ""),
+  status: (status: AppointmentStatus) => status.toString().toLowerCase(),
+};
+
 export const AppointmentTable = () => {
   const { getState } = useStore();
   const { appointments } = getState("Appointment");
@@ -246,6 +256,26 @@ export const AppointmentTable = () => {
     },
   });
 
+  const exportCSV = () => {
+    if (!appointments || appointments.length === 0) return;
+
+    const exportData = transformForExport(appointments, {
+      headerMap,
+      formatters,
+      format: "CSV",
+    });
+    downloadCSV(exportData, "appointments");
+  };
+
+  const exportExcel = () => {
+    if (!appointments || appointments.length === 0) return;
+    const exportData = transformForExport(appointments, {
+      headerMap,
+      formatters,
+      format: "EXCEL",
+    });
+    downloadExcel(exportData, "appointments");
+  };
   return (
     <DashboardGrid className="bg-white rounded-md overflow-hidden flex-1 grid">
       {/* Table header action sections */}
@@ -264,13 +294,7 @@ export const AppointmentTable = () => {
           </Button>
         </div>
         <div className="ml-auto gap-4 flex items-center">
-          <Button
-            size={"icon"}
-            variant={"secondary_gray"}
-            className="rounded-full"
-          >
-            <ArrowDownToLine />
-          </Button>
+          <DataExportDropdown exportCSV={exportCSV} exportExcel={exportExcel} />
 
           {<TableSettings table={table} />}
         </div>
@@ -308,6 +332,7 @@ export const AppointmentTable = () => {
               </TableRow>
             ))}
           </TableHeader>
+
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => {
@@ -378,6 +403,7 @@ export const AppointmentTable = () => {
           </TableBody>
         </Table>
       </div>
+
       {/* Subscription footer */}
       <div className="flex items-center justify-end space-x-2 p-4">
         <div className="flex-1 text-sm text-muted-foreground"></div>
@@ -430,7 +456,7 @@ type TableSettingProps = {
 const headerMap: Record<string, string> = {
   appointmentDate: "Appointment Date",
   appointmentTime: "Appointment Time",
-  appointmentId: "Appointment ID",
+  _id: "Appointment ID",
   conversationId: "Conversation ID",
   customerEmail: "Customer Email",
   createdAt: "Schedule Date",
@@ -466,7 +492,7 @@ function TableSettings({ table }: TableSettingProps) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="mb-1.5 h-[1px] bg-gray-200" />
         <CustomDropdownMenuCheckboxItem
-          key={"appointmentId"}
+          key={"_id"}
           checked={true}
           disabled
           className="capitalize mx-2 py-2 cursor-pointer font-sfpro"
