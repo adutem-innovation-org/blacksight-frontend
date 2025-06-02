@@ -86,7 +86,7 @@ export const columns: ColumnDef<KnowledgeBase>[] = [
             <Button
               variant={"ghost"}
               onClick={column.getToggleSortingHandler()}
-              className="hover:bg-transparent py-4 px-4 w-full h-full justify-start text-xs font-semibold text-[#717680] hover:text-[#535862]"
+              className="hover:bg-transparent py-4 px-4 w-full h-full justify-start text-xs font-semibold text-[#717680] hover:text-[#2f3236]"
             >
               Tag
               {sortDirection === "asc" && (
@@ -314,6 +314,7 @@ export function KnowledgeBaseTable({
                         "p-0": [
                           "tag",
                           "channel",
+                          "createdAt",
                           "isActive",
                           "type",
                           "remindAt",

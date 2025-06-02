@@ -63,6 +63,45 @@ export const columns: ColumnDef<Appointment>[] = [
     cell: ({ row }) => <div>{row.getValue("conversationId")}</div>,
   },
   {
+    accessorKey: "customerEmail",
+    header: ({ column }) => {
+      const sortDirection = column.getIsSorted();
+      const sortDescending = () =>
+        sortDirection === "desc"
+          ? column.clearSorting()
+          : column.toggleSorting(true);
+      const sortAscending = () =>
+        sortDirection === "asc"
+          ? column.clearSorting()
+          : column.toggleSorting(false);
+
+      return (
+        <SortingDropDown
+          Trigger={
+            <Button
+              variant={"ghost"}
+              onClick={column.getToggleSortingHandler()}
+              className="hover:bg-transparent py-4 px-4 w-full h-full justify-start text-xs font-semibold text-[#717680] hover:text-[#535862]"
+            >
+              Customer Email
+              {sortDirection === "asc" && (
+                <ListFilter className="text-blue-600 rotate-180" />
+              )}
+              {sortDirection === "desc" && (
+                <ListFilter className="text-blue-600" />
+              )}
+              {!sortDirection && <ListFilter className="text-[#A4A7AE]" />}
+            </Button>
+          }
+          sortDescending={sortDescending}
+          sortAscending={sortAscending}
+          sortDirection={sortDirection}
+        />
+      );
+    },
+    cell: ({ row }) => <div>{row.getValue("customerEmail")}</div>,
+  },
+  {
     accessorKey: "status",
     header: ({ column }) => {
       return (
@@ -249,11 +288,11 @@ export const AppointmentTable = () => {
                       key={header.id}
                       className={cn("py-4", {
                         "p-0": [
-                          "tag",
-                          "channel",
-                          "isActive",
-                          "type",
-                          "remindAt",
+                          "customerEmail",
+                          "status",
+                          "appointmentDate",
+                          "appointmentTime",
+                          "createdAt",
                         ].includes(header.id),
                       })}
                     >
@@ -296,6 +335,17 @@ export const AppointmentTable = () => {
                                 cell.getContext()
                               )}
                             </Badge>
+                          </TableCell>
+                        );
+                      }
+
+                      if (cell.id.includes("appointmentDate")) {
+                        return (
+                          <TableCell
+                            key={cell.id}
+                            className="font-sfpro-medium text-gray-900 text-sm"
+                          >
+                            {new Date(cell.getValue() as string).toDateString()}
                           </TableCell>
                         );
                       }
