@@ -86,12 +86,14 @@ export const ConfigureBotForm = ({
   } = getState("MeetingProvider");
 
   const knowledgeBaseOptions = useMemo(() => {
-    return knowledgeBases && knowledgeBases.length !== 0
-      ? knowledgeBases.map((kBase) => ({
-          placeholder: kBase.tag || "Unconfigured",
-          value: kBase._id,
-        }))
-      : [];
+    if (!knowledgeBases?.length) return [];
+
+    return knowledgeBases
+      .filter((kBase) => kBase.isActive)
+      .map((kBase) => ({
+        placeholder: kBase.tag || "Unconfigured",
+        value: kBase._id,
+      }));
   }, [knowledgeBases]);
 
   const connectedProviderOptions = useMemo(() => {
