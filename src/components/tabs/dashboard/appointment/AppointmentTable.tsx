@@ -432,6 +432,8 @@ const headerMap: Record<string, string> = {
   appointmentTime: "Appointment Time",
   appointmentId: "Appointment ID",
   conversationId: "Conversation ID",
+  customerEmail: "Customer Email",
+  createdAt: "Schedule Date",
   status: "Status",
 };
 
