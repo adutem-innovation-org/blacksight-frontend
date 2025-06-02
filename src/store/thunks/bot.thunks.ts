@@ -3,6 +3,7 @@ import {
   AskChatbotBody,
   Bot,
   ConfigureBotBody,
+  SpeechToTextBody,
   StartConversationBody,
   UpdateBotConfigBody,
   UpdateBotInstructionsBody,
@@ -163,3 +164,16 @@ export const deleteBot = createAsyncThunk<Bot, string, { rejectValue: string }>(
     }
   }
 );
+
+export const speechToText = createAsyncThunk<
+  string,
+  SpeechToTextBody,
+  { rejectValue: string }
+>("speech_to_text", async (data, { rejectWithValue }) => {
+  try {
+    const res = await botApiService.speechToText(data);
+    return res.text;
+  } catch (error: any) {
+    return rejectWithValue(error.message);
+  }
+});

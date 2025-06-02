@@ -88,3 +88,10 @@ export const resetGetTrainingConversationReducer = (state: BotState) => {
   state.trainingConversationFetched = false;
   state.fetchTrainingConversationError = "";
 };
+
+export const resetSpeechToTextReducer = (state: BotState) => {
+  state.transcribingSpeech = false;
+  state.speechTranscribed = false;
+  state.transcribeSpeechError = "";
+  state.transcribedText;
+};

@@ -64,4 +64,10 @@ export type BotState = {
   clearingTrainingConversation: boolean;
   trainingConversationCleared: boolean;
   clearTrainingConversationError: string;
+
+  // Speech to text
+  transcribingSpeech: boolean;
+  speechTranscribed: boolean;
+  transcribeSpeechError: string;
+  transcribedText: string;
 };

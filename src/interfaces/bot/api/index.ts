@@ -9,3 +9,4 @@ export * from "./get-training-conversation";
 export * from "./clear-training-conversation";
 export * from "./update-bot-status";
 export * from "./delete-bot";
+export * from "./speech-to-text";

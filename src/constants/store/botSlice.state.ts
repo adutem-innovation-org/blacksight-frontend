@@ -63,4 +63,10 @@ export const initialBotState: BotState = {
   clearingTrainingConversation: false,
   trainingConversationCleared: false,
   clearTrainingConversationError: "",
+
+  // Speech to text
+  transcribingSpeech: false,
+  speechTranscribed: false,
+  transcribeSpeechError: "",
+  transcribedText: "",
 };

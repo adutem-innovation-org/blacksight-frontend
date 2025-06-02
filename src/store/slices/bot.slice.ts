@@ -15,6 +15,7 @@ import {
   resetClearTrainingConversationReducer,
   resetUpdateBotStatusReducer,
   resetDeleteBotReducer,
+  resetSpeechToTextReducer,
 } from "../reducers";
 import {
   askChatbotBuilder,
@@ -28,6 +29,7 @@ import {
   startConversationBuilder,
   updateBotConfigBuilder,
   updateBotInstructionsBuilder,
+  speechToTextBuilder,
 } from "../builders";
 
 const botSlice = createSlice({
@@ -48,6 +50,7 @@ const botSlice = createSlice({
     resetAskChatbot: resetAskChatbotReducer,
     resetGetTrainingConversation: resetGetTrainingConversationReducer,
     resetClearTrainingConversation: resetClearTrainingConversationReducer,
+    resetSpeechToText: resetSpeechToTextReducer,
   },
   extraReducers(builder) {
     getBotAnalyticsBuilder(builder);
@@ -61,6 +64,7 @@ const botSlice = createSlice({
     askChatbotBuilder(builder);
     getTrainingConversationBuilder(builder);
     clearTrainingConversationBuilder(builder);
+    speechToTextBuilder(builder);
   },
 });
 
@@ -78,4 +82,5 @@ export const {
   clearCurrentConversation,
   resetClearTrainingConversation,
   resetGetTrainingConversation,
+  resetSpeechToText,
 } = botSlice.actions;

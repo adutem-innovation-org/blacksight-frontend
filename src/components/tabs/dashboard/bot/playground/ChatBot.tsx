@@ -1,4 +1,5 @@
 import { Button } from "@/components/form";
+import { VoiceChatRecorder } from "@/components/media";
 import { Loader } from "@/components/progress";
 import { RoleEnum } from "@/enums";
 import { useStore } from "@/hooks";
@@ -9,9 +10,11 @@ import {
   getTrainingConversation,
   newMessage,
   resetGetTrainingConversation,
+  resetSpeechToText,
+  speechToText,
   startConversation,
 } from "@/store";
-import { Send, Settings2 } from "lucide-react";
+import { Mic, Send, Settings2 } from "lucide-react";
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -23,7 +26,7 @@ const ChatBotHeader = ({
   openBotConfig: () => void;
 }) => {
   return (
-    <div className="bg-transparent p-4 pt-4 pb-0">
+    <div className="bg-transparent p-4 pt-4 pb-4">
       <div className="flex items-center justify-between">
         <p className="tracking-tight font-dmsans text-white">
           {currentBot.name}
@@ -41,7 +44,13 @@ const ChatBotHeader = ({
   );
 };
 
-const TextInput = () => {
+const Promper = ({
+  recording,
+  launchRecorder,
+}: {
+  recording: boolean;
+  launchRecorder: () => void;
+}) => {
   const { dispatch, getState } = useStore();
   const {
     askingChatbot,
@@ -49,6 +58,11 @@ const TextInput = () => {
     startingConversation,
     currentBot,
     currentConversationId,
+
+    // speech to text
+    transcribingSpeech,
+    speechTranscribed,
+    transcribedText,
   } = getState("Bot");
   const [message, setMessage] = useState("");
 
@@ -77,7 +91,13 @@ const TextInput = () => {
   };
 
   const handleKeyPress = (e: any) => {
-    if (askingChatbot || startingConversation || startConversationError) {
+    if (
+      askingChatbot ||
+      startingConversation ||
+      startConversationError ||
+      recording ||
+      transcribingSpeech
+    ) {
       return;
     }
     if (e.key === "Enter") {
@@ -105,6 +125,13 @@ const TextInput = () => {
     }
   };
 
+  useEffect(() => {
+    if (speechTranscribed) {
+      if (transcribedText.trim().length > 0) setMessage(transcribedText.trim());
+      dispatch(resetSpeechToText());
+    }
+  }, [speechTranscribed]);
+
   return (
     <div className="rounded-full w-full bg-white shadow-2xl h-15 flex items-center p-1">
       <input
@@ -114,13 +141,26 @@ const TextInput = () => {
         value={message}
         onChange={updateText}
         onKeyPress={handleKeyPress}
+        disabled={recording || transcribingSpeech}
       />
+      <Button
+        className="bg-transparent rounded-full h-12 w-12 aspect-square cursor-pointer hover:bg-gray-100 text-black mr-2"
+        size={"icon"}
+        onClick={launchRecorder}
+        disabled={recording || transcribingSpeech}
+      >
+        <Mic className="!w-5 !h-5" />
+      </Button>
       <Button
         className="bg-indigo-500 rounded-full h-13 w-13 aspect-square cursor-pointer hover:bg-indigo-500/70"
         size={"icon"}
         onClick={sendMessage}
         disabled={
-          !!startConversationError || askingChatbot || startingConversation
+          !!startConversationError ||
+          askingChatbot ||
+          startingConversation ||
+          recording ||
+          transcribingSpeech
         }
       >
         <Send className="!w-6 !h-6" />
@@ -194,8 +234,12 @@ const Typing = () => {
 
 const Conversations = ({
   currentConversation,
+  recording,
+  launchRecorder,
 }: {
   currentConversation: any[] | null;
+  recording: boolean;
+  launchRecorder: () => void;
 }) => {
   const conversationContainerRef = useRef<any>(null);
   const { getState } = useStore();
@@ -243,7 +287,7 @@ const Conversations = ({
               )}
             </div>
           </div>
-          <TextInput />
+          <Promper recording={recording} launchRecorder={launchRecorder} />
         </Fragment>
       )}
     </div>
@@ -252,12 +296,167 @@ const Conversations = ({
 
 export const ChatBot = ({ openBotConfig }: { openBotConfig: () => void }) => {
   const { dispatch, getState } = useStore();
+  const [recording, setRecording] = useState(false);
+  const [isRecorderOpen, setIsRecordOpen] = useState(false);
+  const wasCancelledRef = useRef(false);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
+  const animationRef = useRef<number | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const sourceRef = useRef<MediaStreamAudioSourceNode | null>(null);
+
   const {
     currentBot,
     currentConversation,
     trainingConversationFetched,
     fetchTrainingConversationError,
+
+    // Speech to text
+    speechTranscribed,
+    transcribeSpeechError,
+    transcribingSpeech,
   } = getState("Bot");
+
+  const launchRecorder = () => {
+    setIsRecordOpen(true);
+  };
+
+  const startRecording = async () => {
+    wasCancelledRef.current = false;
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    audioContextRef.current = new AudioContext();
+    analyserRef.current = audioContextRef.current.createAnalyser();
+    sourceRef.current = audioContextRef.current.createMediaStreamSource(stream);
+    sourceRef.current.connect(analyserRef.current);
+    analyserRef.current.fftSize = 512;
+
+    drawBarWaveform();
+
+    const mimeType = "audio/webm;codecs=opus";
+    const isSupported = MediaRecorder.isTypeSupported(mimeType);
+
+    const recorder = isSupported
+      ? new MediaRecorder(stream, { mimeType })
+      : new MediaRecorder(stream); // fallback to browser default
+
+    audioChunksRef.current = [];
+
+    recorder.ondataavailable = (e) => {
+      audioChunksRef.current.push(e.data);
+    };
+
+    recorder.onstop = async () => {
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
+
+      if (wasCancelledRef.current) {
+        audioChunksRef.current = []; // Just to be sure;
+        return;
+      }
+
+      const audioBlob = new Blob(audioChunksRef.current, {
+        type: "audio/webm",
+      });
+      const formData = new FormData();
+      formData.append("speech-file", audioBlob, "voice.webm");
+      formData.append("botId", currentBot?._id!);
+
+      dispatch(speechToText(formData));
+    };
+
+    mediaRecorderRef.current = recorder;
+    recorder.start();
+    setRecording(true);
+  };
+
+  const endRecording = () => {
+    if (mediaRecorderRef.current?.state === "recording") {
+      mediaRecorderRef.current.stop();
+    }
+
+    setRecording(false);
+
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+      animationRef.current = null;
+    }
+
+    analyserRef.current?.disconnect();
+    sourceRef.current?.disconnect();
+    audioContextRef.current?.close();
+
+    // setIsRecordOpen(false); // Don't close recorder yet
+  };
+
+  const cancelRecording = () => {
+    wasCancelledRef.current = true;
+    audioChunksRef.current = []; // Clear the chunks
+
+    if (mediaRecorderRef.current?.state === "recording") {
+      mediaRecorderRef.current.stop(); // Still need to stop to release stream
+    }
+
+    setRecording(false);
+    setIsRecordOpen(false);
+
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+      animationRef.current = null;
+    }
+
+    analyserRef.current?.disconnect();
+    sourceRef.current?.disconnect();
+    audioContextRef.current?.close();
+  };
+
+  const drawBarWaveform = () => {
+    if (!canvasRef.current || !analyserRef.current) return;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d")!;
+    const bufferLength = analyserRef.current.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+
+    const draw = () => {
+      analyserRef.current!.getByteFrequencyData(dataArray);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const barWidth = 2;
+      const gap = 1;
+      const barCount = Math.floor(canvas.width / (barWidth + gap));
+      const step = Math.floor(bufferLength / barCount);
+
+      for (let i = 0; i < barCount; i++) {
+        const value = dataArray[i * step];
+        const barHeight = (value / 255) * canvas.height;
+        const x = i * (barWidth + gap);
+        // const y = canvas.height - barHeight;
+        const y = canvas.height / 2 - barHeight / 2;
+
+        ctx.fillStyle = "#ffffff"; // or any desired bar color
+        ctx.fillRect(x, y, barWidth, barHeight);
+      }
+
+      animationRef.current = requestAnimationFrame(draw);
+    };
+    draw();
+  };
+
+  // Speech to text
+  useEffect(() => {
+    if (isRecorderOpen) {
+      startRecording();
+    }
+  }, [isRecorderOpen]);
+
+  useEffect(() => {
+    setIsRecordOpen(false);
+  }, [speechTranscribed]);
+
+  useEffect(() => {
+    setIsRecordOpen(false);
+    dispatch(resetSpeechToText());
+  }, [transcribeSpeechError]);
 
   useEffect(() => {
     if (
@@ -293,9 +492,20 @@ export const ChatBot = ({ openBotConfig }: { openBotConfig: () => void }) => {
       <div className="h-10">
         <p className="text-2xl font-dmsans tracking-tight">Chatbot</p>
       </div>
-      <div className="bg-white bg-linear-to-br from-indigo-500 to-sky-500 shadow-[0px_4px_16px_0px_#0000001f] rounded-4xl overflow-hidden w-full flex-1 p-1 flex flex-col gap-4">
+      <div className="bg-white bg-linear-to-br from-indigo-500 to-sky-500 shadow-[0px_4px_16px_0px_#0000001f] rounded-4xl overflow-hidden w-full flex-1 p-1 flex flex-col">
         <ChatBotHeader currentBot={currentBot!} openBotConfig={openBotConfig} />
-        <Conversations currentConversation={currentConversation} />
+        <Conversations
+          currentConversation={currentConversation}
+          recording={recording}
+          launchRecorder={launchRecorder}
+        />
+        {isRecorderOpen && (
+          <VoiceChatRecorder
+            canvasRef={canvasRef}
+            endRecording={endRecording}
+            cancelRecording={cancelRecording}
+          />
+        )}
       </div>
     </div>
   );

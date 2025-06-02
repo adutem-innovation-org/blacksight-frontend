@@ -8,6 +8,8 @@ import {
   DeleteBotRes,
   GetBotsRes,
   GetTrainingConversationRes,
+  SpeechToTextBody,
+  SpeechToTextRes,
   StartConversationBody,
   StartConversationRes,
   UpdateBotConfigBody,
@@ -105,6 +107,14 @@ export class BotApiService {
   askChatbot = (data: AskChatbotBody) => {
     return this.apiService.post<AskChatbotBody, AskChatbotRes>(
       this.urls.ASK_CHATBOT,
+      data,
+      { timeout: 40000 }
+    );
+  };
+
+  speechToText = (data: SpeechToTextBody) => {
+    return this.apiService.postWithFile<SpeechToTextBody, SpeechToTextRes>(
+      this.urls.SPEECH_TO_TEXT,
       data,
       { timeout: 40000 }
     );
