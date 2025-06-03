@@ -196,15 +196,26 @@ const Message = ({ role, content }: { role: RoleEnum; content: string }) => {
 
       {/* Text */}
       <div
-        className={cn("p-4 bg-white text-sm", {
+        className={cn("p-4 bg-white text-sm whitespace-pre-line", {
           "rounded-md rounded-tl-none shadow-[2px_2px_4px_#0000001a]": isBot,
           "rounded-md rounded-tr-none shadow-[-2px_2px_4px_#0000001a]": !isBot,
         })}
       >
         <ReactMarkdown
           skipHtml
-          children={content.replace(/\n/g, `  \n`)}
-          remarkPlugins={[remarkBreaks]}
+          components={{
+            ul: ({ node, className, ...props }) => (
+              <ul
+                {...props}
+                className={cn(
+                  className,
+                  "list-disc list-inside flex flex-col gap-1"
+                )}
+              />
+            ),
+          }}
+          children={content}
+          // remarkPlugins={[remarkBreaks]}
         />
       </div>
     </div>
