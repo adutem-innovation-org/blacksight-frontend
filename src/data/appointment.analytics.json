@@ -10,6 +10,7 @@
         "id": "scheduledAppointments",
         "title": "Scheduled",
         "icon": "fi fi-rr-daily-calendar text-[#2563EB]",
+        "shouldCountUp": false,
         "showProgressRing": true,
         "progressRingColor": "#34D399"
     },
