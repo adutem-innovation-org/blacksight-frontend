@@ -35,6 +35,7 @@ import {
   Calendar,
   ChevronDown,
   ListFilter,
+  RefreshCcw,
   Settings,
   X,
 } from "lucide-react";
@@ -53,6 +54,7 @@ import { Badge } from "@/components/badge";
 import { cn } from "@/lib/utils";
 import { AppointmentStatus } from "@/enums";
 import { downloadCSV, downloadExcel, transformForExport } from "@/helpers";
+import { getAllAppointments, getAppointmentAnalytics } from "@/store";
 
 export const columns: ColumnDef<Appointment>[] = [
   {
@@ -260,7 +262,7 @@ const formatters = {
 };
 
 export const AppointmentTable = () => {
-  const { getState } = useStore();
+  const { dispatch, getState } = useStore();
   const { appointments } = getState("Appointment");
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -315,6 +317,12 @@ export const AppointmentTable = () => {
     });
     downloadExcel(exportData, "appointments");
   };
+
+  const refreshTable = () => {
+    dispatch(getAppointmentAnalytics());
+    dispatch(getAllAppointments());
+  };
+
   return (
     <DashboardGrid className="bg-white rounded-md overflow-hidden flex-1 grid">
       {/* Table header action sections */}
@@ -333,8 +341,11 @@ export const AppointmentTable = () => {
           </Button>
         </div>
         <div className="ml-auto gap-4 flex items-center">
+          <Button variant={"brand"} className="h-10" onClick={refreshTable}>
+            <RefreshCcw />
+            Refresh
+          </Button>
           <DataExportDropdown exportCSV={exportCSV} exportExcel={exportExcel} />
-
           {<TableSettings table={table} />}
         </div>
       </div>
