@@ -1,5 +1,5 @@
 import { PaginationMetaData } from "@/interfaces/pagination";
-import { Bot } from "./bot";
+import { Bot, Conversation } from "./bot";
 
 export type BotState = {
   fetchingBotAnalytics: boolean;
@@ -13,6 +13,19 @@ export type BotState = {
   fetchAllBotsErrorMessage: string;
   bots: Bot[] | null;
   meta: PaginationMetaData | null;
+
+  // Fetch conversation analytics
+  fetchingConversationAnalytics: boolean;
+  conversationAnalyticsFetched: boolean;
+  fetchConversationAnalyticsError: string;
+  conversationAnalytics: Record<string, number> | null;
+
+  // Get all conversations
+  fetchingAllConversations: boolean;
+  allConversationsFetched: boolean;
+  fetchAllConversationsError: string;
+  conversations: Conversation[] | null;
+  conversationMeta: PaginationMetaData | null;
 
   // Configure bot
   configuringBot: boolean;

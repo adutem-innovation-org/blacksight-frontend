@@ -13,6 +13,18 @@ export const initialBotState: BotState = {
   bots: null,
   meta: null,
 
+  fetchingConversationAnalytics: false,
+  conversationAnalyticsFetched: false,
+  fetchConversationAnalyticsError: "",
+  conversationAnalytics: null,
+
+  // Get all Conversations
+  fetchingAllConversations: false,
+  allConversationsFetched: false,
+  fetchAllConversationsError: "",
+  conversations: null,
+  conversationMeta: null,
+
   // Configure bot
   configuringBot: false,
   botConfigured: false,

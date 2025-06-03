@@ -5,7 +5,9 @@ import {
   ClearTrainingConversationRes,
   ConfigureBotBody,
   ConfigureBotRes,
+  ConversationAnalyticsRes,
   DeleteBotRes,
+  GetAllConversationsRes,
   GetBotsRes,
   GetTrainingConversationRes,
   SpeechToTextBody,
@@ -44,6 +46,18 @@ export class BotApiService {
 
   getBots = () => {
     return this.apiService.get<GetBotsRes>(this.urls.GET_ALL_BOTS);
+  };
+
+  getConversationAnalytics = () => {
+    return this.apiService.get<ConversationAnalyticsRes>(
+      this.urls.CONVERSATION_ANALYTICS
+    );
+  };
+
+  getAllConversations = () => {
+    return this.apiService.get<GetAllConversationsRes>(
+      this.urls.GET_ALL_CONVERSATIONS
+    );
   };
 
   configureBot = (data: ConfigureBotBody) => {

@@ -11,6 +11,7 @@ import { SubscriptionsTab } from "./Subscriptions";
 import { ReminderTab } from "./ReminderTab";
 import { ProfileTab } from "./ProfileTab";
 import { ProvidersTab } from "./Providers";
+import { ConversationsTab } from "./Conversations";
 
 export const DashboardTabs = () => {
   const { getState } = useStore();
@@ -45,6 +46,12 @@ export const DashboardTabs = () => {
       </Tabs.Panel>
       <Tabs.Panel value={DashboardTabsEnum.BOTS} className="w-full h-full">
         <BotsTab />
+      </Tabs.Panel>
+      <Tabs.Panel
+        value={DashboardTabsEnum.CONVERSATIONS}
+        className="w-full h-full"
+      >
+        <ConversationsTab />
       </Tabs.Panel>
       <Tabs.Panel value={DashboardTabsEnum.PROVIDERS} className="w-full h-full">
         <ProvidersTab />

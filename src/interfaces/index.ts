@@ -9,3 +9,4 @@ export * from "./knowledge-base";
 export * from "./bot";
 export * from "./meeting-providers";
 export * from "./appointment";
+export * from "./pagination";

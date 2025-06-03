@@ -24,6 +24,11 @@ export const sideTabs: Record<UserTypes, SideTabType[]> = {
       iconClass: "fi fi-rr-chatbot-speech-bubble",
     },
     {
+      name: "Conversations",
+      tabId: DashboardTabsEnum.CONVERSATIONS,
+      iconClass: "fi fi-rr-messages",
+    },
+    {
       name: "Appointments",
       tabId: DashboardTabsEnum.APPOINTMENTS,
       iconClass: "fi fi-rr-reservation-table",
@@ -49,6 +54,11 @@ export const sideTabs: Record<UserTypes, SideTabType[]> = {
       name: "Bots",
       tabId: DashboardTabsEnum.BOTS,
       iconClass: "fi fi-rr-chatbot-speech-bubble",
+    },
+    {
+      name: "Conversations",
+      tabId: DashboardTabsEnum.CONVERSATIONS,
+      iconClass: "fi fi-rr-messages",
     },
     {
       name: "Knowledge Base",

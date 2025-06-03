@@ -10,3 +10,5 @@ export * from "./clear-training-conversation.builder";
 export * from "./update-bot-status.builder";
 export * from "./delete-bot.builder";
 export * from "./speech-to-text.builder";
+export * from "./get-all-conversations.builder";
+export * from "./conversation-analytics.builder";

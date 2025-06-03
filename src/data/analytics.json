@@ -10,7 +10,7 @@
         {
             "id": "totalAppointments",
             "title": "Appointments",
-            "icon": "fi fi-rr-folder-open",
+            "icon": "fi fi-rr-reservation-table text-[#2563EB]",
             "shouldCountUp": false,
             "shouldProgressRing": false
         },

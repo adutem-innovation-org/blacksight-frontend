@@ -9,6 +9,8 @@ export const ASK_CHATBOT = "/conversation/training/ask-chatbot";
 export const SPEECH_TO_TEXT = "/conversation/training/speech-to-text";
 
 export const TRAINING_CONVERSATION = "/conversation/training";
+export const GET_ALL_CONVERSATIONS = "/conversation/all";
+export const CONVERSATION_ANALYTICS = "/conversation/analytics";
 
 export const DELETE_BOT = "/delete";
 export const DEACTIVATE_BOT = "/deactivate";

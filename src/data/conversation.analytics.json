@@ -1,0 +1,17 @@
+[
+    {
+        "id": "totalConversations",
+        "title": "Total conversations",
+        "icon": "fi fi-rr-messages text-[#BE123C]",
+        "shouldCountUp": false,
+        "showProgressRing": false
+    },
+    {
+        "id": "totalConversationsWithAppointment",
+        "title": "Converted conversations",
+        "icon": "fi fi-rr-reservation-table text-[#2563EB]",
+        "shouldCountUp": false,
+        "showProgressRing": true,
+        "progressRingColor": "#34D399"
+    }
+]

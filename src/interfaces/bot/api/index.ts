@@ -10,3 +10,5 @@ export * from "./clear-training-conversation";
 export * from "./update-bot-status";
 export * from "./delete-bot";
 export * from "./speech-to-text";
+export * from "./get-all-conversations";
+export * from "./conversation-analytics";

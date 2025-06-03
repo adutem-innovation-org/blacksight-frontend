@@ -10,6 +10,7 @@ export enum DashboardTabsEnum {
   PROFILE = "profile",
   ACTIVITIES = "activities",
   PROVIDERS = "meeting providers",
+  CONVERSATIONS = "conversations",
 }
 
 export enum SideBarStateEnum {

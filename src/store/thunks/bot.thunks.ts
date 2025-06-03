@@ -3,6 +3,8 @@ import {
   AskChatbotBody,
   Bot,
   ConfigureBotBody,
+  Conversation,
+  PaginationMetaData,
   SpeechToTextBody,
   StartConversationBody,
   UpdateBotConfigBody,
@@ -25,6 +27,19 @@ export const getBotAnalytics = createAsyncThunk(
   }
 );
 
+export const getConversationAnalytics = createAsyncThunk<
+  { totalConversations: number },
+  void,
+  { rejectValue: string }
+>("get_conversation_analytics", async (_: void, thunkAPI) => {
+  try {
+    const data = await botApiService.getConversationAnalytics();
+    return data.data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.message as string);
+  }
+});
+
 export const getAllBots = createAsyncThunk(
   "get_all_bots",
   async (_: void, thunkAPI) => {
@@ -36,6 +51,19 @@ export const getAllBots = createAsyncThunk(
     }
   }
 );
+
+export const getAllConversations = createAsyncThunk<
+  { data: Conversation[]; meta: PaginationMetaData },
+  void,
+  { rejectValue: string }
+>("get_all_conversations", async (_: void, thunkAPI) => {
+  try {
+    const { data, meta } = await botApiService.getAllConversations();
+    return { data, meta };
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.message);
+  }
+});
 
 export const configureBot = createAsyncThunk(
   "configure_bot",

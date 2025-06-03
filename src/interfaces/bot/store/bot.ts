@@ -28,5 +28,6 @@ export type Conversation = {
   botId: string;
   businessId: string;
   conversationId: string;
+  duration: string;
   messages: Message[];
 };

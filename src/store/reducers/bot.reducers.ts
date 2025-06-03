@@ -8,10 +8,22 @@ export const resetGetBotAnalyticsReducer = (state: BotState) => {
   state.fetchBotAnalyticsErrorMessage = "";
 };
 
+export const resetGetConversationAnalyticsReducer = (state: BotState) => {
+  state.fetchingConversationAnalytics = false;
+  state.conversationAnalyticsFetched = false;
+  state.fetchConversationAnalyticsError = "";
+};
+
 export const resetGetAllBotsReducer = (state: BotState) => {
   state.fetchingAllBots = false;
   state.allBotsFetched = false;
   state.fetchAllBotsErrorMessage = "";
+};
+
+export const resetGetAllConversationsReducer = (state: BotState) => {
+  state.fetchingAllConversations = false;
+  state.allConversationsFetched = false;
+  state.fetchAllConversationsError = "";
 };
 
 export const resetConfigureBotReducer = (state: BotState) => {
