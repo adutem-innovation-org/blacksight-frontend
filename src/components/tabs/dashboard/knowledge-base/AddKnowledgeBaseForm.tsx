@@ -7,7 +7,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { KnowledgeBaseSources } from "@/enums";
 import { useStore } from "@/hooks";
+import { cn } from "@/lib/utils";
 import { knowledgeBaseSchema } from "@/schemas";
 import {
   addKnowledgeBase,
@@ -53,6 +55,8 @@ export const AddKnowledgeBaseForm = ({
 
   const initialValues = {
     tag: "",
+    source: KnowledgeBaseSources.TEXT_INPUT,
+    text: "",
     file: "",
   };
 
@@ -61,13 +65,20 @@ export const AddKnowledgeBaseForm = ({
     initialValues,
     validationSchema: knowledgeBaseSchema,
     onSubmit: (values) => {
-      const { tag } = values;
+      const { tag, source } = values;
       const formData = new FormData();
       formData.append("tag", tag);
-      formData.append("file", currentFile as Blob);
+      formData.append("source", source);
+      if (source === KnowledgeBaseSources.FILE) {
+        formData.append("file", currentFile as Blob);
+      } else {
+        formData.append("text", values.text);
+      }
       dispatch(addKnowledgeBase(formData));
     },
   });
+
+  console.log(validation.errors);
 
   const onSelectFile = (e: any) => {
     let file = e.target.files[0];
@@ -117,6 +128,10 @@ export const AddKnowledgeBaseForm = ({
       <DialogContent
         onPointerDownOutside={(e) => e.preventDefault()}
         onOpenAutoFocus={(e) => e.preventDefault()}
+        className={cn({
+          "!w-[90dvw] !max-w-[800px] !sm:max-w-auto":
+            validation.values.source === KnowledgeBaseSources.TEXT_INPUT,
+        })}
       >
         {addingKnowledgeBase && (
           <Loader
@@ -149,18 +164,43 @@ export const AddKnowledgeBaseForm = ({
               validation={validation}
               containerClassName="gap-2 mt-4"
             />
+
             <FormGroup
-              type="file-input"
-              groupLabel={"Upload file"}
+              type="select"
+              groupLabel="Source"
+              placeholder="Select knowledge base source"
               size="md"
-              name={"file"}
+              name="source"
               validation={validation}
+              options={Object.values(KnowledgeBaseSources)}
               containerClassName="gap-2 mt-4"
-              handleFileChange={onSelectFile}
-              accept="text/plain, text/markdown, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf"
-              removeSelectedFile={removeSelectedFile}
             />
 
+            {validation.values.source === KnowledgeBaseSources.FILE && (
+              <FormGroup
+                type="file-input"
+                groupLabel={"Upload file"}
+                size="md"
+                name={"file"}
+                validation={validation}
+                containerClassName="gap-2 mt-4"
+                handleFileChange={onSelectFile}
+                accept="text/plain, text/markdown, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf"
+                removeSelectedFile={removeSelectedFile}
+              />
+            )}
+
+            {validation.values.source === KnowledgeBaseSources.TEXT_INPUT && (
+              <FormGroup
+                type="textarea"
+                name="text"
+                groupLabel="Knowledge Base"
+                placeholder="Enter your data..."
+                size="lg"
+                validation={validation}
+                containerClassName="gap-2 mt-4"
+              />
+            )}
             <Button
               className="w-full cursor-pointer mt-10"
               type="submit"
