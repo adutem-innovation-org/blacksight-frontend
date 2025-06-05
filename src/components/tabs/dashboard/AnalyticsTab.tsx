@@ -2,13 +2,13 @@ import { AnalyticsCard } from "@/components/cards";
 import { BookingVolumeChart, ResponseTimeChart } from "@/components/charts";
 import { PopularBookingTimeChart } from "@/components/charts/PopularResponseTime";
 import { DashboardContent, DashboardTableLayoutDiv } from "@/components/design";
-import { Button } from "@/components/form";
 import { Loader } from "@/components/progress";
-import { TopUsersTable } from "@/components/tables";
 import analyticsData from "@/data/analytics.json";
+import { UserTypes } from "@/enums";
 import { useProfile, useStore } from "@/hooks";
-import { getAnalytics } from "@/store";
+import { getAllAppointments, getAnalytics } from "@/store";
 import React, { useEffect, useMemo } from "react";
+import { AppointmentWidget, TopUsersWidget } from "./analytics";
 
 const AnalyticsHeader = () => {
   const { getState } = useStore();
@@ -52,6 +52,7 @@ const AnalyticsHeader = () => {
 export const AnalyticsTab = () => {
   const { dispatch, getState } = useStore();
   const { analytics, fetchingAnalytics } = getState("Analytics");
+  const { appointments, fetchingAllAppointments } = getState("Appointment");
   const { user } = useProfile();
 
   useEffect(() => {
@@ -59,6 +60,13 @@ export const AnalyticsTab = () => {
       dispatch(getAnalytics(user.userType));
     }
   }, [user]);
+
+  // Get appointments
+  useEffect(() => {
+    if (!appointments && !fetchingAllAppointments) {
+      dispatch(getAllAppointments());
+    }
+  }, []);
 
   if (fetchingAnalytics) return <Loader />;
 
@@ -100,20 +108,11 @@ export const AnalyticsTab = () => {
               className="grid grid-cols-1 lg:grid-cols-3 gap-4"
               style={{ gridAutoRows: "600px" }}
             >
-              <div className="rounded-sm bg-white col-span-1 lg:col-span-2 flex flex-col">
-                <div className="border-b p-4 px-6 flex justify-between items-center">
-                  <h3 className="font-sfpro-medium text-xl">Top Users</h3>
-                  <Button
-                    size={"sm"}
-                    className="rounded-sm bg-brand hover:bg-primary transition-colors duration-500 cursor-pointer h-8"
-                  >
-                    View all
-                  </Button>
-                </div>
-                <div className="flex-1 overflow-hidden max-w-full">
-                  <TopUsersTable />
-                </div>
-              </div>
+              {user && user.userType === UserTypes.USER ? (
+                <AppointmentWidget />
+              ) : (
+                <TopUsersWidget />
+              )}
               <div className="rounded-sm bg-white col-span-1"></div>
             </div>
 

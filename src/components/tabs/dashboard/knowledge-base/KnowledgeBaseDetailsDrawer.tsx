@@ -60,6 +60,8 @@ export function KnowledgeBaseDetailsDrawer({
   onOpenChange,
   knowledgeBaseDetails,
 }: KnowledgeBaseDetailsDrawerProps) {
+  const connectedBots = knowledgeBaseDetails?.connectedBots ?? [];
+
   return (
     <Sheet open={isOpen} onOpenChange={onOpenChange} modal={false}>
       <CustomSheetContent className="rounded-2xl p-0">
@@ -72,10 +74,6 @@ export function KnowledgeBaseDetailsDrawer({
             <p className="font-urbanist font-semibold text-lg text-gray-900">
               Knowledge Base details
             </p>
-            <Button variant={"outline"}>
-              <Download className="text-gray-800 outine-gray-800" />
-              <p className="font-sfpro-medium text-sm text-gray-800">Resend</p>
-            </Button>
           </div>
 
           {/* Reminder Details */}
@@ -100,7 +98,7 @@ export function KnowledgeBaseDetailsDrawer({
             <CustomRow>
               <p className="font-sfpro text-sm text-gray-900">Created At</p>
               <p className="font-sfpro-medium text-sm text-gray-900">
-                {knowledgeBaseDetails?.createdAt}
+                {new Date(knowledgeBaseDetails?.createdAt).toLocaleString()}
               </p>
             </CustomRow>
             <CustomRow>
@@ -118,12 +116,20 @@ export function KnowledgeBaseDetailsDrawer({
               </p>
             </CustomRow>
 
-            <div className="mt-4 grid grid-cols-2 gap-4">
-              <InvoiceCard
-                header="Knowledge Base ID"
-                content={knowledgeBaseDetails?._id}
-              />
-            </div>
+            <h2 className="font-urbanist text-lg text-gray-900 font-semibold pt-6 border-t">
+              Connected Bots
+            </h2>
+            {connectedBots.length > 0 ? (
+              <div className="mt-4 grid grid-cols-2 gap-4">
+                {connectedBots.map((bot) => (
+                  <InvoiceCard header={bot.name} content={bot._id} />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center font-urbanist text-sm text-gray-400 mt-4 font-medium">
+                No connected bots
+              </div>
+            )}
           </div>
         </div>
       </CustomSheetContent>

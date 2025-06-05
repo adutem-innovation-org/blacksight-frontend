@@ -29,7 +29,6 @@ import {
   flexRender,
 } from "@tanstack/react-table";
 import {
-  ArrowDownToLine,
   ArrowLeft,
   ArrowRight,
   Calendar,
@@ -65,7 +64,9 @@ export const columns: ColumnDef<Appointment>[] = [
   {
     accessorKey: "conversationId",
     header: "Conversation ID",
-    cell: ({ row }) => <div>{row.getValue("conversationId")}</div>,
+    cell: ({ row }) => (
+      <div className="whitespace-nowrap">{row.getValue("conversationId")}</div>
+    ),
   },
   {
     accessorKey: "customerEmail",
@@ -227,7 +228,7 @@ export const columns: ColumnDef<Appointment>[] = [
               onClick={column.getToggleSortingHandler()}
               className="hover:bg-transparent py-4 px-4 w-full h-full justify-start font-semibold text-xs text-[#717680] hover:text-[#535862]"
             >
-              Scheduled On
+              Booked On
               {sortDirection === "asc" && (
                 <ListFilter className="text-blue-600 rotate-180" />
               )}
@@ -261,7 +262,13 @@ const formatters = {
   status: (status: AppointmentStatus) => status.toString().toLowerCase(),
 };
 
-export const AppointmentTable = () => {
+export const AppointmentTable = ({
+  hideRefreshButton,
+  gridContainerClassName,
+}: {
+  hideRefreshButton?: boolean;
+  gridContainerClassName?: string;
+}) => {
   const { dispatch, getState } = useStore();
   const { appointments } = getState("Appointment");
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -324,9 +331,14 @@ export const AppointmentTable = () => {
   };
 
   return (
-    <DashboardGrid className="bg-white rounded-md overflow-hidden flex-1 grid">
+    <DashboardGrid
+      className={cn(
+        "bg-white rounded-md overflow-hidden flex-1 grid",
+        gridContainerClassName
+      )}
+    >
       {/* Table header action sections */}
-      <div className="flex items-center px-4">
+      <div className="flex items-center px-4 gap-4">
         <div className="flex items-center gap-4 flex-1">
           <SearchInput
             placeholder="Search..."
@@ -337,14 +349,20 @@ export const AppointmentTable = () => {
             className="max-w-80"
           />
           <Button variant="outline" className="h-11">
-            <Calendar /> This month <ChevronDown />
+            <Calendar />{" "}
+            <div className="hidden sm:flex items-center">
+              {" "}
+              This month <ChevronDown />{" "}
+            </div>
           </Button>
         </div>
         <div className="ml-auto gap-4 flex items-center">
-          <Button variant={"brand"} className="h-10" onClick={refreshTable}>
-            <RefreshCcw />
-            Refresh
-          </Button>
+          {!hideRefreshButton && (
+            <Button variant={"brand"} className="h-10" onClick={refreshTable}>
+              <RefreshCcw />
+              Refresh
+            </Button>
+          )}
           <DataExportDropdown exportCSV={exportCSV} exportExcel={exportExcel} />
           {<TableSettings table={table} />}
         </div>
@@ -433,7 +451,7 @@ export const AppointmentTable = () => {
                         let localDate = new Date(`${date}T${time}`);
 
                         // Convert to UTC ISO string
-                        const utcISOString = localDate.toISOString();
+                        const utcISOString = localDate.toLocaleTimeString();
 
                         return (
                           <TableCell
@@ -441,6 +459,19 @@ export const AppointmentTable = () => {
                             className="font-sfpro-medium text-gray-900 text-sm"
                           >
                             {utcISOString}
+                          </TableCell>
+                        );
+                      }
+
+                      if (cell.id.includes("createdAt")) {
+                        return (
+                          <TableCell
+                            key={cell.id}
+                            className="font-sfpro-medium text-gray-900 text-sm whitespace-nowrap"
+                          >
+                            {new Date(
+                              cell.getValue() as string
+                            ).toLocaleString()}
                           </TableCell>
                         );
                       }

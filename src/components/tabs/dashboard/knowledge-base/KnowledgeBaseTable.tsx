@@ -65,7 +65,9 @@ export const columns: ColumnDef<KnowledgeBase>[] = [
   {
     accessorKey: "_id",
     header: "Knowledge base id",
-    cell: ({ row }) => <div>{row.getValue("_id")}</div>,
+    cell: ({ row }) => (
+      <div className="whitespace-nowrap">{row.getValue("_id")}</div>
+    ),
   },
   {
     accessorKey: "tag",
@@ -104,7 +106,9 @@ export const columns: ColumnDef<KnowledgeBase>[] = [
         />
       );
     },
-    cell: ({ row }) => <div>{row.getValue("tag")}</div>,
+    cell: ({ row }) => (
+      <div className="whitespace-nowrap">{row.getValue("tag")}</div>
+    ),
   },
   {
     accessorKey: "isActive",
@@ -273,7 +277,7 @@ export function KnowledgeBaseTable({
   return (
     <DashboardGrid className="bg-white rounded-md overflow-hidden flex-1 grid">
       {/* Table header action sections */}
-      <div className="flex items-center px-4">
+      <div className="flex items-center px-4 gap-4">
         <div className="flex items-center gap-4 flex-1">
           <SearchInput
             placeholder="Search..."
@@ -284,7 +288,11 @@ export function KnowledgeBaseTable({
             className="max-w-80"
           />
           <Button variant="outline" className="h-11">
-            <Calendar /> This month <ChevronDown />
+            <Calendar />{" "}
+            <div className="hidden sm:flex items-center">
+              {" "}
+              This month <ChevronDown />
+            </div>
           </Button>
         </div>
         <div className="ml-auto gap-4 flex items-center">
@@ -333,6 +341,7 @@ export function KnowledgeBaseTable({
               </TableRow>
             ))}
           </TableHeader>
+
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => {
@@ -365,6 +374,19 @@ export function KnowledgeBaseTable({
                         );
                       }
 
+                      if (cell.id.includes("createdAt")) {
+                        return (
+                          <TableCell
+                            key={cell.id}
+                            className="font-sfpro-medium text-gray-900 text-sm whitespace-nowrap"
+                          >
+                            {new Date(
+                              cell.getValue() as string
+                            ).toLocaleString()}
+                          </TableCell>
+                        );
+                      }
+
                       return (
                         <TableCell
                           key={cell.id}
@@ -393,6 +415,7 @@ export function KnowledgeBaseTable({
           </TableBody>
         </Table>
       </div>
+
       {/* Subscription footer */}
       <div className="flex items-center justify-end space-x-2 p-4">
         <div className="flex-1 text-sm text-muted-foreground">

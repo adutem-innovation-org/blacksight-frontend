@@ -1,7 +1,7 @@
 import { DashboardTabsEnum } from "@/enums";
 import { useStore } from "@/hooks";
 import { Tabs } from "@mantine/core";
-import { AnalyticsTab } from "./Analytics";
+import { AnalyticsTab } from "./AnalyticsTab";
 import { KnowledgeBaseTab } from "./KnowledgeBase";
 import { BotsTab } from "./Bots";
 import { AccountsTab } from "./Accounts";
