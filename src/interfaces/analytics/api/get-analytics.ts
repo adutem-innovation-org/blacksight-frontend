@@ -1,4 +1,5 @@
 import { ApiSuccessResponse } from "@/interfaces/api-response";
+import { ResponseTimeType, TokenUsage } from "../store";
 
 type BookingStat = {
   day: string;
@@ -13,6 +14,8 @@ export interface GetBusinessAnalyticsRes extends ApiSuccessResponse {
     totalKnowledgeBase: number;
   };
   bookingStat: Array<BookingStat> | null;
+  responseTime: ResponseTimeType;
+  tokenUsage: TokenUsage[];
 }
 
 export interface GetAdminAnalyticsRes extends ApiSuccessResponse {
@@ -23,4 +26,6 @@ export interface GetAdminAnalyticsRes extends ApiSuccessResponse {
     totalAdmins: number;
   };
   bookingStat: Array<BookingStat> | null;
+  responseTime: ResponseTimeType;
+  tokenUsage: TokenUsage[];
 }

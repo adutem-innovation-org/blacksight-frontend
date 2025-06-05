@@ -10,7 +10,7 @@ export type AnalyticsState = {
   fetchAnalyticsError: string;
 };
 
-type ResponseTimeType = {
+export type ResponseTimeType = {
   categories: string[];
   series: Series[];
 };
@@ -20,7 +20,7 @@ type Series = {
   data: number[];
 };
 
-type TokenUsage = {
+export type TokenUsage = {
   botName: string;
   categories: string[];
   series: number[];
