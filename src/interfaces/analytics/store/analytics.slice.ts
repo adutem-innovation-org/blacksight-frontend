@@ -5,6 +5,7 @@ export type AnalyticsState = {
     data: Record<string, number>;
     bookingStat: Record<string, string | number>[] | null;
     responseTime: ResponseTimeType;
+    tokenUsage: TokenUsage[];
   } | null;
   fetchAnalyticsError: string;
 };
@@ -17,4 +18,10 @@ type ResponseTimeType = {
 type Series = {
   name: string;
   data: number[];
+};
+
+type TokenUsage = {
+  botName: string;
+  categories: string[];
+  series: number[];
 };

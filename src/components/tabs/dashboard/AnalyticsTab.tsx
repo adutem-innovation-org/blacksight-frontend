@@ -8,7 +8,11 @@ import { UserTypes } from "@/enums";
 import { useProfile, useStore } from "@/hooks";
 import { getAllAppointments, getAnalytics } from "@/store";
 import React, { useEffect, useMemo } from "react";
-import { AppointmentWidget, TopUsersWidget } from "./analytics";
+import {
+  AppointmentWidget,
+  TokenUsageWidget,
+  TopUsersWidget,
+} from "./analytics";
 
 const AnalyticsHeader = () => {
   const { getState } = useStore();
@@ -123,7 +127,15 @@ export const AnalyticsTab = () => {
               ) : (
                 <TopUsersWidget />
               )}
-              <div className="rounded-sm bg-white col-span-1"></div>
+              <div className="rounded-sm bg-white col-span-1 p-6 flex flex-col gap-4">
+                {analytics ? (
+                  <TokenUsageWidget data={analytics.tokenUsage} />
+                ) : (
+                  <div className="w-full h-full font-urbanist font-semibold text-gray-900 italics">
+                    No data available
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="bg-white h-[400px] rounded-sm p-6 flex flex-col gap-4">
