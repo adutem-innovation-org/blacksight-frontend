@@ -98,8 +98,18 @@ export const AnalyticsTab = () => {
                     Response time
                   </p>
                 </div>
-                <div className="h-full rounded-xl flex items-end justify-start pt-5">
-                  <ResponseTimeChart />
+                {/* <div className="h-full rounded-xl flex items-end justify-start pt-5"> */}
+                <div className="h-full rounded-xl pt-5">
+                  {analytics ? (
+                    <ResponseTimeChart
+                      series={analytics?.responseTime.series}
+                      categories={analytics?.responseTime.categories}
+                    />
+                  ) : (
+                    <div className="w-full h-full font-urbanist font-semibold text-gray-900 italics">
+                      No data available
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
