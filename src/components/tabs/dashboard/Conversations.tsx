@@ -2,7 +2,7 @@ import { AnalyticsCard } from "@/components/cards";
 import { DashboardContent } from "@/components/design";
 import { Loader } from "@/components/progress";
 import conversationAnalyticsData from "@/data/conversation.analytics.json";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useStore } from "@/hooks";
 import {
   getAllConversations,
@@ -11,7 +11,8 @@ import {
 } from "@/store";
 import { EmptyRecordsTemplate } from "@/components/templates";
 import notificationIcon from "@/assets/images/schedule.png";
-import { ConversationTable } from "./conversation";
+import { ConversationDrawer, ConversationTable } from "./conversation";
+import { Conversation } from "@/interfaces";
 
 const Header = () => {
   const { getState } = useStore();
@@ -66,6 +67,22 @@ export const ConversationsTab = () => {
     conversationAnalytics,
   } = getState("Bot");
 
+  // View chats
+  const [drawerOpen, setDrawerOpen] = useState(() => false);
+  const [conversation, setConversation] = useState<Conversation | null>(null);
+
+  const onOpenChange = (value: boolean) => {
+    if (!value) {
+      setConversation(null);
+    }
+    setDrawerOpen(value);
+  };
+
+  const viewConversation = (data: Conversation) => {
+    setConversation(data);
+    setDrawerOpen(true);
+  };
+
   useEffect(() => {
     if (!conversationAnalytics && !fetchingConversationAnalytics) {
       dispatch(getConversationAnalytics());
@@ -101,8 +118,14 @@ export const ConversationsTab = () => {
             description="Looks like your bots have not had conversations yet."
           />
         ) : (
-          <ConversationTable />
+          <ConversationTable viewConversation={viewConversation} />
         )}
+
+        <ConversationDrawer
+          isOpen={drawerOpen}
+          onOpenChange={onOpenChange}
+          conversation={conversation!}
+        />
       </div>
     </DashboardContent>
   );

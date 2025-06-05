@@ -107,7 +107,13 @@ export const columns: ColumnDef<Conversation>[] = [
   },
 ];
 
-export const ConversationTable = () => {
+interface ConversationTableProps {
+  viewConversation: (data: Conversation) => void;
+}
+
+export const ConversationTable = ({
+  viewConversation,
+}: ConversationTableProps) => {
   const { dispatch, getState } = useStore();
   const { conversations } = getState("Bot");
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -155,9 +161,14 @@ export const ConversationTable = () => {
         <div className="flex items-center gap-4 flex-1">
           <SearchInput
             placeholder="Search..."
-            value={(table.getColumn("_id")?.getFilterValue() as string) ?? ""}
+            value={
+              (table.getColumn("conversationId")?.getFilterValue() as string) ??
+              ""
+            }
             onChange={(event: any) =>
-              table.getColumn("_id")?.setFilterValue(event.target.value)
+              table
+                .getColumn("conversationId")
+                ?.setFilterValue(event.target.value)
             }
             className="max-w-80"
           />
@@ -208,6 +219,7 @@ export const ConversationTable = () => {
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
+                    onClick={() => viewConversation(row.original)}
                     className="cursor-pointer"
                   >
                     {row.getVisibleCells().map((cell) => {
@@ -323,7 +335,7 @@ function TableSettings({ table }: TableSettingProps) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="mb-1.5 h-[1px] bg-gray-200" />
         <CustomDropdownMenuCheckboxItem
-          key={"_id"}
+          key={"conversationId"}
           checked={true}
           disabled
           className="capitalize mx-2 py-2 cursor-pointer font-sfpro"

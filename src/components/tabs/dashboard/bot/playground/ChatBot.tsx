@@ -170,7 +170,13 @@ const Promper = ({
   );
 };
 
-const Message = ({ role, content }: { role: RoleEnum; content: string }) => {
+export const Message = ({
+  role,
+  content,
+}: {
+  role: RoleEnum;
+  content: string;
+}) => {
   const isBot = role === RoleEnum.ASSISTANT;
 
   return (
