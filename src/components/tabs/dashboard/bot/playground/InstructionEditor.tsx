@@ -64,7 +64,7 @@ export const InstructionEditor = ({
   }, [updateBotInstructionsErrorMessage]);
 
   return (
-    <div className="flex-1 basis-3/5 flex flex-col">
+    <div className="flex flex-col col-span-3">
       <InstructionEditorHeader />
       <form
         className="flex flex-col flex-1 gap-3 relative overflow-hidden"

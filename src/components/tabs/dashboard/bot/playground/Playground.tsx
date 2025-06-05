@@ -142,7 +142,7 @@ export const BotPlaygroundTab = () => {
         goBack={goBack}
         onClearConversation={clearConversation}
       />
-      <div className="flex-1 flex px-10 py-8 gap-10 overflow-hidden">
+      <div className="flex-1 px-10 py-8 gap-10 overflow-hidden grid grid-col-1 md:grid-cols-5 grid-rows-1">
         {clearingTrainingConversation && (
           <Loader text1="Clearing conversation" />
         )}

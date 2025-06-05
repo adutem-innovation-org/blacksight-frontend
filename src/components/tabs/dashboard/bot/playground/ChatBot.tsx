@@ -18,6 +18,7 @@ import { Mic, Send, Settings2 } from "lucide-react";
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkBreaks from "remark-breaks";
+import throttle from "lodash.throttle";
 
 const ChatBotHeader = ({
   currentBot,
@@ -66,8 +67,15 @@ const Promper = ({
     transcribedText,
   } = getState("Bot");
   const [message, setMessage] = useState("");
+  const textareaRef = useRef<any>(null);
 
-  const updateText = (e: any) => setMessage(e.target.value);
+  const throttledOnInput = useRef(
+    throttle(() => {
+      textareaRef.current.scrollTop = textareaRef.current.scrollHeight + 25;
+    }, 100)
+  ).current;
+
+  const updateText = (value: string) => setMessage(value);
 
   const sendMessage = () => {
     if (currentConversationId && currentBot) {
@@ -126,6 +134,79 @@ const Promper = ({
     }
   };
 
+  function getCursorPos(input: any) {
+    if ("selectionStart" in input && document.activeElement == input) {
+      return {
+        start: input.selectionStart,
+        end: input.selectionEnd,
+      };
+    } else if (input.createTextRange) {
+      const doc = document as any;
+      var sel = doc.selection.createRange();
+      if (sel.parentElement() === input) {
+        var rng = input.createTextRange();
+        rng.moveToBookmark(sel.getBookmark());
+        for (
+          var len = 0;
+          rng.compareEndPoints("EndToStart", rng) > 0;
+          rng.moveEnd("character", -1)
+        ) {
+          len++;
+        }
+        rng.setEndPoint("StartToStart", input.createTextRange());
+        for (
+          var pos = { start: 0, end: len };
+          rng.compareEndPoints("EndToStart", rng) > 0;
+          rng.moveEnd("character", -1)
+        ) {
+          pos.start++;
+          pos.end++;
+        }
+        return pos;
+      }
+    }
+    return {
+      start: -1,
+      end: -1,
+    };
+  }
+
+  function setCursorPos(input: any, start: number, end: number) {
+    if (arguments.length < 3) end = start;
+    if ("selectionStart" in input) {
+      setTimeout(function () {
+        input.selectionStart = start;
+        input.selectionEnd = end;
+      }, 1);
+    } else if (input.setSelectionRange) {
+      input.focus();
+      input.setSelectionRange(start, end);
+    } else if (input.createTextRange) {
+      var rng = input.createTextRange();
+      rng.moveStart("character", start);
+      rng.collapse();
+      rng.moveEnd("character", end - start);
+      rng.select();
+    }
+  }
+
+  const updateTextareaHeight = (input: any) => {
+    const { width } = input.getBoundingClientRect();
+    const paraEl = document.createElement("p");
+    paraEl.style.width = `${width}px`;
+    paraEl.style.maxWidth = `${width}px`;
+    paraEl.style.height = "auto";
+    paraEl.innerHTML = input.value.replace(/\n/gm, "<br/>");
+    document.body.append(paraEl);
+    const { height: pHeight } = paraEl.getBoundingClientRect();
+    input.style.height = `${Math.min(pHeight + 25, 120)}px`;
+    document.body.removeChild(paraEl);
+  };
+
+  useEffect(() => {
+    updateTextareaHeight(textareaRef.current);
+  }, [message]);
+
   useEffect(() => {
     if (speechTranscribed) {
       if (transcribedText.trim().length > 0) setMessage(transcribedText.trim());
@@ -134,38 +215,71 @@ const Promper = ({
   }, [speechTranscribed]);
 
   return (
-    <div className="rounded-full w-full bg-white shadow-2xl h-15 flex items-center p-1">
-      <input
+    <div className="rounded-3xl w-full bg-white shadow-2xl min-h-15 flex flex-col p-2">
+      {/* <input
         type="text"
         className="flex-1 bg-transparent p-2 pl-6 bg-none outline-none border-none"
-        placeholder="Type and press [enter]"
+        placeholder="Type your message..."
         value={message}
         onChange={updateText}
         onKeyPress={handleKeyPress}
         disabled={recording || transcribingSpeech}
+      /> */}
+      <textarea
+        className="resize-none flex-1 bg-transparent px-2 no-scrollbar mt-2 bg-none outline-none border-none min-h-12"
+        placeholder="Type your message..."
+        ref={textareaRef}
+        value={message}
+        onChange={(e: any) => {
+          updateText(e.target.value);
+          updateTextareaHeight(e.target);
+        }}
+        onInput={() => throttledOnInput()}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            if (e.shiftKey) {
+              e.preventDefault();
+              const value = e.currentTarget.value;
+              const { start, end } = getCursorPos(e.target);
+              if (end === -1) return true;
+              const leftSide = value.substring(0, start);
+              const rightSide = value.substring(end);
+              updateText(leftSide + "\n" + rightSide);
+              setCursorPos(e.target, start + 1, start + 1);
+              e.currentTarget.scrollTop = e.currentTarget.scrollHeight + 40;
+              return true;
+            } else {
+              e.preventDefault();
+              handleKeyPress(e);
+            }
+          }
+        }}
       />
-      <Button
-        className="bg-transparent rounded-full h-12 w-12 aspect-square cursor-pointer hover:bg-gray-100 text-black mr-2"
-        size={"icon"}
-        onClick={launchRecorder}
-        disabled={recording || transcribingSpeech}
-      >
-        <Mic className="!w-5 !h-5" />
-      </Button>
-      <Button
-        className="bg-indigo-500 rounded-full h-13 w-13 aspect-square cursor-pointer hover:bg-indigo-500/70"
-        size={"icon"}
-        onClick={sendMessage}
-        disabled={
-          !!startConversationError ||
-          askingChatbot ||
-          startingConversation ||
-          recording ||
-          transcribingSpeech
-        }
-      >
-        <Send className="!w-6 !h-6" />
-      </Button>
+
+      <div className="flex justify-end items-center">
+        <Button
+          className="bg-transparent rounded-full h-12 w-12 aspect-square cursor-pointer hover:bg-gray-100 text-black mr-2"
+          size={"icon"}
+          onClick={launchRecorder}
+          disabled={recording || transcribingSpeech}
+        >
+          <Mic className="!w-5 !h-5" />
+        </Button>
+        <Button
+          className="bg-indigo-500 rounded-full h-13 w-13 aspect-square cursor-pointer hover:bg-indigo-500/70"
+          size={"icon"}
+          onClick={sendMessage}
+          disabled={
+            !!startConversationError ||
+            askingChatbot ||
+            startingConversation ||
+            recording ||
+            transcribingSpeech
+          }
+        >
+          <Send className="!w-6 !h-6" />
+        </Button>
+      </div>
     </div>
   );
 };
@@ -182,7 +296,7 @@ export const Message = ({
   return (
     <div
       className={cn(
-        "flex items-start w-2/3 opacity-0",
+        "flex items-start max-w-2/3 opacity-0",
         {
           "self-start justify-start": isBot,
           "self-end justify-end": !isBot,
@@ -202,7 +316,7 @@ export const Message = ({
 
       {/* Text */}
       <div
-        className={cn("p-4 bg-white text-sm whitespace-pre-line", {
+        className={cn("p-4 bg-white text-sm whitespace-pre-line break-words", {
           "rounded-md rounded-tl-none shadow-[2px_2px_4px_#0000001a]": isBot,
           "rounded-md rounded-tr-none shadow-[-2px_2px_4px_#0000001a]": !isBot,
         })}
@@ -217,6 +331,13 @@ export const Message = ({
                   className,
                   "list-disc list-inside flex flex-col gap-1"
                 )}
+              />
+            ),
+            p: ({ node, className, ...props }) => (
+              <p
+                {...props}
+                className={cn(className, "whitespace-normal break-words")}
+                style={{ wordBreak: "break-word" }}
               />
             ),
           }}
@@ -296,7 +417,7 @@ const Conversations = ({
             className="flex-1 overflow-auto no-scrollbar py-4 scroll-smooth"
             ref={conversationContainerRef}
           >
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 w-full overflow-x-hidden">
               {(currentConversation || []).map((message) => (
                 <Message {...message} />
               ))}
@@ -510,7 +631,7 @@ export const ChatBot = ({ openBotConfig }: { openBotConfig: () => void }) => {
   }, [fetchTrainingConversationError]);
 
   return (
-    <div className="basis-2/5 flex-1 flex flex-col">
+    <div className="flex flex-col col-span-2">
       <div className="h-10">
         <p className="text-2xl font-dmsans tracking-tight">Chatbot</p>
       </div>
