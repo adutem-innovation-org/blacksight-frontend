@@ -128,11 +128,16 @@ export const AnalyticsTab = () => {
                 <TopUsersWidget />
               )}
               <div className="rounded-sm bg-white col-span-1 p-6 flex flex-col gap-4">
-                {analytics ? (
+                {analytics && analytics.tokenUsage.length > 5 ? (
                   <TokenUsageWidget data={analytics.tokenUsage} />
                 ) : (
-                  <div className="w-full h-full font-urbanist font-semibold text-gray-900 italics">
-                    No data available
+                  <div className="w-full h-full font-urbanist font-semibold text-gray-900 italics flex flex-col">
+                    <p className="text-2xl text-[#0090FF] font-semibold font-urbanist">
+                      Token Usage
+                    </p>
+                    <div className="flex-1 flex justify-center items-center text-center">
+                      No data available
+                    </div>
                   </div>
                 )}
               </div>
