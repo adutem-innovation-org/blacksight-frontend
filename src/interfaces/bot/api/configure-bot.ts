@@ -7,7 +7,7 @@ export interface ConfigureBotRes extends ApiSuccessResponse {
 
 export type ConfigureBotBody = {
   name: string;
-  knowledgeBaseId: string;
+  knowledgeBaseIds: string[];
   scheduleMeeting: boolean;
   meetingProviderId?: string;
 };

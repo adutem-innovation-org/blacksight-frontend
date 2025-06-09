@@ -104,13 +104,13 @@ export const AnalyticsTab = () => {
                 </div>
                 {/* <div className="h-full rounded-xl flex items-end justify-start pt-5"> */}
                 <div className="h-full rounded-xl pt-5">
-                  {analytics ? (
+                  {analytics && analytics?.responseTime.series.length > 0 ? (
                     <ResponseTimeChart
                       series={analytics?.responseTime.series}
                       categories={analytics?.responseTime.categories}
                     />
                   ) : (
-                    <div className="w-full h-full font-urbanist font-semibold text-gray-900 italics">
+                    <div className="w-full h-full font-urbanist font-semibold text-gray-900 italics flex justify-center items-center text-center italic">
                       No data available
                     </div>
                   )}
@@ -128,14 +128,14 @@ export const AnalyticsTab = () => {
                 <TopUsersWidget />
               )}
               <div className="rounded-sm bg-white col-span-1 p-6 flex flex-col gap-4">
-                {analytics && analytics.tokenUsage.length > 5 ? (
+                {analytics && analytics.tokenUsage.length > 0 ? (
                   <TokenUsageWidget data={analytics.tokenUsage} />
                 ) : (
                   <div className="w-full h-full font-urbanist font-semibold text-gray-900 italics flex flex-col">
                     <p className="text-2xl text-[#0090FF] font-semibold font-urbanist">
                       Token Usage
                     </p>
-                    <div className="flex-1 flex justify-center items-center text-center">
+                    <div className="flex-1 flex justify-center items-center text-center italic">
                       No data available
                     </div>
                   </div>

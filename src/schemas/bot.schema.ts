@@ -3,7 +3,10 @@ import * as yup from "yup";
 export const botSchema = (isWelcomeMessageOptional: boolean = true) =>
   yup.object({
     name: yup.string().required("Please provide name"),
-    knowledgeBaseId: yup.string().required("Please provide knowledge source"),
+    knowledgeBaseIds: yup
+      .array()
+      .of(yup.string())
+      .min(1, "Please select at least one knowledge base"),
     scheduleMeeting: yup
       .boolean()
       .required("Please specify if meeting should be scheduled")

@@ -93,10 +93,8 @@ export const SelectInputComp = ({
               <span className="text-sm text-cartwey-black-40">
                 {typeof opt === "string"
                   ? opt[0].toUpperCase()
-                  : opt.placeholder[0].toUpperCase()}
-                {typeof opt === "string"
-                  ? opt.slice(1)
-                  : opt.placeholder.slice(1)}
+                  : opt.label[0].toUpperCase()}
+                {typeof opt === "string" ? opt.slice(1) : opt.label.slice(1)}
               </span>
             </SelectItem>
           ))}

@@ -91,7 +91,7 @@ export const ConfigureBotForm = ({
     return knowledgeBases
       .filter((kBase) => kBase.isActive)
       .map((kBase) => ({
-        placeholder: kBase.tag || "Unconfigured",
+        label: kBase.tag || "Unconfigured",
         value: kBase._id,
       }));
   }, [knowledgeBases]);
@@ -99,7 +99,7 @@ export const ConfigureBotForm = ({
   const connectedProviderOptions = useMemo(() => {
     return connectedProviders && connectedProviders.length !== 0
       ? connectedProviders.map((cProvider) => ({
-          placeholder: cProvider.provider,
+          label: cProvider.provider,
           value: cProvider._id,
         }))
       : [];
@@ -115,12 +115,12 @@ export const ConfigureBotForm = ({
 
   const initialValues: {
     name: string;
-    knowledgeBaseId: string;
+    knowledgeBaseIds: string[];
     scheduleMeeting: boolean;
     meetingProviderId?: string;
   } = {
     name: "",
-    knowledgeBaseId: "",
+    knowledgeBaseIds: [],
     scheduleMeeting: false,
     meetingProviderId: "",
   };
@@ -222,15 +222,15 @@ export const ConfigureBotForm = ({
               containerClassName="gap-2 mt-4"
             />
             <FormGroup
-              type="select"
+              type="multi-select"
               groupLabel="Knowledge base"
-              placeholder="Pick a knowledge base"
-              info="This is where your bot get information about your business from."
+              label="Knowledge base"
+              placeholder="Please select one or more knowledge base"
+              info="This is where your bot get informatio about your business from."
               size="md"
-              name="knowledgeBaseId"
+              name="knowledgeBaseIds"
+              multiSelectInputData={knowledgeBaseOptions}
               validation={validation}
-              containerClassName="gap-2 mt-4"
-              options={knowledgeBaseOptions}
               noOptionsContent={
                 <EmptySelectOptions
                   description="You are yet to add a knowledge base."
@@ -239,6 +239,7 @@ export const ConfigureBotForm = ({
                   loading={fetchingAllKnowledgeBases}
                 />
               }
+              containerClassName="gap-2 mt-4"
             />
 
             <FormGroup

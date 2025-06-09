@@ -50,7 +50,7 @@ interface FormGroupProps {
   >;
   maxLength?: number;
   minDate?: Date;
-  multiSelectInputData?: Array<string>;
+  multiSelectInputData?: Array<string> | Record<string, any>[];
   renderOptions?: (
     item: ComboboxLikeRenderOptionInput<ComboboxItem>
   ) => React.ReactNode;
@@ -93,7 +93,7 @@ export const FormGroup = ({
     <Tooltip
       content={info}
       position={"bottom"}
-      tooltipContainerClassName="w-full"
+      tooltipContainerClassName="w-auto max-w-full"
       arrowPosition="start"
       className="left-0 translate-x-0 max-w-full text-primary"
       disabled={!info}
@@ -220,16 +220,23 @@ export const FormGroup = ({
     case "multi-select":
       return (
         <GroupContainer className={containerClassName}>
-          <Label>{groupLabel}</Label>
+          <div className="flex gap-1.5 items-center">
+            <Label className="min-w-max">{groupLabel}</Label>
+            {info && InfoTooltip}
+          </div>
           <MultiSelectInput
-            label={label}
             placeholder={placeholder || label}
             data={multiSelectInputData || []}
             renderOptions={renderOptions}
-            onChange={validation.handleChange}
+            onChange={(value: DateValue) => {
+              validation.setFieldValue(name, value);
+            }}
             onBlur={validation.handleBlur}
             value={validation.values[name]}
+            noOptionsContent={noOptionsContent}
             name={name}
+            disabled={disabled}
+            error={validation.touched[name] && validation.errors[name]}
           />
         </GroupContainer>
       );

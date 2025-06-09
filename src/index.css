@@ -236,13 +236,19 @@ input::-ms-reveal {
   color: #6b7280;
 
   &:hover {
-    background-color: #f3f4f6;
+    /* background-color: #f3f4f6; */
   }
 }
 
 .mantine-Input-input.mantine-MultiSelect-input {
   display: flex;
   align-items: center;
+}
+
+.mantine-Input-input.mantine-MultiSelect-input
+  > .mantine-MultiSelect-pillsList.mantine-PillGroup-group {
+  flex: 1;
+  margin-right: 30px;
 }
 
 .mantine-Popover-dropdown.mantine-MultiSelect-dropdown {

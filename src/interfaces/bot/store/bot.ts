@@ -3,7 +3,7 @@ import { BotStatus, RoleEnum } from "@/enums";
 export type Bot = {
   _id: string;
   businessId: string;
-  knowledgeBaseId: string;
+  knowledgeBaseIds: string[];
   scheduleMeeting: boolean;
   welcomeMessage: string;
   meetingProviderId: string;
