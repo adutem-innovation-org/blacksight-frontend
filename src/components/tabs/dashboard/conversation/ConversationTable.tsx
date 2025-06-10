@@ -49,6 +49,7 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { getAllConversations, getConversationAnalytics } from "@/store";
+import { Badge } from "@/components/badge";
 
 export const columns: ColumnDef<Conversation>[] = [
   {
@@ -57,9 +58,17 @@ export const columns: ColumnDef<Conversation>[] = [
     cell: ({ row }) => <div>{row.getValue("conversationId")}</div>,
   },
   {
-    accessorKey: "botId",
-    header: "Bot ID",
-    cell: ({ row }) => <div>{row.getValue("botId")}</div>,
+    id: "botName",
+    // accessorKey: "botId",
+    accessorFn: (row) => row.bot.name ?? "-",
+    header: "Bot Name",
+    cell: ({ row }) => <div>{row.getValue("botName")}</div>,
+  },
+  {
+    id: "botStatus",
+    accessorFn: (row) => row.bot.status ?? "-",
+    header: "Bot Status",
+    cell: ({ row }) => <div>{row.getValue("botStatus")}</div>,
   },
   {
     accessorKey: "duration",
@@ -107,6 +116,12 @@ export const columns: ColumnDef<Conversation>[] = [
   },
 ];
 
+const badgeVariantMap: Record<string, any> = {
+  active: "success",
+  inactive: "gray",
+  failed: "error",
+};
+
 interface ConversationTableProps {
   viewConversation: (data: Conversation) => void;
 }
@@ -121,7 +136,7 @@ export const ConversationTable = ({
     []
   );
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+    React.useState<VisibilityState>({ _id: false, conversationId: false });
   const [rowSelection, setRowSelection] = React.useState({});
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
@@ -223,6 +238,27 @@ export const ConversationTable = ({
                     className="cursor-pointer"
                   >
                     {row.getVisibleCells().map((cell) => {
+                      if (cell.id.includes("botStatus")) {
+                        return (
+                          <TableCell key={cell.id}>
+                            <Badge
+                              variant={
+                                badgeVariantMap[
+                                  cell.getValue() as keyof typeof badgeVariantMap
+                                ]
+                              }
+                              className="font-sfpro-medium"
+                              size={"sm"}
+                            >
+                              {flexRender(
+                                cell.column.columnDef.cell,
+                                cell.getContext()
+                              )}
+                            </Badge>
+                          </TableCell>
+                        );
+                      }
+
                       return (
                         <TableCell
                           key={cell.id}

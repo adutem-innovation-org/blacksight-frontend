@@ -300,7 +300,7 @@ export function ReminderTable({
     []
   );
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+    React.useState<VisibilityState>({ _id: false });
   const [rowSelection, setRowSelection] = React.useState({});
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
@@ -422,6 +422,7 @@ export function ReminderTable({
                           </TableCell>
                         );
                       }
+
                       if (cell.id.includes("isActive")) {
                         return (
                           <TableCell key={cell.id}>
@@ -439,6 +440,19 @@ export function ReminderTable({
                                 cell.getContext()
                               )}
                             </Badge>
+                          </TableCell>
+                        );
+                      }
+
+                      if (cell.id.includes("remindAt")) {
+                        return (
+                          <TableCell
+                            key={cell.id}
+                            className="font-sfpro-medium text-gray-900 text-sm"
+                          >
+                            {new Date(
+                              cell.getValue() as string
+                            ).toLocaleString()}
                           </TableCell>
                         );
                       }

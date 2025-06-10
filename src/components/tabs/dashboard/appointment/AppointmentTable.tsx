@@ -276,7 +276,11 @@ export const AppointmentTable = ({
     []
   );
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+    React.useState<VisibilityState>({
+      _id: false,
+      conversationId: false,
+    });
+  console.log(columnVisibility);
   const [rowSelection, setRowSelection] = React.useState({});
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
