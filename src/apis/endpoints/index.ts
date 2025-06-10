@@ -5,3 +5,4 @@ export * as BOT_URLS from "./bot";
 export * as ANALYTICS_URLS from "./analytics";
 export * as MEETING_PROVIDER_URLS from "./meeting-provider";
 export * as APPOINTMENT_URLS from "./appointment";
+export * as API_KEY_URLS from "./api-key";

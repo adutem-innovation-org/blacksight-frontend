@@ -5,3 +5,4 @@ export * from "./bot";
 export * from "./analytics";
 export * from "./meeting-provider";
 export * from "./appointment";
+export * from "./api-key";

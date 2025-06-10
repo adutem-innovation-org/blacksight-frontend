@@ -1,4 +1,5 @@
 import { AnalyticsState } from "../analytics";
+import { ApiKeyState } from "../api-key";
 import { AppointmentState } from "../appointment";
 import { AuthState } from "../auth";
 import { BotState } from "../bot";
@@ -10,10 +11,11 @@ import { ReminderState } from "../reminder";
 export type StoreState = {
   Auth: AuthState;
   Analytics: AnalyticsState;
+  ApiKey: ApiKeyState;
+  Appointment: AppointmentState;
   Layout: LayoutState;
   Reminder: ReminderState;
   KnowledgeBase: KnowledgeBaseState;
   Bot: BotState;
   MeetingProvider: MeetingProviderState;
-  Appointment: AppointmentState;
 };

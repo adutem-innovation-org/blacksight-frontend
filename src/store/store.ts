@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import {
   analyticsReducer,
+  apiKeyReducer,
   appointmentReducer,
   authReducer,
   botReducer,
@@ -13,6 +14,7 @@ import {
 export const store = configureStore({
   reducer: {
     Analytics: analyticsReducer,
+    ApiKey: apiKeyReducer,
     Auth: authReducer,
     Bot: botReducer,
     KnowledgeBase: knowledgeBaseReducer,

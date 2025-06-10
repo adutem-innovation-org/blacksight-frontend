@@ -6,3 +6,4 @@ export * from "./bot.reducers";
 export * from "./analytics.reducers";
 export * from "./meetingprovider.reducers";
 export * from "./appointment.reducers";
+export * from "./apikey.reducers";

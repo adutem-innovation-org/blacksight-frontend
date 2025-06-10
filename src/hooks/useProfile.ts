@@ -5,7 +5,8 @@ import { useStore } from "./useStore";
 
 export const useProfile = (deps?: any[]) => {
   const { getState } = useStore();
-  const { profileFetched, profileUpdated, addressUpdated } = getState("Auth");
+  const { profileFetched, profileUpdated, addressUpdated, passwordChanged } =
+    getState("Auth");
   const [user, setUser] = useState<UserData | null>(null);
   const [loadingProfile, setLoadingProfile] = useState(true);
 
@@ -22,7 +23,13 @@ export const useProfile = (deps?: any[]) => {
     };
 
     fetchProfile();
-  }, deps ?? [profileFetched, profileUpdated, addressUpdated]);
+  }, [
+    profileFetched,
+    profileUpdated,
+    addressUpdated,
+    passwordChanged,
+    ...(deps ?? []),
+  ]);
 
   return { user, loadingProfile };
 };

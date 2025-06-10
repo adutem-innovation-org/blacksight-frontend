@@ -1,5 +1,5 @@
 import { MyProfile } from "./MyProfile";
-import { Security } from "./Security";
+import { Security } from "./SecurityTab";
 import { Billing } from "./Billing";
 import { DataExport } from "./DataExport";
 import { ProfileTabsEnum } from "@/enums";

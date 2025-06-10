@@ -17,3 +17,7 @@ export const resetDocumentElement = () => {
     clearTimeout(tmo);
   }, 100);
 };
+
+export const writeTextToClipboard = async (text: string) => {
+  return await navigator.clipboard.writeText(text);
+};

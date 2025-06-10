@@ -6,3 +6,4 @@ export * from "./bot.slice";
 export * from "./analytics.slice";
 export * from "./meetingprovider.slice";
 export * from "./appointment.slice";
+export * from "./api-key.slice";
