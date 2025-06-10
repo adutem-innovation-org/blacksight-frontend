@@ -9,6 +9,7 @@ interface ProviderCardProps {
   connected: boolean;
   onConnect: () => void;
   onDisconnect: () => void;
+  comingSoon?: boolean;
 }
 
 export const ProviderCard = ({
@@ -18,6 +19,7 @@ export const ProviderCard = ({
   connected,
   onConnect,
   onDisconnect,
+  comingSoon,
 }: ProviderCardProps) => {
   return (
     <div className="border-2 rounded-md p-4 py-5 flex flex-col gap-6">
@@ -56,6 +58,7 @@ export const ProviderCard = ({
         )}
         variant={"outline"}
         onClick={() => (connected ? onDisconnect() : onConnect())}
+        disabled={comingSoon}
       >
         <i
           className={cn("flex", {
@@ -64,7 +67,7 @@ export const ProviderCard = ({
           })}
         />
         <span className="font-semibold">
-          {connected ? "Disconnect" : "Connect"}
+          {comingSoon ? "Coming soon" : connected ? "Disconnect" : "Connect"}
         </span>
       </Button>
     </div>

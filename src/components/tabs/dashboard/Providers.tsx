@@ -152,6 +152,7 @@ const Providers = () => {
         connected={user?.hasConnectedMicrosoftTeams ?? false}
         onConnect={connectZoom}
         onDisconnect={() => {}}
+        comingSoon
       />
       <ProviderCard
         name="Zoom"
@@ -160,6 +161,7 @@ const Providers = () => {
         connected={user?.hasConnectedZoomMeet ?? false}
         onConnect={connectTeams}
         onDisconnect={() => {}}
+        comingSoon
       />
     </div>
   );
