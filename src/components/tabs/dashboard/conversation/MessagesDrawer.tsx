@@ -68,7 +68,7 @@ export function ConversationDrawer({
               </div>
             </div>
           ) : (
-            <div className="text-center font-urbanist text-sm text-gray-400 mt-4 font-medium">
+            <div className="text-center font-urbanist text-sm text-gray-400 mt-4 font-medium h-20">
               No messages
             </div>
           )}
@@ -78,7 +78,10 @@ export function ConversationDrawer({
               Source bot
             </h2>
             <div className="mt-4 grid grid-cols-2 gap-4 px-8">
-              <InvoiceCard header={"Chat bot"} content={conversation?.botId} />
+              <InvoiceCard
+                header={"Chat bot"}
+                content={conversation?.bot.name}
+              />
             </div>
           </div>
         </div>
