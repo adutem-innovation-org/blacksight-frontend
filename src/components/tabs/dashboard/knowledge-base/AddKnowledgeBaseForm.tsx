@@ -78,8 +78,6 @@ export const AddKnowledgeBaseForm = ({
     },
   });
 
-  console.log(validation.errors);
-
   const onSelectFile = (e: any) => {
     let file = e.target.files[0];
     if (file) {
