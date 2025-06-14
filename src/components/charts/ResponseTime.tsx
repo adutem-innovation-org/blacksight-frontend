@@ -76,7 +76,7 @@ export const ResponseTimeChart = ({ series, categories }: ChartData) => {
             opacity: 0.06,
           },
         },
-        colors: ["#00E396", "#0090FF"],
+        colors: ["#00E396", "#0090FF", "#feb019", "#ff4560", "#775dd0"],
         stroke: {
           curve: "smooth",
           width: 3,
