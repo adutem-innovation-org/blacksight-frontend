@@ -238,6 +238,19 @@ export const ConversationTable = ({
                     className="cursor-pointer"
                   >
                     {row.getVisibleCells().map((cell) => {
+                      if (cell.id.includes("createdAt")) {
+                        return (
+                          <TableCell
+                            key={cell.id}
+                            className="font-sfpro-medium text-gray-900 text-sm whitespace-nowrap"
+                          >
+                            {new Date(
+                              cell.getValue() as string
+                            ).toLocaleString()}
+                          </TableCell>
+                        );
+                      }
+
                       if (cell.id.includes("botStatus")) {
                         return (
                           <TableCell key={cell.id}>
