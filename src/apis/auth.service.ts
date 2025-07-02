@@ -27,6 +27,11 @@ import {
   UpdateProfileRes,
   UpdateAddressRes,
   UpdateAddressBody,
+  UpdateBusinessBasicInfoBody,
+  UpdateBusinessInfoRes,
+  UpdateBusinessContactInfoBody,
+  OnboardBusinessBody,
+  OnboardBusinessRes,
 } from "@/interfaces";
 import { ApiService } from "./api.service";
 import { AUTH_URLS } from "./endpoints";
@@ -171,6 +176,43 @@ export class AuthApiService {
   updateAddress = (data: UpdateAddressBody): Promise<UpdateAddressRes> => {
     return this.apiService.update<UpdateAddressBody, UpdateAddressRes>(
       this.urls.USER_UPDATE_ADDRESS,
+      data
+    );
+  };
+
+  /**
+   * Update primary business information
+   * @param data
+   * @returns {Promise<UpdateBusinessInfoRes>}
+   */
+  updateBusinessBasicInfo = (
+    data: UpdateBusinessBasicInfoBody
+  ): Promise<UpdateBusinessInfoRes> => {
+    return this.apiService.update<
+      UpdateBusinessBasicInfoBody,
+      UpdateBusinessInfoRes
+    >(this.urls.USER_UPDATE_BUSINESS_BASIC_INFO, data);
+  };
+
+  /**
+   * Update business's contact info
+   * @param data
+   * @returns {Promise<UpdateBusinessInfoRes>}
+   */
+  updateBusinessContactInfo = (
+    data: UpdateBusinessContactInfoBody
+  ): Promise<UpdateBusinessInfoRes> => {
+    return this.apiService.update<
+      UpdateBusinessContactInfoBody,
+      UpdateBusinessInfoRes
+    >(this.urls.USER_UPDATE_BUSINESS_CONTACT_INFO, data);
+  };
+
+  onboardBusiness = (
+    data: OnboardBusinessBody
+  ): Promise<OnboardBusinessRes> => {
+    return this.apiService.post<OnboardBusinessBody, OnboardBusinessRes>(
+      this.urls.USER_ONBOARD_BUSINESS,
       data
     );
   };

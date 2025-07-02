@@ -18,6 +18,7 @@ export type UserData = {
   imageUrl?: string;
   isActive: boolean;
   isEmailVerified: boolean;
+  isOnboarded: boolean;
   isSuperAdmin: boolean;
   userType: UserTypes;
   hasConnectedGoogleMeet?: boolean;
@@ -27,4 +28,20 @@ export type UserData = {
   createdAt: string;
   passwordChangedAt: string;
   addressInfo: AddressInfo;
+  businessInfo: Business;
 };
+
+export interface Business {
+  _id: string;
+  ownerId: string;
+  businessId: string;
+  name: string;
+  website: string;
+  industry: string;
+  address: string;
+  contactName: string;
+  contactEmail: string;
+  contactTel: string;
+  objectives: string[];
+  companyStructure: string;
+}

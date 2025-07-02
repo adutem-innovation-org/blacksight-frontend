@@ -16,3 +16,5 @@ export * from "./get-admins";
 export * from "./get-users";
 export * from "./update-address";
 export * from "./update-profile";
+export * from "./update-business";
+export * from "./onboard-business";

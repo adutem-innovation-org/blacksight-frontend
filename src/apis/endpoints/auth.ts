@@ -17,6 +17,10 @@ export const USER_DELETE_ACCOUNT = "/user/delete";
 export const USER_GOOGLE_AUTH = "/google";
 export const USER_UPDATE_PROFILE = "/user/update-profile";
 export const USER_UPDATE_ADDRESS = "/user/update-address";
+export const USER_UPDATE_BUSINESS_BASIC_INFO = "/user/update/business/info";
+export const USER_UPDATE_BUSINESS_CONTACT_INFO =
+  "/user/update/business/contact/info";
+export const USER_ONBOARD_BUSINESS = "/user/business/onboard";
 
 // Admin
 export const LOGIN_ADMIN = "/admin/login";
