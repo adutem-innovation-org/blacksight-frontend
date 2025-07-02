@@ -9,3 +9,5 @@ export * from "./get-profile.builder";
 export * from "./changesetup-password.builder";
 export * from "./update-address.builder";
 export * from "./update-profile.builder";
+export * from "./update-business-info.builder";
+export * from "./onboard-user.builder";

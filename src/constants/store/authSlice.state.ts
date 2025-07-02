@@ -54,6 +54,18 @@ export const initialAuthState: AuthState = {
   updateAddressErrors: {},
   updateAddressErrorMessage: "",
 
+  // Update business basic info
+  updatingBusinessBasicInfo: false,
+  businessBasicInfoUpdated: false,
+  updateBusinessBasicInfoErrors: {},
+  updateBusinessBasicInfoErrorMessage: "",
+
+  // Update business contact info
+  updatingBusinessContactInfo: false,
+  businessContactInfoUpdated: false,
+  updateBusinessContactInfoErrors: {},
+  updateBusinessContactInfoErrorMessage: "",
+
   // Google Auth
   authenticatingWithGoogle: false,
   googleAuthSuccess: false,
@@ -64,4 +76,10 @@ export const initialAuthState: AuthState = {
   // Get Profile
   fetchingProfile: false,
   profileFetched: false,
+
+  // Onboard business
+  onboarding: false,
+  onboarded: false,
+  onboardingErrors: {},
+  onboardingErrorMessage: "",
 };

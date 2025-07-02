@@ -3,14 +3,18 @@ import { ApiService } from "@/apis/api.service";
 import { UserTypes } from "@/enums";
 import { clearSession, saveSession } from "@/helpers";
 import {
+  Business,
   ChangePasswordBody,
   ForgotPasswordBody,
   GoogleLoginBody,
   LoginUserBody,
+  OnboardBusinessBody,
   RegisterUserBody,
   ResetPasswordBody,
   SetupPasswordBody,
   UpdateAddressBody,
+  UpdateBusinessBasicInfoBody,
+  UpdateBusinessContactInfoBody,
   UpdateProfileBody,
   VerifyEmailBody,
 } from "@/interfaces";
@@ -155,6 +159,36 @@ export const updateAddress = createAsyncThunk<
   }
 });
 
+export const updateBusinessBasicInfo = createAsyncThunk<
+  Business,
+  UpdateBusinessBasicInfoBody,
+  { rejectValue: { errors?: Record<string, string>; message: string } }
+>(
+  "update_business_basic_info",
+  async (body: UpdateBusinessBasicInfoBody, { rejectWithValue }) => {
+    try {
+      return (await authApiService.updateBusinessBasicInfo(body)).business;
+    } catch (error: any) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const updateBusinessContactInfo = createAsyncThunk<
+  Business,
+  UpdateBusinessContactInfoBody,
+  { rejectValue: { errors?: Record<string, string>; message: string } }
+>(
+  "update_business_contact_iinfo",
+  async (body: UpdateBusinessContactInfoBody, { rejectWithValue }) => {
+    try {
+      return (await authApiService.updateBusinessContactInfo(body)).business;
+    } catch (error: any) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 export const continueWithGoogle = createAsyncThunk(
   "continue_with_google",
   async (data: GoogleLoginBody, thunkAPI) => {
@@ -189,3 +223,15 @@ export const getProfile = createAsyncThunk(
     }
   }
 );
+
+export const onboardUser = createAsyncThunk<
+  Business,
+  OnboardBusinessBody,
+  { rejectValue: { errors?: Record<string, string>; message: string } }
+>("onboard_user", async (body: OnboardBusinessBody, { rejectWithValue }) => {
+  try {
+    return (await authApiService.onboardBusiness(body)).business;
+  } catch (error: any) {
+    return rejectWithValue(error);
+  }
+});

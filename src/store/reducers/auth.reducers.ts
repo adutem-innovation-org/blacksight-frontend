@@ -82,3 +82,24 @@ export const resetUpdateAddressReducer = (state: AuthState) => {
   state.updateAddressErrorMessage = "";
   state.updateAddressErrors = {};
 };
+
+export const resetUpdateBusinessBasicInfoReducer = (state: AuthState) => {
+  state.updatingBusinessBasicInfo = false;
+  state.businessBasicInfoUpdated = false;
+  state.updateBusinessBasicInfoErrors = {};
+  state.updateBusinessBasicInfoErrorMessage = "";
+};
+
+export const resetUpdateBusinessContactInfoReducer = (state: AuthState) => {
+  state.updatingBusinessContactInfo = false;
+  state.businessContactInfoUpdated = false;
+  state.updateBusinessContactInfoErrors = {};
+  state.updateBusinessContactInfoErrorMessage = "";
+};
+
+export const resetOnboardUserReducder = (state: AuthState) => {
+  state.onboarding = false;
+  state.onboarded = false;
+  state.onboardingErrors = {};
+  state.onboardingErrorMessage = "";
+};

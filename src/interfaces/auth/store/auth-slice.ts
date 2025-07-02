@@ -52,6 +52,18 @@ export type AuthState = {
   updateAddressErrors: Record<string, string>;
   updateAddressErrorMessage: string;
 
+  // Update business basic info
+  updatingBusinessBasicInfo: boolean;
+  businessBasicInfoUpdated: boolean;
+  updateBusinessBasicInfoErrors: Record<string, string>;
+  updateBusinessBasicInfoErrorMessage: string;
+
+  // Update business contact info
+  updatingBusinessContactInfo: boolean;
+  businessContactInfoUpdated: boolean;
+  updateBusinessContactInfoErrors: Record<string, string>;
+  updateBusinessContactInfoErrorMessage: string;
+
   // Google login
   authenticatingWithGoogle: boolean;
   googleAuthSuccess: boolean;
@@ -62,4 +74,10 @@ export type AuthState = {
   // Get Profile
   fetchingProfile: boolean;
   profileFetched: boolean;
+
+  // Onboard business
+  onboarding: boolean;
+  onboarded: boolean;
+  onboardingErrors: Record<string, string>;
+  onboardingErrorMessage: string;
 };

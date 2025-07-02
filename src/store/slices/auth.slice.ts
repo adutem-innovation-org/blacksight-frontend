@@ -5,12 +5,15 @@ import {
   continueWithGoogleBuilder,
   forgotPasswordBuilder,
   getProfileBuilder,
+  onboardUserBuilder,
   resetPasswordBuilder,
   sendOtpBuilder,
   setupPasswordBuilder,
   signInUserBuilder,
   signUpUserBuilder,
   updateAddressBuilder,
+  updateBusinessBasicInfoBuilder,
+  updateBusinessContactInfoBuilder,
   updateProfileBuilder,
   verifyEmailBuilder,
 } from "../builders";
@@ -19,11 +22,14 @@ import {
   resetContinueWithGoogleReducer,
   resetForgotPasswordReducer,
   resetGetProfileReducer,
+  resetOnboardUserReducder,
   resetPasswordResetReducer,
   resetsendOtpReducer,
   resetSignInUserReducer,
   resetSignUpUserReducer,
   resetUpdateAddressReducer,
+  resetUpdateBusinessBasicInfoReducer,
+  resetUpdateBusinessContactInfoReducer,
   resetUpdatePasswordReducer,
   resetUpdateProfileReducer,
   resetVerifyEmailReducer,
@@ -44,6 +50,9 @@ const authSlice = createSlice({
     resetChangePassword: resetUpdatePasswordReducer,
     resetUpdateProfile: resetUpdateProfileReducer,
     resetUpdateAddress: resetUpdateAddressReducer,
+    resetUpdateBusinessBasicInfo: resetUpdateBusinessBasicInfoReducer,
+    resetUpdateBusinessContactInfo: resetUpdateBusinessContactInfoReducer,
+    resetOnboardUser: resetOnboardUserReducder,
   },
   initialState: initialAuthState,
   extraReducers: (builder) => {
@@ -59,6 +68,9 @@ const authSlice = createSlice({
     setupPasswordBuilder(builder);
     updateProfileBuilder(builder);
     updateAddressBuilder(builder);
+    updateBusinessBasicInfoBuilder(builder);
+    updateBusinessContactInfoBuilder(builder);
+    onboardUserBuilder(builder);
   },
 });
 
@@ -75,4 +87,7 @@ export const {
   resetChangePassword,
   resetUpdateAddress,
   resetUpdateProfile,
+  resetUpdateBusinessBasicInfo,
+  resetUpdateBusinessContactInfo,
+  resetOnboardUser,
 } = authSlice.actions;
