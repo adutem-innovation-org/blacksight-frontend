@@ -121,8 +121,6 @@ export const Login = () => {
     }
   }, [googleAuthErrorMessage]);
 
-  const { handleChange, handleBlur, values } = validation;
-
   return (
     <React.Fragment>
       <div className="flex items-center">
