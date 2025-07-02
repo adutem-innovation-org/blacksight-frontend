@@ -33,6 +33,7 @@ export type TextareaProps = {
   error?: any;
   placeholderClassNames?: string;
   maxLength?: number;
+  inputClassName?: string;
 } & VariantProps<typeof inputVariants>;
 
 const InputComp = ({
@@ -46,6 +47,7 @@ const InputComp = ({
   disabled = false,
   value,
   maxLength,
+  inputClassName,
 }: TextareaProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement | undefined>(undefined);
@@ -96,7 +98,8 @@ const InputComp = ({
           {
             "text-[#D1D5DB]": disabled,
             "placeholder:text-[#D1D5DB]": disabled,
-          }
+          },
+          inputClassName
         )}
         onFocus={() => handleInputFocus()}
         ref={inputRef as any}

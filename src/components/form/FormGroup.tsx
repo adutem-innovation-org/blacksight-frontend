@@ -15,6 +15,8 @@ import { Tooltip } from "../tooltips";
 import { DateValue } from "@mantine/dates";
 import { Textarea } from "./Textarea";
 import { PhoneInput } from "./PhoneInput";
+import { CheckboxGroup, CheckboxItemType } from "./CheckboxGroup";
+import { RadioGroup } from "./RadioGroup";
 
 interface FormGroupProps {
   type:
@@ -29,7 +31,9 @@ interface FormGroupProps {
     | "switch"
     | "file-input"
     | "multivalue-input"
-    | "phone";
+    | "phone"
+    | "checkbox-group"
+    | "radio-group";
   groupLabel?: string;
   label?: string;
   placeholder?: string;
@@ -63,6 +67,9 @@ interface FormGroupProps {
   removeSelectedFile?: (name: string) => void;
   info?: string;
   noOptionsContent?: any;
+  checkboxItems?: CheckboxItemType[];
+  radioOptions?: CheckboxItemType[];
+  inputClassName?: string;
 }
 
 export const FormGroup = ({
@@ -88,7 +95,16 @@ export const FormGroup = ({
   removeSelectedFile,
   info,
   noOptionsContent,
+  checkboxItems,
+  radioOptions,
+  inputClassName,
 }: FormGroupProps) => {
+  if (type === "checkbox-group" && !checkboxItems)
+    throw Error("Checkbox items required for checkbox input");
+
+  if (type === "radio-group" && !radioOptions)
+    throw Error("Radio options required for radio group");
+
   const InfoTooltip = (
     <Tooltip
       content={info}
@@ -336,6 +352,100 @@ export const FormGroup = ({
             error={validation.touched[name] && validation.errors[name]}
             maxLength={maxLength}
           />
+        </GroupContainer>
+      );
+    }
+    case "checkbox-group": {
+      const showOthersInput = (validation.values[name] || []).includes(
+        "Others"
+      );
+      const error: any = validation.touched[name] && validation.errors[name];
+      const ErrorTooltip = (
+        <Tooltip
+          content={error}
+          position={"bottom"}
+          tooltipContainerClassName="w-full"
+          arrowPosition="start"
+          className="left-0 translate-x-0 max-w-full"
+          disabled={!error}
+        >
+          <Info className="text-red-500 !w-4 !h-4 cursor-pointer" />
+        </Tooltip>
+      );
+      return (
+        <GroupContainer className={`${containerClassName}`}>
+          <div className="flex gap-1.5 items-center">
+            <Label>{groupLabel}</Label>
+            {info && InfoTooltip}
+            {error && ErrorTooltip}
+          </div>
+          <CheckboxGroup
+            name={name}
+            checkboxItems={checkboxItems || []}
+            validation={validation}
+            value={validation.values[name]}
+            shouldHide={showOthersInput}
+          />
+          {showOthersInput && (
+            <Textarea
+              placeholder={"Enter text here..."}
+              onChange={(e: any) => {
+                validation.setFieldValue(name, ["Others", e.target.value]);
+              }}
+              onBlur={validation.handleBlur}
+              name={name}
+              disabled={disabled}
+              value={validation.values[name][1] || ""}
+            />
+          )}
+        </GroupContainer>
+      );
+    }
+    case "radio-group": {
+      const showOthersInput = validation.values[name] === "Others";
+      const error: any = validation.touched[name] && validation.errors[name];
+      const ErrorTooltip = (
+        <Tooltip
+          content={error}
+          position={"bottom"}
+          tooltipContainerClassName="w-full"
+          arrowPosition="start"
+          className="left-0 translate-x-0 max-w-full"
+          disabled={!error}
+        >
+          <Info className="text-red-500 !w-4 !h-4 cursor-pointer" />
+        </Tooltip>
+      );
+      return (
+        <GroupContainer className={`${containerClassName}`}>
+          <div className="flex gap-1.5 items-center">
+            <Label>{groupLabel}</Label>
+            {info && InfoTooltip}
+            {error && ErrorTooltip}
+          </div>
+          <RadioGroup
+            name={name}
+            radioOptions={radioOptions || []}
+            validation={validation}
+            defaultValue={defaultValue || validation.values[name]}
+          />
+          {showOthersInput && (
+            <Textarea
+              placeholder={"Enter text here..."}
+              onChange={validation.handleChange}
+              size={"sm"}
+              inputClassName={inputClassName}
+              onBlur={validation.handleBlur}
+              name={`${name}_others`}
+              disabled={disabled}
+              value={validation.values[`${name}_others`] || ""}
+              error={
+                validation.touched[`${name}_others`] &&
+                validation.errors[`${name}_others`]
+              }
+              maxLength={40}
+            />
+          )}
         </GroupContainer>
       );
     }
