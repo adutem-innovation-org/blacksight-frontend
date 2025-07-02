@@ -3,6 +3,7 @@ import {
   ForgotPassword,
   Login,
   Logout,
+  Onboarding,
   Register,
   ResetPassword,
   VerifyAccount,
@@ -42,5 +43,9 @@ export const privatePages: RouteType[] = [
   {
     path: "/dashboard",
     Element: Dashboard,
+  },
+  {
+    path: "/onboard",
+    Element: Onboarding,
   },
 ];

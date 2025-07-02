@@ -28,4 +28,5 @@ export enum ProfileTabsEnum {
   SECURTIY = "security",
   BILLING = "billing",
   DATA_EXPORT = "data-export",
+  BUSINESS_INFO = "business-info",
 }

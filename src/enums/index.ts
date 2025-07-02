@@ -6,3 +6,4 @@ export * from "./bot";
 export * from "./meeting-provider";
 export * from "./notification";
 export * from "./knowledge-base";
+export * from "./auth";
