@@ -24,9 +24,7 @@ export const basicInfoSchema = yup.object({
     .required("Please provide your business website")
     .matches(urlRegex, "Please provide a valid url"),
   address: yup.string().required("Please provide your business address"),
-  industry: yup
-    .string()
-    .required("Please specify the type of service your provice"),
+  industry: yup.string().required("Please specify your business's industry"),
 });
 
 export const contactInfoSchema = yup.object({

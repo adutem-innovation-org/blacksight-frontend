@@ -68,7 +68,7 @@ interface FormGroupProps {
   info?: string;
   noOptionsContent?: any;
   checkboxItems?: CheckboxItemType[];
-  radioOptions?: CheckboxItemType[];
+  radioOptions?: CheckboxItemType[] | string[];
   inputClassName?: string;
 }
 

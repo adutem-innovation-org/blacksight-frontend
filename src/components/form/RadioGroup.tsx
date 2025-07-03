@@ -2,16 +2,22 @@ import { useFormik } from "formik";
 import { RadioGroupItem, RadioGroup as RadioGroupComp } from "./Radio";
 import { CheckboxItemType } from "./CheckboxGroup";
 
-const RadioItem = ({ label, value }: CheckboxItemType) => {
-  const itemIdExtractor = value.toLowerCase().split(" ").join("-");
+const RadioItem = ({ data }: { data: CheckboxItemType | string }) => {
+  const itemIdExtractor = (typeof data === "string" ? data : data.value)
+    .toLowerCase()
+    .split(" ")
+    .join("-");
   return (
     <div className={"flex items-center mt-1 gap-3"}>
-      <RadioGroupItem id={itemIdExtractor} value={value} />
+      <RadioGroupItem
+        id={itemIdExtractor}
+        value={typeof data === "string" ? data : data.value}
+      />
       <label
         className="text-sm text-gray-600 font-medium cursor-pointer"
         htmlFor={itemIdExtractor}
       >
-        {label}
+        {typeof data === "string" ? data : data.label}
       </label>
     </div>
   );
@@ -31,7 +37,7 @@ type RadioGroupProps = {
     | "setFieldTouched"
   >;
   name: string;
-  radioOptions: CheckboxItemType[];
+  radioOptions: CheckboxItemType[] | string[];
 };
 
 export const RadioGroup = ({
@@ -47,7 +53,7 @@ export const RadioGroup = ({
       onValueChange={(value) => validation.setFieldValue(name, value)}
     >
       {radioOptions?.map((item) => (
-        <RadioItem {...item} />
+        <RadioItem data={item} />
       ))}
     </RadioGroupComp>
   );

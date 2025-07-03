@@ -141,13 +141,20 @@ export const BasicInfoForm = ({ isOpen, onOpenChange }: FormProps) => {
               containerClassName="gap-2 mt-4"
             />
             <FormGroup
-              type="text"
-              groupLabel="Service Type"
-              placeholder="What sector does your business operate in?"
+              type="radio-group"
+              groupLabel="What industry is your business in?"
               size="md"
               name="industry"
               validation={validation}
               containerClassName="gap-2 mt-4"
+              inputClassName="h-15"
+              radioOptions={[
+                "E-commerce",
+                "Health & Wellness",
+                "Finance",
+                "Real Estate",
+                "Others",
+              ]}
             />
             <Button
               className="w-full cursor-pointer mt-10"

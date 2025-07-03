@@ -42,7 +42,7 @@ const Informations = ({ user }: { user: UserData | null }) => {
           <InfoData>{businessData?.address ?? "-"}</InfoData>
         </div>
         <div>
-          <InfoTitle>Service Type</InfoTitle>
+          <InfoTitle>Industry</InfoTitle>
           <InfoData>{businessData?.industry ?? "-"}</InfoData>
         </div>
       </Row>
