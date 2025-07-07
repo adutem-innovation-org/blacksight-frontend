@@ -5,6 +5,51 @@ import { Badge } from "@/components/badge";
 import { Download, X } from "lucide-react";
 import styled from "styled-components";
 import { InvoiceCard } from "@/components/cards";
+import { useProfile } from "@/hooks";
+import { isAdmin } from "@/helpers";
+
+const BusinessOwner = ({
+  knowledgeBaseDetails,
+}: {
+  knowledgeBaseDetails: KnowledgeBase;
+}) => {
+  return (
+    <>
+      <h2 className="font-urbanist text-lg text-gray-900 font-semibold pt-6 border-t pb-4">
+        Business Owner
+      </h2>
+      <CustomRow>
+        <p className="font-sfpro text-sm text-gray-900">Full name</p>
+        <p className="font-sfpro-medium text-sm text-gray-900">
+          {knowledgeBaseDetails?.owner?.firstName || "-"}{" "}
+          {knowledgeBaseDetails?.owner?.lastName || "-"}
+        </p>
+      </CustomRow>
+      <CustomRow>
+        <p className="font-sfpro text-sm text-gray-900">Access Email</p>
+        <p className="font-sfpro-medium text-sm text-gray-900">
+          {knowledgeBaseDetails?.owner?.email || "-"}{" "}
+        </p>
+      </CustomRow>
+      <CustomRow className="no-border border-none">
+        <p className="font-sfpro text-sm text-gray-900">Account Status</p>
+        <Badge
+          variant={
+            badgeVariantMap[
+              (knowledgeBaseDetails?.owner?.isSuspended
+                ? "Inactive"
+                : "Active") as keyof typeof badgeVariantMap
+            ]
+          }
+          className="font-sfpro-medium"
+          size={"sm"}
+        >
+          {knowledgeBaseDetails?.owner?.isSuspended ? "Inactive" : "Active"}
+        </Badge>
+      </CustomRow>
+    </>
+  );
+};
 
 interface SheetHeaderCompProps {
   knowledgeBaseDetails: KnowledgeBase;
@@ -61,15 +106,16 @@ export function KnowledgeBaseDetailsDrawer({
   knowledgeBaseDetails,
 }: KnowledgeBaseDetailsDrawerProps) {
   const connectedBots = knowledgeBaseDetails?.connectedBots ?? [];
+  const { user } = useProfile();
 
   return (
     <Sheet open={isOpen} onOpenChange={onOpenChange} modal={false}>
-      <CustomSheetContent className="rounded-2xl p-0">
+      <CustomSheetContent className="rounded-2xl p-0 flex flex-col">
         <SheetHeaderComp
           knowledgeBaseDetails={knowledgeBaseDetails}
           onOpenChange={onOpenChange}
         />
-        <div>
+        <div className="overflow-auto flex-1 pb-6">
           <div className="px-8 pb-4 mt-10 flex justify-between items-end">
             <p className="font-urbanist font-semibold text-lg text-gray-900">
               Knowledge Base details
@@ -115,6 +161,10 @@ export function KnowledgeBaseDetailsDrawer({
                 {knowledgeBaseDetails?.tag}
               </p>
             </CustomRow>
+
+            {user && isAdmin(user) && (
+              <BusinessOwner knowledgeBaseDetails={knowledgeBaseDetails} />
+            )}
 
             <h2 className="font-urbanist text-lg text-gray-900 font-semibold pt-6 border-t">
               Connected Bots
