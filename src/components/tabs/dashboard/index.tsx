@@ -6,7 +6,7 @@ import { KnowledgeBaseTab } from "./KnowledgeBase";
 import { BotsTab } from "./Bots";
 import { UsersTab } from "./AccountsTab";
 import { AppointmentsTab } from "./Appointments";
-import { WorkspaceTab } from "./Workspace";
+import { WorkspaceTab } from "./WorkspaceTab";
 import { SubscriptionsTab } from "./Subscriptions";
 import { ReminderTab } from "./ReminderTab";
 import { ProfileTab } from "./ProfileTab";

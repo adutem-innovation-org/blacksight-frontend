@@ -14,3 +14,4 @@ export * from "./onboard-user.builder";
 export * from "./get-users.builder";
 export * from "./get-admins.builder";
 export * from "./get-user-analytics.builder";
+export * from "./get-admin-analytics.builder";

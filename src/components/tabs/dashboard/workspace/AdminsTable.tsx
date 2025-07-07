@@ -49,12 +49,12 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/badge";
-import { getAdminUserAnalytics, getUsers } from "@/store";
+import { getAdminAnalytics, getAdmins } from "@/store";
 
 export const columns: ColumnDef<PaginatedUserData>[] = [
   {
     accessorKey: "_id",
-    header: "User ID",
+    header: "Admin ID",
     cell: ({ row }) => <div>{row.getValue("_id")}</div>,
   },
   {
@@ -135,7 +135,7 @@ export const columns: ColumnDef<PaginatedUserData>[] = [
               onClick={column.getToggleSortingHandler()}
               className="hover:bg-transparent py-4 px-4 w-full h-full justify-start font-semibold text-xs text-[#717680] hover:text-[#535862]"
             >
-              Join Date
+              Created On
               {sortDirection === "asc" && (
                 <ListFilter className="text-blue-600 rotate-180" />
               )}
@@ -161,13 +161,13 @@ const badgeVariantMap: Record<string, any> = {
   failed: "error",
 };
 
-interface UsersTableProps {
+interface AdminsTableProps {
   viewUser: (data: PaginatedUserData) => void;
 }
 
-export const UsersTable = ({ viewUser }: UsersTableProps) => {
+export const AdminsTable = ({ viewUser }: AdminsTableProps) => {
   const { dispatch, getState } = useStore();
-  const { users } = getState("Auth");
+  const { admins } = getState("Auth");
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -181,7 +181,7 @@ export const UsersTable = ({ viewUser }: UsersTableProps) => {
   });
 
   const table = useReactTable({
-    data: users || [],
+    data: admins || [],
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -202,8 +202,8 @@ export const UsersTable = ({ viewUser }: UsersTableProps) => {
   });
 
   const refreshTable = () => {
-    dispatch(getAdminUserAnalytics());
-    dispatch(getUsers());
+    dispatch(getAdminAnalytics());
+    dispatch(getAdmins());
   };
 
   return (
@@ -425,7 +425,7 @@ function TableSettings({ table }: TableSettingProps) {
           className="capitalize mx-2 py-2 cursor-pointer font-sfpro"
         >
           <div className="flex justify-between items-center flex-1">
-            {"User ID"}
+            {"Admin ID"}
             <img src={pinLogo} />
           </div>
         </CustomDropdownMenuCheckboxItem>

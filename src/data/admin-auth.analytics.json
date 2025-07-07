@@ -1,0 +1,23 @@
+[
+    {
+        "id": "totalAdmins",
+        "title": "Total Admins",
+        "icon": "fi fi-rr-folder-open text-[#6D28D9]",
+        "shouldCountUp": false,
+        "showProgressRing": false
+    },
+    {
+        "id": "activeAdmins",
+        "title": "Active Admins",
+        "icon": "fi fi-rr-admin-alt text-[#B45309]",
+        "shouldProgressRing": true,
+        "progressRingColor": "#34D399"
+    },
+    {
+        "id": "suspendedAdmins",
+        "title": "Suspended Admins",
+        "icon": "fi fi-rr-admin-alt text-[#B45309]",
+        "showProgressRing": false,
+        "progressRingColor": "#34D399"
+    }
+]

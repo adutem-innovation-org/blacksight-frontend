@@ -4,6 +4,7 @@ import {
   changePasswordBuilder,
   continueWithGoogleBuilder,
   forgotPasswordBuilder,
+  getAdminAnalyticsBuilder,
   getAdminsBuilder,
   getAdminUserAnalyticsBuilder,
   getProfileBuilder,
@@ -39,6 +40,7 @@ import {
   resetUpdateProfileReducer,
   resetVerifyEmailReducer,
   resetGetAdminUserAnalyticsReducer,
+  resetGetAdminAnalyticsReducer,
 } from "../reducers";
 
 const authSlice = createSlice({
@@ -62,6 +64,7 @@ const authSlice = createSlice({
     resetGetUsers: resetGetUsersReducer,
     resetGetAdmins: resetGetAdminsReducer,
     resetGetAdminUserAnalytics: resetGetAdminUserAnalyticsReducer,
+    resetGetAdminAnalytics: resetGetAdminAnalyticsReducer,
   },
   initialState: initialAuthState,
   extraReducers: (builder) => {
@@ -83,6 +86,7 @@ const authSlice = createSlice({
     getUsersBuilder(builder);
     getAdminsBuilder(builder);
     getAdminUserAnalyticsBuilder(builder);
+    getAdminAnalyticsBuilder(builder);
   },
 });
 
@@ -105,4 +109,5 @@ export const {
   resetGetAdmins,
   resetGetUsers,
   resetGetAdminUserAnalytics,
+  resetGetAdminAnalytics,
 } = authSlice.actions;

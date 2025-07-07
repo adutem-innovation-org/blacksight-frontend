@@ -33,6 +33,7 @@ import {
   OnboardBusinessBody,
   OnboardBusinessRes,
   UserAnalyticsRes,
+  AdminAnalyticsRes,
 } from "@/interfaces";
 import { ApiService } from "./api.service";
 import { AUTH_URLS } from "./endpoints";
@@ -269,6 +270,17 @@ export class AuthApiService {
    */
   getUserAnalytics = (): Promise<UserAnalyticsRes> => {
     return this.apiService.get<UserAnalyticsRes>(this.urls.GET_USER_ANALYTICS);
+  };
+
+  /**
+   * Get admins analytics
+   * @description Requires admin access
+   * @returns {Promise<AdminAnalyticsRes>}
+   */
+  getAdminAnalytics = (): Promise<AdminAnalyticsRes> => {
+    return this.apiService.get<AdminAnalyticsRes>(
+      this.urls.GET_ADMIN_ANALYTICS
+    );
   };
 
   /**

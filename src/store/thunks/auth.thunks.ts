@@ -3,6 +3,7 @@ import { ApiService } from "@/apis/api.service";
 import { UserTypes } from "@/enums";
 import { clearSession, saveSession } from "@/helpers";
 import {
+  AdminAuthAnalytics,
   AdminUserAnalytics,
   Business,
   ChangePasswordBody,
@@ -272,6 +273,19 @@ export const getAdminUserAnalytics = createAsyncThunk<
 >("get_admin_user_analytics", async (_: void, { rejectWithValue }) => {
   try {
     const res = await authApiService.getUserAnalytics();
+    return res.data;
+  } catch (error: any) {
+    return rejectWithValue(error);
+  }
+});
+
+export const getAdminAnalytics = createAsyncThunk<
+  AdminAuthAnalytics,
+  void,
+  { rejectValue: { message: string } }
+>("get_admin_auth_analytics", async (_: void, { rejectWithValue }) => {
+  try {
+    const res = await authApiService.getAdminAnalytics();
     return res.data;
   } catch (error: any) {
     return rejectWithValue(error);

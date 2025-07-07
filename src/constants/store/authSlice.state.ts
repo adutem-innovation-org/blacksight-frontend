@@ -102,4 +102,10 @@ export const initialAuthState: AuthState = {
   userAnalyticsFetched: false,
   fetchUserAnalyticsErrorMessage: "",
   userAnalytics: null,
+
+  // Get admin analytics
+  fetchingAdminAnalytics: false,
+  adminAnalyticsFetched: false,
+  fetchAdminAnalyticsErrorMessage: "",
+  adminAnalytics: null,
 };

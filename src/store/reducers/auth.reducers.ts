@@ -121,3 +121,9 @@ export const resetGetAdminUserAnalyticsReducer = (state: AuthState) => {
   state.userAnalyticsFetched = false;
   state.fetchUserAnalyticsErrorMessage = "";
 };
+
+export const resetGetAdminAnalyticsReducer = (state: AuthState) => {
+  state.fetchingAdminAnalytics = false;
+  state.adminAnalyticsFetched = false;
+  state.fetchAdminAnalyticsErrorMessage = "";
+};

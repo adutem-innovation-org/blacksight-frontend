@@ -104,4 +104,10 @@ export type AuthState = {
   userAnalyticsFetched: boolean;
   fetchUserAnalyticsErrorMessage: string;
   userAnalytics: Record<string, number> | null;
+
+  // Get admin analytics
+  fetchingAdminAnalytics: boolean;
+  adminAnalyticsFetched: boolean;
+  fetchAdminAnalyticsErrorMessage: string;
+  adminAnalytics: Record<string, number> | null;
 };

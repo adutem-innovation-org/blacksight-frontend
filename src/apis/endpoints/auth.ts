@@ -30,3 +30,4 @@ export const GET_USERS = "/admin/get-users";
 export const GET_ADMINS = "/admin/get-admins";
 export const CREATE_ADMIN = "/admin/create-admin";
 export const GET_USER_ANALYTICS = "/admin/user-analytics";
+export const GET_ADMIN_ANALYTICS = "/admin/admin-analytics";
