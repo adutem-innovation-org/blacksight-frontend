@@ -15,4 +15,13 @@ export type KnowledgeBase = {
   createdAt: string;
   updatedAt: string;
   connectedBots?: Bot[];
+  owner?: KBOwnerData;
+};
+
+export type KBOwnerData = {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  isSuspended: boolean;
 };

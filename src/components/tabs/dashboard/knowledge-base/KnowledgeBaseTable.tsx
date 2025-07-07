@@ -48,14 +48,14 @@ import {
   Trash2,
   X,
 } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Pagination, Group } from "@mantine/core";
 import pinLogo from "@/assets/svgs/pin.svg";
 import { KnowledgeBase, UserData } from "@/interfaces";
 import { cn } from "@/lib/utils";
 import { useProfile, useStore } from "@/hooks";
-import { isUser } from "@/helpers";
+import { isAdmin, isUser } from "@/helpers";
 
 type ColumnMeta = {
   onDeleteKnowledgeBase: (data: KnowledgeBase) => void;
@@ -110,6 +110,22 @@ export const columns: ColumnDef<KnowledgeBase>[] = [
     },
     cell: ({ row }) => (
       <div className="whitespace-nowrap">{row.getValue("tag")}</div>
+    ),
+  },
+  {
+    id: "businessOwner",
+    header: "Business Owner",
+    accessorFn: (row) => `${row.owner?.firstName} ${row.owner?.lastName}`,
+    cell: ({ row }) => (
+      <div className="whitespace-nowrap">{row.getValue("businessOwner")}</div>
+    ),
+  },
+  {
+    id: "ownerEmail",
+    header: "Owner Email",
+    accessorFn: (row) => row.owner?.email || "-",
+    cell: ({ row }) => (
+      <div className="whitespace-nowrap">{row.getValue("ownerEmail")}</div>
     ),
   },
   {
@@ -249,7 +265,11 @@ export function KnowledgeBaseTable({
     []
   );
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({ _id: false });
+    React.useState<VisibilityState>({
+      _id: false,
+      businessOwner: !!user && isAdmin(user),
+      ownerEmail: !!user && isAdmin(user),
+    });
   const [rowSelection, setRowSelection] = React.useState({});
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
@@ -281,6 +301,15 @@ export function KnowledgeBaseTable({
       pagination,
     },
   });
+
+  // Update visibility when user changes
+  useEffect(() => {
+    setColumnVisibility((prev) => ({
+      ...prev,
+      businessOwner: !!user && isAdmin(user),
+      ownerEmail: !!user && isAdmin(user),
+    }));
+  }, [user]);
 
   return (
     <DashboardGrid className="bg-white rounded-md overflow-hidden flex-1 grid">
