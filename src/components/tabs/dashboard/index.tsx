@@ -4,7 +4,7 @@ import { Tabs } from "@mantine/core";
 import { AnalyticsTab } from "./AnalyticsTab";
 import { KnowledgeBaseTab } from "./KnowledgeBase";
 import { BotsTab } from "./Bots";
-import { AccountsTab } from "./Accounts";
+import { UsersTab } from "./AccountsTab";
 import { AppointmentsTab } from "./Appointments";
 import { WorkspaceTab } from "./Workspace";
 import { SubscriptionsTab } from "./Subscriptions";
@@ -35,8 +35,8 @@ export const DashboardTabs = () => {
       >
         <AppointmentsTab />
       </Tabs.Panel>
-      <Tabs.Panel value={DashboardTabsEnum.ACCOUNTS} className="w-full h-full">
-        <AccountsTab />
+      <Tabs.Panel value={DashboardTabsEnum.USERS} className="w-full h-full">
+        <UsersTab />
       </Tabs.Panel>
       <Tabs.Panel
         value={DashboardTabsEnum.KNOWLEDGE_BASE}

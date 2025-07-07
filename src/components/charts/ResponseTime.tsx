@@ -35,6 +35,7 @@
 //   </ResponsiveContainer>
 // );
 import { useStore } from "@/hooks";
+import { UserAnalytics } from "@/interfaces";
 import { useEffect } from "react";
 import Chart from "react-apexcharts";
 
@@ -43,7 +44,7 @@ type ChartData = {
   categories: any[];
 };
 
-export const ResponseTimeChart = ({ series, categories }: ChartData) => {
+const ResponseTimeChart = ({ series, categories }: ChartData) => {
   const clonedSeries = JSON.parse(JSON.stringify(series));
   const { getState } = useStore();
   const { sidebarState } = getState("Layout");
@@ -141,5 +142,34 @@ export const ResponseTimeChart = ({ series, categories }: ChartData) => {
         },
       }}
     />
+  );
+};
+
+type ResponseTimeWidgetProps = {
+  analytics: UserAnalytics;
+};
+
+export const ResponseTimeWidget = ({ analytics }: ResponseTimeWidgetProps) => {
+  return (
+    <div className="bg-white p-6 flex flex-col gap-4 rounded-sm">
+      <div>
+        <p className="text-2xl text-[#34D399] font-semibold font-urbanist">
+          Response time
+        </p>
+      </div>
+      {/* <div className="h-full rounded-xl flex items-end justify-start pt-5"> */}
+      <div className="h-full rounded-xl pt-5">
+        {analytics && analytics?.responseTime.series.length > 0 ? (
+          <ResponseTimeChart
+            series={analytics?.responseTime.series}
+            categories={analytics?.responseTime.categories}
+          />
+        ) : (
+          <div className="w-full h-full font-urbanist font-semibold text-gray-900 italics flex justify-center items-center text-center italic">
+            No data available
+          </div>
+        )}
+      </div>
+    </div>
   );
 };

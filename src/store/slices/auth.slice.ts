@@ -4,7 +4,10 @@ import {
   changePasswordBuilder,
   continueWithGoogleBuilder,
   forgotPasswordBuilder,
+  getAdminsBuilder,
+  getAdminUserAnalyticsBuilder,
   getProfileBuilder,
+  getUsersBuilder,
   onboardUserBuilder,
   resetPasswordBuilder,
   sendOtpBuilder,
@@ -21,6 +24,8 @@ import {
   changeGapiStateReducer,
   resetContinueWithGoogleReducer,
   resetForgotPasswordReducer,
+  resetGetAdminsReducer,
+  resetGetUsersReducer,
   resetGetProfileReducer,
   resetOnboardUserReducder,
   resetPasswordResetReducer,
@@ -33,6 +38,7 @@ import {
   resetUpdatePasswordReducer,
   resetUpdateProfileReducer,
   resetVerifyEmailReducer,
+  resetGetAdminUserAnalyticsReducer,
 } from "../reducers";
 
 const authSlice = createSlice({
@@ -53,6 +59,9 @@ const authSlice = createSlice({
     resetUpdateBusinessBasicInfo: resetUpdateBusinessBasicInfoReducer,
     resetUpdateBusinessContactInfo: resetUpdateBusinessContactInfoReducer,
     resetOnboardUser: resetOnboardUserReducder,
+    resetGetUsers: resetGetUsersReducer,
+    resetGetAdmins: resetGetAdminsReducer,
+    resetGetAdminUserAnalytics: resetGetAdminUserAnalyticsReducer,
   },
   initialState: initialAuthState,
   extraReducers: (builder) => {
@@ -71,6 +80,9 @@ const authSlice = createSlice({
     updateBusinessBasicInfoBuilder(builder);
     updateBusinessContactInfoBuilder(builder);
     onboardUserBuilder(builder);
+    getUsersBuilder(builder);
+    getAdminsBuilder(builder);
+    getAdminUserAnalyticsBuilder(builder);
   },
 });
 
@@ -90,4 +102,7 @@ export const {
   resetUpdateBusinessBasicInfo,
   resetUpdateBusinessContactInfo,
   resetOnboardUser,
+  resetGetAdmins,
+  resetGetUsers,
+  resetGetAdminUserAnalytics,
 } = authSlice.actions;

@@ -1,0 +1,23 @@
+[
+    {
+        "id": "totalUsers",
+        "title": "Total Users",
+        "icon": "fi fi-rr-folder-open text-[#6D28D9]",
+        "shouldCountUp": false,
+        "showProgressRing": false
+    },
+    {
+        "id": "activeUsers",
+        "title": "Active Users",
+        "icon": "fi fi-rr-users-alt text-[#B45309]",
+        "shouldProgressRing": true,
+        "progressRingColor": "#34D399"
+    },
+    {
+        "id": "suspendedUsers",
+        "title": "Suspended Users",
+        "icon": "fi fi-rr-users-alt text-[#B45309]",
+        "showProgressRing": false,
+        "progressRingColor": "#34D399"
+    }
+]

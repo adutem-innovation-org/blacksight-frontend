@@ -19,6 +19,7 @@ export type UserData = {
   isActive: boolean;
   isEmailVerified: boolean;
   isOnboarded: boolean;
+  isSuspended: boolean;
   isSuperAdmin: boolean;
   userType: UserTypes;
   hasConnectedGoogleMeet?: boolean;
@@ -45,3 +46,15 @@ export interface Business {
   objectives: string[];
   companyStructure: string;
 }
+
+export type PaginatedUserData = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  lastLogin: string;
+  isActive: boolean;
+  isSuspended: boolean;
+  createdAt: string;
+  updatedAt: string;
+};

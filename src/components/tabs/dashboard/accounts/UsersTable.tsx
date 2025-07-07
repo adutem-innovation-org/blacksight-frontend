@@ -1,30 +1,21 @@
+import { Button, SearchInput } from "@/components/form";
 import {
-  CustomDropdownItem,
   CustomDropdownMenuCheckboxItem,
   SortingDropDown,
-  TableFilterDropdown,
 } from "@/components/popups";
-import { Button, SearchInput } from "@/components/form";
-import { Badge } from "@/components/badge";
-import {
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-  Table,
-} from "@/components/ui/table";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { useStore } from "@/hooks";
+import { PaginatedUserData } from "@/interfaces";
+import { Group, Pagination } from "@mantine/core";
+import { DropdownMenuSeparator } from "@radix-ui/react-dropdown-menu";
 import {
   ColumnDef,
   ColumnFiltersState,
-  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
@@ -33,46 +24,59 @@ import {
   useReactTable,
   VisibilityState,
   Table as TableType,
+  flexRender,
 } from "@tanstack/react-table";
 import {
-  ArrowDownToLine,
   ArrowLeft,
   ArrowRight,
-  Ban,
   Calendar,
   ChevronDown,
-  CircleFadingArrowUp,
-  Ellipsis,
   ListFilter,
+  RefreshCcw,
   Settings,
-  Trash2,
   X,
 } from "lucide-react";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Pagination, Group } from "@mantine/core";
 import pinLogo from "@/assets/svgs/pin.svg";
-import { KnowledgeBase, UserData } from "@/interfaces";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { cn } from "@/lib/utils";
-import { useProfile, useStore } from "@/hooks";
-import { isUser } from "@/helpers";
+import { Badge } from "@/components/badge";
+import { getAdminUserAnalytics, getUsers } from "@/store";
 
-type ColumnMeta = {
-  onDeleteKnowledgeBase: (data: KnowledgeBase) => void;
-  setActiveStatus: (kb: KnowledgeBase, status: boolean) => void;
-  user: UserData;
-};
-
-export const columns: ColumnDef<KnowledgeBase>[] = [
+export const columns: ColumnDef<PaginatedUserData>[] = [
   {
     accessorKey: "_id",
-    header: "Knowledge base id",
-    cell: ({ row }) => (
-      <div className="whitespace-nowrap">{row.getValue("_id")}</div>
-    ),
+    header: "User ID",
+    cell: ({ row }) => <div>{row.getValue("_id")}</div>,
   },
   {
-    accessorKey: "tag",
+    id: "fullName",
+    // accessorKey: "botId",
+    accessorFn: (row) => `${row.firstName} ${row.lastName}`,
+    header: "Full name",
+    cell: ({ row }) => <div>{row.getValue("fullName")}</div>,
+  },
+  {
+    id: "email",
+    accessorFn: (row) => row.email,
+    header: "Email",
+  },
+  {
+    id: "status",
+    accessorFn: (row) => (row.isSuspended ? "Inactive" : "Active"),
+    header: "Status",
+    cell: ({ row }) => <div>{row.getValue("status")}</div>,
+  },
+  {
+    accessorKey: "lastLogin",
     header: ({ column }) => {
       const sortDirection = column.getIsSorted();
       const sortDescending = () =>
@@ -90,9 +94,9 @@ export const columns: ColumnDef<KnowledgeBase>[] = [
             <Button
               variant={"ghost"}
               onClick={column.getToggleSortingHandler()}
-              className="hover:bg-transparent py-4 px-4 w-full h-full justify-start text-xs font-semibold text-[#717680] hover:text-[#2f3236]"
+              className="hover:bg-transparent py-4 px-4 w-full h-full justify-start font-semibold text-xs text-[#717680] hover:text-[#535862]"
             >
-              Tag
+              Last Seen
               {sortDirection === "asc" && (
                 <ListFilter className="text-blue-600 rotate-180" />
               )}
@@ -108,33 +112,7 @@ export const columns: ColumnDef<KnowledgeBase>[] = [
         />
       );
     },
-    cell: ({ row }) => (
-      <div className="whitespace-nowrap">{row.getValue("tag")}</div>
-    ),
-  },
-  {
-    accessorKey: "isActive",
-    header: ({ column }) => {
-      return (
-        <TableFilterDropdown
-          OPTIONS={["Active", "Inactive"]}
-          column={column}
-          columnHeader="Status"
-        />
-      );
-    },
-    cell: ({ row }) => (
-      <div>{row.getValue("isActive") ? "Active" : "Inactive"}</div>
-    ),
-    filterFn: (row, columnId, filterOptions: string[]) => {
-      // If no filters are selected, show all
-      if (!filterOptions || filterOptions.length === 0) return true;
-
-      const columnValue = row.getValue(columnId) ? "Active" : "Inactive";
-
-      // Check if row's type is in the selected filter options
-      return filterOptions.includes(columnValue);
-    },
+    sortingFn: "datetime",
   },
   {
     accessorKey: "createdAt",
@@ -157,7 +135,7 @@ export const columns: ColumnDef<KnowledgeBase>[] = [
               onClick={column.getToggleSortingHandler()}
               className="hover:bg-transparent py-4 px-4 w-full h-full justify-start font-semibold text-xs text-[#717680] hover:text-[#535862]"
             >
-              Created At
+              Join Date
               {sortDirection === "asc" && (
                 <ListFilter className="text-blue-600 rotate-180" />
               )}
@@ -175,81 +153,27 @@ export const columns: ColumnDef<KnowledgeBase>[] = [
     },
     sortingFn: "datetime",
   },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row, table }) => {
-      const meta = table.options.meta as ColumnMeta;
-      const user = meta.user;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger className="border-none outline-none">
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <Ellipsis />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="px-2 py-2.5 rounded-lg border-none w-52 drop-shadow-lg"
-            align="end"
-          >
-            {user && isUser(user) && (
-              <CustomDropdownItem
-                placeholder="Delete"
-                onClick={(e: any) => {
-                  e.stopPropagation();
-                  meta?.onDeleteKnowledgeBase(row.original);
-                }}
-                childrenPosition="behind"
-                className={"py-2"}
-              >
-                <Trash2 />
-              </CustomDropdownItem>
-            )}
-            <CustomDropdownItem
-              placeholder={row.getValue("isActive") ? "Deactivate" : "Activate"}
-              onClick={(e: any) => {
-                e.stopPropagation();
-                meta?.setActiveStatus(row.original, !row.getValue("isActive"));
-              }}
-              childrenPosition="behind"
-              className={"py-2"}
-            >
-              {row.getValue("isActive") ? <Ban /> : <CircleFadingArrowUp />}
-            </CustomDropdownItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
 ];
 
 const badgeVariantMap: Record<string, any> = {
-  Active: "success",
-  Inactive: "gray",
-  Failed: "error",
+  active: "success",
+  inactive: "gray",
+  failed: "error",
 };
 
-interface DashboardTableProps {
-  viewKnowledgeBaseDetails: (data: KnowledgeBase) => void;
-  onDeleteKnowledgeBase: (data: KnowledgeBase) => void;
-  setActiveStatus: (kb: KnowledgeBase, status: boolean) => void;
+interface UsersTableProps {
+  viewUser: (data: PaginatedUserData) => void;
 }
 
-export function KnowledgeBaseTable({
-  viewKnowledgeBaseDetails,
-  onDeleteKnowledgeBase,
-  setActiveStatus,
-}: DashboardTableProps) {
-  const { getState } = useStore();
-  const { user } = useProfile();
-  const { knowledgeBases } = getState("KnowledgeBase");
+export const UsersTable = ({ viewUser }: UsersTableProps) => {
+  const { dispatch, getState } = useStore();
+  const { users } = getState("Auth");
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({ _id: false });
+    React.useState<VisibilityState>({ _id: false, userId: false });
   const [rowSelection, setRowSelection] = React.useState({});
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
@@ -257,13 +181,8 @@ export function KnowledgeBaseTable({
   });
 
   const table = useReactTable({
-    data: knowledgeBases || [],
+    data: users || [],
     columns,
-    meta: {
-      onDeleteKnowledgeBase,
-      setActiveStatus,
-      user,
-    },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -282,36 +201,33 @@ export function KnowledgeBaseTable({
     },
   });
 
+  const refreshTable = () => {
+    dispatch(getAdminUserAnalytics());
+    dispatch(getUsers());
+  };
+
   return (
     <DashboardGrid className="bg-white rounded-md overflow-hidden flex-1 grid">
       {/* Table header action sections */}
-      <div className="flex items-center px-4 gap-4">
+      <div className="flex items-center px-4">
         <div className="flex items-center gap-4 flex-1">
           <SearchInput
             placeholder="Search..."
-            value={(table.getColumn("tag")?.getFilterValue() as string) ?? ""}
+            value={(table.getColumn("_id")?.getFilterValue() as string) ?? ""}
             onChange={(event: any) =>
-              table.getColumn("tag")?.setFilterValue(event.target.value)
+              table.getColumn("_id")?.setFilterValue(event.target.value)
             }
             className="max-w-80"
           />
           <Button variant="outline" className="h-11">
-            <Calendar />{" "}
-            <div className="hidden sm:flex items-center">
-              {" "}
-              This month <ChevronDown />
-            </div>
+            <Calendar /> This month <ChevronDown />
           </Button>
         </div>
         <div className="ml-auto gap-4 flex items-center">
-          <Button
-            size={"icon"}
-            variant={"secondary_gray"}
-            className="rounded-full"
-          >
-            <ArrowDownToLine />
+          <Button variant={"brand"} className="h-10" onClick={refreshTable}>
+            <RefreshCcw />
+            Refresh
           </Button>
-
           {<TableSettings table={table} />}
         </div>
       </div>
@@ -327,14 +243,7 @@ export function KnowledgeBaseTable({
                     <TableHead
                       key={header.id}
                       className={cn("py-4", {
-                        "p-0": [
-                          "tag",
-                          "channel",
-                          "createdAt",
-                          "isActive",
-                          "type",
-                          "remindAt",
-                        ].includes(header.id),
+                        "p-0": ["createdAt", "lastLogin"].includes(header.id),
                       })}
                     >
                       {header.isPlaceholder
@@ -357,11 +266,27 @@ export function KnowledgeBaseTable({
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
-                    onClick={() => viewKnowledgeBaseDetails(row.original)}
+                    onClick={() => viewUser(row.original)}
                     className="cursor-pointer"
                   >
                     {row.getVisibleCells().map((cell) => {
-                      if (cell.id.includes("isActive")) {
+                      if (
+                        cell.id.includes("createdAt") ||
+                        cell.id.includes("lastLogin")
+                      ) {
+                        return (
+                          <TableCell
+                            key={cell.id}
+                            className="font-sfpro-medium text-gray-900 text-sm whitespace-nowrap"
+                          >
+                            {new Date(
+                              cell.getValue() as string
+                            ).toLocaleString()}
+                          </TableCell>
+                        );
+                      }
+
+                      if (cell.id.includes("botStatus")) {
                         return (
                           <TableCell key={cell.id}>
                             <Badge
@@ -378,19 +303,6 @@ export function KnowledgeBaseTable({
                                 cell.getContext()
                               )}
                             </Badge>
-                          </TableCell>
-                        );
-                      }
-
-                      if (cell.id.includes("createdAt")) {
-                        return (
-                          <TableCell
-                            key={cell.id}
-                            className="font-sfpro-medium text-gray-900 text-sm whitespace-nowrap"
-                          >
-                            {new Date(
-                              cell.getValue() as string
-                            ).toLocaleString()}
                           </TableCell>
                         );
                       }
@@ -426,18 +338,8 @@ export function KnowledgeBaseTable({
 
       {/* Subscription footer */}
       <div className="flex items-center justify-end space-x-2 p-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {/* {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected. */}
-        </div>
+        <div className="flex-1 text-sm text-muted-foreground"></div>
         <div className="flex items-center flex-1">
-          {/* <Pagination
-            value={table.getState().pagination.pageIndex + 1}
-            total={table.getPageCount()}
-            onChange={(pageIndex: number) => {
-              table.setPageIndex(pageIndex - 1);
-            }}
-          /> */}
           <Pagination.Root
             total={table.getPageCount()}
             value={table.getState().pagination.pageIndex + 1}
@@ -446,11 +348,7 @@ export function KnowledgeBaseTable({
             }}
           >
             <Group gap={5} justify="center">
-              {/* <Pagination.First />
-              <Pagination.Previous /> */}
               <Pagination.Items />
-              {/* <Pagination.Next />
-              <Pagination.Last /> */}
             </Group>
           </Pagination.Root>
         </div>
@@ -477,19 +375,19 @@ export function KnowledgeBaseTable({
       </div>
     </DashboardGrid>
   );
-}
+};
+
 const DashboardGrid = styled.div`
   grid-template-rows: 110px 1fr 60px;
 `;
 
 type TableSettingProps = {
-  table: TableType<KnowledgeBase>;
+  table: TableType<PaginatedUserData>;
 };
 
 const headerMap: Record<string, string> = {
-  tag: "Tag",
-  isActive: "Status",
-  createdAt: "Created At",
+  botId: "Bot ID",
+  createdAt: "Held Date",
 };
 
 function TableSettings({ table }: TableSettingProps) {
@@ -527,8 +425,7 @@ function TableSettings({ table }: TableSettingProps) {
           className="capitalize mx-2 py-2 cursor-pointer font-sfpro"
         >
           <div className="flex justify-between items-center flex-1">
-            {"Knowledge Base ID"}
-
+            {"User ID"}
             <img src={pinLogo} />
           </div>
         </CustomDropdownMenuCheckboxItem>
@@ -537,8 +434,7 @@ function TableSettings({ table }: TableSettingProps) {
           .filter(
             (column) =>
               column.getCanHide() &&
-              // !["clientName", "invoiceId"].includes(column.id)
-              !["actions", "_id"].includes(column.id)
+              !["actions", "_id", "userId"].includes(column.id)
           )
           .map((column) => {
             return (
@@ -550,7 +446,6 @@ function TableSettings({ table }: TableSettingProps) {
               >
                 <div className="flex justify-between items-center flex-1">
                   <>{headerMap[column.id] ?? column.id}</>
-
                   <img src={pinLogo} />
                 </div>
               </CustomDropdownMenuCheckboxItem>

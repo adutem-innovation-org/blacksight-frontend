@@ -8,7 +8,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { botImages } from "@/constants";
 import { BotTabsEnum } from "@/enums";
-import { getRandomArrayItem } from "@/helpers";
+import { getRandomArrayItem, isAdmin, isSuperAdmin, isUser } from "@/helpers";
+import { useProfile } from "@/hooks";
 import { Bot } from "@/interfaces";
 import { cn } from "@/lib/utils";
 import { changeBotTab, setCurrentBot } from "@/store";
@@ -25,6 +26,7 @@ import { useStore } from "react-redux";
 
 type ActionsProps = {
   onEditConfiguration: () => void;
+  onViewConfiguration: () => void;
   onDelete: () => void;
   setActiveStatus: (status: boolean) => void;
   isActive: boolean;
@@ -32,10 +34,13 @@ type ActionsProps = {
 
 const Actions = ({
   onEditConfiguration,
+  onViewConfiguration,
   onDelete,
   setActiveStatus,
   isActive,
 }: ActionsProps) => {
+  const { user } = useProfile();
+
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger className="border-none outline-none cursor-pointer hover:bg-gray-100 p-1 rounded-md">
@@ -45,30 +50,46 @@ const Actions = ({
         className="px-2 py-2.5 rounded-lg border-none min-w-50 bg-white z-1000 shadow-[0px_4px_16px_0px_#0000001f]"
         align="end"
       >
-        <CustomDropdownItem
-          placeholder="Edit Configuration"
-          childrenPosition="behind"
-          className={"py-2"}
-          onClick={onEditConfiguration}
-        >
-          <Cog />
-        </CustomDropdownItem>
-        <CustomDropdownItem
-          placeholder={isActive ? "Deactivate" : "Activate"}
-          childrenPosition="behind"
-          className={"py-2"}
-          onClick={() => setActiveStatus(!isActive)}
-        >
-          {isActive ? <Ban /> : <CircleFadingArrowUp />}
-        </CustomDropdownItem>
-        <CustomDropdownItem
-          placeholder="Delete"
-          childrenPosition="behind"
-          className={"py-2"}
-          onClick={onDelete}
-        >
-          <Trash2 />
-        </CustomDropdownItem>
+        {user && isUser(user) && (
+          <CustomDropdownItem
+            placeholder="Edit Configuration"
+            childrenPosition="behind"
+            className={"py-2"}
+            onClick={onEditConfiguration}
+          >
+            <Cog />
+          </CustomDropdownItem>
+        )}
+        {user && isAdmin(user) && (
+          <CustomDropdownItem
+            placeholder="View Configuration"
+            childrenPosition="behind"
+            className={"py-2"}
+            onClick={onViewConfiguration}
+          >
+            <Cog />
+          </CustomDropdownItem>
+        )}
+        {user && (isSuperAdmin(user) || isUser(user)) && (
+          <CustomDropdownItem
+            placeholder={isActive ? "Deactivate" : "Activate"}
+            childrenPosition="behind"
+            className={"py-2"}
+            onClick={() => setActiveStatus(!isActive)}
+          >
+            {isActive ? <Ban /> : <CircleFadingArrowUp />}
+          </CustomDropdownItem>
+        )}
+        {user && isUser(user) && (
+          <CustomDropdownItem
+            placeholder="Delete"
+            childrenPosition="behind"
+            className={"py-2"}
+            onClick={onDelete}
+          >
+            <Trash2 />
+          </CustomDropdownItem>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );
@@ -77,6 +98,7 @@ const Actions = ({
 interface BotCardProps {
   bot: Bot;
   editConfiguration: (bot: Bot) => void;
+  viewConfiguration: (bot: Bot) => void;
   onDeleteBot: (bot: Bot) => void;
   setActiveStatus: (bot: Bot, status: boolean) => void;
 }
@@ -84,10 +106,12 @@ interface BotCardProps {
 export const BotCard = ({
   bot,
   editConfiguration,
+  viewConfiguration,
   onDeleteBot,
   setActiveStatus,
 }: BotCardProps) => {
   const { dispatch } = useStore();
+  const { user } = useProfile();
   const imageUrl = useMemo(() => getRandomArrayItem(botImages), []);
 
   const goToPlayground = () => {
@@ -97,6 +121,8 @@ export const BotCard = ({
   };
 
   const onEditConfiguration = () => editConfiguration(bot);
+
+  const onViewConfiguration = () => viewConfiguration(bot);
 
   const onDelete = () => onDeleteBot(bot);
 
@@ -112,6 +138,7 @@ export const BotCard = ({
             <Badge className="capitalize">{bot.status}</Badge>
             <Actions
               onEditConfiguration={onEditConfiguration}
+              onViewConfiguration={onViewConfiguration}
               onDelete={onDelete}
               setActiveStatus={onSetActiveStatus}
               isActive={bot.isActive}
@@ -141,6 +168,7 @@ export const BotCard = ({
             "hover:bg-primary/80": bot.isActive,
           })}
           onClick={goToPlayground}
+          disabled={!user || !isUser(user)}
         >
           Launch
         </Button>

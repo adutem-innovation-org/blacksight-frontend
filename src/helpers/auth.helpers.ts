@@ -1,4 +1,5 @@
 import { AuthApiService } from "@/apis";
+import { UserTypes } from "@/enums";
 import { UserData } from "@/interfaces";
 
 export const saveSession = (token: string, user: UserData) => {
@@ -33,3 +34,13 @@ export const getOAuthReqBody = async (access_token: string) => {
     photoUrl: data.picture,
   };
 };
+
+/** Check if the current entity is a user  */
+export const isUser = (auth: UserData) => auth.userType === UserTypes.USER;
+
+/** Check if the current entity is an admin */
+export const isAdmin = (auth: UserData) => auth.userType === UserTypes.ADMIN;
+
+/** Check if the current entity is a super admin */
+export const isSuperAdmin = (auth: UserData) =>
+  isAdmin(auth) && auth.isSuperAdmin;

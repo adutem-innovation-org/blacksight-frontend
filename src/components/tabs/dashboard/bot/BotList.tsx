@@ -2,7 +2,7 @@ import { Bot } from "@/interfaces";
 import { BotCard } from "./BotCard";
 import { cn } from "@/lib/utils";
 import { useCallback, useEffect, useState } from "react";
-import { BotConfigDrawer } from "./playground";
+import { BotConfigDrawer, BotConfigPreviewer } from "./playground";
 import { useStore } from "@/hooks";
 import {
   updateBotStatus,
@@ -40,6 +40,10 @@ export const BotList = ({ bots }: BotListProps) => {
   // Edit configuration
   const [botConfigOpen, setBotConfigOpen] = useState(() => false);
   const [botToConfigure, setBotToConfigure] = useState<Bot | null>(null);
+
+  // View configuration
+  const [botToPreview, setBotToPreview] = useState<Bot | null>(null);
+  const [botPreviewOpen, setBotPreviewOpen] = useState(() => false);
 
   // Delete bot
   const [deleteModalOpen, setDeleteModalOpen] = useState(() => false);
@@ -99,6 +103,7 @@ export const BotList = ({ bots }: BotListProps) => {
     }
   };
 
+  // Edit configuration
   const onOpenChange = (val: boolean) => {
     if (!val) setBotToConfigure(null);
     setBotConfigOpen(val);
@@ -107,6 +112,17 @@ export const BotList = ({ bots }: BotListProps) => {
   const openBotConfig = (bot: Bot) => {
     setBotConfigOpen(true);
     setBotToConfigure(bot);
+  };
+
+  // View configuration
+  const onBotPreviewerOpenChange = (val: boolean) => {
+    if (!val) setBotToPreview(null);
+    setBotPreviewOpen(val);
+  };
+
+  const openBotPreview = (bot: Bot) => {
+    setBotToPreview(bot);
+    setBotPreviewOpen(true);
   };
 
   // Delete bot effects
@@ -158,6 +174,7 @@ export const BotList = ({ bots }: BotListProps) => {
           <BotCard
             bot={bot}
             editConfiguration={openBotConfig}
+            viewConfiguration={openBotPreview}
             onDeleteBot={onDeleteBot}
             setActiveStatus={setActiveStatus}
           />
@@ -169,6 +186,14 @@ export const BotList = ({ bots }: BotListProps) => {
           isOpen={botConfigOpen}
           onOpenChange={onOpenChange}
           currentBot={botToConfigure}
+        />
+      )}
+
+      {botToPreview && (
+        <BotConfigPreviewer
+          isOpen={botPreviewOpen}
+          onOpenChange={onBotPreviewerOpenChange}
+          botDetails={botToPreview}
         />
       )}
 

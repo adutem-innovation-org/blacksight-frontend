@@ -66,8 +66,8 @@ export const sideTabs: Record<UserTypes, SideTabType[]> = {
       iconClass: "fi fi-rr-database",
     },
     {
-      name: "Accounts",
-      tabId: DashboardTabsEnum.ACCOUNTS,
+      name: "Users",
+      tabId: DashboardTabsEnum.USERS,
       iconClass: "fi fi-rr-users-alt",
     },
     {

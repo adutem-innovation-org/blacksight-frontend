@@ -82,4 +82,24 @@ export const initialAuthState: AuthState = {
   onboarded: false,
   onboardingErrors: {},
   onboardingErrorMessage: "",
+
+  // Get users
+  fetchingAllUsers: false,
+  allUserFetched: false,
+  fetchAllUsersErrorMessage: "",
+  users: null,
+  usersMeta: null,
+
+  // Get Admins
+  fetchingAllAdmins: false,
+  allAdminsFetched: false,
+  fetchAllAdminsErrorMessage: "",
+  admins: null,
+  adminsMeta: null,
+
+  // Get user analytics
+  fetchingUserAnalytics: false,
+  userAnalyticsFetched: false,
+  fetchUserAnalyticsErrorMessage: "",
+  userAnalytics: null,
 };

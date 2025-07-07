@@ -3,7 +3,7 @@ export enum DashboardTabsEnum {
   BOTS = "bots",
   KNOWLEDGE_BASE = "knowledge base",
   APPOINTMENTS = "appointments",
-  ACCOUNTS = "accounts",
+  USERS = "users",
   WORKSPACE = "workspace",
   SUBSCRIPTIONS = "subscriptions",
   REMINDER = "reminder",

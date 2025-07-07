@@ -1,3 +1,7 @@
+import { PaginationMetaData } from "@/interfaces/pagination";
+import { PaginatedUserData, UserData } from "./user";
+import { AdminUserAnalytics } from "../api";
+
 export type AuthState = {
   signingIn: boolean;
   isSignedIn: boolean;
@@ -80,4 +84,24 @@ export type AuthState = {
   onboarded: boolean;
   onboardingErrors: Record<string, string>;
   onboardingErrorMessage: string;
+
+  // Get users
+  fetchingAllUsers: boolean;
+  allUserFetched: boolean;
+  fetchAllUsersErrorMessage: string;
+  users: PaginatedUserData[] | null;
+  usersMeta: PaginationMetaData | null;
+
+  // Get Admins
+  fetchingAllAdmins: boolean;
+  allAdminsFetched: boolean;
+  fetchAllAdminsErrorMessage: string;
+  admins: PaginatedUserData[] | null;
+  adminsMeta: PaginationMetaData | null;
+
+  // Get user analytics
+  fetchingUserAnalytics: boolean;
+  userAnalyticsFetched: boolean;
+  fetchUserAnalyticsErrorMessage: string;
+  userAnalytics: Record<string, number> | null;
 };

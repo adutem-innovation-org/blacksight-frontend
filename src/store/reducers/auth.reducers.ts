@@ -103,3 +103,21 @@ export const resetOnboardUserReducder = (state: AuthState) => {
   state.onboardingErrors = {};
   state.onboardingErrorMessage = "";
 };
+
+export const resetGetAdminsReducer = (state: AuthState) => {
+  state.fetchingAllAdmins = false;
+  state.allAdminsFetched = false;
+  state.fetchAllAdminsErrorMessage = "";
+};
+
+export const resetGetUsersReducer = (state: AuthState) => {
+  state.fetchingAllUsers = false;
+  state.allUserFetched = false;
+  state.fetchAllUsersErrorMessage = "";
+};
+
+export const resetGetAdminUserAnalyticsReducer = (state: AuthState) => {
+  state.fetchingUserAnalytics = false;
+  state.userAnalyticsFetched = false;
+  state.fetchUserAnalyticsErrorMessage = "";
+};

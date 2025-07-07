@@ -18,3 +18,4 @@ export * from "./update-address";
 export * from "./update-profile";
 export * from "./update-business";
 export * from "./onboard-business";
+export * from "./get-user-analytics";

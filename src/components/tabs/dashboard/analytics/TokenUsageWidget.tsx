@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useStore } from "@/hooks";
 import ReactApexChart from "react-apexcharts";
 import { CustomDropdownItem } from "@/components/popups";
+import { UserAnalytics } from "@/interfaces";
 
 type TokenUsage = {
   botName: string;
@@ -19,7 +20,7 @@ type Props = {
   data: TokenUsage[];
 };
 
-export const TokenUsageWidget = ({ data }: Props) => {
+const TokenUsageChart = ({ data }: Props) => {
   const { getState } = useStore();
   const { sidebarState } = getState("Layout");
 
@@ -121,5 +122,28 @@ export const TokenUsageWidget = ({ data }: Props) => {
         />
       </div>
     </React.Fragment>
+  );
+};
+
+type TokenUsageWidgetProps = {
+  analytics: UserAnalytics;
+};
+
+export const TokenUsageWidget = ({ analytics }: TokenUsageWidgetProps) => {
+  return (
+    <>
+      {analytics && analytics.tokenUsage.length > 0 ? (
+        <TokenUsageChart data={analytics.tokenUsage} />
+      ) : (
+        <div className="w-full h-full font-urbanist font-semibold text-gray-900 italics flex flex-col">
+          <p className="text-2xl text-[#0090FF] font-semibold font-urbanist">
+            Token Usage
+          </p>
+          <div className="flex-1 flex justify-center items-center text-center italic">
+            No data available
+          </div>
+        </div>
+      )}
+    </>
   );
 };

@@ -3,9 +3,12 @@ import { ApiService } from "@/apis/api.service";
 import { UserTypes } from "@/enums";
 import { clearSession, saveSession } from "@/helpers";
 import {
+  AdminUserAnalytics,
   Business,
   ChangePasswordBody,
   ForgotPasswordBody,
+  GetAdminsRes,
+  GetUsersRes,
   GoogleLoginBody,
   LoginUserBody,
   OnboardBusinessBody,
@@ -231,6 +234,45 @@ export const onboardUser = createAsyncThunk<
 >("onboard_user", async (body: OnboardBusinessBody, { rejectWithValue }) => {
   try {
     return (await authApiService.onboardBusiness(body)).business;
+  } catch (error: any) {
+    return rejectWithValue(error);
+  }
+});
+
+export const getUsers = createAsyncThunk<
+  GetUsersRes,
+  void,
+  { rejectValue: { message: string } }
+>("get_users", async (_: void, { rejectWithValue }) => {
+  try {
+    const res = await authApiService.getUsers();
+    return res;
+  } catch (error: any) {
+    return rejectWithValue(error);
+  }
+});
+
+export const getAdmins = createAsyncThunk<
+  GetAdminsRes,
+  void,
+  { rejectValue: { message: string } }
+>("get_admins", async (_: void, { rejectWithValue }) => {
+  try {
+    const res = await authApiService.getAdmins();
+    return res;
+  } catch (error: any) {
+    return rejectWithValue(error);
+  }
+});
+
+export const getAdminUserAnalytics = createAsyncThunk<
+  AdminUserAnalytics,
+  void,
+  { rejectValue: { message: string } }
+>("get_admin_user_analytics", async (_: void, { rejectWithValue }) => {
+  try {
+    const res = await authApiService.getUserAnalytics();
+    return res.data;
   } catch (error: any) {
     return rejectWithValue(error);
   }

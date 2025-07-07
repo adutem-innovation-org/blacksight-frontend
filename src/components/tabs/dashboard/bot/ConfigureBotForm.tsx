@@ -7,8 +7,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { DashboardTabsEnum } from "@/enums";
-import { useStore } from "@/hooks";
+import { DashboardTabsEnum, UserTypes } from "@/enums";
+import { useProfile, useStore } from "@/hooks";
 import { botSchema } from "@/schemas";
 import {
   changeTab,
@@ -84,6 +84,7 @@ export const ConfigureBotForm = ({
     fetchConnectedProvidersError,
     connectedProvidersFetched,
   } = getState("MeetingProvider");
+  const { user } = useProfile();
 
   const knowledgeBaseOptions = useMemo(() => {
     if (!knowledgeBases?.length) return [];
@@ -151,12 +152,16 @@ export const ConfigureBotForm = ({
 
   // Fetch connected meeting providers on tab open
   useEffect(() => {
-    if (!connectedProviders && !fetchingConnectedProviders) {
+    if (
+      !connectedProviders &&
+      !fetchingConnectedProviders &&
+      user?.userType === UserTypes.USER
+    ) {
       dispatch(getConnectedProviders());
     }
-  }, []);
+  }, [user]);
 
-  // Reset fetch connected meeting providers on tab opne
+  // Reset fetch connected meeting providers on tab open
   useEffect(() => {
     if (connectedProvidersFetched && fetchConnectedProvidersError) {
       dispatch(resetGetConnectedProviders());

@@ -1,5 +1,5 @@
 import { AnalyticsCard } from "@/components/cards";
-import { BookingVolumeChart, ResponseTimeChart } from "@/components/charts";
+import { BookingVolumeChart, ResponseTimeWidget } from "@/components/charts";
 import { PopularBookingTimeChart } from "@/components/charts/PopularResponseTime";
 import { DashboardContent, DashboardTableLayoutDiv } from "@/components/design";
 import { Loader } from "@/components/progress";
@@ -67,7 +67,11 @@ export const AnalyticsTab = () => {
 
   // Get appointments
   useEffect(() => {
-    if (!appointments && !fetchingAllAppointments) {
+    if (
+      !appointments &&
+      !fetchingAllAppointments &&
+      user?.userType === UserTypes.ADMIN
+    ) {
       dispatch(getAllAppointments());
     }
   }, []);
@@ -96,26 +100,11 @@ export const AnalyticsTab = () => {
                 </div>
               </div>
 
-              <div className="bg-white p-6 flex flex-col gap-4 rounded-sm">
-                <div>
-                  <p className="text-2xl text-[#34D399] font-semibold font-urbanist">
-                    Response time
-                  </p>
-                </div>
-                {/* <div className="h-full rounded-xl flex items-end justify-start pt-5"> */}
-                <div className="h-full rounded-xl pt-5">
-                  {analytics && analytics?.responseTime.series.length > 0 ? (
-                    <ResponseTimeChart
-                      series={analytics?.responseTime.series}
-                      categories={analytics?.responseTime.categories}
-                    />
-                  ) : (
-                    <div className="w-full h-full font-urbanist font-semibold text-gray-900 italics flex justify-center items-center text-center italic">
-                      No data available
-                    </div>
-                  )}
-                </div>
-              </div>
+              {user && user.userType === UserTypes.USER ? (
+                <ResponseTimeWidget analytics={analytics} />
+              ) : (
+                <div className="bg-white p-6 flex flex-col gap-4 rounded-sm"></div>
+              )}
             </div>
 
             <div
@@ -127,18 +116,12 @@ export const AnalyticsTab = () => {
               ) : (
                 <TopUsersWidget />
               )}
+
               <div className="rounded-sm bg-white col-span-1 p-6 flex flex-col gap-4">
-                {analytics && analytics.tokenUsage.length > 0 ? (
-                  <TokenUsageWidget data={analytics.tokenUsage} />
+                {user && user.userType === UserTypes.USER ? (
+                  <TokenUsageWidget analytics={analytics} />
                 ) : (
-                  <div className="w-full h-full font-urbanist font-semibold text-gray-900 italics flex flex-col">
-                    <p className="text-2xl text-[#0090FF] font-semibold font-urbanist">
-                      Token Usage
-                    </p>
-                    <div className="flex-1 flex justify-center items-center text-center italic">
-                      No data available
-                    </div>
-                  </div>
+                  <></>
                 )}
               </div>
             </div>

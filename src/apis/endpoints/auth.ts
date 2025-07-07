@@ -29,3 +29,4 @@ export const ADMIN_RESET_PASSWORD = "/admin/reset-password";
 export const GET_USERS = "/admin/get-users";
 export const GET_ADMINS = "/admin/get-admins";
 export const CREATE_ADMIN = "/admin/create-admin";
+export const GET_USER_ANALYTICS = "/admin/user-analytics";

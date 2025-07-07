@@ -11,3 +11,6 @@ export * from "./update-address.builder";
 export * from "./update-profile.builder";
 export * from "./update-business-info.builder";
 export * from "./onboard-user.builder";
+export * from "./get-users.builder";
+export * from "./get-admins.builder";
+export * from "./get-user-analytics.builder";

@@ -15,6 +15,14 @@ export type Bot = {
     tag: string;
     isActive: boolean;
   };
+  knowledgeBases: [
+    {
+      tag: string;
+      isActive: boolean;
+      _id: string;
+      id: string;
+    }
+  ];
   createdAt: string;
   updatedAt: string;
 };
