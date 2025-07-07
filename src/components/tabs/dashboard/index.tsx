@@ -1,5 +1,5 @@
 import { DashboardTabsEnum } from "@/enums";
-import { useStore } from "@/hooks";
+import { useProfile, useStore } from "@/hooks";
 import { Tabs } from "@mantine/core";
 import { AnalyticsTab } from "./AnalyticsTab";
 import { KnowledgeBaseTab } from "./KnowledgeBase";
@@ -12,10 +12,12 @@ import { ReminderTab } from "./ReminderTab";
 import { ProfileTab } from "./ProfileTab";
 import { ProvidersTab } from "./Providers";
 import { ConversationsTab } from "./Conversations";
+import { isUser } from "@/helpers";
 
 export const DashboardTabs = () => {
   const { getState } = useStore();
   const { currentTab } = getState("Layout");
+  const { user } = useProfile();
 
   return (
     <Tabs
@@ -68,10 +70,11 @@ export const DashboardTabs = () => {
       >
         <SubscriptionsTab />
       </Tabs.Panel>
-
-      <Tabs.Panel value={DashboardTabsEnum.PROFILE} className="w-full h-full">
-        <ProfileTab />
-      </Tabs.Panel>
+      {user && isUser(user) && (
+        <Tabs.Panel value={DashboardTabsEnum.PROFILE} className="w-full h-full">
+          <ProfileTab />
+        </Tabs.Panel>
+      )}
     </Tabs>
   );
 };

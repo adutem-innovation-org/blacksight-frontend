@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { changeTab, logout } from "@/store";
 import { DashboardTabsEnum } from "@/enums";
+import { isUser } from "@/helpers";
 
 type Props = {
   currentTab: string;
@@ -84,13 +85,15 @@ const HeaderDropDown = () => {
           <i className="fi fi-rr-house-chimney-crack flex text-lg"></i>
           <span className="font-dmsans text-sm font-medium">Home</span>
         </DropdownMenuItem>
-        <DropdownMenuItem
-          className="m-2 p-3 flex items-center gap-3 hover:bg-gray-100 cursor-pointer rounded-md"
-          onClick={openProfileTab}
-        >
-          <i className="fi fi-rr-settings flex text-lg"></i>
-          <span className="font-dmsans text-sm font-medium">Profile</span>
-        </DropdownMenuItem>
+        {user && isUser(user) && (
+          <DropdownMenuItem
+            className="m-2 p-3 flex items-center gap-3 hover:bg-gray-100 cursor-pointer rounded-md"
+            onClick={openProfileTab}
+          >
+            <i className="fi fi-rr-settings flex text-lg"></i>
+            <span className="font-dmsans text-sm font-medium">Profile</span>
+          </DropdownMenuItem>
+        )}
         <DropdownMenuItem
           className="m-2 p-3 flex items-center gap-3 hover:bg-gray-100 cursor-pointer rounded-md"
           onClick={logoutUser}
