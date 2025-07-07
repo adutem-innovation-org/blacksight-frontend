@@ -72,8 +72,28 @@ export const columns: ColumnDef<PaginatedUserData>[] = [
   {
     id: "status",
     accessorFn: (row) => (row.isSuspended ? "Inactive" : "Active"),
-    header: "Status",
+    header: "Account Status",
     cell: ({ row }) => <div>{row.getValue("status")}</div>,
+  },
+  {
+    id: "totalBots",
+    accessorFn: (row) => row.totalBots,
+    header: () => (
+      <div className="text-center whitespace-nowrap">Total Bots</div>
+    ),
+    cell: ({ row }) => (
+      <div className="text-center">{row.getValue("totalBots")}</div>
+    ),
+  },
+  {
+    id: "totalKnowledgeBases",
+    accessorFn: (row) => row.totalKnowledgeBases,
+    header: () => (
+      <div className="text-center whitespace-nowrap">Total Knowledge Bases</div>
+    ),
+    cell: ({ row }) => (
+      <div className="text-center">{row.getValue("totalKnowledgeBases")}</div>
+    ),
   },
   {
     accessorKey: "lastLogin",

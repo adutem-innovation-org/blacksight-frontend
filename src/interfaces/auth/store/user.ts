@@ -55,6 +55,8 @@ export type PaginatedUserData = {
   lastLogin: string;
   isActive: boolean;
   isSuspended: boolean;
+  totalBots?: number;
+  totalKnowledgeBases?: number;
   createdAt: string;
   updatedAt: string;
 };
