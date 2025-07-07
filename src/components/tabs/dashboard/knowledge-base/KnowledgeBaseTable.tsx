@@ -519,10 +519,13 @@ const headerMap: Record<string, string> = {
   tag: "Tag",
   isActive: "Status",
   createdAt: "Created At",
+  businessOwner: "Business Owner",
+  ownerEmail: "Owner Email",
 };
 
 function TableSettings({ table }: TableSettingProps) {
   const [tableSettingsOpen, setTableSettingsOpen] = useState(false);
+  const { user } = useProfile();
 
   const changeTableSettingsState = (value: boolean) =>
     setTableSettingsOpen(value);
@@ -567,7 +570,15 @@ function TableSettings({ table }: TableSettingProps) {
             (column) =>
               column.getCanHide() &&
               // !["clientName", "invoiceId"].includes(column.id)
-              !["actions", "_id"].includes(column.id)
+              // Omit actions and _id field by default
+              // Omit business Owner and ownerEmail field if it is not an admin
+              ![
+                "actions",
+                "_id",
+                ...(user && isAdmin(user)
+                  ? []
+                  : ["businessOwner", "ownerEmail"]),
+              ].includes(column.id)
           )
           .map((column) => {
             return (
