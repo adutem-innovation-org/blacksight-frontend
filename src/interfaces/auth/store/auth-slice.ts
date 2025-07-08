@@ -110,4 +110,15 @@ export type AuthState = {
   adminAnalyticsFetched: boolean;
   fetchAdminAnalyticsErrorMessage: string;
   adminAnalytics: Record<string, number> | null;
+
+  // Suspend user
+  suspendingUser: boolean;
+  userSuspended: boolean;
+  suspendUserErrors: Record<string, string>;
+  suspendUserErrorMessage: string;
+
+  // Lift user suspension
+  liftingUserSuspension: boolean;
+  userSuspensionLifted: boolean;
+  liftUserSuspensionErrorMessage: string;
 };

@@ -49,6 +49,7 @@ export interface Business {
 
 export type PaginatedUserData = {
   id: string;
+  _id: string;
   firstName: string;
   lastName: string;
   email: string;

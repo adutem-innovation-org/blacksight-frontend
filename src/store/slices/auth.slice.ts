@@ -9,12 +9,14 @@ import {
   getAdminUserAnalyticsBuilder,
   getProfileBuilder,
   getUsersBuilder,
+  liftUserSuspensionBuilder,
   onboardUserBuilder,
   resetPasswordBuilder,
   sendOtpBuilder,
   setupPasswordBuilder,
   signInUserBuilder,
   signUpUserBuilder,
+  suspendUserBuilder,
   updateAddressBuilder,
   updateBusinessBasicInfoBuilder,
   updateBusinessContactInfoBuilder,
@@ -41,6 +43,8 @@ import {
   resetVerifyEmailReducer,
   resetGetAdminUserAnalyticsReducer,
   resetGetAdminAnalyticsReducer,
+  resetSuspendUserReducer,
+  resetLiftUserSuspensionReducer,
 } from "../reducers";
 
 const authSlice = createSlice({
@@ -65,6 +69,8 @@ const authSlice = createSlice({
     resetGetAdmins: resetGetAdminsReducer,
     resetGetAdminUserAnalytics: resetGetAdminUserAnalyticsReducer,
     resetGetAdminAnalytics: resetGetAdminAnalyticsReducer,
+    resetSuspendUser: resetSuspendUserReducer,
+    resetLiftUserSuspension: resetLiftUserSuspensionReducer,
   },
   initialState: initialAuthState,
   extraReducers: (builder) => {
@@ -87,6 +93,8 @@ const authSlice = createSlice({
     getAdminsBuilder(builder);
     getAdminUserAnalyticsBuilder(builder);
     getAdminAnalyticsBuilder(builder);
+    suspendUserBuilder(builder);
+    liftUserSuspensionBuilder(builder);
   },
 });
 
@@ -110,4 +118,6 @@ export const {
   resetGetUsers,
   resetGetAdminUserAnalytics,
   resetGetAdminAnalytics,
+  resetSuspendUser,
+  resetLiftUserSuspension,
 } = authSlice.actions;

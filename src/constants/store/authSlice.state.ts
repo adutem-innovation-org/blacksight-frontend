@@ -108,4 +108,15 @@ export const initialAuthState: AuthState = {
   adminAnalyticsFetched: false,
   fetchAdminAnalyticsErrorMessage: "",
   adminAnalytics: null,
+
+  // Suspend user
+  suspendingUser: false,
+  userSuspended: false,
+  suspendUserErrors: {},
+  suspendUserErrorMessage: "",
+
+  // Lift user suspension
+  liftingUserSuspension: false,
+  userSuspensionLifted: false,
+  liftUserSuspensionErrorMessage: "",
 };

@@ -16,10 +16,12 @@ import {
   RegisterUserBody,
   ResetPasswordBody,
   SetupPasswordBody,
+  SuspendUserBody,
   UpdateAddressBody,
   UpdateBusinessBasicInfoBody,
   UpdateBusinessContactInfoBody,
   UpdateProfileBody,
+  UserData,
   VerifyEmailBody,
 } from "@/interfaces";
 import { createAsyncThunk } from "@reduxjs/toolkit";
@@ -287,6 +289,32 @@ export const getAdminAnalytics = createAsyncThunk<
   try {
     const res = await authApiService.getAdminAnalytics();
     return res.data;
+  } catch (error: any) {
+    return rejectWithValue(error);
+  }
+});
+
+export const suspendUser = createAsyncThunk<
+  UserData,
+  { userId: string; data: SuspendUserBody },
+  { rejectValue: { message: string; errors?: Record<string, string> } }
+>("suspend_user", async ({ userId, data }, { rejectWithValue }) => {
+  try {
+    const res = await authApiService.suspendUser(userId, data);
+    return res.user;
+  } catch (error: any) {
+    return rejectWithValue(error);
+  }
+});
+
+export const liftUserSuspension = createAsyncThunk<
+  UserData,
+  string,
+  { rejectValue: { message: string } }
+>("lift_user_suspension", async (userId, { rejectWithValue }) => {
+  try {
+    const res = await authApiService.liftUserSuspension(userId);
+    return res.user;
   } catch (error: any) {
     return rejectWithValue(error);
   }

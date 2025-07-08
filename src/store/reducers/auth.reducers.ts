@@ -127,3 +127,16 @@ export const resetGetAdminAnalyticsReducer = (state: AuthState) => {
   state.adminAnalyticsFetched = false;
   state.fetchAdminAnalyticsErrorMessage = "";
 };
+
+export const resetSuspendUserReducer = (state: AuthState) => {
+  state.suspendingUser = false;
+  state.userSuspended = false;
+  state.suspendUserErrors = {};
+  state.suspendUserErrorMessage = "";
+};
+
+export const resetLiftUserSuspensionReducer = (state: AuthState) => {
+  state.liftingUserSuspension = false;
+  state.userSuspensionLifted = false;
+  state.liftUserSuspensionErrorMessage = "";
+};
