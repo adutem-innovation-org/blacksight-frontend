@@ -31,3 +31,5 @@ export const GET_ADMINS = "/admin/get-admins";
 export const CREATE_ADMIN = "/admin/create-admin";
 export const GET_USER_ANALYTICS = "/admin/user-analytics";
 export const GET_ADMIN_ANALYTICS = "/admin/admin-analytics";
+export const SUSPEND_USER = "/admin/suspend/user";
+export const LIFT_USER_SUSPENSION = "/admin/lift-suspension/user";

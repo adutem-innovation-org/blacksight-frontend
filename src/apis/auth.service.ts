@@ -34,6 +34,9 @@ import {
   OnboardBusinessRes,
   UserAnalyticsRes,
   AdminAnalyticsRes,
+  SuspendUserBody,
+  SuspendUserRes,
+  LiftUserSuspensionRes,
 } from "@/interfaces";
 import { ApiService } from "./api.service";
 import { AUTH_URLS } from "./endpoints";
@@ -318,5 +321,27 @@ export class AuthApiService {
     return axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
       headers: { Authorization: `Bearer ${access_token}` },
     });
+  };
+
+  /**
+   * Suspend a user's account
+   * @param data The reason for suspension and the user id
+   * @param userId The unique identifier of the user to be suspended
+   * @returns {Promise<SuspendUserRes>}
+   */
+  suspendUser = (
+    userId: string,
+    data: SuspendUserBody
+  ): Promise<SuspendUserRes> => {
+    return this.apiService.post(`${this.urls.SUSPEND_USER}/${userId}`, data);
+  };
+
+  /**
+   * Lift the suspension on a user
+   * @param userId The unique identifier of the user to be suspended
+   * @returns {Promise<LiftUserSuspensionRes>}
+   */
+  liftUserSuspension = (userId: string): Promise<LiftUserSuspensionRes> => {
+    return this.apiService.post(`${this.urls.LIFT_USER_SUSPENSION}/${userId}`);
   };
 }
