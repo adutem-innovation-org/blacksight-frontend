@@ -121,4 +121,10 @@ export type AuthState = {
   liftingUserSuspension: boolean;
   userSuspensionLifted: boolean;
   liftUserSuspensionErrorMessage: string;
+
+  // Create admin
+  creatingAdmin: boolean;
+  adminCreated: boolean;
+  createAdminErrors: Record<string, string>;
+  createAdminErrorMessage: string;
 };

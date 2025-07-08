@@ -7,6 +7,7 @@ import {
   AdminUserAnalytics,
   Business,
   ChangePasswordBody,
+  CreateAdminBody,
   ForgotPasswordBody,
   GetAdminsRes,
   GetUsersRes,
@@ -314,6 +315,19 @@ export const liftUserSuspension = createAsyncThunk<
 >("lift_user_suspension", async (userId, { rejectWithValue }) => {
   try {
     const res = await authApiService.liftUserSuspension(userId);
+    return res.user;
+  } catch (error: any) {
+    return rejectWithValue(error);
+  }
+});
+
+export const createAdmin = createAsyncThunk<
+  UserData,
+  CreateAdminBody,
+  { rejectValue: { message: string; errors?: Record<string, string> } }
+>("create_admin", async (data: CreateAdminBody, { rejectWithValue }) => {
+  try {
+    const res = await authApiService.createAdmin(data);
     return res.user;
   } catch (error: any) {
     return rejectWithValue(error);

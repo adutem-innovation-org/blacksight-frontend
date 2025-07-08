@@ -119,4 +119,10 @@ export const initialAuthState: AuthState = {
   liftingUserSuspension: false,
   userSuspensionLifted: false,
   liftUserSuspensionErrorMessage: "",
+
+  // Create admin
+  creatingAdmin: false,
+  adminCreated: false,
+  createAdminErrors: {},
+  createAdminErrorMessage: "",
 };

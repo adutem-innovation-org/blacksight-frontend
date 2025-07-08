@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   changePasswordBuilder,
   continueWithGoogleBuilder,
+  createAdminBuilder,
   forgotPasswordBuilder,
   getAdminAnalyticsBuilder,
   getAdminsBuilder,
@@ -45,6 +46,7 @@ import {
   resetGetAdminAnalyticsReducer,
   resetSuspendUserReducer,
   resetLiftUserSuspensionReducer,
+  resetCreateAdminReducer,
 } from "../reducers";
 
 const authSlice = createSlice({
@@ -71,6 +73,7 @@ const authSlice = createSlice({
     resetGetAdminAnalytics: resetGetAdminAnalyticsReducer,
     resetSuspendUser: resetSuspendUserReducer,
     resetLiftUserSuspension: resetLiftUserSuspensionReducer,
+    resetCreateAdmin: resetCreateAdminReducer,
   },
   initialState: initialAuthState,
   extraReducers: (builder) => {
@@ -95,6 +98,7 @@ const authSlice = createSlice({
     getAdminAnalyticsBuilder(builder);
     suspendUserBuilder(builder);
     liftUserSuspensionBuilder(builder);
+    createAdminBuilder(builder);
   },
 });
 
@@ -120,4 +124,5 @@ export const {
   resetGetAdminAnalytics,
   resetSuspendUser,
   resetLiftUserSuspension,
+  resetCreateAdmin,
 } = authSlice.actions;

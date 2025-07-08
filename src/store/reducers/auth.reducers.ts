@@ -140,3 +140,10 @@ export const resetLiftUserSuspensionReducer = (state: AuthState) => {
   state.userSuspensionLifted = false;
   state.liftUserSuspensionErrorMessage = "";
 };
+
+export const resetCreateAdminReducer = (state: AuthState) => {
+  state.creatingAdmin = false;
+  state.adminCreated = false;
+  state.createAdminErrors = {};
+  state.createAdminErrorMessage = "";
+};

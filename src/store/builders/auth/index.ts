@@ -16,3 +16,4 @@ export * from "./get-admins.builder";
 export * from "./get-user-analytics.builder";
 export * from "./get-admin-analytics.builder";
 export * from "./user-suspension.builder";
+export * from "./create-admin";
