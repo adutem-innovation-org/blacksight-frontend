@@ -43,7 +43,7 @@ const Header = () => {
           No data available at the moment
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-5 flex-1">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 md:gap-5 flex-1">
           {userAnalyticsData.map(({ id, ...data }) => {
             let percentage;
             let count = userAnalytics![id];
