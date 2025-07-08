@@ -6,7 +6,7 @@ import { Loader } from "@/components/progress";
 import analyticsData from "@/data/analytics.json";
 import { UserTypes } from "@/enums";
 import { useProfile, useStore } from "@/hooks";
-import { getAllAppointments, getAnalytics } from "@/store";
+import { getAllAppointments, getAnalytics, getUsers } from "@/store";
 import React, { useEffect, useMemo } from "react";
 import {
   AppointmentWidget,
@@ -57,6 +57,7 @@ export const AnalyticsTab = () => {
   const { dispatch, getState } = useStore();
   const { analytics, fetchingAnalytics } = getState("Analytics");
   const { appointments, fetchingAllAppointments } = getState("Appointment");
+  const { users, fetchingAllUsers } = getState("Auth");
   const { user } = useProfile();
 
   useEffect(() => {
@@ -67,12 +68,15 @@ export const AnalyticsTab = () => {
 
   // Get appointments
   useEffect(() => {
-    if (
-      !appointments &&
-      !fetchingAllAppointments &&
-      user?.userType === UserTypes.ADMIN
-    ) {
+    if (!appointments && !fetchingAllAppointments) {
       dispatch(getAllAppointments());
+    }
+  }, []);
+
+  // Get Users
+  useEffect(() => {
+    if (!users && !fetchingAllUsers) {
+      dispatch(getUsers());
     }
   }, []);
 
@@ -111,11 +115,7 @@ export const AnalyticsTab = () => {
               className="grid grid-cols-1 lg:grid-cols-3 gap-4"
               style={{ gridAutoRows: "600px" }}
             >
-              {user && user.userType === UserTypes.USER ? (
-                <AppointmentWidget />
-              ) : (
-                <TopUsersWidget />
-              )}
+              <AppointmentWidget />
 
               <div className="rounded-sm bg-white col-span-1 p-6 flex flex-col gap-4">
                 {user && user.userType === UserTypes.USER ? (
@@ -125,6 +125,19 @@ export const AnalyticsTab = () => {
                 )}
               </div>
             </div>
+
+            {user && user.userType === UserTypes.ADMIN && (
+              <div
+                className="grid grid-cols-1 lg:grid-cols-3 gap-4"
+                style={{ gridAutoRows: "600px" }}
+              >
+                <div className="rounded-sm bg-white col-span-1 p-6 flex flex-col gap-4">
+                  {/* Just a placeholder for now */}
+                </div>
+
+                <TopUsersWidget />
+              </div>
+            )}
 
             <div className="bg-white h-[400px] rounded-sm p-6 flex flex-col gap-4">
               <div>

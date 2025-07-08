@@ -3,10 +3,16 @@ import { AppointmentTable } from "../appointment";
 import { useStore } from "@/hooks";
 import { EmptyRecordsTemplate } from "@/components/templates";
 import notificationIcon from "@/assets/images/schedule.png";
+import { changeTab } from "@/store";
+import { DashboardTabsEnum } from "@/enums";
 
 export const AppointmentWidget = () => {
-  const { getState } = useStore();
+  const { getState, dispatch } = useStore();
   const { appointments } = getState("Appointment");
+
+  const goToAppointments = () => {
+    dispatch(changeTab(DashboardTabsEnum.APPOINTMENTS));
+  };
   return (
     <div className="rounded-sm bg-white col-span-1 lg:col-span-2 flex flex-col">
       <div className="border-b p-4 px-6 flex justify-between items-center">
@@ -15,6 +21,7 @@ export const AppointmentWidget = () => {
           <Button
             size={"sm"}
             className="rounded-sm bg-brand hover:bg-primary transition-colors duration-500 cursor-pointer h-8"
+            onClick={goToAppointments}
           >
             View all
           </Button>
