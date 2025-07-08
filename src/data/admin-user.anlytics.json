@@ -16,7 +16,7 @@
     {
         "id": "suspendedUsers",
         "title": "Suspended Users",
-        "icon": "fi fi-rr-user-forbidden-alt text-[#B45309]",
+        "icon": "fi fi-rr-users-alt text-[#B45309]",
         "showProgressRing": false,
         "progressRingColor": "#34D399"
     },
@@ -24,7 +24,7 @@
         "id": "deletedUsers",
         "title": "Deleted Accounts",
         "icon": "fi fi-rr-user-minus text-[#BE123C]",
-        "showProgressRing": true,
+        "showProgressRing": false,
         "progressRingColor": "#34D399"
     }
 ]
