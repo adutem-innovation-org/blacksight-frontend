@@ -230,15 +230,21 @@ const badgeVariantMap: Record<string, any> = {
 };
 
 interface UsersTableProps {
-  viewUser: (data: PaginatedUserData) => void;
-  liftUserSuspension: (userId: string) => void;
-  suspendUser: (userId: string) => void;
+  viewUser?: (data: PaginatedUserData) => void;
+  liftUserSuspension?: (userId: string) => void;
+  suspendUser?: (userId: string) => void;
+  hideActions?: boolean;
+  hideRefreshButton?: boolean;
+  gridContainerClassName?: string;
 }
 
 export const UsersTable = ({
   viewUser,
   liftUserSuspension,
   suspendUser,
+  hideActions,
+  hideRefreshButton,
+  gridContainerClassName,
 }: UsersTableProps) => {
   const { dispatch, getState } = useStore();
   const { users } = getState("Auth");
@@ -248,7 +254,11 @@ export const UsersTable = ({
     []
   );
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({ _id: false, userId: false });
+    React.useState<VisibilityState>({
+      _id: false,
+      userId: false,
+      actions: !hideActions,
+    });
   const [rowSelection, setRowSelection] = React.useState({});
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
@@ -287,7 +297,12 @@ export const UsersTable = ({
   };
 
   return (
-    <DashboardGrid className="bg-white rounded-md overflow-hidden flex-1 grid">
+    <DashboardGrid
+      className={cn(
+        "bg-white rounded-md overflow-hidden flex-1 grid",
+        gridContainerClassName
+      )}
+    >
       {/* Table header action sections */}
       <div className="flex items-center px-4">
         <div className="flex items-center gap-4 flex-1">
@@ -304,10 +319,12 @@ export const UsersTable = ({
           </Button>
         </div>
         <div className="ml-auto gap-4 flex items-center">
-          <Button variant={"brand"} className="h-10" onClick={refreshTable}>
-            <RefreshCcw />
-            Refresh
-          </Button>
+          {!hideRefreshButton && (
+            <Button variant={"brand"} className="h-10" onClick={refreshTable}>
+              <RefreshCcw />
+              Refresh
+            </Button>
+          )}
           {<TableSettings table={table} />}
         </div>
       </div>
@@ -346,7 +363,7 @@ export const UsersTable = ({
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
-                    onClick={() => viewUser(row.original)}
+                    onClick={() => viewUser?.(row.original)}
                     className="cursor-pointer"
                   >
                     {row.getVisibleCells().map((cell) => {
@@ -468,6 +485,10 @@ type TableSettingProps = {
 const headerMap: Record<string, string> = {
   botId: "Bot ID",
   createdAt: "Join Date",
+  fullName: "Full Name",
+  totalBots: "Total Bots",
+  totalKnowledgeBases: "Total Knowledge Bases",
+  lastLogin: "Last Login",
 };
 
 function TableSettings({ table }: TableSettingProps) {
