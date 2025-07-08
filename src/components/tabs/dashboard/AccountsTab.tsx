@@ -1,13 +1,23 @@
 import { DashboardContent } from "@/components/design";
 import { Loader } from "@/components/progress";
 import { useStore } from "@/hooks";
-import { getAdminUserAnalytics, getUsers } from "@/store";
-import { useEffect } from "react";
+import {
+  getAdminUserAnalytics,
+  getUsers,
+  liftUserSuspension,
+  resetLiftUserSuspension,
+  suspendUser,
+} from "@/store";
+import { useEffect, useState } from "react";
 import userAnalyticsData from "@/data/admin-user.anlytics.json";
 import { AnalyticsCard } from "@/components/cards";
 import { EmptyRecordsTemplate } from "@/components/templates";
-import { UsersTable } from "./accounts";
+import { SuspendUserForm, UsersTable } from "./accounts";
 import { PaginatedUserData } from "@/interfaces";
+import { useFormik } from "formik";
+import { accountSuspensionSchema } from "@/schemas";
+import { resetDocumentElement } from "@/helpers";
+import toast from "react-hot-toast";
 
 const Header = () => {
   const { getState } = useStore();
@@ -56,10 +66,60 @@ const Header = () => {
 
 export const UsersTab = () => {
   const { getState, dispatch } = useStore();
-  const { users, fetchingAllUsers, userAnalytics, fetchingUserAnalytics } =
-    getState("Auth");
+  const {
+    users,
+    fetchingAllUsers,
+    userAnalytics,
+    fetchingUserAnalytics,
+    // Lifting suspension
+    liftingUserSuspension,
+    userSuspensionLifted,
+    liftUserSuspensionErrorMessage,
+  } = getState("Auth");
 
   const viewUser = (data: PaginatedUserData) => {};
+
+  // Suspend user
+  const [suspendUserDialogOpen, setSuspendUserDialogOpen] = useState(
+    () => false
+  );
+  const initialValues = {
+    userId: "",
+    reason: "",
+  };
+
+  // Validation
+  const validation = useFormik({
+    enableReinitialize: false,
+    initialValues,
+    validationSchema: accountSuspensionSchema,
+    onSubmit: (values) => {
+      dispatch(
+        suspendUser({ userId: values.userId, data: { reason: values.reason } })
+      );
+    },
+  });
+
+  // Suspend user
+  const onSuspendUser = (userId: string) => {
+    validation.setFieldValue("userId", userId);
+    openSuspendUserDialog();
+  };
+
+  const openSuspendUserDialog = () => setSuspendUserDialogOpen(true);
+
+  // Lift user suspension
+  const onLiftUserSuspension = (userId: string) => {
+    dispatch(liftUserSuspension(userId));
+  };
+
+  const onSuspendDialogOpenStateChange = (value: boolean) => {
+    if (!value) {
+      validation.resetForm();
+    }
+    setSuspendUserDialogOpen(value);
+    resetDocumentElement();
+  };
 
   useEffect(() => {
     if (!userAnalytics && !fetchingUserAnalytics) {
@@ -71,12 +131,32 @@ export const UsersTab = () => {
     }
   }, []);
 
+  // Lift user suspension events
+  useEffect(() => {
+    if (userSuspensionLifted) {
+      toast.success("User suspension lifted");
+      // Get lastest user analytics
+      dispatch(getAdminUserAnalytics());
+      // Reset lift suspension state
+      dispatch(resetLiftUserSuspension());
+    }
+  }, [userSuspensionLifted]);
+
+  useEffect(() => {
+    if (liftUserSuspensionErrorMessage) {
+      toast.error(liftUserSuspensionErrorMessage);
+      dispatch(resetLiftUserSuspension());
+    }
+  }, [liftUserSuspensionErrorMessage]);
+
   if (fetchingAllUsers) return <Loader />;
 
   return (
     <DashboardContent>
       <div className="flex flex-col gap-4 h-full overflow-hidden">
         <Header />
+
+        {liftingUserSuspension && <Loader text1="Lifting user suspension" />}
 
         {!users || users.length === 0 ? (
           <EmptyRecordsTemplate
@@ -85,8 +165,18 @@ export const UsersTab = () => {
             description="Looks like users are yet to onboard on this platform."
           />
         ) : (
-          <UsersTable viewUser={viewUser} />
+          <UsersTable
+            viewUser={viewUser}
+            liftUserSuspension={onLiftUserSuspension}
+            suspendUser={onSuspendUser}
+          />
         )}
+
+        <SuspendUserForm
+          isOpen={suspendUserDialogOpen}
+          onOpenChange={onSuspendDialogOpenStateChange}
+          validation={validation}
+        />
       </div>
     </DashboardContent>
   );

@@ -16,7 +16,7 @@ export const resetDocumentElement = () => {
   let tmo = setTimeout(() => {
     document.body.style.pointerEvents = "";
     clearTimeout(tmo);
-  }, 100);
+  }, 300);
 };
 
 export const writeTextToClipboard = async (text: string) => {

@@ -1,5 +1,6 @@
 import { Button, SearchInput } from "@/components/form";
 import {
+  CustomDropdownItem,
   CustomDropdownMenuCheckboxItem,
   SortingDropDown,
 } from "@/components/popups";
@@ -9,7 +10,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useStore } from "@/hooks";
+import { useProfile, useStore } from "@/hooks";
 import { PaginatedUserData } from "@/interfaces";
 import { Group, Pagination } from "@mantine/core";
 import { DropdownMenuSeparator } from "@radix-ui/react-dropdown-menu";
@@ -29,8 +30,11 @@ import {
 import {
   ArrowLeft,
   ArrowRight,
+  Ban,
   Calendar,
   ChevronDown,
+  CircleFadingArrowUp,
+  Ellipsis,
   ListFilter,
   RefreshCcw,
   Settings,
@@ -50,6 +54,12 @@ import {
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/badge";
 import { getAdminUserAnalytics, getUsers } from "@/store";
+
+type ColumnMeta = {
+  suspendUser: (userId: string) => void;
+  liftUserSuspension: (userId: string) => void;
+  user: PaginatedUserData;
+};
 
 export const columns: ColumnDef<PaginatedUserData>[] = [
   {
@@ -173,6 +183,44 @@ export const columns: ColumnDef<PaginatedUserData>[] = [
     },
     sortingFn: "datetime",
   },
+  {
+    id: "actions",
+    enableHiding: false,
+    cell: ({ row, table }) => {
+      const meta = table.options.meta as ColumnMeta;
+      const user = meta.user;
+
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger className="border-none outline-none">
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <Ellipsis />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            className="px-2 py-2.5 rounded-lg border-none w-52 drop-shadow-lg"
+            align="end"
+          >
+            <CustomDropdownItem
+              placeholder={
+                row.original.isSuspended ? "Lift Suspension" : "Suspend User"
+              }
+              childrenPosition="behind"
+              className={"py-2"}
+              onClick={(e: any) => {
+                e.stopPropagation();
+                row.original.isSuspended
+                  ? meta?.liftUserSuspension(row.getValue("_id"))
+                  : meta?.suspendUser(row.getValue("_id"));
+              }}
+            >
+              {row.original.isSuspended ? <CircleFadingArrowUp /> : <Ban />}
+            </CustomDropdownItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
+  },
 ];
 
 const badgeVariantMap: Record<string, any> = {
@@ -183,11 +231,18 @@ const badgeVariantMap: Record<string, any> = {
 
 interface UsersTableProps {
   viewUser: (data: PaginatedUserData) => void;
+  liftUserSuspension: (userId: string) => void;
+  suspendUser: (userId: string) => void;
 }
 
-export const UsersTable = ({ viewUser }: UsersTableProps) => {
+export const UsersTable = ({
+  viewUser,
+  liftUserSuspension,
+  suspendUser,
+}: UsersTableProps) => {
   const { dispatch, getState } = useStore();
   const { users } = getState("Auth");
+  const { user } = useProfile();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -203,6 +258,11 @@ export const UsersTable = ({ viewUser }: UsersTableProps) => {
   const table = useReactTable({
     data: users || [],
     columns,
+    meta: {
+      user,
+      liftUserSuspension,
+      suspendUser,
+    },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),

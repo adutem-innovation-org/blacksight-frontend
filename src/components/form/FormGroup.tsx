@@ -18,6 +18,18 @@ import { PhoneInput } from "./PhoneInput";
 import { CheckboxGroup, CheckboxItemType } from "./CheckboxGroup";
 import { RadioGroup } from "./RadioGroup";
 
+export type FormikValidation = Pick<
+  ReturnType<typeof useFormik>,
+  | "handleChange"
+  | "handleBlur"
+  | "errors"
+  | "touched"
+  | "errors"
+  | "values"
+  | "setFieldValue"
+  | "setFieldTouched"
+>;
+
 interface FormGroupProps {
   type:
     | "text"
@@ -41,17 +53,7 @@ interface FormGroupProps {
   name: string;
   disabled?: boolean;
   defaultValue?: string;
-  validation: Pick<
-    ReturnType<typeof useFormik>,
-    | "handleChange"
-    | "handleBlur"
-    | "errors"
-    | "touched"
-    | "errors"
-    | "values"
-    | "setFieldValue"
-    | "setFieldTouched"
-  >;
+  validation: FormikValidation;
   maxLength?: number;
   minDate?: Date;
   multiSelectInputData?: Array<string> | Record<string, any>[];
