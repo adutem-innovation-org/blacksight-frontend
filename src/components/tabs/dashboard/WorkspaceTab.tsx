@@ -2,12 +2,12 @@ import { DashboardContent } from "@/components/design";
 import { Loader } from "@/components/progress";
 import { useStore } from "@/hooks";
 import { getAdminAnalytics, getAdmins } from "@/store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import adminAnalyticsData from "@/data/admin-auth.analytics.json";
 import { AnalyticsCard } from "@/components/cards";
 import { EmptyRecordsTemplate } from "@/components/templates";
 import { PaginatedUserData } from "@/interfaces";
-import { AdminsTable } from "./workspace";
+import { AdminsTable, CreateAdminForm } from "./workspace";
 
 const Header = () => {
   const { getState } = useStore();
@@ -59,6 +59,10 @@ export const WorkspaceTab = () => {
   const { admins, fetchingAllAdmins, adminAnalytics, fetchingAdminAnalytics } =
     getState("Auth");
 
+  // Create knowledge base
+  const [createFormOpen, setCreateFormOpen] = useState(() => false);
+  const openCreateForm = () => setCreateFormOpen(true);
+
   const viewUser = (data: PaginatedUserData) => {};
 
   useEffect(() => {
@@ -85,8 +89,13 @@ export const WorkspaceTab = () => {
             description="Looks like you are yet to create an admin."
           />
         ) : (
-          <AdminsTable viewUser={viewUser} />
+          <AdminsTable viewUser={viewUser} createAdmin={openCreateForm} />
         )}
+
+        <CreateAdminForm
+          isOpen={createFormOpen}
+          onOpenChange={setCreateFormOpen}
+        />
       </div>
     </DashboardContent>
   );

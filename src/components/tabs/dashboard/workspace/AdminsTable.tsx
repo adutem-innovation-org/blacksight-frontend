@@ -32,6 +32,7 @@ import {
   Calendar,
   ChevronDown,
   ListFilter,
+  Plus,
   RefreshCcw,
   Settings,
   X,
@@ -163,9 +164,10 @@ const badgeVariantMap: Record<string, any> = {
 
 interface AdminsTableProps {
   viewUser: (data: PaginatedUserData) => void;
+  createAdmin: () => void;
 }
 
-export const AdminsTable = ({ viewUser }: AdminsTableProps) => {
+export const AdminsTable = ({ viewUser, createAdmin }: AdminsTableProps) => {
   const { dispatch, getState } = useStore();
   const { admins } = getState("Auth");
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -224,6 +226,10 @@ export const AdminsTable = ({ viewUser }: AdminsTableProps) => {
           </Button>
         </div>
         <div className="ml-auto gap-4 flex items-center">
+          <Button variant={"brand"} className="h-10" onClick={createAdmin}>
+            <Plus />
+            Create Admin
+          </Button>
           <Button variant={"brand"} className="h-10" onClick={refreshTable}>
             <RefreshCcw />
             Refresh
