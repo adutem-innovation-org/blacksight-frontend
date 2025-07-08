@@ -15,12 +15,14 @@ import {
   createAdmin,
   getAdminAnalytics,
   getAdmins,
+  getAnalytics,
   resetCreateAdmin,
   resetSuspendUser,
 } from "@/store";
 import { CreateAdminBody } from "@/interfaces";
 import { useFormik } from "formik";
 import { createAdminSchema } from "@/schemas";
+import { UserTypes } from "@/enums";
 
 interface CreateAdminFormProps {
   isOpen: boolean;
@@ -68,6 +70,8 @@ export const CreateAdminForm = ({
       dispatch(getAdminAnalytics());
       // Fetch admin data again
       dispatch(getAdmins());
+      // Get dashboard analytics
+      dispatch(getAnalytics(UserTypes.ADMIN));
     }
   }, [adminCreated]);
 
