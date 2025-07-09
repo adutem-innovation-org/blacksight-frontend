@@ -223,18 +223,20 @@ export const Login = () => {
 
       {/* Footer */}
       <div>
-        <div className="flex items-baseline gap-1">
-          <p className="text-sm text-gray-600 font-medium">
-            Don't have an account?
-          </p>
-          <Link
-            aria-disabled={authenticatingWithGoogle || signingIn}
-            to={`/${params.basePath}/signup`}
-            className="text-sm text-blue-900 font-semibold"
-          >
-            Sign Up
-          </Link>
-        </div>
+        {params.basePath === UserTypes.USER && (
+          <div className="flex items-baseline gap-1">
+            <p className="text-sm text-gray-600 font-medium">
+              Don't have an account?
+            </p>
+            <Link
+              aria-disabled={authenticatingWithGoogle || signingIn}
+              to={`/${params.basePath}/signup`}
+              className="text-sm text-blue-900 font-semibold"
+            >
+              Sign Up
+            </Link>
+          </div>
+        )}
       </div>
     </React.Fragment>
   );
