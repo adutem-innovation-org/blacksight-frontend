@@ -6,16 +6,17 @@ import { createRoot } from "react-dom/client";
 import { setCurrentBot } from "../store"; // Adjust the path if needed
 import { useEffect } from "react";
 import { BotStatus } from "../enums/bot"; // Adjust the path if needed
+import '../index.css'; // Adjust the path to your Tailwind entry file
 
-// Only auto-mount if running outside the main app
-if (typeof window !== "undefined" && !document.getElementById("blacksight-widget-root")) {
-  const rootDiv = document.createElement("div");
-  rootDiv.id = "blacksight-widget-root";
-  document.body.appendChild(rootDiv);
-  // Defer WidgetApp reference until after its declaration
-  setTimeout(() => {
-    createRoot(rootDiv).render(<WidgetApp />);
-  }, 0);
+// Inject widget CSS dynamically
+if (typeof window !== "undefined") {
+  fetch("blacksight-widget.css")
+    .then(res => res.text())
+    .then(css => {
+      const style = document.createElement("style");
+      style.textContent = css;
+      document.head.appendChild(style);
+    });
 }
 
 const DEFAULT_BOT = {
@@ -45,34 +46,37 @@ const WidgetApp = () => {
   }, []);
 
   return (
-    <Provider store={store}>
-      <div style={{ position: "fixed", bottom: 20, right: 20, zIndex: 9999 }}>
-        {!open && (
-          <button
-            style={{ borderRadius: "50%", width: 56, height: 56, background: "#6366f1", color: "#fff", border: "none", boxShadow: "0 2px 8px #0002", cursor: "pointer" }}
-            onClick={() => setOpen(true)}
-            aria-label="Open chat"
-          >
-            💬
-          </button>
-        )}
-        {open && (
-          <div style={{ width: 400, height: 600, background: "#fff", borderRadius: 16, boxShadow: "0 4px 24px #0003", overflow: "hidden", position: "relative" }}>
+
+      <Provider store={store}>
+        <div className="fixed bottom-5 right-5 z-[9999]">
+          {!open && (
             <button
-              style={{ position: "absolute", top: 8, right: 8, background: "none", border: "none", fontSize: 20, cursor: "pointer", zIndex: 2 }}
-              onClick={() => setOpen(false)}
-              aria-label="Close chat"
+              className="rounded-full w-14 h-14 bg-indigo-500 text-white border-none shadow-md cursor-pointer flex items-center justify-center text-2xl"
+              onClick={() => setOpen(true)}
+              aria-label="Open chat"
             >
-              ×
+              💬
             </button>
-            <div style={{ width: "100%", height: "100%" }}>
-              <h1>Testing if div works</h1>
-              <ChatBot openBotConfig={() => {}} />
+          )}
+          {open && (
+            <div className="w-[400px] h-[600px] bg-white rounded-2xl shadow-2xl overflow-hidden relative">
+              <button
+                className="absolute top-2 right-2 bg-transparent border-none text-2xl cursor-pointer z-20"
+                onClick={() => setOpen(false)}
+                aria-label="Close chat"
+              >
+                ×
+              </button>
+              <div className="w-full h-full">
+                <h1>Testing if div works</h1>
+                <ChatBot openBotConfig={() => { }} />
+              </div>
             </div>
-          </div>
-        )}
-      </div>
-    </Provider>
+          )}
+        </div>
+      </Provider>
+
+
   );
 };
 

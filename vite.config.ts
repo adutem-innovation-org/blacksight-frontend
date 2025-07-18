@@ -27,7 +27,12 @@ export default defineConfig({
         },
         entryFileNames: 'blacksight-widget.iife.js', // <--- Ensures the output file is named as you want
         chunkFileNames: "assets/[name]-[hash].js",
-        assetFileNames: "assets/[name]-[hash][extname]",
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name && assetInfo.name.endsWith('.css')) {
+            return 'blacksight-widget.css'; // Always use this name for CSS
+          }
+          return "assets/[name]-[hash][extname]";
+        },
       },
     },
   },
