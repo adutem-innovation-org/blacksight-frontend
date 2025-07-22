@@ -243,6 +243,19 @@ export const onboardUser = createAsyncThunk<
   }
 });
 
+export const skipOnboarding = createAsyncThunk<
+  boolean,
+  void,
+  { rejectValue: { message: string } }
+>("skip_onboarding", async (_, { rejectWithValue }) => {
+  try {
+    await authApiService.skipOnboarding();
+    return true;
+  } catch (error: any) {
+    return rejectWithValue(error);
+  }
+});
+
 export const getUsers = createAsyncThunk<
   GetUsersRes,
   void,

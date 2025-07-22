@@ -83,6 +83,11 @@ export const initialAuthState: AuthState = {
   onboardingErrors: {},
   onboardingErrorMessage: "",
 
+  // Skip onboarding
+  skippingOnboarding: false,
+  onboardingSkipped: false,
+  skipOnboardingErrorMessage: "",
+
   // Get users
   fetchingAllUsers: false,
   allUserFetched: false,

@@ -104,6 +104,12 @@ export const resetOnboardUserReducder = (state: AuthState) => {
   state.onboardingErrorMessage = "";
 };
 
+export const resetSkipOnboardingReducer = (state: AuthState) => {
+  state.skippingOnboarding = false;
+  state.onboardingSkipped = false;
+  state.skipOnboardingErrorMessage = "";
+};
+
 export const resetGetAdminsReducer = (state: AuthState) => {
   state.fetchingAllAdmins = false;
   state.allAdminsFetched = false;

@@ -17,6 +17,7 @@ import {
   setupPasswordBuilder,
   signInUserBuilder,
   signUpUserBuilder,
+  skipOnboardingBuilder,
   suspendUserBuilder,
   updateAddressBuilder,
   updateBusinessBasicInfoBuilder,
@@ -47,6 +48,7 @@ import {
   resetSuspendUserReducer,
   resetLiftUserSuspensionReducer,
   resetCreateAdminReducer,
+  resetSkipOnboardingReducer,
 } from "../reducers";
 
 const authSlice = createSlice({
@@ -74,6 +76,7 @@ const authSlice = createSlice({
     resetSuspendUser: resetSuspendUserReducer,
     resetLiftUserSuspension: resetLiftUserSuspensionReducer,
     resetCreateAdmin: resetCreateAdminReducer,
+    resetSkipOnboarding: resetSkipOnboardingReducer,
   },
   initialState: initialAuthState,
   extraReducers: (builder) => {
@@ -99,6 +102,7 @@ const authSlice = createSlice({
     suspendUserBuilder(builder);
     liftUserSuspensionBuilder(builder);
     createAdminBuilder(builder);
+    skipOnboardingBuilder(builder);
   },
 });
 
@@ -118,6 +122,7 @@ export const {
   resetUpdateBusinessBasicInfo,
   resetUpdateBusinessContactInfo,
   resetOnboardUser,
+  resetSkipOnboarding,
   resetGetAdmins,
   resetGetUsers,
   resetGetAdminUserAnalytics,

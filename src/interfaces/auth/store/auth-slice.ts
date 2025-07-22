@@ -85,6 +85,11 @@ export type AuthState = {
   onboardingErrors: Record<string, string>;
   onboardingErrorMessage: string;
 
+  // Skip onboarding
+  skippingOnboarding: boolean;
+  onboardingSkipped: boolean;
+  skipOnboardingErrorMessage: string;
+
   // Get users
   fetchingAllUsers: boolean;
   allUserFetched: boolean;
