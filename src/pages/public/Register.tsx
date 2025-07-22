@@ -77,9 +77,12 @@ export const Register = () => {
         dispatch(resetSignUpUser());
         const user = getAuthUser();
         if (user) {
-          if (user.isEmailVerified || user.userType === UserTypes.ADMIN)
+          if (user.userType === UserTypes.ADMIN)
             return navigate("/dashboard", { replace: true });
-          return navigate(`/user/verify-email`);
+          if (!user.isEmailVerified) return navigate("/user/verify-email");
+          if (!user.isOnboarded && !user.skippedOnboarding)
+            return navigate(`/onboard`);
+          return navigate("/dashboard", { replace: true });
         }
       }
     };
@@ -93,9 +96,12 @@ export const Register = () => {
         dispatch(resetContinueWithGoogle());
         const user = getAuthUser();
         if (user) {
-          if (user.isEmailVerified || user.userType === UserTypes.ADMIN)
+          if (user.userType === UserTypes.ADMIN)
             return navigate("/dashboard", { replace: true });
-          return navigate(`/user/verify-email`);
+          if (!user.isEmailVerified) return navigate("/user/verify-email");
+          if (!user.isOnboarded && !user.skippedOnboarding)
+            return navigate(`/onboard`);
+          return navigate("/dashboard", { replace: true });
         }
       }
     };
