@@ -16,7 +16,7 @@ export const onboardUserBuilder = (
 
   builder.addCase(onboardUser.rejected, (state, action) => {
     state.onboarding = false;
-    state.onboarded = true;
+    state.onboarded = false;
     state.onboardingErrors = action.payload?.errors ?? {};
     state.onboardingErrorMessage =
       action.payload?.message ??
