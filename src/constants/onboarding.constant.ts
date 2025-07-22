@@ -6,7 +6,7 @@ import developer from "@/assets/images/roles/programmer.png";
 
 export const onboardingSectionFields: Record<string, string[]> = {
   0: ["role"],
-  1: ["name", "website", "address"],
+  1: ["name", "website", "businessEmail"],
   2: [
     "industry",
     "industry_others",

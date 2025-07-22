@@ -52,7 +52,8 @@ const Onboarder = () => {
     // Basic information
     name: "",
     website: "",
-    address: "",
+    // address: "",
+    businessEmail: "",
 
     // Personalization
     industry: "",

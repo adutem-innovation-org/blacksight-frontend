@@ -12,7 +12,8 @@ export type OnboardBusinessBody = {
   // Basic information
   name: string;
   website: string;
-  address: string;
+  // address: string;
+  businessEmail: string;
 
   // Personalization
   industry: string;

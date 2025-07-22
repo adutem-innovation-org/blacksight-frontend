@@ -40,12 +40,21 @@ export const BasicInformation = ({
           validation={validation}
           containerClassName="gap-2 mt-4"
         />
-        <FormGroup
+        {/* <FormGroup
           type="text"
           groupLabel="Address"
           placeholder="Provide your business address"
           size="md"
           name="address"
+          validation={validation}
+          containerClassName="gap-2 mt-4"
+        /> */}
+        <FormGroup
+          type="text"
+          groupLabel="Business Email"
+          placeholder="Provide your business email"
+          size="md"
+          name="businessEmail"
           validation={validation}
           containerClassName="gap-2 mt-4"
         />
