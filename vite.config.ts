@@ -2,11 +2,10 @@ import path from "path";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import { resolve } from "path";
 
-// https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const isWidget = process.env.BUILD_WIDGET === "true";
+
   return {
     plugins: [react(), tailwindcss()],
     resolve: {
@@ -14,38 +13,41 @@ export default defineConfig(({ mode }) => {
         "@": path.resolve(__dirname, "./src"),
       },
     },
-    ...(isWidget
+    build: isWidget
       ? {
-          build: {
-            lib: {
-              entry: 'src/widget/WidgetApp.tsx',
-              name: 'BlacksightWidget',
-              fileName: 'blacksight-widget',
-              formats: ['iife'],
-            },
-            rollupOptions: {
-              output: {
-                globals: {
-                  react: 'React',
-                  'react-dom': 'ReactDOM',
-                },
-                entryFileNames: 'blacksight-widget.iife.js',
-                chunkFileNames: "assets/[name]-[hash].js",
-                assetFileNames: (assetInfo) => {
-                  if (assetInfo.name && assetInfo.name.endsWith('.css')) {
-                    return 'blacksight-widget.css';
-                  }
-                  return "assets/[name]-[hash][extname]";
-                },
+          outDir: "dist/widget",
+          lib: {
+            entry: "src/widget/WidgetApp.tsx",
+            name: "BlacksightWidget",
+            fileName: "blacksight-widget",
+            formats: ["iife"],
+          },
+          rollupOptions: {
+            output: {
+              globals: {
+                react: "React",
+                "react-dom": "ReactDOM",
               },
+              entryFileNames: "blacksight-widget.iife.js",
+              chunkFileNames: "assets/[name]-[hash].js",
+              assetFileNames: (assetInfo) =>
+                assetInfo.name?.endsWith(".css")
+                  ? "blacksight-widget.css"
+                  : "assets/[name]-[hash][extname]",
             },
           },
         }
       : {
-          // Default SPA build config (no build.lib)
-        }),
+          outDir: "dist/app", // ensure different outDir
+          rollupOptions: {
+            output: {
+              chunkFileNames: "assets/[name]-[hash].js",
+              assetFileNames: "assets/[name]-[hash][extname]",
+            },
+          },
+        },
     define: {
-      'process.env': {},
+      "process.env": {}, // prevents process.env errors in client
     },
   };
 });
