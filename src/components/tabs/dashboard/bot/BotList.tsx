@@ -195,6 +195,7 @@ export const BotList = ({ bots }: BotListProps) => {
           onOpenChange={onOpenChange}
           currentBot={botToConfigure}
           addKB={addKB}
+          showPromptEditor
         />
       )}
 

@@ -69,6 +69,7 @@ interface BotConfigDrawerProps {
   onOpenChange: (value: boolean) => void;
   currentBot: Bot;
   addKB: () => void;
+  showPromptEditor?: boolean;
 }
 
 export function BotConfigDrawer({
@@ -76,6 +77,7 @@ export function BotConfigDrawer({
   onOpenChange,
   currentBot,
   addKB,
+  showPromptEditor,
 }: BotConfigDrawerProps) {
   const { dispatch, getState } = useStore();
   const {
@@ -129,12 +131,14 @@ export function BotConfigDrawer({
     scheduleMeeting: boolean;
     meetingProviderId?: string;
     welcomeMessage: string;
+    instructions: string;
   } = {
     name: currentBot.name,
     knowledgeBaseIds: currentBot.knowledgeBaseIds,
     scheduleMeeting: currentBot.scheduleMeeting,
     meetingProviderId: currentBot.meetingProviderId,
     welcomeMessage: currentBot?.welcomeMessage,
+    instructions: currentBot?.instructions,
   };
 
   const validation = useFormik({
@@ -216,7 +220,7 @@ export function BotConfigDrawer({
       <CustomSheetContent className="rounded-2xl p-0 gap-8">
         {updatingBotConfig && <Loader />}
         <SheetHeaderComp currentBot={currentBot} onOpenChange={onOpenChange} />
-        <div className="px-8">
+        <div className="px-8 overflow-auto pb-6">
           {/* config form */}
           <form
             onSubmit={(e) => {
@@ -243,6 +247,17 @@ export function BotConfigDrawer({
               validation={validation}
               containerClassName="gap-2 mt-4"
             />
+            {showPromptEditor && (
+              <FormGroup
+                type="textarea"
+                name="instructions"
+                groupLabel="Prompt Editor"
+                placeholder="Enter your prompt..."
+                size="lg"
+                validation={validation}
+                containerClassName="gap-2 mt-4"
+              />
+            )}
             <FormGroup
               type="multi-select"
               groupLabel="Knowledge base"
