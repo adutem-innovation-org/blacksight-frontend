@@ -245,8 +245,10 @@ export const FormGroup = ({
               "justify-between": action,
             })}
           >
-            <Label className="min-w-max">{groupLabel}</Label>
-            {info && InfoTooltip}
+            <div className="flex items-center gap-1.5">
+              <Label className="min-w-max">{groupLabel}</Label>
+              {info && InfoTooltip}
+            </div>
             {action}
           </div>
           <MultiSelectInput
