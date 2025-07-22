@@ -9,7 +9,7 @@ export enum DashboardTabsEnum {
   REMINDER = "reminder",
   PROFILE = "profile",
   ACTIVITIES = "activities",
-  PROVIDERS = "meeting providers",
+  CALENDARS = "calendars",
   CONVERSATIONS = "conversations",
 }
 

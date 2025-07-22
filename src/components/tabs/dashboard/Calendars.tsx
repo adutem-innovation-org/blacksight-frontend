@@ -18,17 +18,17 @@ import { Loader } from "@/components/progress";
 import { MeetingProvidersEnum } from "@/enums";
 import toast from "react-hot-toast";
 
-const ProviderTabHeader = () => {
+const CalendarTabHeader = () => {
   return (
     <div>
       <h2 className="font-medium text-2xl text-gray-800 tracking-tighter">
-        Connect meeting providers
+        Connect calender
       </h2>
     </div>
   );
 };
 
-const Providers = () => {
+const Calendars = () => {
   const { dispatch, getState } = useStore();
   const { fetchingProfile, profileFetched } = getState("Auth");
   const {
@@ -138,14 +138,14 @@ const Providers = () => {
         connectingProvider ||
         disconnectingProvider) && <Loader className="bg-[#0000004d]" />}
       <ProviderCard
-        name="Google Meet"
+        name="Google Calendar"
         description=" Real-time meetings by Google. Using your browser, share your video, desktop, and presentations with teammates and customers"
         icon={meetIcon}
         connected={user?.hasConnectedGoogleMeet ?? false}
         onConnect={connectGoogle}
         onDisconnect={disconnectGoogle}
       />
-      <ProviderCard
+      {/* <ProviderCard
         name="Microsoft Teams"
         description="Virtually connect one on one, lead a team training, or host an interactive webinar for up to 1,000 attendees. Explore online meetings and webinars."
         icon={teamIcon}
@@ -162,20 +162,20 @@ const Providers = () => {
         onConnect={connectTeams}
         onDisconnect={() => {}}
         comingSoon
-      />
+      /> */}
     </div>
   );
 };
 
-export const ProvidersTab = () => {
+export const CalendarsTab = () => {
   return (
     <React.Fragment>
       <DashboardContent>
         <div className="no-scrollbar overflow-hidden flex flex-col flex-1 h-full w-full bg-white rounded-[12px] p-8 gap-10">
-          <ProviderTabHeader />
+          <CalendarTabHeader />
 
           <div className="flex-1 overflow-auto">
-            <Providers />
+            <Calendars />
           </div>
         </div>
       </DashboardContent>

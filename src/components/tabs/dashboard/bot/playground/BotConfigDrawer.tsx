@@ -120,7 +120,7 @@ export function BotConfigDrawer({
   };
 
   const goToBookingProviders = () => {
-    return dispatch(changeTab(DashboardTabsEnum.PROVIDERS));
+    return dispatch(changeTab(DashboardTabsEnum.CALENDARS));
   };
 
   const initialValues: {

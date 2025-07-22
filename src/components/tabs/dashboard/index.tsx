@@ -10,7 +10,7 @@ import { WorkspaceTab } from "./WorkspaceTab";
 import { SubscriptionsTab } from "./Subscriptions";
 import { ReminderTab } from "./ReminderTab";
 import { ProfileTab } from "./ProfileTab";
-import { ProvidersTab } from "./Providers";
+import { CalendarsTab } from "./Calendars";
 import { ConversationsTab } from "./Conversations";
 import { isUser } from "@/helpers";
 
@@ -55,8 +55,8 @@ export const DashboardTabs = () => {
       >
         <ConversationsTab />
       </Tabs.Panel>
-      <Tabs.Panel value={DashboardTabsEnum.PROVIDERS} className="w-full h-full">
-        <ProvidersTab />
+      <Tabs.Panel value={DashboardTabsEnum.CALENDARS} className="w-full h-full">
+        <CalendarsTab />
       </Tabs.Panel>
       <Tabs.Panel value={DashboardTabsEnum.REMINDER} className="w-full h-full">
         <ReminderTab />

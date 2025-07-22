@@ -39,8 +39,8 @@ export const sideTabs: Record<UserTypes, SideTabType[]> = {
       iconClass: "fi fi-rr-bell-ring",
     },
     {
-      name: "Meeting Providers",
-      tabId: DashboardTabsEnum.PROVIDERS,
+      name: "Calenders",
+      tabId: DashboardTabsEnum.CALENDARS,
       iconClass: "fi fi-rr-reservation-smartphone",
     },
   ],

@@ -114,7 +114,7 @@ export const ConfigureBotForm = ({
   };
 
   const goToBookingProviders = () => {
-    return dispatch(changeTab(DashboardTabsEnum.PROVIDERS));
+    return dispatch(changeTab(DashboardTabsEnum.CALENDARS));
   };
 
   const initialValues: {
@@ -269,9 +269,9 @@ export const ConfigureBotForm = ({
             {validation.values.scheduleMeeting && (
               <FormGroup
                 type="select"
-                groupLabel="Meeting Provider"
-                placeholder="Select a meeting provider"
-                info="Select a meeting provider, this is where your appointments are scheduled."
+                groupLabel="Calendar"
+                placeholder="Select a calendar provider"
+                info="Select a calendar provider, this is where your appointments are scheduled."
                 size="md"
                 name="meetingProviderId"
                 validation={validation}
@@ -279,7 +279,7 @@ export const ConfigureBotForm = ({
                 options={connectedProviderOptions}
                 noOptionsContent={
                   <EmptySelectOptions
-                    description="You are yet to setup meeting providers."
+                    description="You are yet to setup any calendar provider."
                     onClickCta={goToBookingProviders}
                     ctaText="Setup provider"
                     loading={fetchingConnectedProviders}
