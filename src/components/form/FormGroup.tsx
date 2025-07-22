@@ -72,6 +72,7 @@ interface FormGroupProps {
   checkboxItems?: CheckboxItemType[];
   radioOptions?: CheckboxItemType[] | string[];
   inputClassName?: string;
+  action?: any;
 }
 
 export const FormGroup = ({
@@ -100,6 +101,7 @@ export const FormGroup = ({
   checkboxItems,
   radioOptions,
   inputClassName,
+  action,
 }: FormGroupProps) => {
   if (type === "checkbox-group" && !checkboxItems)
     throw Error("Checkbox items required for checkbox input");
@@ -238,9 +240,14 @@ export const FormGroup = ({
     case "multi-select":
       return (
         <GroupContainer className={containerClassName}>
-          <div className="flex gap-1.5 items-center">
+          <div
+            className={cn("flex gap-1.5 items-center", {
+              "justify-between": action,
+            })}
+          >
             <Label className="min-w-max">{groupLabel}</Label>
             {info && InfoTooltip}
+            {action}
           </div>
           <MultiSelectInput
             placeholder={placeholder || label}

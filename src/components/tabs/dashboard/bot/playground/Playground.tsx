@@ -21,6 +21,7 @@ import { ChatBot } from "./ChatBot";
 import { BotConfigDrawer } from "./BotConfigDrawer";
 import { Loader } from "@/components/progress";
 import toast from "react-hot-toast";
+import { AddKnowledgeBaseForm } from "../../knowledge-base";
 
 export const MoreActionsDropdown = ({
   onClearConversation,
@@ -97,6 +98,13 @@ export const BotPlaygroundTab = () => {
 
   const openBotConfig = () => setBotConfigOpen(true);
 
+  // Add KB
+  const [createKBFormOpen, setCreateKBFormOpen] = useState(() => false);
+
+  const addKB = () => {
+    setCreateKBFormOpen(true);
+  };
+
   const goBack = () => {
     dispatch(changeBotTab(BotTabsEnum.ANALYTICS));
     dispatch(setCurrentBot(null));
@@ -152,6 +160,12 @@ export const BotPlaygroundTab = () => {
           isOpen={botConfigOpen}
           onOpenChange={setBotConfigOpen}
           currentBot={currentBot!}
+          addKB={addKB}
+        />
+
+        <AddKnowledgeBaseForm
+          isOpen={createKBFormOpen}
+          onOpenChange={setCreateKBFormOpen}
         />
       </div>
     </div>

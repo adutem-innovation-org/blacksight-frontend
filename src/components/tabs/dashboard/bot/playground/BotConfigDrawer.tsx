@@ -3,7 +3,7 @@ import { Sheet, SheetContent, SheetHeader } from "@/components/ui/sheet";
 import { Bot } from "@/interfaces";
 import { botSchema } from "@/schemas";
 import { useFormik } from "formik";
-import { Upload, X } from "lucide-react";
+import { Plus, Upload, X } from "lucide-react";
 import styled from "styled-components";
 import { EmptySelectOptions } from "../ConfigureBotForm";
 import { useStore } from "@/hooks";
@@ -68,12 +68,14 @@ interface BotConfigDrawerProps {
   isOpen: boolean;
   onOpenChange: (value: boolean) => void;
   currentBot: Bot;
+  addKB: () => void;
 }
 
 export function BotConfigDrawer({
   isOpen,
   onOpenChange,
   currentBot,
+  addKB,
 }: BotConfigDrawerProps) {
   const { dispatch, getState } = useStore();
   const {
@@ -260,6 +262,11 @@ export function BotConfigDrawer({
                 />
               }
               containerClassName="gap-2 mt-4"
+              action={
+                <Button onClick={addKB} className="h-8 !text-xs" type="button">
+                  Create <Plus />
+                </Button>
+              }
             />
             <FormGroup
               type="switch"

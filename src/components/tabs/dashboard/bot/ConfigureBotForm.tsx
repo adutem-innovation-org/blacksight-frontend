@@ -22,6 +22,7 @@ import {
   resetGetConnectedProviders,
 } from "@/store";
 import { useFormik } from "formik";
+import { Plus } from "lucide-react";
 import { useEffect, useMemo } from "react";
 import toast from "react-hot-toast";
 
@@ -59,11 +60,13 @@ export const EmptySelectOptions = ({
 interface ConfigureBotProps {
   isOpen: boolean;
   onOpenChange: (value: boolean) => void;
+  addKB: () => void;
 }
 
 export const ConfigureBotForm = ({
   isOpen,
   onOpenChange,
+  addKB,
 }: ConfigureBotProps) => {
   const { dispatch, getState } = useStore();
   const {
@@ -245,6 +248,11 @@ export const ConfigureBotForm = ({
                 />
               }
               containerClassName="gap-2 mt-4"
+              action={
+                <Button onClick={addKB} className="h-8 !text-xs" type="button">
+                  Create <Plus />
+                </Button>
+              }
             />
 
             <FormGroup

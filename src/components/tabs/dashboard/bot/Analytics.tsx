@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { Loader } from "@/components/progress";
 import { ConfigureBotForm } from "./ConfigureBotForm";
 import { BotList } from "./BotList";
+import { AddKnowledgeBaseForm } from "../knowledge-base";
 
 const Header = ({ openCreateForm }: { openCreateForm: () => void }) => {
   const { user } = useProfile();
@@ -67,6 +68,19 @@ export const BotAnalyticsTab = () => {
   const { dispatch, getState } = useStore();
   const [createFormOpen, setCreateFormOpen] = useState(() => false);
 
+  // Create knowledge base
+  const [createKBFormOpen, setCreateKBFormOpen] = useState(() => false);
+
+  const onOpenKBFormChange = (val: boolean) => {
+    setCreateKBFormOpen(val);
+    setCreateFormOpen(true);
+  };
+
+  const addKB = () => {
+    setCreateFormOpen(false);
+    setCreateKBFormOpen(true);
+  };
+
   const { fetchingBotAnalytics, botAnalytics, fetchingAllBots, bots } =
     getState("Bot");
 
@@ -108,6 +122,12 @@ export const BotAnalyticsTab = () => {
       <ConfigureBotForm
         isOpen={createFormOpen}
         onOpenChange={setCreateFormOpen}
+        addKB={addKB}
+      />
+
+      <AddKnowledgeBaseForm
+        isOpen={createKBFormOpen}
+        onOpenChange={onOpenKBFormChange}
       />
     </div>
   );
