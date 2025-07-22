@@ -4,8 +4,8 @@ import { useAuth } from "@/hooks";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 export const PrivateRoute = () => {
-  const { isAuthorized, isOnboarded, loading, userRole } = useAuth();
-  const { pathname } = useLocation();
+  const { isAuthorized, isOnboarded, skippedOnboarding, loading, userRole } =
+    useAuth();
 
   if (!isAuthorized && !loading) {
     return <Navigate to={`/${userRole || "user"}/signin`} replace={true} />;
@@ -15,12 +15,26 @@ export const PrivateRoute = () => {
     return <Navigate to={`/${userRole || "user"}/signin`} replace />;
   }
 
-  if (isOnboarded && isAuthorized && location.pathname !== "/dashboard") {
+  console.log(
+    "got here",
+    isOnboarded,
+    skippedOnboarding,
+    isAuthorized,
+    loading,
+    location.pathname
+  );
+  if (
+    (isOnboarded || skippedOnboarding) &&
+    isAuthorized &&
+    !loading &&
+    location.pathname !== "/dashboard"
+  ) {
     return <Navigate to={"/dashboard"} />;
   }
 
   if (
     !isOnboarded &&
+    !skippedOnboarding &&
     isAuthorized &&
     !loading &&
     userRole === UserTypes.USER &&

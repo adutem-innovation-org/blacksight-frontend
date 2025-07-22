@@ -13,6 +13,7 @@ export const useProfile = (deps?: any[]) => {
     businessBasicInfoUpdated,
     businessContactInfoUpdated,
     onboarded,
+    onboardingSkipped,
   } = getState("Auth");
   const [user, setUser] = useState<UserData | null>(null);
   const [loadingProfile, setLoadingProfile] = useState(true);
@@ -38,6 +39,7 @@ export const useProfile = (deps?: any[]) => {
     businessBasicInfoUpdated,
     businessContactInfoUpdated,
     onboarded,
+    onboardingSkipped,
     ...(deps ?? []),
   ]);
 

@@ -19,6 +19,7 @@ export type UserData = {
   isActive: boolean;
   isEmailVerified: boolean;
   isOnboarded: boolean;
+  skippedOnboarding: boolean;
   isSuspended: boolean;
   isSuperAdmin: boolean;
   userType: UserTypes;

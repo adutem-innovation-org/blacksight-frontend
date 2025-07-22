@@ -8,18 +8,21 @@ export const useAuth = () => {
   const { getState } = useStore();
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [isOnboarded, setIsOnboarded] = useState(false);
+  const [skippedOnboarding, setSkippedOnboarding] = useState(false);
   const [loading, setLoading] = useState(true);
   const [userRole, setUserRole] = useState<UserTypes | null>(null);
-  const { onboarded } = getState("Auth");
+  const { onboarded, onboardingSkipped } = getState("Auth");
 
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
+        setLoading(true);
         const authApiService = AuthApiService.getInstance();
         const response = await authApiService.getCurrentSession();
         if (response.success) {
           setIsAuthorized(true);
           setIsOnboarded(response.user.isOnboarded);
+          setSkippedOnboarding(response.user.skippedOnboarding);
           setUserRole(response.user.userType);
           sessionStorage.setItem(
             "blacksight_auth_user",
@@ -40,7 +43,7 @@ export const useAuth = () => {
     };
 
     checkAuthStatus();
-  }, [onboarded]);
+  }, [onboarded, onboardingSkipped]);
 
-  return { isAuthorized, isOnboarded, loading, userRole };
+  return { isAuthorized, isOnboarded, loading, userRole, skippedOnboarding };
 };

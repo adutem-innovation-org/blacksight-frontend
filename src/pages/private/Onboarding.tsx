@@ -6,7 +6,13 @@ import { useNavigate } from "react-router-dom";
 import { OnboardBusinessBody } from "@/interfaces";
 import { useFormik } from "formik";
 import { onboardingSchema } from "@/schemas";
-import { getProfile, onboardUser, resetOnboardUser } from "@/store";
+import {
+  getProfile,
+  onboardUser,
+  resetOnboardUser,
+  resetSkipOnboarding,
+  skipOnboarding,
+} from "@/store";
 import { getOnboardingSectionFields } from "@/helpers";
 import { Button, FormGroup, FormRange, Loader } from "@/components";
 import {
@@ -18,6 +24,7 @@ import {
 } from "./onboard";
 import { UserRole } from "@/enums";
 import toast from "react-hot-toast";
+import { ChevronsRight } from "lucide-react";
 
 const Onboarder = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -30,6 +37,11 @@ const Onboarder = () => {
     onboardingErrors,
     onboardingErrorMessage,
     fetchingProfile,
+
+    // Skip onboarding
+    skippingOnboarding,
+    onboardingSkipped,
+    skipOnboardingErrorMessage,
   } = getState("Auth");
 
   const navigate = useNavigate();
@@ -134,6 +146,10 @@ const Onboarder = () => {
     });
   };
 
+  const handleSkipOnboarding = () => {
+    dispatch(skipOnboarding());
+  };
+
   // Successful onboarding
   useEffect(() => {
     const handleOnboardingSuccess = () => {
@@ -162,6 +178,28 @@ const Onboarder = () => {
     handleOnboardingFailed();
   }, [onboardingErrorMessage]);
 
+  // Successful skip onboarding
+  useEffect(() => {
+    const handleSkipOnboardingSuccess = () => {
+      if (onboardingSkipped) {
+        dispatch(resetSkipOnboarding());
+        return navigate("/dashboard", { replace: true });
+      }
+    };
+    handleSkipOnboardingSuccess();
+  }, [onboardingSkipped]);
+
+  // Failed skip onboarding
+  useEffect(() => {
+    const handleSkipOnboardingFailed = () => {
+      if (skipOnboardingErrorMessage) {
+        toast.error(skipOnboardingErrorMessage);
+        dispatch(resetSkipOnboarding());
+      }
+    };
+    handleSkipOnboardingFailed();
+  }, [skipOnboardingErrorMessage]);
+
   if (fetchingProfile) return <Loader className="w-dvw h-dvh" />;
 
   return (
@@ -172,7 +210,7 @@ const Onboarder = () => {
 
       {/* Form */}
       <div className="w-[90%] max-w-[450px] relative">
-        {onboarding && <Loader />}
+        {(onboarding || skippingOnboarding) && <Loader />}
 
         <div className="flex flex-col gap-2">
           <h1 className="text-4xl font-bold text-center font-caladea">
@@ -184,6 +222,19 @@ const Onboarder = () => {
         {/* Progress */}
         <div className="my-8">
           <FormRange currentRange={currentStep} totalRange={totalSteps} />
+        </div>
+
+        <div className="flex justify-end">
+          <Button
+            type="button"
+            variant={"brand"}
+            className="border-none  duration-500 py-1 h-9 !text-sm"
+            onClick={handleSkipOnboarding}
+            disabled={skippingOnboarding}
+          >
+            Skip
+            <ChevronsRight />
+          </Button>
         </div>
 
         {currentStep === 1 && (
