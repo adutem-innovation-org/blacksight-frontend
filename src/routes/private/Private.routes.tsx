@@ -15,14 +15,6 @@ export const PrivateRoute = () => {
     return <Navigate to={`/${userRole || "user"}/signin`} replace />;
   }
 
-  console.log(
-    "got here",
-    isOnboarded,
-    skippedOnboarding,
-    isAuthorized,
-    loading,
-    location.pathname
-  );
   if (
     (isOnboarded || skippedOnboarding) &&
     isAuthorized &&

@@ -13,36 +13,43 @@ export const useAuth = () => {
   const [userRole, setUserRole] = useState<UserTypes | null>(null);
   const { onboarded, onboardingSkipped } = getState("Auth");
 
-  useEffect(() => {
-    const checkAuthStatus = async () => {
-      try {
-        setLoading(true);
-        const authApiService = AuthApiService.getInstance();
-        const response = await authApiService.getCurrentSession();
-        if (response.success) {
-          setIsAuthorized(true);
-          setIsOnboarded(response.user.isOnboarded);
-          setSkippedOnboarding(response.user.skippedOnboarding);
-          setUserRole(response.user.userType);
-          sessionStorage.setItem(
-            "blacksight_auth_user",
-            JSON.stringify(response.user)
-          );
-        }
-      } catch (error) {
-        setIsAuthorized(false);
-        setIsOnboarded(false);
-        const storedUser = sessionStorage.getItem("blacksight_auth_user");
-        if (storedUser) {
-          const storedUserJSON = JSON.parse(storedUser) as UserData;
-          setUserRole(storedUserJSON.userType);
-        }
-      } finally {
-        setLoading(false);
+  const checkAuthStatus = async () => {
+    try {
+      setLoading(true);
+      const authApiService = AuthApiService.getInstance();
+      const response = await authApiService.getCurrentSession();
+      if (response.success) {
+        setIsAuthorized(true);
+        setIsOnboarded(response.user.isOnboarded);
+        setSkippedOnboarding(response.user.skippedOnboarding);
+        setUserRole(response.user.userType);
+        sessionStorage.setItem(
+          "blacksight_auth_user",
+          JSON.stringify(response.user)
+        );
       }
-    };
+    } catch (error) {
+      setIsAuthorized(false);
+      setIsOnboarded(false);
+      const storedUser = sessionStorage.getItem("blacksight_auth_user");
+      if (storedUser) {
+        const storedUserJSON = JSON.parse(storedUser) as UserData;
+        setUserRole(storedUserJSON.userType);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     checkAuthStatus();
+  }, []);
+
+  useEffect(() => {
+    console.log("Called", onboarded, onboardingSkipped);
+    if (onboarded || onboardingSkipped) {
+      checkAuthStatus();
+    }
   }, [onboarded, onboardingSkipped]);
 
   return { isAuthorized, isOnboarded, loading, userRole, skippedOnboarding };
