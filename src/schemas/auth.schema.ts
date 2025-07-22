@@ -27,22 +27,28 @@ export const passwordUpdateSchema = (isOldPasswordRequired: boolean = false) =>
 export const onboardingSchema = yup.object({
   role: yup.string().oneOf(Object.values(UserRole), "Please select a role"),
 
-  name: yup.string().required("Please provide your business name"),
+  name: yup.string(),
+  // .required("Please provide your business name"),
   website: yup
     .string()
-    .required("Please provide your business website")
+    .optional()
+    // .required("Please provide your business website")
     .matches(urlRegex, "Please provide a valid url"),
-  address: yup.string().required("Please provide your business address"),
+  // address: yup.string().required("Please provide your business address"),
+  businessEmail: yup
+    .string()
+    .optional()
+    .matches(emailRegex, "Please provide a valid email"),
 
-  industry: yup.string().required("Please specify your business's industry"),
+  // industry: yup.string().required("Please specify your business's industry"),
+  industry: yup.string(),
   industry_others: yup.string().when("industry", {
     is: (industry: string) => industry === "Others",
     then: (schema) => schema.required("Please specify your business industry"),
     otherwise: (schema) => schema.notRequired(),
   }),
-  numberOfEmployees: yup
-    .string()
-    .required("Please specify the number of employees in your business"),
+  numberOfEmployees: yup.string(),
+  // .required("Please specify the number of employees in your business"),
   primaryGoal: yup.string(),
   primaryGoal_others: yup.string().when("primaryGoal", {
     is: (primaryGoal: string) => primaryGoal === "Others",
@@ -51,9 +57,8 @@ export const onboardingSchema = yup.object({
   }),
 
   // Product feedback
-  leadSource: yup
-    .string()
-    .required("Please tell us how you found out about us?"),
+  leadSource: yup.string(),
+  // .required("Please tell us how you found out about us?"),
   leadSource_others: yup.string().when("leadSource", {
     is: (leadSource: string) => leadSource === "Others",
     then: (schema) =>

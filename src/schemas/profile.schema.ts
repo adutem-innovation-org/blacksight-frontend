@@ -1,4 +1,4 @@
-import { emailRegex, urlRegex } from "@/constants/regex";
+import { emailRegex, secureUrlRegex } from "@/constants/regex";
 import * as yup from "yup";
 
 export const personalInfoSchema = yup.object({
@@ -22,7 +22,7 @@ export const basicInfoSchema = yup.object({
   website: yup
     .string()
     .required("Please provide your business website")
-    .matches(urlRegex, "Please provide a valid url"),
+    .matches(secureUrlRegex, "Please provide a valid url"),
   address: yup.string().required("Please provide your business address"),
   industry: yup.string().required("Please specify your business's industry"),
 });
