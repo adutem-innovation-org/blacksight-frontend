@@ -6,19 +6,15 @@ import { resetUpdateBotInstructions, updateBotInstructions } from "@/store";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-const InstructionEditorHeader = () => {
+const PromptEditorHeader = () => {
   return (
     <div className="h-10">
-      <p className="text-2xl font-dmsans tracking-tight">Instruction Editor</p>
+      <p className="text-2xl font-dmsans tracking-tight">Prompt Editor</p>
     </div>
   );
 };
 
-export const InstructionEditor = ({
-  disabled = false,
-}: {
-  disabled?: boolean;
-}) => {
+export const PromptEditor = ({ disabled = false }: { disabled?: boolean }) => {
   const { dispatch, getState } = useStore();
   const {
     updatingBotInstructions,
@@ -65,7 +61,7 @@ export const InstructionEditor = ({
 
   return (
     <div className="flex flex-col col-span-3">
-      <InstructionEditorHeader />
+      <PromptEditorHeader />
       <form
         className="flex flex-col flex-1 gap-3 relative overflow-hidden"
         onSubmit={handleSubmit}

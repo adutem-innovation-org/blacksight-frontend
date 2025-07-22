@@ -16,7 +16,7 @@ import {
 } from "@/store";
 import { ArrowLeft, ChevronDown, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { InstructionEditor } from "./InstructionEditor";
+import { PromptEditor } from "./PromptEditor";
 import { ChatBot } from "./ChatBot";
 import { BotConfigDrawer } from "./BotConfigDrawer";
 import { Loader } from "@/components/progress";
@@ -154,7 +154,7 @@ export const BotPlaygroundTab = () => {
         {clearingTrainingConversation && (
           <Loader text1="Clearing conversation" />
         )}
-        <InstructionEditor />
+        <PromptEditor />
         <ChatBot openBotConfig={openBotConfig} />
         <BotConfigDrawer
           isOpen={botConfigOpen}

@@ -304,7 +304,7 @@ export function BotConfigDrawer({
               type="submit"
               disabled={updatingBotConfig || !canUpdateConfig}
             >
-              Safe configuration
+              Save configuration
             </Button>
           </form>
         </div>

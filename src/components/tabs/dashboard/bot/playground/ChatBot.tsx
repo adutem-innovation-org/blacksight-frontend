@@ -633,7 +633,7 @@ export const ChatBot = ({ openBotConfig }: { openBotConfig: () => void }) => {
   return (
     <div className="flex flex-col col-span-2">
       <div className="h-10">
-        <p className="text-2xl font-dmsans tracking-tight">Chatbot</p>
+        <p className="text-2xl font-dmsans tracking-tight">Chatbot Agent</p>
       </div>
       <div className="bg-white bg-linear-to-br from-indigo-500 to-sky-500 shadow-[0px_4px_16px_0px_#0000001f] rounded-4xl overflow-hidden w-full flex-1 p-1 flex flex-col">
         <ChatBotHeader currentBot={currentBot!} openBotConfig={openBotConfig} />
