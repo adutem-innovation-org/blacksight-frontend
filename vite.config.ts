@@ -38,7 +38,7 @@ export default defineConfig(({ mode }) => {
           },
         }
       : {
-          outDir: "dist/app", // ensure different outDir
+          outDir: "dist", // ensure different outDir
           rollupOptions: {
             output: {
               chunkFileNames: "assets/[name]-[hash].js",
