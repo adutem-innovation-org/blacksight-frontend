@@ -21,6 +21,7 @@ export const USER_UPDATE_BUSINESS_BASIC_INFO = "/user/update/business/info";
 export const USER_UPDATE_BUSINESS_CONTACT_INFO =
   "/user/update/business/contact/info";
 export const USER_ONBOARD_BUSINESS = "/user/business/onboard";
+export const USER_SKIP_ONBOARDING = "/user/skip-onboarding";
 
 // Admin
 export const LOGIN_ADMIN = "/admin/login";

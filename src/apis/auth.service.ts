@@ -222,6 +222,10 @@ export class AuthApiService {
     );
   };
 
+  skipOnboarding = () => {
+    return this.apiService.post<null, null>(this.urls.USER_SKIP_ONBOARDING);
+  };
+
   /**
    * Login as an admin
    * @param data
