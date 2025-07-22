@@ -50,9 +50,6 @@ export const MoreActionsDropdown = ({
         >
           <Trash2 />
         </CustomDropdownItem>
-        <CustomDropdownItem placeholder="Coming soon" />
-        <CustomDropdownItem placeholder="Coming soon" />
-        <CustomDropdownItem placeholder="Coming soon" />
       </DropdownMenuContent>
     </DropdownMenu>
   );
