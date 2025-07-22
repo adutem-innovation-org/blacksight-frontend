@@ -344,6 +344,7 @@ export const CreateReminderForm = ({
       <DialogContent
         onPointerDownOutside={(e) => e.preventDefault()}
         onOpenAutoFocus={(e) => e.preventDefault()}
+        className="max-h-[85dvh] overflow-y-auto overflow-x-hidden"
       >
         {creatingReminder && <Loader />}
         <DialogHeader>
