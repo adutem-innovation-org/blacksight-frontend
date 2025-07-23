@@ -10,6 +10,8 @@ import {
   getBotAnalytics,
   resetUpdateBotStatus,
   resetDeleteBot,
+  cloneBot,
+  resetCloneBot,
 } from "@/store";
 import toast from "react-hot-toast";
 import { DeactivateDialog, DeleteDialog } from "@/components/popups";
@@ -29,6 +31,11 @@ export const BotList = ({ bots }: BotListProps) => {
     updatingBotStatus,
     botStatusUpdated,
     updateBotStatusError,
+
+    // Clone bot
+    cloningBot,
+    botCloned,
+    cloneBotErrorMessage,
   } = getState("Bot");
 
   const resetDocumentElement = useCallback(() => {
@@ -73,6 +80,10 @@ export const BotList = ({ bots }: BotListProps) => {
   const onDeleteBot = (bot: Bot) => {
     setBotToDelete(bot);
     openDeleteModal();
+  };
+
+  const onCloneBot = (bot: Bot) => {
+    dispatch(cloneBot(bot._id));
   };
 
   const endDeleteOperation = () => {
@@ -171,11 +182,30 @@ export const BotList = ({ bots }: BotListProps) => {
     }
   }, [updateBotStatusError]);
 
+  // Clone bot
+  useEffect(() => {
+    if (botCloned) {
+      toast.success("Bot cloned.");
+      // Get the latest bot analytics for user
+      dispatch(getBotAnalytics());
+      dispatch(resetCloneBot());
+    }
+  }, [botCloned]);
+
+  useEffect(() => {
+    if (cloneBotErrorMessage) {
+      toast.error(cloneBotErrorMessage, { duration: 2500 });
+      dispatch(resetCloneBot());
+    }
+  }, [cloneBotErrorMessage]);
+
   return (
     <div className={cn("overflow-hidden flex-1 bg-transparent")}>
       {updatingBotStatus && !deactivateDialogOpen && (
         <Loader text1="Activating bot..." extrudeChildren />
       )}
+
+      {cloningBot && <Loader text1="Cloning bot..." extrudeChildren />}
 
       <div className="h-full overflow-auto grid bg-transparent auto-rows-[400px] grid-cols-1 md:grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-6 md:gap-5 no-scrollbar">
         {bots.map((bot) => (
@@ -184,6 +214,7 @@ export const BotList = ({ bots }: BotListProps) => {
             editConfiguration={openBotConfig}
             viewConfiguration={openBotPreview}
             onDeleteBot={onDeleteBot}
+            onCloneBot={onCloneBot}
             setActiveStatus={setActiveStatus}
           />
         ))}

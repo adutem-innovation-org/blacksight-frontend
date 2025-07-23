@@ -29,6 +29,7 @@ type ActionsProps = {
   onEditConfiguration: () => void;
   onViewConfiguration: () => void;
   onDelete: () => void;
+  onClone: () => void;
   setActiveStatus: (status: boolean) => void;
   isActive: boolean;
 };
@@ -37,6 +38,7 @@ const Actions = ({
   onEditConfiguration,
   onViewConfiguration,
   onDelete,
+  onClone,
   setActiveStatus,
   isActive,
 }: ActionsProps) => {
@@ -73,9 +75,10 @@ const Actions = ({
         )}
         {user && isUser(user) && (
           <CustomDropdownItem
-            placeholder={"Clone (pending)"}
+            placeholder={"Clone"}
             childrenPosition="behind"
             className={"py-2"}
+            onClick={onClone}
           >
             <Copy />
           </CustomDropdownItem>
@@ -110,6 +113,7 @@ interface BotCardProps {
   editConfiguration: (bot: Bot) => void;
   viewConfiguration: (bot: Bot) => void;
   onDeleteBot: (bot: Bot) => void;
+  onCloneBot: (bot: Bot) => void;
   setActiveStatus: (bot: Bot, status: boolean) => void;
 }
 
@@ -118,6 +122,7 @@ export const BotCard = ({
   editConfiguration,
   viewConfiguration,
   onDeleteBot,
+  onCloneBot,
   setActiveStatus,
 }: BotCardProps) => {
   const { dispatch } = useStore();
@@ -136,6 +141,8 @@ export const BotCard = ({
 
   const onDelete = () => onDeleteBot(bot);
 
+  const onClone = () => onCloneBot(bot);
+
   const onSetActiveStatus = (status: boolean) => setActiveStatus(bot, status);
 
   return (
@@ -150,6 +157,7 @@ export const BotCard = ({
               onEditConfiguration={onEditConfiguration}
               onViewConfiguration={onViewConfiguration}
               onDelete={onDelete}
+              onClone={onClone}
               setActiveStatus={onSetActiveStatus}
               isActive={bot.isActive}
             />
