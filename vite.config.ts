@@ -1,13 +1,14 @@
 import path from "path";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
+import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 import { defineConfig } from "vite";
 
 export default defineConfig(({ mode }) => {
   const isWidget = process.env.BUILD_WIDGET === "true";
 
   return {
-    plugins: [react(), tailwindcss()],
+    plugins: [react(), tailwindcss(), isWidget && cssInjectedByJsPlugin()].filter(Boolean),
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),
@@ -30,15 +31,12 @@ export default defineConfig(({ mode }) => {
               },
               entryFileNames: "blacksight-widget.iife.js",
               chunkFileNames: "assets/[name]-[hash].js",
-              assetFileNames: (assetInfo) =>
-                assetInfo.name?.endsWith(".css")
-                  ? "blacksight-widget.css"
-                  : "assets/[name]-[hash][extname]",
+              assetFileNames: "assets/[name]-[hash][extname]",
             },
           },
         }
       : {
-          outDir: "dist", // ensure different outDir
+          outDir: "dist",
           rollupOptions: {
             output: {
               chunkFileNames: "assets/[name]-[hash].js",
@@ -47,7 +45,7 @@ export default defineConfig(({ mode }) => {
           },
         },
     define: {
-      "process.env": {}, // prevents process.env errors in client
+      "process.env": {},
     },
   };
 });
