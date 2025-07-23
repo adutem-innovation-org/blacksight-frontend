@@ -76,7 +76,7 @@ export const FileInput = ({
           >
             <i className="fi fi-rr-file-upload flex text-brand text-2xl"></i>
           </Button>
-          <div className="flex items-baseline gap-1.5">
+          <div className="flex items-baseline flex-col sm:flex-row gap-0 sm:gap-1.5">
             <Button
               variant={"link"}
               className="text-brand p-0 hover:no-underline h-auto"

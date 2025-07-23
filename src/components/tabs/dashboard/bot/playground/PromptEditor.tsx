@@ -92,7 +92,7 @@ export const PromptEditor = ({ disabled = false }: { disabled?: boolean }) => {
             onChange={(e) => setInstructions(e.target.value)}
           />
         </div>
-        <Button>Save Instructions</Button>
+        <Button>Save</Button>
       </form>
     </div>
   );

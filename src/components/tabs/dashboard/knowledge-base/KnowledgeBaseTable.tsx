@@ -324,13 +324,13 @@ export function KnowledgeBaseTable({
             }
             className="max-w-80"
           />
-          <Button variant="outline" className="h-11">
+          {/* <Button variant="outline" className="h-11">
             <Calendar />{" "}
             <div className="hidden sm:flex items-center">
               {" "}
               This month <ChevronDown />
             </div>
-          </Button>
+          </Button> */}
         </div>
         <div className="ml-auto gap-4 flex items-center">
           <Button

@@ -220,7 +220,7 @@ export function BotConfigDrawer({
       <CustomSheetContent className="rounded-2xl p-0 gap-8">
         {updatingBotConfig && <Loader />}
         <SheetHeaderComp currentBot={currentBot} onOpenChange={onOpenChange} />
-        <div className="px-8 overflow-auto pb-6">
+        <div className="px-8 overflow-y-auto overflow-x-hidden pb-6">
           {/* config form */}
           <form
             onSubmit={(e) => {
@@ -271,7 +271,8 @@ export function BotConfigDrawer({
               noOptionsContent={
                 <EmptySelectOptions
                   description="You are yet to add a knowledge base."
-                  onClickCta={goToKnowledgeBase}
+                  // onClickCta={goToKnowledgeBase}
+                  onClickCta={addKB}
                   ctaText="Add knowledge base"
                   loading={fetchingAllKnowledgeBases}
                 />

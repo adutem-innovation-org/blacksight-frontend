@@ -227,6 +227,6 @@ const SidebarContainer = styled.div<{ hiddenState: boolean }>`
   @media screen and (max-width: 640px) {
     transform: translateX(${(props) => (props.hiddenState ? "-250px" : "0px")});
     transition: 0.4s ease;
-    z-index: 40;
+    z-index: 100;
   }
 `;
