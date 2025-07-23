@@ -13,6 +13,8 @@ import { EmptyRecordsTemplate } from "@/components/templates";
 import notificationIcon from "@/assets/images/schedule.png";
 import { ConversationDrawer, ConversationTable } from "./conversation";
 import { Conversation } from "@/interfaces";
+import { SideBarStateEnum } from "@/enums";
+import { cn } from "@/lib/utils";
 
 const Header = () => {
   const { getState } = useStore();
@@ -21,6 +23,10 @@ const Header = () => {
     conversationAnalytics,
     fetchConversationAnalyticsError,
   } = getState("Bot");
+  const { sidebarState } = getState("Layout");
+
+  // Is the sidebar collapsed or expanded
+  const isCollapsed = sidebarState === SideBarStateEnum.COLLAPSED;
 
   if (!conversationAnalytics && !fetchingConversationAnalytics) {
     return (
@@ -39,7 +45,14 @@ const Header = () => {
   }
 
   return (
-    <header className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 md:gap-5">
+    <header
+      className={cn(
+        "grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-5 max-w-6xl",
+        {
+          "md:grid-cols-2": isCollapsed,
+        }
+      )}
+    >
       {conversationAnalyticsData.map(({ id, ...data }) => {
         let percentage;
         let count = conversationAnalytics![id];
