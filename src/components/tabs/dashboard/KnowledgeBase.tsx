@@ -88,7 +88,11 @@ const Header = ({ openCreateForm }: { openCreateForm: () => void }) => {
         </div>
       )}
 
-      <div className={cn("self-end", { "lg:self-center": isCollapsed })}>
+      <div
+        className={cn("self-end xl:self-center", {
+          "lg:self-center": isCollapsed,
+        })}
+      >
         {user?.userType === UserTypes.USER && (
           <Button variant={"brand"} className="h-13" onClick={openCreateForm}>
             Add Knowledge base
