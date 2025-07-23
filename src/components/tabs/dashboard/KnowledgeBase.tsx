@@ -21,11 +21,12 @@ import {
   KnowledgeBaseDetailsDrawer,
   KnowledgeBaseTable,
 } from "./knowledge-base";
-import { UserTypes } from "@/enums";
+import { SideBarStateEnum, UserTypes } from "@/enums";
 import databaseIcon from "@/assets/images/database.png";
 import toast from "react-hot-toast";
 import { DeactivateDialog, DeleteDialog } from "@/components/popups";
 import { resetDocumentElement } from "@/helpers";
+import { cn } from "@/lib/utils";
 
 const Header = ({ openCreateForm }: { openCreateForm: () => void }) => {
   const { user } = useProfile();
@@ -35,9 +36,20 @@ const Header = ({ openCreateForm }: { openCreateForm: () => void }) => {
     knowledgeBaseAnalytics,
     fetchKnowledgeBaseAnalyticsErrorMessage,
   } = getState("KnowledgeBase");
+  const { sidebarState } = getState("Layout");
+
+  // Is the sidebar collapsed or expanded
+  const isCollapsed = sidebarState === SideBarStateEnum.COLLAPSED;
 
   return (
-    <header className="flex items-center justify-between">
+    <header
+      className={cn(
+        "flex justify-between flex-col items-stretch gap-6 md:gap-5 xl:flex-row xl:items-center",
+        {
+          "lg:flex-row lg:items-center": isCollapsed,
+        }
+      )}
+    >
       {fetchKnowledgeBaseAnalyticsErrorMessage ? (
         <div className="flex justify-center items-center h-30 font-dmsans font-semibold">
           An error occured. Please try again.
@@ -51,7 +63,14 @@ const Header = ({ openCreateForm }: { openCreateForm: () => void }) => {
           No data available at the moment
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-5 basis-1/2">
+        <div
+          className={cn(
+            "grid grid-cols-1 gap-6 md:gap-5 flex-1 max-w-5xl lg:grid-cols-2",
+            {
+              "md:grid-cols-2": isCollapsed,
+            }
+          )}
+        >
           {knowledgeBaseAnalyticsData.map(({ id, ...data }) => {
             let percentage;
             let count = knowledgeBaseAnalytics![id];
@@ -69,7 +88,7 @@ const Header = ({ openCreateForm }: { openCreateForm: () => void }) => {
         </div>
       )}
 
-      <div>
+      <div className={cn("self-end", { "lg:self-center": isCollapsed })}>
         {user?.userType === UserTypes.USER && (
           <Button variant={"brand"} className="h-13" onClick={openCreateForm}>
             Add Knowledge base
