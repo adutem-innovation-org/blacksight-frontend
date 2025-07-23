@@ -118,7 +118,7 @@ export const FormGroup = ({
       className="left-0 translate-x-0 max-w-full text-primary"
       disabled={!info}
     >
-      <Info className="text-brand !w-4 !h-4 cursor-pointer" />
+      <Info className="text-brand !w-4 !h-4 cursor-pointer hidden md:block" />
     </Tooltip>
   );
   switch (type) {

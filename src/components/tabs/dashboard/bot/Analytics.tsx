@@ -1,5 +1,5 @@
 import { EmptyRecordsTemplate } from "@/components/templates";
-import { UserTypes } from "@/enums";
+import { SideBarStateEnum, UserTypes } from "@/enums";
 import botIcon from "@/assets/images/bot.png";
 import botAnalyticsData from "@/data/bot.analytics.json";
 import { AnalyticsCard } from "@/components/cards";
@@ -11,15 +11,27 @@ import { Loader } from "@/components/progress";
 import { ConfigureBotForm } from "./ConfigureBotForm";
 import { BotList } from "./BotList";
 import { AddKnowledgeBaseForm } from "../knowledge-base";
+import { cn } from "@/lib/utils";
 
 const Header = ({ openCreateForm }: { openCreateForm: () => void }) => {
   const { user } = useProfile();
   const { getState } = useStore();
   const { fetchingBotAnalytics, botAnalytics, fetchBotAnalyticsErrorMessage } =
     getState("Bot");
+  const { sidebarState } = getState("Layout");
+
+  // Is the sidebar collapsed or expanded
+  const isCollapsed = sidebarState === SideBarStateEnum.COLLAPSED;
 
   return (
-    <header className="flex items-center justify-between">
+    <header
+      className={cn(
+        "flex justify-between flex-col items-stretch gap-6 md:gap-5 xl:flex-row xl:items-center",
+        {
+          "lg:flex-row lg:items-center": isCollapsed,
+        }
+      )}
+    >
       {fetchBotAnalyticsErrorMessage ? (
         <div className="flex justify-center items-center h-30 font-dmsans font-semibold">
           An error occured. Please try again.
@@ -29,7 +41,14 @@ const Header = ({ openCreateForm }: { openCreateForm: () => void }) => {
           No data available at the moment
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-5 basis-1/2">
+        <div
+          className={cn(
+            "grid grid-cols-1 gap-6 md:gap-5 flex-1 max-w-5xl lg:grid-cols-2",
+            {
+              "md:grid-cols-2": isCollapsed,
+            }
+          )}
+        >
           {botAnalyticsData.map(({ id, ...data }) => {
             let percentage;
             let count = botAnalytics![id];
@@ -47,7 +66,11 @@ const Header = ({ openCreateForm }: { openCreateForm: () => void }) => {
         </div>
       )}
 
-      <div>
+      <div
+        className={cn("self-end xl:self-center", {
+          "lg:self-center": isCollapsed,
+        })}
+      >
         {user?.userType === UserTypes.USER && (
           <Button
             variant={"brand"}

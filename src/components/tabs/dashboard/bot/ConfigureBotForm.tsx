@@ -251,7 +251,11 @@ export const ConfigureBotForm = ({
               }
               containerClassName="gap-2 mt-4"
               action={
-                <Button onClick={addKB} className="h-8 !text-xs" type="button">
+                <Button
+                  onClick={addKB}
+                  className="h-8 !text-xs px-2.5"
+                  type="button"
+                >
                   Create <Plus />
                 </Button>
               }
@@ -259,7 +263,7 @@ export const ConfigureBotForm = ({
 
             <FormGroup
               type="switch"
-              groupLabel="Schedule meetings automatically?"
+              groupLabel="Schedule in calendar?"
               placeholder="Schedule meetings"
               info="Decide whatever or not an automatic google meet or zoom meet should be created for you as soon as the appointment is booked."
               size="md"
@@ -272,7 +276,7 @@ export const ConfigureBotForm = ({
               <FormGroup
                 type="select"
                 groupLabel="Calendar"
-                placeholder="Select a calendar provider"
+                placeholder="Select a provider"
                 info="Select a calendar provider, this is where your appointments are scheduled."
                 size="md"
                 name="meetingProviderId"
