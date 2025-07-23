@@ -67,6 +67,12 @@ export class BotApiService {
     );
   };
 
+  cloneBot = (botId: string) => {
+    return this.apiService.post<string, ConfigureBotRes>(
+      `${this.urls.CLONE_BOT}/${botId}`
+    );
+  };
+
   updateBotConfig = (id: string, data: UpdateBotConfigBody) => {
     return this.apiService.update<UpdateBotConfigBody, UpdateBotConfigRes>(
       `/${id}`,

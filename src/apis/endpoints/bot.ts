@@ -2,6 +2,7 @@ export const BOT_ANALYTICS = "/analytics";
 
 export const GET_ALL_BOTS = "/all";
 export const CONFIGURE_BOT = "/configure";
+export const CLONE_BOT = "/clone";
 export const UPDATE_BOT_INSTRUCTIONS = "/instructions";
 
 export const START_CONVERSATION = "/conversation/training/start";
