@@ -8,16 +8,6 @@ import { useEffect } from "react";
 import { BotStatus } from "../enums/bot"; // Adjust the path if needed
 import '../index.css'; // Adjust the path to your Tailwind entry file
 
-// Inject widget CSS dynamically
-if (typeof window !== "undefined") {
-  fetch("blacksight-widget.css")
-    .then(res => res.text())
-    .then(css => {
-      const style = document.createElement("style");
-      style.textContent = css;
-      document.head.appendChild(style);
-    });
-}
 
 const DEFAULT_BOT = {
   _id: "YOUR_BOT_ID",
