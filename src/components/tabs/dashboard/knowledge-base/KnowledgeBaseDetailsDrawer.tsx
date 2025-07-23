@@ -62,17 +62,19 @@ const SheetHeaderComp = ({
 }: SheetHeaderCompProps) => {
   return (
     <CustomSheetHeader className="flex p-8 justify-between items-center flex-row border-b border-b-gray-100">
-      <div>
-        <p className="font-urbanist font-semibold text-gray-900 text-2xl">
-          {knowledgeBaseDetails?._id}
-        </p>
-        <p className="font-sfpro text-sm text-gray-400">Knowledge Base ID</p>
-      </div>
-      <div className="custom">
-        <p className="font-urbanist font-semibold text-gray-900 text-2xl">
-          {knowledgeBaseDetails?.isActive ? "Active" : "Inactive"}
-        </p>
-        <p className="font-sfpro text-sm text-gray-400">Status</p>
+      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between md:gap-8">
+        <div>
+          <p className="font-urbanist font-semibold text-gray-900 text-xl sm:text-2xl">
+            {knowledgeBaseDetails?.tag}
+          </p>
+          <p className="font-sfpro text-sm text-gray-400">Tag</p>
+        </div>
+        <div className="custom">
+          <p className="font-urbanist font-semibold text-gray-900 text-xl sm:text-2xl">
+            {knowledgeBaseDetails?.isActive ? "Active" : "Inactive"}
+          </p>
+          <p className="font-sfpro text-sm text-gray-400">Status</p>
+        </div>
       </div>
       <div className="custom">
         <Button
@@ -110,20 +112,23 @@ export function KnowledgeBaseDetailsDrawer({
 
   return (
     <Sheet open={isOpen} onOpenChange={onOpenChange} modal={false}>
-      <CustomSheetContent className="rounded-2xl p-0 flex flex-col">
+      <CustomSheetContent
+        className="rounded-2xl p-0 flex flex-col !w-[calc(100dvw-24px)] sm:!w-[calc(100dvw-48px)] !max-w-[700px] !min-w-auto !mx-3 
+      sm:!m-6"
+      >
         <SheetHeaderComp
           knowledgeBaseDetails={knowledgeBaseDetails}
           onOpenChange={onOpenChange}
         />
         <div className="overflow-auto flex-1 pb-6">
-          <div className="px-8 pb-4 mt-10 flex justify-between items-end">
+          <div className="px-4 sm:px-8 pb-4 mt-10 flex justify-between items-end">
             <p className="font-urbanist font-semibold text-lg text-gray-900">
               Knowledge Base details
             </p>
           </div>
 
           {/* Reminder Details */}
-          <div className="px-8">
+          <div className="px-4 sm:px-8">
             <CustomRow>
               <p className="font-sfpro text-sm text-gray-900">Status</p>
               <Badge
@@ -147,14 +152,14 @@ export function KnowledgeBaseDetailsDrawer({
                 {new Date(knowledgeBaseDetails?.createdAt).toLocaleString()}
               </p>
             </CustomRow>
-            <CustomRow>
+            {/* <CustomRow>
               <p className="font-sfpro text-sm text-gray-900">
                 Knowledge Base ID
               </p>
               <p className="font-sfpro-medium text-sm text-gray-900">
                 {knowledgeBaseDetails?._id}
               </p>
-            </CustomRow>
+            </CustomRow> */}
             <CustomRow className="no-border border-none">
               <p className="font-sfpro text-sm text-gray-900">Tag</p>
               <p className="font-sfpro-medium text-sm text-gray-900">
@@ -170,7 +175,7 @@ export function KnowledgeBaseDetailsDrawer({
               Connected Bots
             </h2>
             {connectedBots.length > 0 ? (
-              <div className="mt-4 grid grid-cols-2 gap-4">
+              <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {connectedBots.map((bot) => (
                   <InvoiceCard header={bot.name} content={bot._id} />
                 ))}
