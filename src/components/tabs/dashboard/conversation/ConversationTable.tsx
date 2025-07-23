@@ -177,19 +177,16 @@ export const ConversationTable = ({
           <SearchInput
             placeholder="Search..."
             value={
-              (table.getColumn("conversationId")?.getFilterValue() as string) ??
-              ""
+              (table.getColumn("botName")?.getFilterValue() as string) ?? ""
             }
             onChange={(event: any) =>
-              table
-                .getColumn("conversationId")
-                ?.setFilterValue(event.target.value)
+              table.getColumn("botName")?.setFilterValue(event.target.value)
             }
             className="max-w-80"
           />
-          <Button variant="outline" className="h-11">
+          {/* <Button variant="outline" className="h-11">
             <Calendar /> This month <ChevronDown />
-          </Button>
+          </Button> */}
         </div>
         <div className="ml-auto gap-4 flex items-center">
           <Button variant={"brand"} className="h-10" onClick={refreshTable}>

@@ -296,7 +296,7 @@ export const Message = ({
   return (
     <div
       className={cn(
-        "flex items-start max-w-2/3 opacity-0",
+        "flex items-start max-w-9/10 sm:max-w-2/3 opacity-0",
         {
           "self-start justify-start": isBot,
           "self-end justify-end": !isBot,
@@ -316,10 +316,14 @@ export const Message = ({
 
       {/* Text */}
       <div
-        className={cn("p-4 bg-white text-sm whitespace-pre-line break-words", {
-          "rounded-md rounded-tl-none shadow-[2px_2px_4px_#0000001a]": isBot,
-          "rounded-md rounded-tr-none shadow-[-2px_2px_4px_#0000001a]": !isBot,
-        })}
+        className={cn(
+          "p-4 bg-white text-xs sm:text-sm whitespace-pre-line break-words",
+          {
+            "rounded-md rounded-tl-none shadow-[2px_2px_4px_#0000001a]": isBot,
+            "rounded-md rounded-tr-none shadow-[-2px_2px_4px_#0000001a]":
+              !isBot,
+          }
+        )}
       >
         <ReactMarkdown
           skipHtml

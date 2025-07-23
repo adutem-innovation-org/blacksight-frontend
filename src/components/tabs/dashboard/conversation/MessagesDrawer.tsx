@@ -18,9 +18,9 @@ const SheetHeaderComp = ({
   return (
     <CustomSheetHeader className="flex p-8 justify-between items-center flex-row border-b border-b-gray-100">
       <div>
-        <p className="font-urbanist font-semibold text-gray-900 text-2xl">
+        {/* <p className="font-urbanist font-semibold text-gray-900 text-2xl">
           {conversationId}
-        </p>
+        </p> */}
         <p className="font-sfpro text-sm text-gray-400">Chat</p>
       </div>
 
@@ -52,8 +52,11 @@ export function ConversationDrawer({
   const messages = conversation?.messages ?? [];
 
   return (
-    <Sheet open={isOpen} onOpenChange={onOpenChange} modal={false}>
-      <CustomSheetContent className="rounded-2xl p-0 flex flex-col gap-0">
+    <Sheet open={isOpen} onOpenChange={onOpenChange}>
+      <CustomSheetContent
+        className="rounded-2xl p-0 flex flex-col gap-0 !w-[calc(100dvw-24px)] sm:!w-[calc(100dvw-48px)] !max-w-[700px] !min-w-auto !mx-3 
+      sm:!m-6"
+      >
         <SheetHeaderComp
           conversationId={conversation?.conversationId}
           onOpenChange={onOpenChange}
@@ -74,10 +77,10 @@ export function ConversationDrawer({
           )}
 
           <div className="pb-6">
-            <h2 className="font-urbanist text-lg text-gray-900 font-semibold pt-6 border-t px-8">
+            <h2 className="font-urbanist text-lg text-gray-900 font-semibold pt-6 border-t px-4 sm:px-8">
               Source bot
             </h2>
-            <div className="mt-4 grid grid-cols-2 gap-4 px-8">
+            <div className="mt-4 grid grid-cols-1 gap-4 px-4 sm:px-8">
               <InvoiceCard
                 header={"Chat bot"}
                 content={conversation?.bot.name}
