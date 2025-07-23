@@ -16,11 +16,12 @@ import {
 } from "@/store";
 import { ArrowLeft, ChevronDown, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { InstructionEditor } from "./InstructionEditor";
+import { PromptEditor } from "./PromptEditor";
 import { ChatBot } from "./ChatBot";
 import { BotConfigDrawer } from "./BotConfigDrawer";
 import { Loader } from "@/components/progress";
 import toast from "react-hot-toast";
+import { AddKnowledgeBaseForm } from "../../knowledge-base";
 
 export const MoreActionsDropdown = ({
   onClearConversation,
@@ -49,9 +50,6 @@ export const MoreActionsDropdown = ({
         >
           <Trash2 />
         </CustomDropdownItem>
-        <CustomDropdownItem placeholder="Coming soon" />
-        <CustomDropdownItem placeholder="Coming soon" />
-        <CustomDropdownItem placeholder="Coming soon" />
       </DropdownMenuContent>
     </DropdownMenu>
   );
@@ -96,6 +94,13 @@ export const BotPlaygroundTab = () => {
   } = getState("Bot");
 
   const openBotConfig = () => setBotConfigOpen(true);
+
+  // Add KB
+  const [createKBFormOpen, setCreateKBFormOpen] = useState(() => false);
+
+  const addKB = () => {
+    setCreateKBFormOpen(true);
+  };
 
   const goBack = () => {
     dispatch(changeBotTab(BotTabsEnum.ANALYTICS));
@@ -146,12 +151,18 @@ export const BotPlaygroundTab = () => {
         {clearingTrainingConversation && (
           <Loader text1="Clearing conversation" />
         )}
-        <InstructionEditor />
+        <PromptEditor />
         <ChatBot openBotConfig={openBotConfig} />
         <BotConfigDrawer
           isOpen={botConfigOpen}
           onOpenChange={setBotConfigOpen}
           currentBot={currentBot!}
+          addKB={addKB}
+        />
+
+        <AddKnowledgeBaseForm
+          isOpen={createKBFormOpen}
+          onOpenChange={setCreateKBFormOpen}
         />
       </div>
     </div>

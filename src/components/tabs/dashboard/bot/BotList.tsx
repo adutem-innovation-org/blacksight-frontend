@@ -14,6 +14,7 @@ import {
 import toast from "react-hot-toast";
 import { DeactivateDialog, DeleteDialog } from "@/components/popups";
 import { Loader } from "@/components/progress";
+import { AddKnowledgeBaseForm } from "../knowledge-base";
 
 interface BotListProps {
   bots: Bot[];
@@ -52,6 +53,13 @@ export const BotList = ({ bots }: BotListProps) => {
   // Deactivate bot
   const [deactivateDialogOpen, setDeactivateDialogOpen] = useState(() => false);
   const [botToDeactivate, setBotToDeactivate] = useState<Bot | null>(null);
+
+  // Add KB
+  const [createKBFormOpen, setCreateKBFormOpen] = useState(() => false);
+
+  const addKB = () => {
+    setCreateKBFormOpen(true);
+  };
 
   // Delete modal actions
   const openDeleteModal = () => setDeleteModalOpen(true);
@@ -186,6 +194,8 @@ export const BotList = ({ bots }: BotListProps) => {
           isOpen={botConfigOpen}
           onOpenChange={onOpenChange}
           currentBot={botToConfigure}
+          addKB={addKB}
+          showPromptEditor
         />
       )}
 
@@ -217,6 +227,11 @@ export const BotList = ({ bots }: BotListProps) => {
           loading={updatingBotStatus}
         />
       )}
+
+      <AddKnowledgeBaseForm
+        isOpen={createKBFormOpen}
+        onOpenChange={setCreateKBFormOpen}
+      />
     </div>
   );
 };

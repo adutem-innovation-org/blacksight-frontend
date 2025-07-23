@@ -22,6 +22,7 @@ import {
   resetGetConnectedProviders,
 } from "@/store";
 import { useFormik } from "formik";
+import { Plus } from "lucide-react";
 import { useEffect, useMemo } from "react";
 import toast from "react-hot-toast";
 
@@ -59,11 +60,13 @@ export const EmptySelectOptions = ({
 interface ConfigureBotProps {
   isOpen: boolean;
   onOpenChange: (value: boolean) => void;
+  addKB: () => void;
 }
 
 export const ConfigureBotForm = ({
   isOpen,
   onOpenChange,
+  addKB,
 }: ConfigureBotProps) => {
   const { dispatch, getState } = useStore();
   const {
@@ -111,7 +114,7 @@ export const ConfigureBotForm = ({
   };
 
   const goToBookingProviders = () => {
-    return dispatch(changeTab(DashboardTabsEnum.PROVIDERS));
+    return dispatch(changeTab(DashboardTabsEnum.CALENDARS));
   };
 
   const initialValues: {
@@ -203,6 +206,7 @@ export const ConfigureBotForm = ({
       <DialogContent
         onPointerDownOutside={(e) => e.preventDefault()}
         onOpenAutoFocus={(e) => e.preventDefault()}
+        className="max-h-[85dvh] overflow-y-auto overflow-x-hidden"
       >
         {configuringBot && <Loader />}
         <DialogHeader>
@@ -245,6 +249,11 @@ export const ConfigureBotForm = ({
                 />
               }
               containerClassName="gap-2 mt-4"
+              action={
+                <Button onClick={addKB} className="h-8 !text-xs" type="button">
+                  Create <Plus />
+                </Button>
+              }
             />
 
             <FormGroup
@@ -261,9 +270,9 @@ export const ConfigureBotForm = ({
             {validation.values.scheduleMeeting && (
               <FormGroup
                 type="select"
-                groupLabel="Meeting Provider"
-                placeholder="Select a meeting provider"
-                info="Select a meeting provider, this is where your appointments are scheduled."
+                groupLabel="Calendar"
+                placeholder="Select a calendar provider"
+                info="Select a calendar provider, this is where your appointments are scheduled."
                 size="md"
                 name="meetingProviderId"
                 validation={validation}
@@ -271,7 +280,7 @@ export const ConfigureBotForm = ({
                 options={connectedProviderOptions}
                 noOptionsContent={
                   <EmptySelectOptions
-                    description="You are yet to setup meeting providers."
+                    description="You are yet to setup any calendar provider."
                     onClickCta={goToBookingProviders}
                     ctaText="Setup provider"
                     loading={fetchingConnectedProviders}

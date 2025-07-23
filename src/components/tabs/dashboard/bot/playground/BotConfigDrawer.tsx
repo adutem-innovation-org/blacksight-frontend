@@ -3,7 +3,7 @@ import { Sheet, SheetContent, SheetHeader } from "@/components/ui/sheet";
 import { Bot } from "@/interfaces";
 import { botSchema } from "@/schemas";
 import { useFormik } from "formik";
-import { Upload, X } from "lucide-react";
+import { Plus, Upload, X } from "lucide-react";
 import styled from "styled-components";
 import { EmptySelectOptions } from "../ConfigureBotForm";
 import { useStore } from "@/hooks";
@@ -68,12 +68,16 @@ interface BotConfigDrawerProps {
   isOpen: boolean;
   onOpenChange: (value: boolean) => void;
   currentBot: Bot;
+  addKB: () => void;
+  showPromptEditor?: boolean;
 }
 
 export function BotConfigDrawer({
   isOpen,
   onOpenChange,
   currentBot,
+  addKB,
+  showPromptEditor,
 }: BotConfigDrawerProps) {
   const { dispatch, getState } = useStore();
   const {
@@ -118,7 +122,7 @@ export function BotConfigDrawer({
   };
 
   const goToBookingProviders = () => {
-    return dispatch(changeTab(DashboardTabsEnum.PROVIDERS));
+    return dispatch(changeTab(DashboardTabsEnum.CALENDARS));
   };
 
   const initialValues: {
@@ -127,12 +131,14 @@ export function BotConfigDrawer({
     scheduleMeeting: boolean;
     meetingProviderId?: string;
     welcomeMessage: string;
+    instructions: string;
   } = {
     name: currentBot.name,
     knowledgeBaseIds: currentBot.knowledgeBaseIds,
     scheduleMeeting: currentBot.scheduleMeeting,
     meetingProviderId: currentBot.meetingProviderId,
     welcomeMessage: currentBot?.welcomeMessage,
+    instructions: currentBot?.instructions,
   };
 
   const validation = useFormik({
@@ -214,7 +220,7 @@ export function BotConfigDrawer({
       <CustomSheetContent className="rounded-2xl p-0 gap-8">
         {updatingBotConfig && <Loader />}
         <SheetHeaderComp currentBot={currentBot} onOpenChange={onOpenChange} />
-        <div className="px-8">
+        <div className="px-8 overflow-auto pb-6">
           {/* config form */}
           <form
             onSubmit={(e) => {
@@ -241,6 +247,17 @@ export function BotConfigDrawer({
               validation={validation}
               containerClassName="gap-2 mt-4"
             />
+            {showPromptEditor && (
+              <FormGroup
+                type="textarea"
+                name="instructions"
+                groupLabel="Prompt Editor"
+                placeholder="Enter your prompt..."
+                size="lg"
+                validation={validation}
+                containerClassName="gap-2 mt-4"
+              />
+            )}
             <FormGroup
               type="multi-select"
               groupLabel="Knowledge base"
@@ -260,6 +277,11 @@ export function BotConfigDrawer({
                 />
               }
               containerClassName="gap-2 mt-4"
+              action={
+                <Button onClick={addKB} className="h-8 !text-xs" type="button">
+                  Create <Plus />
+                </Button>
+              }
             />
             <FormGroup
               type="switch"
@@ -297,7 +319,7 @@ export function BotConfigDrawer({
               type="submit"
               disabled={updatingBotConfig || !canUpdateConfig}
             >
-              Safe configuration
+              Save configuration
             </Button>
           </form>
         </div>

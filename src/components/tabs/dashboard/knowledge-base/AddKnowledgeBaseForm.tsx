@@ -127,7 +127,7 @@ export const AddKnowledgeBaseForm = ({
         onPointerDownOutside={(e) => e.preventDefault()}
         onOpenAutoFocus={(e) => e.preventDefault()}
         className={cn({
-          "!w-[90dvw] !max-w-[800px] !sm:max-w-auto":
+          "!w-[90dvw] !max-w-[800px] !sm:max-w-auto max-h-[85dvh] overflow-y-auto overflow-x-hidden":
             validation.values.source === KnowledgeBaseSources.TEXT_INPUT,
         })}
       >

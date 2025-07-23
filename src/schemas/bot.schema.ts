@@ -19,4 +19,5 @@ export const botSchema = (isWelcomeMessageOptional: boolean = true) =>
     welcomeMessage: isWelcomeMessageOptional
       ? yup.string()
       : yup.string().required("Please provide welcome message.").trim(),
+    instructions: yup.string(),
   });

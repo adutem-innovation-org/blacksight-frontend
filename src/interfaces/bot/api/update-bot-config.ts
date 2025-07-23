@@ -11,4 +11,5 @@ export type UpdateBotConfigBody = {
   knowledgeBaseIds?: string[];
   scheduleMeeting?: boolean;
   meetingProviderId?: string;
+  instructions?: string;
 };

@@ -17,6 +17,7 @@ import {
   Ban,
   CircleFadingArrowUp,
   Cog,
+  Copy,
   EllipsisVertical,
   Trash2,
 } from "lucide-react";
@@ -68,6 +69,15 @@ const Actions = ({
             onClick={onViewConfiguration}
           >
             <Cog />
+          </CustomDropdownItem>
+        )}
+        {user && isUser(user) && (
+          <CustomDropdownItem
+            placeholder={"Clone (pending)"}
+            childrenPosition="behind"
+            className={"py-2"}
+          >
+            <Copy />
           </CustomDropdownItem>
         )}
         {user && (isSuperAdmin(user) || isUser(user)) && (
