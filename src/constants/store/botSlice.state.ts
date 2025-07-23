@@ -31,6 +31,11 @@ export const initialBotState: BotState = {
   configureBotErrors: {},
   configureBotErrorMessage: "",
 
+  // Clone bot
+  cloningBot: false,
+  botCloned: false,
+  cloneBotErrorMessage: "",
+
   // Playground
   currentBot: null,
   currentConversation: null,

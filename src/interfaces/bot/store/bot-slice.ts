@@ -33,6 +33,11 @@ export type BotState = {
   configureBotErrors: Record<string, string>;
   configureBotErrorMessage: string;
 
+  // Clone bot
+  cloningBot: boolean;
+  botCloned: boolean;
+  cloneBotErrorMessage: string;
+
   // Playground
   currentBot: Bot | null;
   currentConversationId: string | null;

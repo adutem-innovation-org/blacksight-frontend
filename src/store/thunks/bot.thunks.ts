@@ -77,6 +77,19 @@ export const configureBot = createAsyncThunk(
   }
 );
 
+export const cloneBot = createAsyncThunk<
+  Bot,
+  string,
+  { rejectValue: { message: string } }
+>("clone_bot", async (id: string, thunkAPI) => {
+  try {
+    const response = await botApiService.cloneBot(id);
+    return response.bot;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error);
+  }
+});
+
 export const updateBotConfig = createAsyncThunk(
   "update_bot_config",
   async ({ id, data }: { id: string; data: UpdateBotConfigBody }, thunkAPI) => {

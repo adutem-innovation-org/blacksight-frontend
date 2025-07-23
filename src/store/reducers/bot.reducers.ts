@@ -33,6 +33,12 @@ export const resetConfigureBotReducer = (state: BotState) => {
   state.configureBotErrorMessage = "";
 };
 
+export const resetCloneBotReducer = (state: BotState) => {
+  state.cloningBot = false;
+  state.botCloned = false;
+  state.cloneBotErrorMessage = "";
+};
+
 export const setCurrentBotReducer = (
   state: BotState,
   action: PayloadAction<Bot | null>
