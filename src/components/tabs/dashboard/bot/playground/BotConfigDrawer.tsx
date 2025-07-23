@@ -32,18 +32,21 @@ const SheetHeaderComp = ({
 }: SheetHeaderCompProps) => {
   return (
     <CustomSheetHeader className="flex p-8 justify-between items-center flex-row border-b border-b-gray-100">
-      <div>
-        <p className="font-urbanist font-semibold text-gray-900 text-2xl">
-          {currentBot.name}
-        </p>
-        <p className="font-sfpro text-sm text-gray-400">Bot name</p>
+      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between md:gap-8">
+        <div>
+          <p className="font-urbanist font-semibold text-gray-900 md:text-2xl text-xl">
+            {currentBot.name}
+          </p>
+          <p className="font-sfpro text-sm text-gray-400">Bot name</p>
+        </div>
+        <div className="custom">
+          <p className="font-urbanist font-semibold text-gray-900 text:xl md:text-2xl capitalize">
+            {currentBot.status}
+          </p>
+          <p className="font-sfpro text-sm text-gray-400">Status</p>
+        </div>
       </div>
-      <div className="custom">
-        <p className="font-urbanist font-semibold text-gray-900 text-2xl capitalize">
-          {currentBot.status}
-        </p>
-        <p className="font-sfpro text-sm text-gray-400">Status</p>
-      </div>
+
       <div className="custom">
         <Button
           variant={"secondary_gray"}
@@ -217,10 +220,13 @@ export function BotConfigDrawer({
 
   return (
     <Sheet open={isOpen} onOpenChange={onOpenChange} modal={true}>
-      <CustomSheetContent className="rounded-2xl p-0 gap-8">
+      <CustomSheetContent
+        className="rounded-2xl p-0 gap-8 !w-[calc(100dvw-24px)] sm:!w-[calc(100dvw-48px)] !max-w-[700px] !min-w-auto !mx-3 
+      sm:!m-6"
+      >
         {updatingBotConfig && <Loader />}
         <SheetHeaderComp currentBot={currentBot} onOpenChange={onOpenChange} />
-        <div className="px-8 overflow-y-auto overflow-x-hidden pb-6">
+        <div className="px-4 sm:px-8 overflow-y-auto overflow-x-hidden pb-6">
           {/* config form */}
           <form
             onSubmit={(e) => {
@@ -286,7 +292,7 @@ export function BotConfigDrawer({
             />
             <FormGroup
               type="switch"
-              groupLabel="Schedule meetings automatically?"
+              groupLabel="Schedule in calendar?"
               placeholder="Schedule meetings"
               info="Decide whatever or not an automatic google meet or zoom meet should be created for you as soon as the appointment is booked."
               size="md"
@@ -320,7 +326,7 @@ export function BotConfigDrawer({
               type="submit"
               disabled={updatingBotConfig || !canUpdateConfig}
             >
-              Save configuration
+              Save
             </Button>
           </form>
         </div>
