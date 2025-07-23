@@ -333,15 +333,15 @@ export function KnowledgeBaseTable({
           </Button> */}
         </div>
         <div className="ml-auto gap-4 flex items-center">
-          <Button
+          {/* <Button
             size={"icon"}
             variant={"secondary_gray"}
             className="rounded-full"
           >
             <ArrowDownToLine />
-          </Button>
+          </Button> */}
 
-          {<TableSettings table={table} />}
+          <TableSettings table={table} />
         </div>
       </div>
 
