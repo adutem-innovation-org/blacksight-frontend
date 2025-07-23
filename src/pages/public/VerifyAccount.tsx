@@ -59,7 +59,7 @@ export const VerifyAccount = () => {
   useEffect(() => {
     if (emailVerified) {
       dispatch(resetVerifyEmail());
-      navigate("/dashboard", { replace: true });
+      navigate("/onboard", { replace: true });
     }
   }, [emailVerified]);
 
