@@ -17,6 +17,7 @@ export default defineConfig(({ mode }) => {
     build: isWidget
       ? {
           outDir: "dist/widget",
+          cssCodeSplit: false, // 👈 THIS IS CRITICAL
           lib: {
             entry: "src/widget/WidgetApp.tsx",
             name: "BlacksightWidget",
