@@ -271,7 +271,8 @@ export function BotConfigDrawer({
               noOptionsContent={
                 <EmptySelectOptions
                   description="You are yet to add a knowledge base."
-                  onClickCta={goToKnowledgeBase}
+                  // onClickCta={goToKnowledgeBase}
+                  onClickCta={addKB}
                   ctaText="Add knowledge base"
                   loading={fetchingAllKnowledgeBases}
                 />
