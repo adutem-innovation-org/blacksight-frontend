@@ -3,6 +3,6 @@ export * from "./reminder";
 export * from "./knowledge-base";
 export * from "./bot";
 export * from "./analytics";
-export * from "./meeting-provider";
+export * from "./calendar";
 export * from "./appointment";
 export * from "./api-key";

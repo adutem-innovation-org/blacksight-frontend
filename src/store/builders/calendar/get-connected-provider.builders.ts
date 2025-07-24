@@ -1,9 +1,9 @@
-import { MeetingProviderState } from "@/interfaces";
+import { CalendarState } from "@/interfaces";
 import { getConnectedProviders } from "@/store/thunks";
 import { ActionReducerMapBuilder } from "@reduxjs/toolkit";
 
 export const getConnectedProvidersBuilder = (
-  builder: ActionReducerMapBuilder<MeetingProviderState>
+  builder: ActionReducerMapBuilder<CalendarState>
 ) => {
   builder.addCase(getConnectedProviders.pending, (state) => {
     state.fetchingConnectedProviders = true;

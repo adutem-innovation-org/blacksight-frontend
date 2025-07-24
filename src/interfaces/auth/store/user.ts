@@ -24,8 +24,7 @@ export type UserData = {
   isSuperAdmin: boolean;
   userType: UserTypes;
   hasConnectedGoogleMeet?: boolean;
-  hasConnectedZoomMeet?: boolean;
-  hasConnectedMicrosoftTeams?: boolean;
+  hasConnectedCalCom?: boolean;
   lastLogin: string;
   createdAt: string;
   passwordChangedAt: string;

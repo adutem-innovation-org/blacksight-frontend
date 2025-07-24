@@ -1,9 +1,9 @@
-import { MeetingProviderState } from "@/interfaces";
+import { CalendarState } from "@/interfaces";
 import { getProviderAuthUrl } from "@/store/thunks";
 import { ActionReducerMapBuilder } from "@reduxjs/toolkit";
 
 export const getProviderAuthUrlBuilder = (
-  builder: ActionReducerMapBuilder<MeetingProviderState>
+  builder: ActionReducerMapBuilder<CalendarState>
 ) => {
   builder.addCase(getProviderAuthUrl.pending, (state) => {
     state.fetchingProviderAuthUrl = true;

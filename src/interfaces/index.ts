@@ -7,7 +7,7 @@ export * from "./api-response";
 export * from "./reminder";
 export * from "./knowledge-base";
 export * from "./bot";
-export * from "./meeting-providers";
+export * from "./calendar";
 export * from "./appointment";
 export * from "./pagination";
 export * from "./api-key";

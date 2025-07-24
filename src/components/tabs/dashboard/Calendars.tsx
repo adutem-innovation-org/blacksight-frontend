@@ -1,9 +1,7 @@
 import { DashboardContent } from "@/components/design";
 import React, { useEffect, useState } from "react";
 import meetIcon from "@/assets/images/meet.png";
-import teamIcon from "@/assets/images/team.png";
-import zoomIcon from "@/assets/images/zoom.png";
-import { ProviderCard } from "./provider";
+import { CalComAuthPopup, ProviderCard } from "./calendar";
 import { useProfile, useStore } from "@/hooks";
 import {
   disconnectProvider,
@@ -15,8 +13,9 @@ import {
   setConnectingProviderStatus,
 } from "@/store";
 import { Loader } from "@/components/progress";
-import { MeetingProvidersEnum } from "@/enums";
+import { CalendarProvidersEnum } from "@/enums";
 import toast from "react-hot-toast";
+import { Provider } from "react-redux";
 
 const CalendarTabHeader = () => {
   return (
@@ -42,24 +41,39 @@ const Calendars = () => {
     disconnectProviderError,
   } = getState("MeetingProvider");
   const { user } = useProfile([profileFetched]);
+  const [calComAuthPopupOpen, setCalComAuthPopupOpen] = useState(false);
 
-  const handleConnectProvider = (provider: MeetingProvidersEnum) => {
-    dispatch(setConnectingProviderStatus(true));
-    dispatch(getProviderAuthUrl(provider));
+  const openCalComAuthPopup = () => setCalComAuthPopupOpen(true);
+
+  const handleConnectProvider = (provider: CalendarProvidersEnum) => {
+    switch (provider) {
+      case CalendarProvidersEnum.GOOGLE:
+        dispatch(setConnectingProviderStatus(true));
+        dispatch(getProviderAuthUrl(provider));
+
+        break;
+      case CalendarProvidersEnum.CALCOM:
+        openCalComAuthPopup();
+        break;
+      default:
+        break;
+    }
   };
 
   const connectGoogle = () =>
-    handleConnectProvider(MeetingProvidersEnum.GOOGLE);
-  const connectZoom = () => handleConnectProvider(MeetingProvidersEnum.ZOOM);
-  const connectTeams = () =>
-    handleConnectProvider(MeetingProvidersEnum.MICROSOFT);
+    handleConnectProvider(CalendarProvidersEnum.GOOGLE);
+  const connectCalCom = () =>
+    handleConnectProvider(CalendarProvidersEnum.CALCOM);
 
-  const handleDisconnectProvider = (provider: MeetingProvidersEnum) => {
+  const handleDisconnectProvider = (provider: CalendarProvidersEnum) => {
     dispatch(disconnectProvider(provider));
   };
 
   const disconnectGoogle = () =>
-    handleDisconnectProvider(MeetingProvidersEnum.GOOGLE);
+    handleDisconnectProvider(CalendarProvidersEnum.GOOGLE);
+
+  const disconnectCalCom = () =>
+    handleDisconnectProvider(CalendarProvidersEnum.CALCOM);
 
   useEffect(() => {
     if (providerAuthUrlFetched && providerAuthUrl) {
@@ -139,11 +153,20 @@ const Calendars = () => {
         disconnectingProvider) && <Loader className="bg-[#0000004d]" />}
       <ProviderCard
         name="Google Calendar"
-        description=" Real-time meetings by Google. Using your browser, share your video, desktop, and presentations with teammates and customers"
+        description="With Google Calendar, you can quickly schedule meetings and events and get reminders about upcoming activities, so you always know what’s next."
         icon={meetIcon}
         connected={user?.hasConnectedGoogleMeet ?? false}
         onConnect={connectGoogle}
         onDisconnect={disconnectGoogle}
+      />
+
+      <ProviderCard
+        name="Cal.com"
+        description="Cal.com is an open-source scheduling platform that allows you to book meetings, appointments, and events with ease. It is designed for individuals, teams and businesses."
+        icon="https://cal.com/favicon.ico"
+        connected={user?.hasConnectedCalCom ?? false}
+        onConnect={connectCalCom}
+        onDisconnect={disconnectCalCom}
       />
       {/* <ProviderCard
         name="Microsoft Teams"
@@ -163,6 +186,11 @@ const Calendars = () => {
         onDisconnect={() => {}}
         comingSoon
       /> */}
+
+      <CalComAuthPopup
+        isOpen={calComAuthPopupOpen}
+        onOpenChange={setCalComAuthPopupOpen}
+      />
     </div>
   );
 };

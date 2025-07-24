@@ -1,30 +1,34 @@
-import { initialMeetingProviderState } from "@/constants";
+import { initialCalendarState } from "@/constants";
 import { createSlice } from "@reduxjs/toolkit";
 import {
   resetGetProviderAuthUrlReducer,
   resetDisconnectProviderReducer,
   setConnectingProviderStatusReducer,
   resetGetConnectedProvidersReducer,
+  resetConnectCalcomReducer,
 } from "../reducers";
 import {
   getProviderAuthUrlBuilder,
   disconnectProviderBuilder,
   getConnectedProvidersBuilder,
+  connectCalcomBuilder,
 } from "../builders";
 
 const meetingProviderSlice = createSlice({
   name: "MeetingProvider",
-  initialState: initialMeetingProviderState,
+  initialState: initialCalendarState,
   reducers: {
     resetGetProviderAuthUrl: resetGetProviderAuthUrlReducer,
     resetDisconnectProvider: resetDisconnectProviderReducer,
     setConnectingProviderStatus: setConnectingProviderStatusReducer,
     resetGetConnectedProviders: resetGetConnectedProvidersReducer,
+    resetConnectCalcom: resetConnectCalcomReducer,
   },
   extraReducers(builder) {
     getProviderAuthUrlBuilder(builder);
     disconnectProviderBuilder(builder);
     getConnectedProvidersBuilder(builder);
+    connectCalcomBuilder(builder);
   },
 });
 
@@ -34,4 +38,5 @@ export const {
   resetDisconnectProvider,
   setConnectingProviderStatus,
   resetGetConnectedProviders,
+  resetConnectCalcom,
 } = meetingProviderSlice.actions;

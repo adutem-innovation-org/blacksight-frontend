@@ -5,7 +5,7 @@ import { AuthState } from "../auth";
 import { BotState } from "../bot";
 import { KnowledgeBaseState } from "../knowledge-base";
 import { LayoutState } from "../layout";
-import { MeetingProviderState } from "../meeting-providers";
+import { CalendarState } from "../calendar";
 import { ReminderState } from "../reminder";
 
 export type StoreState = {
@@ -17,5 +17,5 @@ export type StoreState = {
   Reminder: ReminderState;
   KnowledgeBase: KnowledgeBaseState;
   Bot: BotState;
-  MeetingProvider: MeetingProviderState;
+  MeetingProvider: CalendarState;
 };

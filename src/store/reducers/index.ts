@@ -4,6 +4,6 @@ export * from "./reminder.reducers";
 export * from "./knowledgebase.reducers";
 export * from "./bot.reducers";
 export * from "./analytics.reducers";
-export * from "./meetingprovider.reducers";
+export * from "./calendar.reducers";
 export * from "./appointment.reducers";
 export * from "./apikey.reducers";

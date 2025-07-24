@@ -1,6 +1,6 @@
-import { MeetingProviderState } from "@/interfaces";
+import { CalendarState } from "@/interfaces";
 
-export const initialMeetingProviderState: MeetingProviderState = {
+export const initialCalendarState: CalendarState = {
   // Get authorization url
   fetchingProviderAuthUrl: false,
   providerAuthUrlFetched: false,
@@ -9,6 +9,12 @@ export const initialMeetingProviderState: MeetingProviderState = {
 
   // Connect provider;
   connectingProvider: false,
+
+  // Connect Calcom
+  connectingCalcom: false,
+  calcomConnected: false,
+  connectCalcomErrors: {},
+  connectCalcomErrorMessage: "",
 
   // Disconnect provider
   disconnectingProvider: false,

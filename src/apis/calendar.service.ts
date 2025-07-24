@@ -1,5 +1,6 @@
 import {
   ApiSuccessResponse,
+  ConnectCalcomBody,
   GetConnectedProvidersRes,
   GetProviderUrlRes,
 } from "@/interfaces";
@@ -26,6 +27,13 @@ export class CalendarApiService {
   getProviderAuthUrl = (provider: CalendarProvidersEnum) => {
     return this.apiService.get<GetProviderUrlRes>(
       `${this.urls.CONNECT_PROVIDER}/${provider}`
+    );
+  };
+
+  connectCalcom = (data: ConnectCalcomBody) => {
+    return this.apiService.post<ConnectCalcomBody, ApiSuccessResponse>(
+      `${this.urls.CONNECT_PROVIDER}/cal-com`,
+      data
     );
   };
 

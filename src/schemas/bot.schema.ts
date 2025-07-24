@@ -13,7 +13,7 @@ export const botSchema = (isWelcomeMessageOptional: boolean = true) =>
       .default(false),
     meetingProviderId: yup.string().when("scheduleMeeting", {
       is: (scheduleMeeting: Boolean) => scheduleMeeting,
-      then: (schema) => schema.required("Please select a meeting provider"),
+      then: (schema) => schema.required("Please select a calendar provider"),
       otherwise: (schema) => schema.notRequired(),
     }),
     welcomeMessage: isWelcomeMessageOptional

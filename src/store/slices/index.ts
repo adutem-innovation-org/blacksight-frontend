@@ -4,6 +4,6 @@ export * from "./reminder.slice";
 export * from "./knowledgebase.slice";
 export * from "./bot.slice";
 export * from "./analytics.slice";
-export * from "./meetingprovider.slice";
+export * from "./calendar.slice";
 export * from "./appointment.slice";
 export * from "./api-key.slice";

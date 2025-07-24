@@ -1,6 +1,6 @@
-import { MeetingProvider } from "./meeting-provider";
+import { CalendarProvider } from "./calendar-provider";
 
-export interface MeetingProviderState {
+export interface CalendarState {
   // Generate auth url
   fetchingProviderAuthUrl: boolean;
   providerAuthUrlFetched: boolean;
@@ -10,6 +10,12 @@ export interface MeetingProviderState {
   // Connect provider
   connectingProvider: boolean;
 
+  // Connect calcom
+  connectingCalcom: boolean;
+  calcomConnected: boolean;
+  connectCalcomErrors: Record<string, string>;
+  connectCalcomErrorMessage: string;
+
   // Disconnect provider
   disconnectingProvider: boolean;
   providerDisconnected: boolean;
@@ -18,6 +24,6 @@ export interface MeetingProviderState {
   // Get providers
   fetchingConnectedProviders: boolean;
   connectedProvidersFetched: boolean;
-  connectedProviders: MeetingProvider[] | null;
+  connectedProviders: CalendarProvider[] | null;
   fetchConnectedProvidersError: string;
 }

@@ -1,9 +1,9 @@
-import { MeetingProviderState } from "@/interfaces";
+import { CalendarState } from "@/interfaces";
 import { disconnectProvider } from "@/store/thunks";
 import { ActionReducerMapBuilder } from "@reduxjs/toolkit";
 
 export const disconnectProviderBuilder = (
-  builder: ActionReducerMapBuilder<MeetingProviderState>
+  builder: ActionReducerMapBuilder<CalendarState>
 ) => {
   builder.addCase(disconnectProvider.pending, (state) => {
     state.disconnectingProvider = true;
