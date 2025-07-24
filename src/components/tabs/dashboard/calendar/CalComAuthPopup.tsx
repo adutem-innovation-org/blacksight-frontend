@@ -35,7 +35,7 @@ export const CalComAuthPopup = ({
     calcomConnected,
     connectCalcomErrors,
     connectCalcomErrorMessage,
-  } = getState("MeetingProvider");
+  } = getState("Calendar");
   const initialValues: {
     eventTypeId: string;
     apiKey: string;

@@ -39,7 +39,7 @@ const Calendars = () => {
     disconnectingProvider,
     providerDisconnected,
     disconnectProviderError,
-  } = getState("MeetingProvider");
+  } = getState("Calendar");
   const { user } = useProfile([profileFetched]);
   const [calComAuthPopupOpen, setCalComAuthPopupOpen] = useState(false);
 

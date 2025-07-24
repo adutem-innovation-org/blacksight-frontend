@@ -17,5 +17,5 @@ export type StoreState = {
   Reminder: ReminderState;
   KnowledgeBase: KnowledgeBaseState;
   Bot: BotState;
-  MeetingProvider: CalendarState;
+  Calendar: CalendarState;
 };

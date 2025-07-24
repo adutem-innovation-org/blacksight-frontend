@@ -86,7 +86,7 @@ export const ConfigureBotForm = ({
     connectedProviders,
     fetchConnectedProvidersError,
     connectedProvidersFetched,
-  } = getState("MeetingProvider");
+  } = getState("Calendar");
   const { user } = useProfile();
 
   const knowledgeBaseOptions = useMemo(() => {

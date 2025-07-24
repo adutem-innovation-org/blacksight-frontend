@@ -15,7 +15,7 @@ import {
 } from "../builders";
 
 const meetingProviderSlice = createSlice({
-  name: "MeetingProvider",
+  name: "Calendar",
   initialState: initialCalendarState,
   reducers: {
     resetGetProviderAuthUrl: resetGetProviderAuthUrlReducer,

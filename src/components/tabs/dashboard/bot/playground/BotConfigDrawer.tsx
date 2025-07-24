@@ -100,7 +100,7 @@ export function BotConfigDrawer({
     connectedProviders,
     fetchConnectedProvidersError,
     connectedProvidersFetched,
-  } = getState("MeetingProvider");
+  } = getState("Calendar");
 
   const knowledgeBaseOptions = useMemo(() => {
     return knowledgeBases && knowledgeBases.length !== 0

@@ -20,7 +20,7 @@ export const store = configureStore({
     KnowledgeBase: knowledgeBaseReducer,
     Layout: layoutReducer,
     Reminder: reminderReducer,
-    MeetingProvider: meetingProviderReducer,
+    Calendar: meetingProviderReducer,
     Appointment: appointmentReducer,
   },
 });

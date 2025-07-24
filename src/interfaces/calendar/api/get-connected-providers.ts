@@ -1,6 +1,6 @@
 import { ApiSuccessResponse } from "@/interfaces/api-response";
-import { MeetingProvider } from "../store";
+import { CalendarProvider } from "../store";
 
 export interface GetConnectedProvidersRes extends ApiSuccessResponse {
-  providers: MeetingProvider[];
+  providers: CalendarProvider[];
 }
