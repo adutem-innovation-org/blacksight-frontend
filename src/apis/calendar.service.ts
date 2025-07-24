@@ -5,10 +5,10 @@ import {
 } from "@/interfaces";
 import { ApiService } from "./api.service";
 import { MEETING_PROVIDER_URLS } from "./endpoints";
-import { MeetingProvidersEnum } from "@/enums";
+import { CalendarProvidersEnum } from "@/enums";
 
-export class MeetingProviderApiService {
-  private static instance: MeetingProviderApiService;
+export class CalendarApiService {
+  private static instance: CalendarApiService;
   private readonly apiService: ApiService;
   private readonly urls: typeof MEETING_PROVIDER_URLS = MEETING_PROVIDER_URLS;
 
@@ -16,20 +16,20 @@ export class MeetingProviderApiService {
     this.apiService = new ApiService("meeting-provider");
   }
 
-  static getInstance(): MeetingProviderApiService {
+  static getInstance(): CalendarApiService {
     if (!this.instance) {
-      this.instance = new MeetingProviderApiService();
+      this.instance = new CalendarApiService();
     }
     return this.instance;
   }
 
-  getProviderAuthUrl = (provider: MeetingProvidersEnum) => {
+  getProviderAuthUrl = (provider: CalendarProvidersEnum) => {
     return this.apiService.get<GetProviderUrlRes>(
       `${this.urls.CONNECT_PROVIDER}/${provider}`
     );
   };
 
-  disconnectProvider = (provider: MeetingProvidersEnum) => {
+  disconnectProvider = (provider: CalendarProvidersEnum) => {
     return this.apiService.delete<ApiSuccessResponse>(
       `${this.urls.DISCONNECT_PROVIDER}/${provider}`
     );

@@ -1,13 +1,13 @@
-import { MeetingProviderApiService } from "@/apis";
-import { MeetingProvidersEnum } from "@/enums";
+import { CalendarApiService } from "@/apis";
+import { CalendarProvidersEnum } from "@/enums";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { getProfile } from "./auth.thunks";
 
-const meetingProviderApiService = MeetingProviderApiService.getInstance();
+const meetingProviderApiService = CalendarApiService.getInstance();
 
 export const getProviderAuthUrl = createAsyncThunk(
   "get_provider_auth_url",
-  async (provider: MeetingProvidersEnum, thunkAPI) => {
+  async (provider: CalendarProvidersEnum, thunkAPI) => {
     try {
       const data = await meetingProviderApiService.getProviderAuthUrl(provider);
       return data.url;
@@ -19,7 +19,7 @@ export const getProviderAuthUrl = createAsyncThunk(
 
 export const disconnectProvider = createAsyncThunk(
   "disconnect_provider",
-  async (provider: MeetingProvidersEnum, { dispatch, rejectWithValue }) => {
+  async (provider: CalendarProvidersEnum, { dispatch, rejectWithValue }) => {
     try {
       await meetingProviderApiService.disconnectProvider(provider);
       dispatch(getConnectedProviders());

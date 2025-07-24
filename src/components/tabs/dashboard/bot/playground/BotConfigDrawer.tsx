@@ -303,9 +303,9 @@ export function BotConfigDrawer({
             {validation.values.scheduleMeeting && (
               <FormGroup
                 type="select"
-                groupLabel="Meeting Provider"
-                placeholder="Select a meeting provider"
-                info="Select a meeting provider, this is where your appointments are scheduled."
+                groupLabel="Calendar"
+                placeholder="Select a provider"
+                info="Select a calendar provider, this is where your appointments are scheduled."
                 size="md"
                 name="meetingProviderId"
                 validation={validation}

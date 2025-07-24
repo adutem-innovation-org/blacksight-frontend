@@ -50,7 +50,7 @@ export const ProviderCard = ({
 
       <Button
         className={cn(
-          "w-max rounded-sm gap-3 flex items-center h-11 px-4 font-dmsans tracking-tight hover:text-gray-100 duration-400 border-2",
+          "w-max rounded-sm gap-3 flex items-center h-11 px-4 font-dmsans tracking-tight hover:text-gray-100 duration-400 border-2 mt-auto",
           {
             "border-red-800 text-red-800 hover:bg-red-800": connected,
             "border-blue-500 text-blue-500 hover:bg-blue-500": !connected,
