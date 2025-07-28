@@ -7,3 +7,4 @@ export * from "./analytics.reducers";
 export * from "./calendar.reducers";
 export * from "./appointment.reducers";
 export * from "./apikey.reducers";
+export * from "./template.reducers";

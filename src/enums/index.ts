@@ -7,3 +7,4 @@ export * from "./calendar";
 export * from "./notification";
 export * from "./knowledge-base";
 export * from "./auth";
+export * from "./template";

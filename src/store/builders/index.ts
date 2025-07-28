@@ -6,3 +6,4 @@ export * from "./analytics";
 export * from "./calendar";
 export * from "./appointment";
 export * from "./api-key";
+export * from "./template";

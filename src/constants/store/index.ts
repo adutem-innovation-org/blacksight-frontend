@@ -7,3 +7,4 @@ export * from "./analyticsSlice.state";
 export * from "./calendarSlice.state";
 export * from "./appointmentSlice.state";
 export * from "./apikeySlice.state";
+export * from "./templateSlice.state";

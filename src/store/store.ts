@@ -9,6 +9,7 @@ import {
   layoutReducer,
   meetingProviderReducer,
   reminderReducer,
+  templateReducer,
 } from "./slices";
 
 export const store = configureStore({
@@ -22,6 +23,7 @@ export const store = configureStore({
     Reminder: reminderReducer,
     Calendar: meetingProviderReducer,
     Appointment: appointmentReducer,
+    Template: templateReducer,
   },
 });
 

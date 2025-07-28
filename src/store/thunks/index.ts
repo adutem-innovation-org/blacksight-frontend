@@ -6,3 +6,4 @@ export * from "./analytics.thunks";
 export * from "./calendar.thunks";
 export * from "./appointment.thunks";
 export * from "./api-key.thunks";
+export * from "./template.thunks";
