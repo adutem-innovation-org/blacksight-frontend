@@ -7,6 +7,7 @@ import { KnowledgeBaseState } from "../knowledge-base";
 import { LayoutState } from "../layout";
 import { CalendarState } from "../calendar";
 import { ReminderState } from "../reminder";
+import { TemplateState } from "../template";
 
 export type StoreState = {
   Auth: AuthState;
@@ -18,4 +19,5 @@ export type StoreState = {
   KnowledgeBase: KnowledgeBaseState;
   Bot: BotState;
   Calendar: CalendarState;
+  Template: TemplateState;
 };

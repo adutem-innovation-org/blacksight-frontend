@@ -11,3 +11,4 @@ export * from "./calendar";
 export * from "./appointment";
 export * from "./pagination";
 export * from "./api-key";
+export * from "./template";
