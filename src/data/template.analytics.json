@@ -1,0 +1,23 @@
+[
+    {
+        "id": "totalTemplates",
+        "title": "Total templates",
+        "icon": "fi fi-rr-at text-[#6D28D9]",
+        "shouldCountUp": false,
+        "showProgressRing": false
+    },
+    {
+        "id": "paymentTemplates",
+        "title": "Payment templates",
+        "icon": "fi fi-rr-usd-circle text-[#6D28D9]",
+        "showProgressRing": true,
+        "progressRingColor": "#34D399"
+    },
+    {
+        "id": "appointmentTemplates",
+        "title": "Appointment templates",
+        "icon": "fi fi-rr-reservation-table text-yellow-500",
+        "showProgressRing": true,
+        "progressRingColor": "#34D399"
+    }
+]

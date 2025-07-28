@@ -13,6 +13,7 @@ import { ProfileTab } from "./ProfileTab";
 import { CalendarsTab } from "./Calendars";
 import { ConversationsTab } from "./Conversations";
 import { isUser } from "@/helpers";
+import { TemplateTab } from "./TemplatesTab";
 
 export const DashboardTabs = () => {
   const { getState } = useStore();
@@ -60,6 +61,9 @@ export const DashboardTabs = () => {
       </Tabs.Panel>
       <Tabs.Panel value={DashboardTabsEnum.REMINDER} className="w-full h-full">
         <ReminderTab />
+      </Tabs.Panel>
+      <Tabs.Panel value={DashboardTabsEnum.TEMPLATES} className="w-full h-full">
+        <TemplateTab />
       </Tabs.Panel>
       <Tabs.Panel value={DashboardTabsEnum.WORKSPACE} className="w-full h-full">
         <WorkspaceTab />

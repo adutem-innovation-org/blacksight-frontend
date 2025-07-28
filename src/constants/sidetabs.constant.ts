@@ -38,10 +38,16 @@ export const sideTabs: Record<UserTypes, SideTabType[]> = {
       tabId: DashboardTabsEnum.REMINDER,
       iconClass: "fi fi-rr-bell-ring",
     },
+
     {
       name: "Calenders",
       tabId: DashboardTabsEnum.CALENDARS,
-      iconClass: "fi fi-rr-reservation-smartphone",
+      iconClass: "fi fi-rr-daily-calendar",
+    },
+    {
+      name: "Templates",
+      tabId: DashboardTabsEnum.TEMPLATES,
+      iconClass: "fi fi-rr-at",
     },
   ],
   admin: [
