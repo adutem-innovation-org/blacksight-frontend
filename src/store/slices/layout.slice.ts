@@ -5,6 +5,7 @@ import {
   changeSidebarMobileStateReducer,
   changeSidebarStateReducer,
   changeTabReducer,
+  changeTemplateTabReducer,
 } from "../reducers";
 
 const layoutSlice = createSlice({
@@ -15,6 +16,7 @@ const layoutSlice = createSlice({
     changeSidebarMobileState: changeSidebarMobileStateReducer,
     changeTab: changeTabReducer,
     changeBotTab: changeBotTabReducer,
+    changeTemplateTab: changeTemplateTabReducer,
   },
 });
 
@@ -24,4 +26,5 @@ export const {
   changeTab,
   changeSidebarMobileState,
   changeBotTab,
+  changeTemplateTab,
 } = layoutSlice.actions;

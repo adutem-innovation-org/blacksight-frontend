@@ -3,6 +3,7 @@ import {
   DashboardTabsEnum,
   SideBarMobileStateEnum,
   SideBarStateEnum,
+  TemplateTabsEnum,
 } from "@/enums";
 import { LayoutState } from "@/interfaces";
 
@@ -11,4 +12,5 @@ export const initialLayoutState: LayoutState = {
   sidebarState: SideBarStateEnum.COLLAPSED,
   sidebarMobileState: SideBarMobileStateEnum.HIDDEN,
   activeBotTab: BotTabsEnum.ANALYTICS,
+  activeTemplateTab: TemplateTabsEnum.ANALYTICS,
 };

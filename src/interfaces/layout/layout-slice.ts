@@ -3,6 +3,7 @@ import {
   DashboardTabsEnum,
   SideBarMobileStateEnum,
   SideBarStateEnum,
+  TemplateTabsEnum,
 } from "@/enums";
 
 export interface LayoutState {
@@ -10,4 +11,5 @@ export interface LayoutState {
   sidebarState: SideBarStateEnum;
   sidebarMobileState: SideBarMobileStateEnum;
   activeBotTab: BotTabsEnum;
+  activeTemplateTab: TemplateTabsEnum;
 }

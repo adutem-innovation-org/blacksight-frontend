@@ -3,6 +3,7 @@ import {
   DashboardTabsEnum,
   SideBarMobileStateEnum,
   SideBarStateEnum,
+  TemplateTabsEnum,
 } from "@/enums";
 import { LayoutState } from "@/interfaces";
 import { PayloadAction } from "@reduxjs/toolkit";
@@ -33,4 +34,11 @@ export const changeBotTabReducer = (
   action: PayloadAction<BotTabsEnum>
 ) => {
   state.activeBotTab = action.payload;
+};
+
+export const changeTemplateTabReducer = (
+  state: LayoutState,
+  action: PayloadAction<TemplateTabsEnum>
+) => {
+  state.activeTemplateTab = action.payload;
 };
