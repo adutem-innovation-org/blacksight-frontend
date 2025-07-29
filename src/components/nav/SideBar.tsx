@@ -19,6 +19,7 @@ import {
   TooltipTrigger,
   Tooltip,
 } from "../ui/tooltip";
+import { useNavigate } from "react-router-dom";
 
 const SidebarHeader = () => {
   const { dispatch, getState } = useStore();
@@ -82,9 +83,10 @@ const SidebarHeader = () => {
   );
 };
 
-const TabItem = ({ name, iconClass, tabId }: SideTabType) => {
+const TabItem = ({ name, iconClass, tabId, path }: SideTabType) => {
   const { dispatch, getState } = useStore();
   const { currentTab, sidebarState } = getState("Layout");
+  const navigate = useNavigate();
 
   const isActiveTab = useMemo(() => currentTab === tabId, [currentTab]);
 
@@ -93,6 +95,7 @@ const TabItem = ({ name, iconClass, tabId }: SideTabType) => {
   const changeCurrentTab = () => {
     dispatch(changeTab(tabId));
     dispatch(changeSidebarMobileState(SideBarMobileStateEnum.HIDDEN));
+    navigate(path);
   };
 
   return (

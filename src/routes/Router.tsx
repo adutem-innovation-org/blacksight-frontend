@@ -3,6 +3,7 @@ import { PublicRoute } from "./public";
 import { privatePages } from "@/constants";
 import { PrivateRoute } from "./private/Private.routes";
 import { NotFound, RootRedirect, UserRedirect } from "@/pages";
+import { DashboardTabLayout } from "@/layouts";
 
 export const Router = () => {
   return (
@@ -12,9 +13,20 @@ export const Router = () => {
       </Route>
       <Route path="/" element={<RootRedirect />} />
       <Route element={<PrivateRoute />}>
-        {privatePages.map(({ path, Element }) => (
-          <Route path={path} element={<Element />} />
-        ))}
+        {privatePages.map(({ path, Element }) =>
+          path === "/onboard" ? (
+            <Route path={path} element={<Element />} />
+          ) : (
+            <Route
+              path={path}
+              element={
+                <DashboardTabLayout>
+                  <Element />
+                </DashboardTabLayout>
+              }
+            />
+          )
+        )}
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>

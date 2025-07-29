@@ -82,3 +82,17 @@ export const DashboardTabs = () => {
     </Tabs>
   );
 };
+
+export * from "./AnalyticsTab";
+export * from "./KnowledgeBase";
+export * from "./Bots";
+export * from "./AccountsTab";
+export * from "./Appointments";
+export * from "./WorkspaceTab";
+export * from "./Subscriptions";
+export * from "./ReminderTab";
+export * from "./ProfileTab";
+export * from "./Calendars";
+export * from "./Conversations";
+export * from "@/helpers";
+export * from "./TemplatesTab";
