@@ -6,3 +6,4 @@ export * from "./profiletabs.constant";
 export * from "./remindertab.constant";
 export * from "./bottab.constant";
 export * from "./onboarding.constant";
+export * from "./templatetab.constant";

@@ -3,6 +3,7 @@ export * from "./get-initials";
 export * from "./reminder.helper";
 export * from "./file-export.helper";
 export * from "./onboard.helper";
+export * from "./template.helper";
 
 export const getRandomArrayItem = (elements: Array<any>) => {
   if (elements.length === 0) return null;
@@ -13,7 +14,7 @@ export const getRandomArrayItem = (elements: Array<any>) => {
 };
 
 export const resetDocumentElement = () => {
-  let tmo = setTimeout(() => {
+  const tmo = setTimeout(() => {
     document.body.style.pointerEvents = "";
     clearTimeout(tmo);
   }, 300);
