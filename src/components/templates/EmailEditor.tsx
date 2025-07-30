@@ -1,19 +1,14 @@
-import React, { useRef } from "react";
+import React, { RefObject, useRef } from "react";
 
 import EmailEditor, { EditorRef, EmailEditorProps } from "react-email-editor";
 
-export const CustomEmailEditor = (props: any) => {
-  const emailEditorRef = useRef<EditorRef>(null);
+interface CustomEmailEditorProps {
+  emailEditorRef: RefObject<EditorRef | null>;
+}
 
-  const exportHtml = () => {
-    const unlayer = emailEditorRef.current?.editor;
-
-    unlayer?.exportHtml((data) => {
-      const { design, html } = data;
-      console.log("exportHtml", html);
-    });
-  };
-
+export const CustomEmailEditor = ({
+  emailEditorRef,
+}: CustomEmailEditorProps) => {
   const onReady: EmailEditorProps["onReady"] = (unlayer) => {
     // editor is ready
     // you can load your template here;
@@ -25,12 +20,19 @@ export const CustomEmailEditor = (props: any) => {
 
   return (
     <div className="h-full overflow-hidden flex flex-col">
-      <div>
+      {/* <div>
         <button onClick={exportHtml}>Export HTML</button>
-      </div>
+      </div> */}
 
       <div className="flex-1 flex flex-col overflow-hidden">
         <EmailEditor
+          options={{
+            displayMode: "email",
+            features: {
+              stockImages: true,
+            },
+            id: "dy-email-editor",
+          }}
           ref={emailEditorRef}
           onReady={onReady}
           style={{
