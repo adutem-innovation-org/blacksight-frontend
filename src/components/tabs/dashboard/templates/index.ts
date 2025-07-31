@@ -1,3 +1,3 @@
 export * from "./Analytics";
-export * from "./EmailEditor";
+export * from "./EmailEditorTab";
 export * from "./TemplateTabs";
