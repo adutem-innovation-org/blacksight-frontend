@@ -1,17 +1,17 @@
 import { TemplateCategory, TemplateType } from "@/enums";
+import { ApiSuccessResponse, EmailTemplate } from "@/interfaces";
 
-export interface EmailTemplate {
-  _id: string;
+export type CreateTemplateBody = {
   name: string;
   description: string;
   type: TemplateType;
   category: TemplateCategory;
   html: string;
   design: any;
-  preview?: string;
   dynamicFields: string[];
   keywords: string[];
-  createdBy: string;
-  createdAt: Date;
-  updatedAt: Date;
+};
+
+export interface CreateTemplateRes extends ApiSuccessResponse {
+  template: EmailTemplate;
 }

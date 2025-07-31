@@ -1,4 +1,9 @@
-import { TemplateAnalyticsRes } from "@/interfaces/template";
+import {
+  CreateTemplateBody,
+  CreateTemplateRes,
+  TemplateAnalyticsRes,
+  GetTemplatesRes,
+} from "@/interfaces";
 import { ApiService } from "./api.service";
 import { TEMPLATE_URLS } from "./endpoints";
 
@@ -23,5 +28,20 @@ export class TemplateService {
     return this.apiService.get<TemplateAnalyticsRes>(
       this.urls.TEMPLATE_ANALYTICS
     );
+  };
+
+  createTemplate = (data: CreateTemplateBody) => {
+    return this.apiService.post<CreateTemplateBody, CreateTemplateRes>(
+      this.urls.CREATE_TEMPLATE,
+      data
+    );
+  };
+
+  getUserTemplates = () => {
+    return this.apiService.get<GetTemplatesRes>(this.urls.GET_USER_TEMPLATES);
+  };
+
+  getAdminTemplates = () => {
+    return this.apiService.get<GetTemplatesRes>(this.urls.GET_ADMIN_TEMPLATES);
   };
 }
