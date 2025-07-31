@@ -83,7 +83,7 @@ export function ConversationDrawer({
             <div className="mt-4 grid grid-cols-1 gap-4 px-4 sm:px-8">
               <InvoiceCard
                 header={"Chat bot"}
-                content={conversation?.bot.name}
+                content={conversation?.bot?.name ?? "Deleted bot"}
               />
             </div>
           </div>

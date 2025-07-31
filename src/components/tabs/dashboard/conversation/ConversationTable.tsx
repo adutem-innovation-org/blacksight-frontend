@@ -60,13 +60,13 @@ export const columns: ColumnDef<Conversation>[] = [
   {
     id: "botName",
     // accessorKey: "botId",
-    accessorFn: (row) => row.bot.name ?? "-",
+    accessorFn: (row) => row.bot?.name ?? "-",
     header: "Bot Name",
     cell: ({ row }) => <div>{row.getValue("botName")}</div>,
   },
   {
     id: "botStatus",
-    accessorFn: (row) => row.bot.status ?? "-",
+    accessorFn: (row) => (row.bot ? row.bot.status ?? "-" : "Deleted"),
     header: "Bot Status",
     cell: ({ row }) => <div>{row.getValue("botStatus")}</div>,
   },

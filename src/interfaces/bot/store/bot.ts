@@ -38,5 +38,5 @@ export type Conversation = {
   conversationId: string;
   duration: string;
   messages: Message[];
-  bot: Bot;
+  bot: Bot | null;
 };
