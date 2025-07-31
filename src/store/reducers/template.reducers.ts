@@ -29,10 +29,23 @@ export const updateEditorStateReducer = (
   }>
 ) => {
   state.currentTemplate = action.payload?.template;
-  state.editorMode = action.payload?.mode;
+  state.editorMode = action.payload?.mode ?? EditorMode.CREATE;
 };
 
 export const resetEditorStateReducer = (state: TemplateState) => {
   state.currentTemplate = null;
   state.editorMode = EditorMode.CREATE;
+};
+
+export const resetUpdateTemplateReducer = (state: TemplateState) => {
+  state.updatingTemplate = false;
+  state.templateUpdated = false;
+  state.updateTemplateErrors = {};
+  state.updateTemplateErrorMessage = "";
+};
+
+export const resetDeleteTemplateReducer = (state: TemplateState) => {
+  state.deletingTemplate = false;
+  state.templateDeleted = false;
+  state.deleteTemplateErrorMessage = "";
 };

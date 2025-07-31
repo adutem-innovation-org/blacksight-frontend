@@ -24,4 +24,15 @@ export type TemplateState = {
   // Editor
   currentTemplate: EmailTemplate | null;
   editorMode: EditorMode;
+
+  // Update template
+  updatingTemplate: boolean;
+  templateUpdated: boolean;
+  updateTemplateErrors: {};
+  updateTemplateErrorMessage: string;
+
+  // Delete template
+  deletingTemplate: boolean;
+  templateDeleted: boolean;
+  deleteTemplateErrorMessage: string;
 };

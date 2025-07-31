@@ -28,7 +28,7 @@ export const createTemplate = createAsyncThunk<
   {
     rejectValue: { errors?: Record<string, string>; message: string };
   }
->("create_template", async (data: CreateTemplateBody, { rejectWithValue }) => {
+>("create_template", async (data, { rejectWithValue }) => {
   try {
     const resp = await templateApiService.createTemplate(data);
     return resp.template;
@@ -49,6 +49,36 @@ export const getPaginatedTemplates = createAsyncThunk<
         : templateApiService.getAdminTemplates;
     const res = await request();
     return res;
+  } catch (error: any) {
+    return rejectWithValue(error);
+  }
+});
+
+export const updateTemplate = createAsyncThunk<
+  CreateTemplateRes["template"],
+  { data: CreateTemplateBody; id: string },
+  {
+    rejectValue: { errors?: Record<string, string>; message: string };
+  }
+>("update_template", async ({ id, data }, { rejectWithValue }) => {
+  try {
+    const resp = await templateApiService.updateTemplate(id, data);
+    return resp.template;
+  } catch (error: any) {
+    return rejectWithValue(error);
+  }
+});
+
+export const deleteTemplate = createAsyncThunk<
+  CreateTemplateRes["template"],
+  string,
+  {
+    rejectValue: { message: string };
+  }
+>("delete_template", async (id, { rejectWithValue }) => {
+  try {
+    const resp = await templateApiService.deleteTemplate(id);
+    return resp.template;
   } catch (error: any) {
     return rejectWithValue(error);
   }

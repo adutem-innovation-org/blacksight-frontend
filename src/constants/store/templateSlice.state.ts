@@ -23,4 +23,15 @@ export const initialTemplateState: TemplateState = {
   // Editor
   currentTemplate: null,
   editorMode: EditorMode.CREATE,
+
+  // Update template
+  updatingTemplate: false,
+  templateUpdated: false,
+  updateTemplateErrors: {},
+  updateTemplateErrorMessage: "",
+
+  // Delete template
+  deletingTemplate: false,
+  templateDeleted: false,
+  deleteTemplateErrorMessage: "",
 };
