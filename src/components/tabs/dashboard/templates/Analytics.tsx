@@ -125,8 +125,6 @@ export const TemplateAnalyticsTab = ({}: Props) => {
 
   if (fetchingTemplateAnalytics || fetchingTemplates) return <Loader />;
 
-  console.log(templates);
-
   return (
     <div className="flex flex-col gap-4 h-full overflow-hidden">
       <Header goToEditor={goToEditor} />
