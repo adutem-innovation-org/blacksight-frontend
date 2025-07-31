@@ -2,6 +2,8 @@ import React, { RefObject, useRef } from "react";
 
 import EmailEditor, { EditorRef, EmailEditorProps } from "react-email-editor";
 import { Loader } from "../progress";
+import { useStore } from "@/hooks";
+import { EditorMode } from "@/enums";
 
 interface CustomEmailEditorProps {
   emailEditorRef: RefObject<EditorRef | null>;
@@ -10,12 +12,18 @@ interface CustomEmailEditorProps {
 export const CustomEmailEditor = ({
   emailEditorRef,
 }: CustomEmailEditorProps) => {
+  const { getState, dispatch } = useStore();
   const [loading, setLoading] = React.useState(true);
   const [loadState, setLoadState] = React.useState("Initializing editor...");
+  const { editorMode, currentTemplate } = getState("Template");
 
   const onReady: EmailEditorProps["onReady"] = (unlayer) => {
+    // editor is ready
     setLoadState("Ready...");
-    setLoading(false);
+    if (editorMode !== EditorMode.EDIT) {
+      setLoading(false);
+    }
+    // Set default styles and event listeners
     unlayer.setAppearance({
       theme: "dark",
     });
@@ -27,12 +35,16 @@ export const CustomEmailEditor = ({
         contentWidth: "inherit",
       });
     });
-    // editor is ready
-    // you can load your template here;
+    // load your template here;
     // the design json can be obtained by calling
     // unlayer.loadDesign(callback) or unlayer.exportHtml(callback)
     // const templateJson = { DESIGN JSON GOES HERE };
     // unlayer.loadDesign(templateJson);
+    if (editorMode === EditorMode.EDIT && currentTemplate) {
+      setLoadState("Loading design...");
+      unlayer.loadDesign(currentTemplate.design);
+      setLoading(false);
+    }
   };
 
   const onLoad: EmailEditorProps["onLoad"] = (unlayer) => {
@@ -58,6 +70,7 @@ export const CustomEmailEditor = ({
             displayMode: "email",
             features: {
               stockImages: true,
+              undoRedo: true,
             },
             fonts: {
               showDefaultFonts: true,
