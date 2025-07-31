@@ -17,7 +17,7 @@ export const EmailTemplatePreview = ({
       <DialogContent
         onPointerDownOutside={(e) => e.preventDefault()}
         onOpenAutoFocus={(e) => e.preventDefault()}
-        className="h-[85dvh] overflow-y-auto overflow-x-hidden !min-w-[90dvw] px-2 sm:px-6"
+        className="h-[85dvh] overflow-y-auto overflow-x-hidden !w-[90dvw] !max-w-[700px] px-2 sm:px-6"
       >
         <div
           className="w-full h-full py-8 overflow-hidden"
