@@ -3,6 +3,7 @@ import {
   CreateTemplateRes,
   TemplateAnalyticsRes,
   GetTemplatesRes,
+  DeleteTemplateRes,
 } from "@/interfaces";
 import { ApiService } from "./api.service";
 import { TEMPLATE_URLS } from "./endpoints";
@@ -43,5 +44,18 @@ export class TemplateService {
 
   getAdminTemplates = () => {
     return this.apiService.get<GetTemplatesRes>(this.urls.GET_ADMIN_TEMPLATES);
+  };
+
+  updateTemplate = (id: string, data: CreateTemplateBody) => {
+    return this.apiService.update<CreateTemplateBody, CreateTemplateRes>(
+      this.urls.UPDATE_TEMPLATE.replace(":id", id),
+      data
+    );
+  };
+
+  deleteTemplate = (id: string) => {
+    return this.apiService.delete<DeleteTemplateRes>(
+      this.urls.DELETE_TEMPLATE.replace(":id", id)
+    );
   };
 }
