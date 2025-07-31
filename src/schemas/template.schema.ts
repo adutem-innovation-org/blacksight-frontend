@@ -18,10 +18,12 @@ export const emailTemplateSchema = yup.object({
     }),
   dynamicFields: yup
     .array()
+    .required("Please select at least one dynamic field")
     .of(yup.string())
     .min(1, "Please select at least one dynamic field"),
   keywords: yup
     .array()
+    .required("Please select at least one keyword")
     .of(yup.string())
     .min(1, "Please select at least one keyword"),
 });

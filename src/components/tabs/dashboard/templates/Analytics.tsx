@@ -2,11 +2,17 @@ import { useProfile, useStore } from "@/hooks";
 import templateAnalyticsData from "@/data/template.analytics.json";
 import { AnalyticsCard } from "@/components/cards";
 import { useEffect } from "react";
-import { changeTemplateTab, getTemplateAnalytics } from "@/store";
+import {
+  changeTemplateTab,
+  getPaginatedTemplates,
+  getTemplateAnalytics,
+} from "@/store";
 import { Loader } from "@/components/progress";
 import { SideBarStateEnum, TemplateTabsEnum, UserTypes } from "@/enums";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/form";
+import { EmptyRecordsTemplate } from "@/components/templates";
+import { TemplatesList } from "./TemplatesList";
 
 const Header = ({ goToEditor }: { goToEditor: () => void }) => {
   const { getState } = useStore();
@@ -37,7 +43,6 @@ const Header = ({ goToEditor }: { goToEditor: () => void }) => {
   // Is the sidebar collapsed?
   const isCollapsed = sidebarState === SideBarStateEnum.COLLAPSED;
 
-  console.log(isCollapsed);
   return (
     <header
       className={cn(
@@ -93,7 +98,15 @@ const Header = ({ goToEditor }: { goToEditor: () => void }) => {
 type Props = {};
 export const TemplateAnalyticsTab = ({}: Props) => {
   const { dispatch, getState } = useStore();
-  const { fetchingTemplateAnalytics, templateAnalytics } = getState("Template");
+  const { user } = useProfile();
+  const {
+    fetchingTemplateAnalytics,
+    templateAnalytics,
+
+    // Fetch templates
+    fetchingTemplates,
+    templates,
+  } = getState("Template");
 
   const goToEditor = () => {
     dispatch(changeTemplateTab(TemplateTabsEnum.EDITOR));
@@ -104,13 +117,35 @@ export const TemplateAnalyticsTab = ({}: Props) => {
     if (!templateAnalytics && !fetchingTemplateAnalytics) {
       dispatch(getTemplateAnalytics());
     }
+
+    if (!templates && !fetchingTemplates) {
+      dispatch(getPaginatedTemplates(user?.userType! ?? UserTypes.USER));
+    }
   }, []);
 
-  if (fetchingTemplateAnalytics) return <Loader />;
+  if (fetchingTemplateAnalytics || fetchingTemplates) return <Loader />;
+
+  console.log(templates);
 
   return (
     <div className="flex flex-col gap-4 h-full overflow-hidden">
       <Header goToEditor={goToEditor} />
+      {!templates || templates.length === 0 ? (
+        <EmptyRecordsTemplate
+          title="No templates"
+          ctaText="Create template"
+          description={
+            user?.userType === UserTypes.USER
+              ? "You don't have any templates yet. Click the button below to create one."
+              : "You or your users don't have any templates yet. Click the button below to create one."
+          }
+          onClickCta={goToEditor}
+        />
+      ) : (
+        <>
+          <TemplatesList templates={templates} />
+        </>
+      )}
     </div>
   );
 };

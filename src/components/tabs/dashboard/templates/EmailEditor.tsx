@@ -3,17 +3,19 @@ import { CustomEmailEditor } from "@/components/templates";
 import { TemplateTabsEnum } from "@/enums";
 import { useStore } from "@/hooks";
 import { changeTemplateTab } from "@/store";
-import { ArrowLeft, Save } from "lucide-react";
+import { ArrowLeft, Paperclip, Save } from "lucide-react";
 import { useRef, useState } from "react";
 import { EditorRef } from "react-email-editor";
-import { SaveTemplateForm } from "./SaveTemplateForm.tsx";
+import { CreateTemplateForm } from "./CreateTemplateForm";
 
 export const EditorHeader = ({
   goBack,
   saveTemplate,
+  saveToDraft,
 }: {
   goBack: () => void;
   saveTemplate: () => void;
+  saveToDraft: () => void;
 }) => {
   return (
     <div className="flex justify-between items-center border-b p-4">
@@ -29,9 +31,14 @@ export const EditorHeader = ({
         <p className="font-spfro-medium text-black text-sm">Back</p>
       </div>
 
-      <Button variant={"brand"} className="h-10" onClick={saveTemplate}>
-        Save <Save />
-      </Button>
+      <div className={"flex items-center gap-2"}>
+        <Button variant={"brand"} className="h-10" onClick={saveTemplate}>
+          Save <Save />
+        </Button>
+        <Button variant={"brand"} className={"h-10"} onClick={saveToDraft}>
+          Save to draft <Paperclip />
+        </Button>
+      </div>
     </div>
   );
 };
@@ -46,17 +53,21 @@ export const EmailTemplateEditorTab = () => {
   const exportHtml = () => {
     const unlayer = emailEditorRef.current?.editor;
 
-    let content = "";
+    if (!unlayer) {
+      throw new Error("Editor is not initialized.");
+    }
 
-    unlayer?.exportHtml((data) => {
-      const { html } = data;
-      content += html;
+    return new Promise<{ html: string; design: any }>((resolve) => {
+      unlayer.exportHtml((data: any) => {
+        const { html: htmlContent, design: emailDesign } = data;
+        resolve({ html: htmlContent, design: emailDesign });
+      });
     });
-
-    return content;
   };
 
   const saveTemplate = () => openTemplateForm();
+
+  const saveToDraft = () => console.log("Saved to draft");
 
   const goBack = () => {
     dispatch(changeTemplateTab(TemplateTabsEnum.ANALYTICS));
@@ -64,15 +75,20 @@ export const EmailTemplateEditorTab = () => {
 
   return (
     <div className="flex flex-col h-full overflow-hidden bg-white rounded-[12px]">
-      <EditorHeader goBack={goBack} saveTemplate={saveTemplate} />
+      <EditorHeader
+        goBack={goBack}
+        saveTemplate={saveTemplate}
+        saveToDraft={saveToDraft}
+      />
       <div className="flex-1 overflow-hidden">
         <CustomEmailEditor emailEditorRef={emailEditorRef} />
       </div>
 
       {templateFormOpen && (
-        <SaveTemplateForm
+        <CreateTemplateForm
           isOpen={templateFormOpen}
           onOpenChange={setTemplateFormOpen}
+          exportHtml={exportHtml}
         />
       )}
     </div>

@@ -10,13 +10,23 @@ import {
   FormGroup,
   FormikValidation,
   getSaveTemplateSectionFields,
+  Loader,
 } from "@/components";
 import { emailTemplateSchema } from "@/schemas";
 import { useFormik } from "formik";
-import { TemplateCategory, TemplateType } from "@/enums";
+import { TemplateCategory, TemplateTabsEnum, TemplateType } from "@/enums";
 import { InferType } from "yup";
 import { templateCategoryDynamicFieldMap, templateKeywords } from "@/constants";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useProfile, useStore } from "@/hooks";
+import toast from "react-hot-toast";
+import {
+  changeTemplateTab,
+  createTemplate,
+  getPaginatedTemplates,
+  getTemplateAnalytics,
+  resetCreateTemplate,
+} from "@/store";
 
 const SectionOne = ({ validation }: { validation: FormikValidation }) => {
   return (
@@ -96,21 +106,35 @@ const SectionTwo = ({ validation }: { validation: FormikValidation }) => {
 type SaveTemplateFormProps = {
   isOpen: boolean;
   onOpenChange: (val: boolean) => void;
+  exportHtml: () => Promise<{ html: string; design: any }>;
 };
 
-export const SaveTemplateForm = ({
+export const CreateTemplateForm = ({
   isOpen,
   onOpenChange,
+  exportHtml,
 }: SaveTemplateFormProps) => {
+  const { dispatch, getState } = useStore();
   const [currentStep, setCurrentStep] = useState<number>(1);
   const totalSteps = useRef(2).current;
+  const { user } = useProfile();
+
+  const {
+    creatingTemplate,
+    templateCreated,
+    createTemplateErrors,
+    createTemplateErrorMessage,
+  } = getState("Template");
 
   const prevStep = () => setCurrentStep((prev) => Math.max(prev - 1, 1));
 
   const nextStep = () =>
     setCurrentStep((prev) => Math.min(prev + 1, totalSteps));
 
-  const initialValues: InferType<typeof emailTemplateSchema> = {
+  const initialValues: InferType<typeof emailTemplateSchema> & {
+    dynamicFields: string[];
+    keywords: string[];
+  } = {
     name: "",
     description: "",
     type: TemplateType.EMAIL,
@@ -123,8 +147,19 @@ export const SaveTemplateForm = ({
     enableReinitialize: false,
     initialValues,
     validationSchema: emailTemplateSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      const { html, design } = await exportHtml();
+      try {
+        dispatch(
+          createTemplate({
+            ...values,
+            html,
+            design,
+          })
+        );
+      } catch (e) {
+        toast.error("Unable to export template.");
+      }
     },
   });
 
@@ -154,6 +189,34 @@ export const SaveTemplateForm = ({
     });
   };
 
+  useEffect(() => {
+    if (templateCreated) {
+      toast.success("Template created successfully");
+      // Reset create template state
+      dispatch(resetCreateTemplate());
+      // Reset form
+      validation.resetForm();
+      // Close modal
+      onOpenChange(false);
+      // Get latest analytics
+      dispatch(getTemplateAnalytics());
+      // Get all templates
+      dispatch(getPaginatedTemplates(user?.userType!));
+      // Go to templates tab
+      dispatch(changeTemplateTab(TemplateTabsEnum.ANALYTICS));
+    }
+  }, [templateCreated]);
+
+  useEffect(() => {
+    if (createTemplateErrorMessage) toast.error(createTemplateErrorMessage);
+    if (Object.keys(createTemplateErrors).length)
+      validation.setErrors(createTemplateErrors);
+    const tmo = setTimeout(() => {
+      dispatch(resetCreateTemplate());
+      clearTimeout(tmo);
+    }, 1400);
+  }, [createTemplateErrorMessage]);
+
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent
@@ -161,6 +224,7 @@ export const SaveTemplateForm = ({
         onOpenAutoFocus={(e) => e.preventDefault()}
         className={"max-h-[85dvh] overflow-y-auto overflow-x-hidden"}
       >
+        {creatingTemplate && <Loader />}
         <DialogHeader>
           <DialogTitle>Save template</DialogTitle>
           <DialogDescription>

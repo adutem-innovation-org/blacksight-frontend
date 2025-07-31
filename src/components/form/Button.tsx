@@ -12,7 +12,7 @@ const buttonVariants = cva(
         default: "bg-primary text-primary-foreground hover:bg-primary/90",
         brand: "bg-brand text-primary-foreground hover:bg-brand-60",
         primary:
-          "bg-primary text-primary-foreground hover:bg-primary-hover focus:bg-primary-focus focus:border focus:border-primary-focus focus:shadow-primary outline-none",
+          "bg-primary text-primary-foreground hover:bg-primary/80 focus:bg-primary-focus focus:border focus:border-primary-focus focus:shadow-primary outline-none",
         secondary_blue:
           "bg-secondary-blue text-secondary-blue-foreground hover:bg-secondary-blue-hover focus:border focus:border-secondary-blue-focus focus:shadow-secondary-blue outline-none",
         tertiary:
