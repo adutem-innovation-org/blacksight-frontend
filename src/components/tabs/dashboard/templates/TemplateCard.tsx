@@ -6,7 +6,12 @@ import { useEffect, useRef, useState } from "react";
 import html2canvas from "html2canvas-pro";
 import { Loader } from "@/components/progress";
 
-export const TemplateCard = ({ template }: { template: EmailTemplate }) => {
+type TemplateCardProps = {
+  template: EmailTemplate;
+  openPreview: (preview: string) => void;
+};
+
+export const TemplateCard = ({ template, openPreview }: TemplateCardProps) => {
   const [loadingPreview, setLoadingPreview] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [previewError, setPreviewError] = useState(false);
@@ -73,6 +78,7 @@ export const TemplateCard = ({ template }: { template: EmailTemplate }) => {
             variant={"ghost"}
             size={"icon"}
             className="rounded-full bg-gray-200 w-12 h-12"
+            onClick={() => openPreview(template.html)}
           >
             <Eye />
           </Button>
