@@ -140,6 +140,7 @@ export const TemplateAnalyticsTab = ({}: Props) => {
               : "You or your users don't have any templates yet. Click the button below to create one."
           }
           onClickCta={goToEditor}
+          showCta
         />
       ) : (
         <>
