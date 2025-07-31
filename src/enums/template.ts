@@ -12,3 +12,9 @@ export enum TemplateTabsEnum {
   ANALYTICS = "analytics",
   EDITOR = "editor",
 }
+
+export enum EditorMode {
+  CREATE = "create",
+  EDIT = "edit",
+  VIEW = "view",
+}

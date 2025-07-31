@@ -1,5 +1,6 @@
 import { PaginationMetaData } from "@/interfaces/pagination";
 import { EmailTemplate } from "./email-template";
+import { EditorMode } from "@/enums";
 
 export type TemplateState = {
   fetchingTemplateAnalytics: boolean;
@@ -19,4 +20,8 @@ export type TemplateState = {
   fetchTemplatesErrorMessage: string;
   templates: EmailTemplate[] | null;
   meta: PaginationMetaData | null;
+
+  // Editor
+  currentTemplate: EmailTemplate | null;
+  editorMode: EditorMode;
 };

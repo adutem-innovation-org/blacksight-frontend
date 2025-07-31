@@ -1,3 +1,4 @@
+import { EditorMode } from "@/enums";
 import { TemplateState } from "@/interfaces";
 
 export const initialTemplateState: TemplateState = {
@@ -18,4 +19,8 @@ export const initialTemplateState: TemplateState = {
   fetchTemplatesErrorMessage: "",
   templates: null,
   meta: null,
+
+  // Editor
+  currentTemplate: null,
+  editorMode: EditorMode.CREATE,
 };

@@ -2,8 +2,10 @@ import { initialTemplateState } from "@/constants";
 import { createSlice } from "@reduxjs/toolkit";
 import {
   resetCreateTemplateReducer,
+  resetEditorStateReducer,
   resetGetTemplateAnalyticsReducer,
   resetGetTemplatesReducer,
+  updateEditorStateReducer,
 } from "../reducers";
 import {
   createTemplateBuilder,
@@ -18,6 +20,8 @@ const templateSlice = createSlice({
     resetGetTemplateAnalytics: resetGetTemplateAnalyticsReducer,
     resetCreateTemplate: resetCreateTemplateReducer,
     resetGetTemplates: resetGetTemplatesReducer,
+    updateEditorState: updateEditorStateReducer,
+    resetEditorState: resetEditorStateReducer,
   },
   extraReducers(builder) {
     getTemplateAnalyticsBuilder(builder);
@@ -31,4 +35,6 @@ export const {
   resetGetTemplateAnalytics,
   resetCreateTemplate,
   resetGetTemplates,
+  updateEditorState,
+  resetEditorState,
 } = templateSlice.actions;
