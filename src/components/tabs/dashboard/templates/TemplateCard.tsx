@@ -57,14 +57,14 @@ export const TemplateCard = ({ template }: { template: EmailTemplate }) => {
           </div>
         )}
       </div>
-      <div className="flex-1 flex flex-col gap-1.5 p-2">
+      <div className="flex-1 flex flex-col gap-3 p-2">
         <h3 className="font-urbanist font-semibold text-xl">{template.name}</h3>
-        <p className="font-sfpro text-ellipsis max-h-[80px] overflow-hidden text-sm leading-relaxed text-gray-500">
+        <p className="font-urbanist text-ellipsis max-h-[80px] overflow-hidden text-sm leading-relaxed text-gray-500">
           {template.description}
         </p>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1.5 flex-wrap">
           {template.keywords.slice(0, 4).map((keyword) => (
-            <Badge>{keyword}</Badge>
+            <Badge size={"sm"}>{keyword}</Badge>
           ))}
         </div>
         <div className="flex items-center gap-2 mt-1">
