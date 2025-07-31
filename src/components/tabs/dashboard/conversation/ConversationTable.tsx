@@ -60,7 +60,7 @@ export const columns: ColumnDef<Conversation>[] = [
   {
     id: "botName",
     // accessorKey: "botId",
-    accessorFn: (row) => row.bot?.name ?? "-",
+    accessorFn: (row) => row.bot?.name ?? "Deleted bot",
     header: "Bot Name",
     cell: ({ row }) => <div>{row.getValue("botName")}</div>,
   },
