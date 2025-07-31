@@ -6,13 +6,20 @@ import {
   changeTemplateTab,
   getPaginatedTemplates,
   getTemplateAnalytics,
+  updateEditorState,
 } from "@/store";
 import { Loader } from "@/components/progress";
-import { SideBarStateEnum, TemplateTabsEnum, UserTypes } from "@/enums";
+import {
+  EditorMode,
+  SideBarStateEnum,
+  TemplateTabsEnum,
+  UserTypes,
+} from "@/enums";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/form";
 import { EmptyRecordsTemplate } from "@/components/templates";
 import { TemplatesList } from "./TemplatesList";
+import { EmailTemplate } from "@/interfaces";
 
 const Header = ({ goToEditor }: { goToEditor: () => void }) => {
   const { getState } = useStore();
@@ -112,6 +119,16 @@ export const TemplateAnalyticsTab = ({}: Props) => {
     dispatch(changeTemplateTab(TemplateTabsEnum.EDITOR));
   };
 
+  const openTemplateInEditor = (template: EmailTemplate) => {
+    dispatch(
+      updateEditorState({
+        template,
+        mode: EditorMode.EDIT,
+      })
+    );
+    dispatch(changeTemplateTab(TemplateTabsEnum.EDITOR));
+  };
+
   // Get template analytics
   useEffect(() => {
     if (!templateAnalytics && !fetchingTemplateAnalytics) {
@@ -142,7 +159,10 @@ export const TemplateAnalyticsTab = ({}: Props) => {
         />
       ) : (
         <>
-          <TemplatesList templates={templates} />
+          <TemplatesList
+            templates={templates}
+            openEditor={openTemplateInEditor}
+          />
         </>
       )}
     </div>

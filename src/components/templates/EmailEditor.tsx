@@ -15,7 +15,8 @@ export const CustomEmailEditor = ({
   const { getState, dispatch } = useStore();
   const [loading, setLoading] = React.useState(true);
   const [loadState, setLoadState] = React.useState("Initializing editor...");
-  const { editorMode, currentTemplate } = getState("Template");
+  const { editorMode, currentTemplate, updatingTemplate } =
+    getState("Template");
 
   const onReady: EmailEditorProps["onReady"] = (unlayer) => {
     // editor is ready
@@ -63,6 +64,8 @@ export const CustomEmailEditor = ({
           className="bg-white"
         />
       )}
+
+      {updatingTemplate && <Loader className="bg-black/30" />}
 
       <div className="flex-1 flex flex-col overflow-hidden">
         <EmailEditor

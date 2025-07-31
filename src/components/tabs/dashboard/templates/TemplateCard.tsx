@@ -9,13 +9,20 @@ import { Loader } from "@/components/progress";
 type TemplateCardProps = {
   template: EmailTemplate;
   openPreview: (preview: string) => void;
+  openEditor: (template: EmailTemplate) => void;
 };
 
-export const TemplateCard = ({ template, openPreview }: TemplateCardProps) => {
+export const TemplateCard = ({
+  template,
+  openPreview,
+  openEditor,
+}: TemplateCardProps) => {
   const [loadingPreview, setLoadingPreview] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [previewError, setPreviewError] = useState(false);
   const hiddenRef = useRef<HTMLDivElement>(null);
+
+  const openTemplateInEditor = () => openEditor(template);
 
   const htmlToImage = async () => {
     if (!hiddenRef.current) return;
@@ -73,7 +80,12 @@ export const TemplateCard = ({ template, openPreview }: TemplateCardProps) => {
           ))}
         </div>
         <div className="flex items-center gap-2 mt-1">
-          <Button className="rounded-full flex-1 h-12">Edit Template</Button>
+          <Button
+            className="rounded-full flex-1 h-12"
+            onClick={openTemplateInEditor}
+          >
+            Open template
+          </Button>
           <Button
             variant={"ghost"}
             size={"icon"}

@@ -5,8 +5,10 @@ import { EmailTemplatePreview } from "./EmailTemplatePreview";
 
 export const TemplatesList = ({
   templates,
+  openEditor,
 }: {
   templates: EmailTemplate[];
+  openEditor: (template: EmailTemplate) => void;
 }) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [preview, setPreview] = useState("");
@@ -27,7 +29,11 @@ export const TemplatesList = ({
     <div className="overflow-hidden flex-1 bg-transparent flex flex-col">
       <div className="h-full overflow-auto grid bg-transparent auto-rows-max grid-cols-1 md:grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6 md:gap-5 no-scrollbar">
         {templates.map((template) => (
-          <TemplateCard template={template} openPreview={openPreview} />
+          <TemplateCard
+            template={template}
+            openPreview={openPreview}
+            openEditor={openEditor}
+          />
         ))}
       </div>
 

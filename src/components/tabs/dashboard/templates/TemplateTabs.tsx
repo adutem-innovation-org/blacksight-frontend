@@ -2,7 +2,7 @@ import { TemplateTabsEnum } from "@/enums";
 import { useStore } from "@/hooks";
 import { Tabs } from "@mantine/core";
 import { TemplateAnalyticsTab } from "./Analytics";
-import { EmailTemplateEditorTab } from "./EmailEditor";
+import { EmailTemplateEditorTab } from "./EmailEditorTab";
 
 export const TemplateTabs = () => {
   const { getState } = useStore();
