@@ -16,6 +16,17 @@ export const CustomEmailEditor = ({
   const onReady: EmailEditorProps["onReady"] = (unlayer) => {
     setLoadState("Ready...");
     setLoading(false);
+    unlayer.setAppearance({
+      theme: "dark",
+    });
+    unlayer.setBodyValues({
+      contentWidth: "inherit",
+    });
+    unlayer.addEventListener("design:updated", () => {
+      unlayer.setBodyValues({
+        contentWidth: "inherit",
+      });
+    });
     // editor is ready
     // you can load your template here;
     // the design json can be obtained by calling
@@ -48,7 +59,47 @@ export const CustomEmailEditor = ({
             features: {
               stockImages: true,
             },
+            fonts: {
+              showDefaultFonts: true,
+              customFonts: [
+                {
+                  label: "Poppins",
+                  value: "Poppins",
+                  url: "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap",
+                  weights: [300, 400, 500, 600, 700, 800],
+                },
+                {
+                  label: "Inter",
+                  value: "Inter",
+                  url: "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap",
+                  weights: [300, 400, 500, 600, 700, 800],
+                },
+                {
+                  label: "Lato",
+                  value: "Lato",
+                  url: "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700;800&display=swap",
+                  weights: [300, 400, 500, 600, 700, 800],
+                },
+                {
+                  label: "Roboto",
+                  value: "Roboto",
+                  url: "https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700;800&display=swap",
+                  weights: [300, 400, 500, 600, 700, 800],
+                },
+              ],
+            },
             id: "dy-email-editor",
+            tools: {
+              bodies: {
+                properties: {
+                  contentWidth: {
+                    editor: {
+                      enabled: false,
+                    },
+                  },
+                },
+              },
+            },
           }}
           ref={emailEditorRef}
           onReady={onReady}
