@@ -3,7 +3,10 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   CreateTemplateBody,
   CreateTemplateRes,
+  DeleteTemplateRes,
   GetTemplatesRes,
+  UpdateTemplateBody,
+  UpdateTemplateRes,
 } from "@/interfaces";
 import { UserTypes } from "@/enums";
 
@@ -55,8 +58,8 @@ export const getPaginatedTemplates = createAsyncThunk<
 });
 
 export const updateTemplate = createAsyncThunk<
-  CreateTemplateRes["template"],
-  { data: CreateTemplateBody; id: string },
+  UpdateTemplateRes["template"],
+  { data: UpdateTemplateBody; id: string },
   {
     rejectValue: { errors?: Record<string, string>; message: string };
   }
@@ -70,7 +73,7 @@ export const updateTemplate = createAsyncThunk<
 });
 
 export const deleteTemplate = createAsyncThunk<
-  CreateTemplateRes["template"],
+  DeleteTemplateRes["template"],
   string,
   {
     rejectValue: { message: string };

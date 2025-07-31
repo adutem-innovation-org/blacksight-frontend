@@ -4,6 +4,8 @@ import {
   TemplateAnalyticsRes,
   GetTemplatesRes,
   DeleteTemplateRes,
+  UpdateTemplateBody,
+  UpdateTemplateRes,
 } from "@/interfaces";
 import { ApiService } from "./api.service";
 import { TEMPLATE_URLS } from "./endpoints";
@@ -46,8 +48,8 @@ export class TemplateService {
     return this.apiService.get<GetTemplatesRes>(this.urls.GET_ADMIN_TEMPLATES);
   };
 
-  updateTemplate = (id: string, data: CreateTemplateBody) => {
-    return this.apiService.update<CreateTemplateBody, CreateTemplateRes>(
+  updateTemplate = (id: string, data: UpdateTemplateBody) => {
+    return this.apiService.update<UpdateTemplateBody, UpdateTemplateRes>(
       this.urls.UPDATE_TEMPLATE.replace(":id", id),
       data
     );
