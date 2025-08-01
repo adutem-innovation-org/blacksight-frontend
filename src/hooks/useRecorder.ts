@@ -1,8 +1,9 @@
 import { useRef, useState } from "react";
 import { useStore } from "./useStore";
+import { transcribeSpeech } from "@/store";
 
 export const useRecorder = () => {
-  const { dispatch, getState } = useStore();
+  const { dispatch } = useStore();
   const [recording, setRecording] = useState(false);
   const [isRecorderOpen, setIsRecordOpen] = useState(false);
   const wasCancelledRef = useRef(false);
@@ -13,7 +14,6 @@ export const useRecorder = () => {
   const audioChunksRef = useRef<Blob[]>([]);
   const audioContextRef = useRef<AudioContext | null>(null);
   const sourceRef = useRef<MediaStreamAudioSourceNode | null>(null);
-  const { agentData } = getState("Agent");
 
   const launchRecorder = () => {
     setIsRecordOpen(true);
@@ -56,9 +56,8 @@ export const useRecorder = () => {
       });
       const formData = new FormData();
       formData.append("speech-file", audioBlob, "voice.webm");
-      formData.append("botId", agentData?._id!);
 
-      // dispatch(speechToText(formData));
+      dispatch(transcribeSpeech(formData));
     };
 
     mediaRecorderRef.current = recorder;

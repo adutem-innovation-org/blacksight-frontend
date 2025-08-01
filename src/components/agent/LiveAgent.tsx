@@ -1,10 +1,15 @@
-import { connectAgent, setAgentConnectionError } from "@/store";
+import {
+  askAgent,
+  connectAgent,
+  newEnquiry,
+  resetTranscribeSpeech,
+  setAgentConnectionError,
+} from "@/store";
 import { Fragment, use, useCallback, useEffect, useRef, useState } from "react";
 import { useStore } from "@/hooks";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { motion } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
-import { Agent } from "@/interfaces";
 import { cn } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
 import { RoleEnum } from "@/enums";
@@ -15,6 +20,7 @@ import throttle from "lodash.throttle";
 import { useRecorder } from "@/hooks";
 import { getOrCreateSessionId } from "@/helpers";
 import { VoiceChatRecorder } from "../media";
+import toast from "react-hot-toast";
 
 const AgentHeader = ({ agentName }: { agentName: string }) => {
   return (
@@ -35,17 +41,17 @@ const Promper = ({
 }) => {
   const { dispatch, getState } = useStore();
   const {
-    askingChatbot,
-    startConversationError,
-    startingConversation,
-    currentBot,
-    currentConversationId,
+    askingAgent,
+
+    agentData,
+    sessionId,
 
     // speech to text
     transcribingSpeech,
     speechTranscribed,
     transcribedText,
-  } = getState("Bot");
+    transcribeSpeechError,
+  } = getState("Agent");
   const [message, setMessage] = useState("");
   const textareaRef = useRef<any>(null);
 
@@ -58,54 +64,44 @@ const Promper = ({
   const updateText = (value: string) => setMessage(value);
 
   const sendMessage = () => {
-    if (currentConversationId && currentBot) {
-      // dispatch(
-      //   newMessage({
-      //     role: RoleEnum.USER,
-      //     content: message,
-      //   })
-      // );
-      let askChatbotTmo = setTimeout(() => {
-        // dispatch(
-        //   askChatbot({
-        //     botId: currentBot._id,
-        //     conversationId: currentConversationId,
-        //     userQuery: message,
-        //   })
-        // );
+    if (sessionId && agentData) {
+      dispatch(
+        newEnquiry({
+          role: RoleEnum.USER,
+          content: message,
+        })
+      );
+      const askAgentTmo = setTimeout(() => {
+        dispatch(
+          askAgent({
+            userQuery: message,
+          })
+        );
         setMessage("");
-        clearTimeout(askChatbotTmo);
+        clearTimeout(askAgentTmo);
       }, 300);
     }
   };
 
   const handleKeyPress = (e: any) => {
-    if (
-      askingChatbot ||
-      startingConversation ||
-      startConversationError ||
-      recording ||
-      transcribingSpeech
-    ) {
+    if (askingAgent || recording || transcribingSpeech) {
       return;
     }
     if (e.key === "Enter") {
       if (message.trim().length > 0) {
-        if (currentConversationId && currentBot) {
-          // dispatch(
-          //   newMessage({
-          //     role: RoleEnum.USER,
-          //     content: message,
-          //   })
-          // );
+        if (sessionId && agentData) {
+          dispatch(
+            newEnquiry({
+              role: RoleEnum.USER,
+              content: message,
+            })
+          );
           let askChatbotTmo = setTimeout(() => {
-            // dispatch(
-            //   askChatbot({
-            //     botId: currentBot._id,
-            //     conversationId: currentConversationId,
-            //     userQuery: message,
-            //   })
-            // );
+            dispatch(
+              askAgent({
+                userQuery: message,
+              })
+            );
             setMessage("");
             clearTimeout(askChatbotTmo);
           }, 300);
@@ -190,9 +186,16 @@ const Promper = ({
   useEffect(() => {
     if (speechTranscribed) {
       if (transcribedText.trim().length > 0) setMessage(transcribedText.trim());
-      // dispatch(resetSpeechToText());
+      dispatch(resetTranscribeSpeech());
     }
   }, [speechTranscribed]);
+
+  useEffect(() => {
+    if (transcribeSpeechError) {
+      toast.error(transcribeSpeechError);
+      dispatch(resetTranscribeSpeech());
+    }
+  }, [transcribeSpeechError]);
 
   return (
     <div className="rounded-3xl w-full bg-white shadow-2xl min-h-15 flex flex-col p-2">
@@ -240,13 +243,7 @@ const Promper = ({
           className="bg-indigo-500 rounded-full h-10 w-10 aspect-square cursor-pointer hover:bg-indigo-500/70"
           size={"icon"}
           onClick={sendMessage}
-          disabled={
-            !!startConversationError ||
-            askingChatbot ||
-            startingConversation ||
-            recording ||
-            transcribingSpeech
-          }
+          disabled={askingAgent || recording || transcribingSpeech}
         >
           <Send className="!w-4 !h-4" />
         </Button>
@@ -258,9 +255,11 @@ const Promper = ({
 export const Message = ({
   role,
   content,
+  isError,
 }: {
   role: RoleEnum;
   content: string;
+  isError?: boolean;
 }) => {
   const isBot = role === RoleEnum.ASSISTANT;
 
@@ -293,6 +292,7 @@ export const Message = ({
             "rounded-md rounded-tl-none shadow-[2px_2px_4px_#0000001a]": isBot,
             "rounded-md rounded-tr-none shadow-[-2px_2px_4px_#0000001a]":
               !isBot,
+            "text-destructive": isError,
           }
         )}
       >
@@ -351,18 +351,18 @@ const Typing = () => {
 };
 
 const Conversations = ({
-  currentConversation,
+  chatHistory,
   recording,
   launchRecorder,
 }: {
-  currentConversation: any[] | null;
+  chatHistory: any[] | null;
   recording: boolean;
   launchRecorder: () => void;
 }) => {
   const conversationContainerRef = useRef<any>(null);
   const { getState } = useStore();
-  const { askingChatbot } = getState("Bot");
-  const typing = askingChatbot;
+  const { askingAgent } = getState("Agent");
+  const typing = askingAgent;
 
   const scrollToBottom = useCallback(() => {
     const containerRef = conversationContainerRef.current;
@@ -372,10 +372,10 @@ const Conversations = ({
   }, [conversationContainerRef]);
 
   useEffect(() => {
-    if ((currentConversation || []).length > 1 || typing) {
+    if ((chatHistory || []).length > 1 || typing) {
       scrollToBottom();
     }
-  }, [currentConversation, typing]);
+  }, [chatHistory, typing]);
 
   return (
     <div className="bg-gray-100 flex-1 rounded-[28px] flex flex-col justify-end p-4 gap-4 overflow-hidden relative">
@@ -384,8 +384,8 @@ const Conversations = ({
           className="flex-1 overflow-auto no-scrollbar py-4 scroll-smooth"
           ref={conversationContainerRef}
         >
-          <div className="flex flex-col gap-3 w-full overflow-x-hidden">
-            {(currentConversation || []).map((message) => (
+          <div className="flex flex-col gap-3 w-full overflow-x-hidden pb-4">
+            {(chatHistory || []).map((message) => (
               <Message {...message} />
             ))}
             {typing && <Typing />}
@@ -509,7 +509,7 @@ export const LiveAgent = ({ apiKey, agentId }: LiveAgentProps) => {
     connectionError,
     agentData,
     chatHistory,
-    sessionId,
+    transcribingSpeech,
   } = getState("Agent");
   const {
     recording,
@@ -582,14 +582,14 @@ export const LiveAgent = ({ apiKey, agentId }: LiveAgentProps) => {
         <Conversations
           recording={recording}
           launchRecorder={launchRecorder}
-          currentConversation={chatHistory}
+          chatHistory={chatHistory}
         />
         {isRecorderOpen && (
           <VoiceChatRecorder
             canvasRef={canvasRef}
             endRecording={endRecording}
             cancelRecording={cancelRecording}
-            transcribing={false}
+            transcribing={transcribingSpeech}
           />
         )}
       </div>
