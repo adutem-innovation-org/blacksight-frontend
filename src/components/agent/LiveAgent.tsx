@@ -13,6 +13,8 @@ import { Mic, Send } from "lucide-react";
 import { Button } from "../form";
 import throttle from "lodash.throttle";
 import { useRecorder } from "@/hooks";
+import { getOrCreateSessionId } from "@/helpers";
+import { VoiceChatRecorder } from "../media";
 
 const AgentHeader = ({ agentName }: { agentName: string }) => {
   return (
@@ -359,13 +361,8 @@ const Conversations = ({
 }) => {
   const conversationContainerRef = useRef<any>(null);
   const { getState } = useStore();
-  const {
-    startingConversation,
-    startConversationError,
-    askingChatbot,
-    fetchingTrainingConversation,
-  } = getState("Bot");
-  const typing = startingConversation || askingChatbot;
+  const { askingChatbot } = getState("Bot");
+  const typing = askingChatbot;
 
   const scrollToBottom = useCallback(() => {
     const containerRef = conversationContainerRef.current;
@@ -382,30 +379,20 @@ const Conversations = ({
 
   return (
     <div className="bg-gray-100 flex-1 rounded-[28px] flex flex-col justify-end p-4 gap-4 overflow-hidden relative">
-      {fetchingTrainingConversation ? (
-        <Loader text1="Loading conversations..." />
-      ) : (
-        <Fragment>
-          <div
-            className="flex-1 overflow-auto no-scrollbar py-4 scroll-smooth"
-            ref={conversationContainerRef}
-          >
-            <div className="flex flex-col gap-3 w-full overflow-x-hidden">
-              {(currentConversation || []).map((message) => (
-                <Message {...message} />
-              ))}
-              {typing && <Typing />}
-              {startConversationError && !typing && (
-                <Message
-                  role={RoleEnum.ASSISTANT}
-                  content={startConversationError}
-                />
-              )}
-            </div>
+      <Fragment>
+        <div
+          className="flex-1 overflow-auto no-scrollbar py-4 scroll-smooth"
+          ref={conversationContainerRef}
+        >
+          <div className="flex flex-col gap-3 w-full overflow-x-hidden">
+            {(currentConversation || []).map((message) => (
+              <Message {...message} />
+            ))}
+            {typing && <Typing />}
           </div>
-          <Promper recording={recording} launchRecorder={launchRecorder} />
-        </Fragment>
-      )}
+        </div>
+        <Promper recording={recording} launchRecorder={launchRecorder} />
+      </Fragment>
     </div>
   );
 };
@@ -516,9 +503,23 @@ type LiveAgentProps = {
 
 export const LiveAgent = ({ apiKey, agentId }: LiveAgentProps) => {
   const { getState, dispatch } = useStore();
-  const { connected, connecting, connectionError, agentData } =
-    getState("Agent");
-  const { recording, cancelRecording, launchRecorder } = useRecorder();
+  const {
+    connected,
+    connecting,
+    connectionError,
+    agentData,
+    chatHistory,
+    sessionId,
+  } = getState("Agent");
+  const {
+    recording,
+    launchRecorder,
+    isRecorderOpen,
+    startRecording,
+    endRecording,
+    cancelRecording,
+    canvasRef,
+  } = useRecorder();
 
   useEffect(() => {
     const init = () => {
@@ -540,13 +541,22 @@ export const LiveAgent = ({ apiKey, agentId }: LiveAgentProps) => {
 
   useEffect(() => {
     if (apiKey && agentId && !connected) {
+      const sessionId = getOrCreateSessionId();
+
       const timeout = setTimeout(() => {
-        dispatch(connectAgent({ apiKey, agentId }));
+        dispatch(connectAgent({ apiKey, agentId, sessionId }));
       }, 2000);
 
       return () => clearTimeout(timeout);
     }
   }, [apiKey, agentId]);
+
+  // Speech to text
+  useEffect(() => {
+    if (isRecorderOpen) {
+      startRecording();
+    }
+  }, [isRecorderOpen]);
 
   if (!connected && !connectionError)
     return (
@@ -572,8 +582,16 @@ export const LiveAgent = ({ apiKey, agentId }: LiveAgentProps) => {
         <Conversations
           recording={recording}
           launchRecorder={launchRecorder}
-          currentConversation={[]}
+          currentConversation={chatHistory}
         />
+        {isRecorderOpen && (
+          <VoiceChatRecorder
+            canvasRef={canvasRef}
+            endRecording={endRecording}
+            cancelRecording={cancelRecording}
+            transcribing={false}
+          />
+        )}
       </div>
     </div>
   );
