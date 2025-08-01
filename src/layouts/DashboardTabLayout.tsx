@@ -1,4 +1,4 @@
-import { DashboardTabs, Sidebar } from "@/components";
+import { DashboardTabs, LiveAgent, Sidebar } from "@/components";
 import { SideBarMobileStateEnum, SideBarStateEnum } from "@/enums";
 import { useStore } from "@/hooks";
 import { changeSidebarMobileState } from "@/store";
@@ -36,6 +36,12 @@ export const DashboardTabLayout = (props: PropsWithChildren) => {
           <div className="w-full h-full overflow-hidden">{props.children}</div>
         </div>
       </DashboardLayoutContainer>
+
+      <LiveAgent
+        apiKey="cf0af4c44d552595e25a66cffb9d81caacd7421c3e596c2b7ad9f24c2f72ca80"
+        // agentId="agent_123"
+        agentId="684702278a6bccca8c1c9606"
+      />
     </div>
   );
 };
