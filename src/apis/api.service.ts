@@ -33,8 +33,8 @@ export class ApiService {
     axios.defaults.headers.common.Authorization = undefined;
   };
 
-  get = <ResData>(url: string, params?: {}) => {
-    return this.apiClient.get<any, ResData>(url, { params });
+  get = <ResData>(url: string, configs?: AxiosRequestConfig) => {
+    return this.apiClient.get<any, ResData>(url, { ...configs });
   };
 
   post = <ReqData, ResData>(

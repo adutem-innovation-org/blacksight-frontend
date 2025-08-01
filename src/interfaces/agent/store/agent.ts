@@ -1,0 +1,28 @@
+import { BotStatus, RoleEnum } from "@/enums";
+
+export type Agent = {
+  _id: string;
+  businessId: string;
+  knowledgeBaseIds: string[];
+  scheduleMeeting: boolean;
+  welcomeMessage: string;
+  meetingProviderId: string;
+  name: string;
+  instructions: string;
+  status: BotStatus;
+  isActive: boolean;
+  knowledgeBase: {
+    tag: string;
+    isActive: boolean;
+  };
+  knowledgeBases: [
+    {
+      tag: string;
+      isActive: boolean;
+      _id: string;
+      id: string;
+    }
+  ];
+  createdAt: string;
+  updatedAt: string;
+};

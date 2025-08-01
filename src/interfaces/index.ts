@@ -12,3 +12,4 @@ export * from "./appointment";
 export * from "./pagination";
 export * from "./api-key";
 export * from "./template";
+export * from "./agent";

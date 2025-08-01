@@ -8,6 +8,7 @@ import { LayoutState } from "../layout";
 import { CalendarState } from "../calendar";
 import { ReminderState } from "../reminder";
 import { TemplateState } from "../template";
+import { AgentState } from "../agent";
 
 export type StoreState = {
   Auth: AuthState;
@@ -20,4 +21,5 @@ export type StoreState = {
   Bot: BotState;
   Calendar: CalendarState;
   Template: TemplateState;
+  Agent: AgentState;
 };
