@@ -6,6 +6,17 @@ export interface AgentState {
   connected: boolean;
   connectionError: string;
   agentData: Agent | null;
-  chatHistory: Message[] | null;
+  chatHistory: (Message & { isError?: boolean })[] | null;
   sessionId: string | null;
+  apiKey: string | null;
+
+  // Ask agent
+  askingAgent: boolean;
+  askAgentError: string;
+
+  // Transcribing speech
+  transcribingSpeech: boolean;
+  speechTranscribed: boolean;
+  transcribedText: string;
+  transcribeSpeechError: string;
 }

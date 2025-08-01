@@ -7,4 +7,13 @@ export const initialAgentState: AgentState = {
   agentData: null,
   chatHistory: null,
   sessionId: null,
+  apiKey: null,
+
+  askingAgent: false,
+  askAgentError: "",
+
+  transcribingSpeech: false,
+  speechTranscribed: false,
+  transcribedText: "",
+  transcribeSpeechError: "",
 };

@@ -16,6 +16,7 @@ export const connectAgentBuilder = (
       state.connected = true;
       state.agentData = action.payload.agent;
       state.chatHistory = action.payload.chatHistory;
+      state.apiKey = action.meta.arg.apiKey;
     })
     .addCase(connectAgent.rejected, (state, action) => {
       state.connecting = false;
