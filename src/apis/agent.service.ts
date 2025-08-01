@@ -19,11 +19,12 @@ export class AgentApiService {
     return this.instance;
   }
 
-  connect = (apiKey: string, agentId: string) => {
+  connect = (apiKey: string, agentId: string, sessionId: string) => {
     return this.apiService.get<ConnectToAgentRes>(this.urls.CONNECT_TO_AGENT, {
       headers: {
         "x-api-key": apiKey,
         "x-agent-id": agentId,
+        "x-session-id": sessionId,
       },
       timeout: 30000,
     });

@@ -5,4 +5,6 @@ export const initialAgentState: AgentState = {
   connected: false,
   connectionError: "",
   agentData: null,
+  chatHistory: null,
+  sessionId: null,
 };
