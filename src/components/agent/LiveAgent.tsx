@@ -1,13 +1,418 @@
 import { connectAgent, setAgentConnectionError } from "@/store";
-import { use, useEffect } from "react";
+import { Fragment, use, useCallback, useEffect, useRef, useState } from "react";
 import { useStore } from "@/hooks";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { motion } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
+import { Agent } from "@/interfaces";
+import { cn } from "@/lib/utils";
+import ReactMarkdown from "react-markdown";
+import { RoleEnum } from "@/enums";
+import { Loader } from "../progress";
+import { Mic, Send } from "lucide-react";
+import { Button } from "../form";
+import throttle from "lodash.throttle";
+import { useRecorder } from "@/hooks";
 
-export const AgentInitState = ({ state }: { state: string }) => {
+const AgentHeader = ({ agentName }: { agentName: string }) => {
   return (
-    <div className="w-full h-full min-w-[280px] min-h-[400px] max-w-[400px] max-h-[500px] rounded-2xl fixed bottom-[20px] right-[20px] bg-white shadow-2xl drop-shadow-2xl z-[1000000]">
+    <div className="bg-transparent p-4 pt-4 pb-4">
+      <div className="flex items-center justify-between">
+        <p className="tracking-tight font-dmsans text-white">{agentName}</p>
+      </div>
+    </div>
+  );
+};
+
+const Promper = ({
+  recording,
+  launchRecorder,
+}: {
+  recording: boolean;
+  launchRecorder: () => void;
+}) => {
+  const { dispatch, getState } = useStore();
+  const {
+    askingChatbot,
+    startConversationError,
+    startingConversation,
+    currentBot,
+    currentConversationId,
+
+    // speech to text
+    transcribingSpeech,
+    speechTranscribed,
+    transcribedText,
+  } = getState("Bot");
+  const [message, setMessage] = useState("");
+  const textareaRef = useRef<any>(null);
+
+  const throttledOnInput = useRef(
+    throttle(() => {
+      textareaRef.current.scrollTop = textareaRef.current.scrollHeight + 25;
+    }, 100)
+  ).current;
+
+  const updateText = (value: string) => setMessage(value);
+
+  const sendMessage = () => {
+    if (currentConversationId && currentBot) {
+      // dispatch(
+      //   newMessage({
+      //     role: RoleEnum.USER,
+      //     content: message,
+      //   })
+      // );
+      let askChatbotTmo = setTimeout(() => {
+        // dispatch(
+        //   askChatbot({
+        //     botId: currentBot._id,
+        //     conversationId: currentConversationId,
+        //     userQuery: message,
+        //   })
+        // );
+        setMessage("");
+        clearTimeout(askChatbotTmo);
+      }, 300);
+    }
+  };
+
+  const handleKeyPress = (e: any) => {
+    if (
+      askingChatbot ||
+      startingConversation ||
+      startConversationError ||
+      recording ||
+      transcribingSpeech
+    ) {
+      return;
+    }
+    if (e.key === "Enter") {
+      if (message.trim().length > 0) {
+        if (currentConversationId && currentBot) {
+          // dispatch(
+          //   newMessage({
+          //     role: RoleEnum.USER,
+          //     content: message,
+          //   })
+          // );
+          let askChatbotTmo = setTimeout(() => {
+            // dispatch(
+            //   askChatbot({
+            //     botId: currentBot._id,
+            //     conversationId: currentConversationId,
+            //     userQuery: message,
+            //   })
+            // );
+            setMessage("");
+            clearTimeout(askChatbotTmo);
+          }, 300);
+        }
+      }
+    }
+  };
+
+  function getCursorPos(input: any) {
+    if ("selectionStart" in input && document.activeElement == input) {
+      return {
+        start: input.selectionStart,
+        end: input.selectionEnd,
+      };
+    } else if (input.createTextRange) {
+      const doc = document as any;
+      var sel = doc.selection.createRange();
+      if (sel.parentElement() === input) {
+        var rng = input.createTextRange();
+        rng.moveToBookmark(sel.getBookmark());
+        for (
+          var len = 0;
+          rng.compareEndPoints("EndToStart", rng) > 0;
+          rng.moveEnd("character", -1)
+        ) {
+          len++;
+        }
+        rng.setEndPoint("StartToStart", input.createTextRange());
+        for (
+          var pos = { start: 0, end: len };
+          rng.compareEndPoints("EndToStart", rng) > 0;
+          rng.moveEnd("character", -1)
+        ) {
+          pos.start++;
+          pos.end++;
+        }
+        return pos;
+      }
+    }
+    return {
+      start: -1,
+      end: -1,
+    };
+  }
+
+  function setCursorPos(input: any, start: number, end: number) {
+    if (arguments.length < 3) end = start;
+    if ("selectionStart" in input) {
+      setTimeout(function () {
+        input.selectionStart = start;
+        input.selectionEnd = end;
+      }, 1);
+    } else if (input.setSelectionRange) {
+      input.focus();
+      input.setSelectionRange(start, end);
+    } else if (input.createTextRange) {
+      var rng = input.createTextRange();
+      rng.moveStart("character", start);
+      rng.collapse();
+      rng.moveEnd("character", end - start);
+      rng.select();
+    }
+  }
+
+  const updateTextareaHeight = (input: any) => {
+    const { width } = input.getBoundingClientRect();
+    const paraEl = document.createElement("p");
+    paraEl.style.width = `${width}px`;
+    paraEl.style.maxWidth = `${width}px`;
+    paraEl.style.height = "auto";
+    paraEl.innerHTML = input.value.replace(/\n/gm, "<br/>");
+    document.body.append(paraEl);
+    const { height: pHeight } = paraEl.getBoundingClientRect();
+    input.style.height = `${Math.min(pHeight + 25, 120)}px`;
+    document.body.removeChild(paraEl);
+  };
+
+  useEffect(() => {
+    updateTextareaHeight(textareaRef.current);
+  }, [message]);
+
+  useEffect(() => {
+    if (speechTranscribed) {
+      if (transcribedText.trim().length > 0) setMessage(transcribedText.trim());
+      // dispatch(resetSpeechToText());
+    }
+  }, [speechTranscribed]);
+
+  return (
+    <div className="rounded-3xl w-full bg-white shadow-2xl min-h-15 flex flex-col p-2">
+      <textarea
+        className="resize-none flex-1 bg-transparent px-2 no-scrollbar mt-2 bg-none outline-none border-none min-h-12 !text-sm"
+        placeholder="Type your message..."
+        ref={textareaRef}
+        value={message}
+        onChange={(e: any) => {
+          updateText(e.target.value);
+          updateTextareaHeight(e.target);
+        }}
+        onInput={() => throttledOnInput()}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            if (e.shiftKey) {
+              e.preventDefault();
+              const value = e.currentTarget.value;
+              const { start, end } = getCursorPos(e.target);
+              if (end === -1) return true;
+              const leftSide = value.substring(0, start);
+              const rightSide = value.substring(end);
+              updateText(leftSide + "\n" + rightSide);
+              setCursorPos(e.target, start + 1, start + 1);
+              e.currentTarget.scrollTop = e.currentTarget.scrollHeight + 40;
+              return true;
+            } else {
+              e.preventDefault();
+              handleKeyPress(e);
+            }
+          }
+        }}
+      />
+
+      <div className="flex justify-end items-center">
+        <Button
+          className="bg-transparent rounded-full h-10 w-10 aspect-square cursor-pointer hover:bg-gray-100 text-black mr-2"
+          size={"icon"}
+          onClick={launchRecorder}
+          disabled={recording || transcribingSpeech}
+        >
+          <Mic className="!w-4 !h-4" />
+        </Button>
+        <Button
+          className="bg-indigo-500 rounded-full h-10 w-10 aspect-square cursor-pointer hover:bg-indigo-500/70"
+          size={"icon"}
+          onClick={sendMessage}
+          disabled={
+            !!startConversationError ||
+            askingChatbot ||
+            startingConversation ||
+            recording ||
+            transcribingSpeech
+          }
+        >
+          <Send className="!w-4 !h-4" />
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+export const Message = ({
+  role,
+  content,
+}: {
+  role: RoleEnum;
+  content: string;
+}) => {
+  const isBot = role === RoleEnum.ASSISTANT;
+
+  return (
+    <div
+      className={cn(
+        "flex items-start max-w-9/10 sm:max-w-2/3 opacity-0",
+        {
+          "self-start justify-start": isBot,
+          "self-end justify-end": !isBot,
+        },
+        isBot ? "fade-in-left" : "fade-in-right"
+      )}
+    >
+      {/* Arrow */}
+      <div
+        className={cn("w-0 h-0 border-4", {
+          "border-b-transparent border-t-white border-r-white border-l-transparent":
+            isBot,
+          "border-b-transparent border-t-white border-l-white border-r-transparent order-7":
+            !isBot,
+        })}
+      ></div>
+
+      {/* Text */}
+      <div
+        className={cn(
+          "p-4 bg-white text-xs sm:text-sm whitespace-pre-line break-words",
+          {
+            "rounded-md rounded-tl-none shadow-[2px_2px_4px_#0000001a]": isBot,
+            "rounded-md rounded-tr-none shadow-[-2px_2px_4px_#0000001a]":
+              !isBot,
+          }
+        )}
+      >
+        <ReactMarkdown
+          skipHtml
+          components={{
+            ul: ({ node, className, ...props }) => (
+              <ul
+                {...props}
+                className={cn(
+                  className,
+                  "list-disc list-inside flex flex-col gap-1"
+                )}
+              />
+            ),
+            p: ({ node, className, ...props }) => (
+              <p
+                {...props}
+                className={cn(className, "whitespace-normal break-words")}
+                style={{ wordBreak: "break-word" }}
+              />
+            ),
+          }}
+          children={content}
+          // remarkPlugins={[remarkBreaks]}
+        />
+      </div>
+    </div>
+  );
+};
+
+const Typing = () => {
+  return (
+    <div
+      className={cn(
+        "flex items-start w-2/3 opacity-0 fade-in-left self-start justify-start"
+      )}
+    >
+      {/* Arrow */}
+      <div
+        className={cn(
+          "w-0 h-0 border-4 border-b-transparent border-t-white border-r-white border-l-transparent"
+        )}
+      ></div>
+
+      {/* Typing animation */}
+      <div
+        className={cn(
+          "p-4 py-2 bg-white text-xs rounded-md rounded-tl-none shadow-[2px_2px_4px_#0000001a] italic"
+        )}
+      >
+        Typing...
+      </div>
+    </div>
+  );
+};
+
+const Conversations = ({
+  currentConversation,
+  recording,
+  launchRecorder,
+}: {
+  currentConversation: any[] | null;
+  recording: boolean;
+  launchRecorder: () => void;
+}) => {
+  const conversationContainerRef = useRef<any>(null);
+  const { getState } = useStore();
+  const {
+    startingConversation,
+    startConversationError,
+    askingChatbot,
+    fetchingTrainingConversation,
+  } = getState("Bot");
+  const typing = startingConversation || askingChatbot;
+
+  const scrollToBottom = useCallback(() => {
+    const containerRef = conversationContainerRef.current;
+    if (containerRef) {
+      containerRef.scrollTop = containerRef.scrollHeight + 1000;
+    }
+  }, [conversationContainerRef]);
+
+  useEffect(() => {
+    if ((currentConversation || []).length > 1 || typing) {
+      scrollToBottom();
+    }
+  }, [currentConversation, typing]);
+
+  return (
+    <div className="bg-gray-100 flex-1 rounded-[28px] flex flex-col justify-end p-4 gap-4 overflow-hidden relative">
+      {fetchingTrainingConversation ? (
+        <Loader text1="Loading conversations..." />
+      ) : (
+        <Fragment>
+          <div
+            className="flex-1 overflow-auto no-scrollbar py-4 scroll-smooth"
+            ref={conversationContainerRef}
+          >
+            <div className="flex flex-col gap-3 w-full overflow-x-hidden">
+              {(currentConversation || []).map((message) => (
+                <Message {...message} />
+              ))}
+              {typing && <Typing />}
+              {startConversationError && !typing && (
+                <Message
+                  role={RoleEnum.ASSISTANT}
+                  content={startConversationError}
+                />
+              )}
+            </div>
+          </div>
+          <Promper recording={recording} launchRecorder={launchRecorder} />
+        </Fragment>
+      )}
+    </div>
+  );
+};
+
+const AgentInitState = ({ state }: { state: string }) => {
+  return (
+    <div className="w-full h-full min-w-[280px] min-h-[400px] max-w-[400px] max-h-[500px] rounded-4xl fixed bottom-[20px] right-[20px] bg-white shadow-2xl drop-shadow-2xl z-[1000000]">
       <div className="w-full h-full flex flex-col items-center justify-center gap-6 overflow-hidden">
         {/* Fade + Slide Nova AI */}
         <motion.h2
@@ -57,7 +462,7 @@ const AgentConnectionError = ({
   connectionError: string;
 }) => {
   return (
-    <div className="w-full h-full min-w-[280px] min-h-[400px] max-w-[400px] max-h-[500px] rounded-2xl fixed bottom-[20px] right-[20px] bg-white shadow-2xl drop-shadow-2xl z-[1000000]">
+    <div className="w-full h-full min-w-[280px] min-h-[400px] max-w-[400px] max-h-[500px] rounded-4xl fixed bottom-[20px] right-[20px] bg-white shadow-2xl drop-shadow-2xl z-[1000000]">
       <div className="w-full h-full flex flex-col  justify-start gap-3 overflow-hidden p-4">
         <div className="flex items-center self-start gap-4">
           {/* Scale + Fade Lottie */}
@@ -111,7 +516,9 @@ type LiveAgentProps = {
 
 export const LiveAgent = ({ apiKey, agentId }: LiveAgentProps) => {
   const { getState, dispatch } = useStore();
-  const { connected, connecting, connectionError } = getState("Agent");
+  const { connected, connecting, connectionError, agentData } =
+    getState("Agent");
+  const { recording, cancelRecording, launchRecorder } = useRecorder();
 
   useEffect(() => {
     const init = () => {
@@ -151,10 +558,22 @@ export const LiveAgent = ({ apiKey, agentId }: LiveAgentProps) => {
   if (connectionError)
     return <AgentConnectionError connectionError={connectionError} />;
 
+  if (!agentData)
+    return (
+      <AgentConnectionError
+        connectionError={"It looks like this agent is not properly configured."}
+      />
+    );
+
   return (
-    <div className="w-full h-full min-w-[280px] min-h-[400px] max-w-[400px] max-h-[500px] rounded-2xl fixed bottom-[20px] right-[20px] bg-white shadow-2xl drop-shadow-2xl z-[1000000]">
-      <div className="w-full h-full flex justify-center items-center">
-        Connected
+    <div className="w-full h-full min-w-[280px] min-h-[400px] max-w-[450px] max-h-[600px] rounded-4xl fixed bottom-[20px] right-[20px] bg-white shadow-2xl drop-shadow-2xl z-[1000000] flex flex-col overflow-hidden">
+      <div className="bg-white bg-linear-to-br from-indigo-500 to-sky-500 shadow-[0px_4px_16px_0px_#0000001f] rounded-4xl overflow-hidden w-full flex-1 p-1 flex flex-col">
+        <AgentHeader agentName={agentData.name} />
+        <Conversations
+          recording={recording}
+          launchRecorder={launchRecorder}
+          currentConversation={[]}
+        />
       </div>
     </div>
   );
