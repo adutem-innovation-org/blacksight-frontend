@@ -266,12 +266,13 @@ export const Message = ({
   return (
     <div
       className={cn(
-        "flex items-start max-w-9/10 sm:max-w-2/3 opacity-0",
+        // "flex items-start max-w-9/10 sm:max-w-2/3 opacity-0",
+        "flex items-start max-w-9/10 sm:max-w-2/3",
         {
           "self-start justify-start": isBot,
           "self-end justify-end": !isBot,
-        },
-        isBot ? "fade-in-left" : "fade-in-right"
+        }
+        // isBot ? "fade-in-left" : "fade-in-right"
       )}
     >
       {/* Arrow */}
@@ -381,7 +382,7 @@ const Conversations = ({
     <div className="bg-gray-100 flex-1 rounded-[28px] flex flex-col justify-end p-4 gap-4 overflow-hidden relative">
       <Fragment>
         <div
-          className="flex-1 overflow-auto no-scrollbar py-4 scroll-smooth"
+          className="flex-1 overflow-auto no-scrollbar py-4" // Removed scroll-smooth
           ref={conversationContainerRef}
         >
           <div className="flex flex-col gap-3 w-full overflow-x-hidden pb-4">
@@ -397,9 +398,23 @@ const Conversations = ({
   );
 };
 
-const AgentInitState = ({ state }: { state: string }) => {
+const AgentInitState = ({
+  state,
+  shouldDisplayFixed,
+}: {
+  state: string;
+  shouldDisplayFixed: boolean;
+}) => {
   return (
-    <div className="w-[90%] h-full min-w-[250px] min-h-[400px] max-w-[450px] max-h-[600px] rounded-4xl fixed bottom-[40px] right-[5%] sm:right-[40px] bg-white shadow-2xl drop-shadow-2xl z-[1000000]">
+    <div
+      className={cn(
+        "w-full h-[90vh] min-h-[400px] max-h-[600px] rounded-4xl bg-white shadow-2xl drop-shadow-2xl",
+        {
+          "w-[90%] min-w-[250px] max-w-[450px] h-full fixed bottom-[40px] right-[5%] sm:right-[40px] z-[1000000]":
+            shouldDisplayFixed,
+        }
+      )}
+    >
       <div className="w-full h-full flex flex-col items-center justify-center gap-6 overflow-hidden">
         {/* Fade + Slide Nova AI */}
         <motion.h2
@@ -445,11 +460,21 @@ const AgentInitState = ({ state }: { state: string }) => {
 
 const AgentConnectionError = ({
   connectionError,
+  shouldDisplayFixed,
 }: {
   connectionError: string;
+  shouldDisplayFixed: boolean;
 }) => {
   return (
-    <div className="w-[90%] h-full min-w-[250px] min-h-[400px] max-w-[450px] max-h-[600px] rounded-4xl fixed bottom-[40px] right-[5%] sm:right-[40px] bg-white shadow-2xl drop-shadow-2xl z-[1000000]">
+    <div
+      className={cn(
+        "w-full h-[90vh] min-h-[400px] max-h-[600px] rounded-4xl bg-white shadow-2xl drop-shadow-2xl",
+        {
+          "w-[90%] min-w-[250px] max-w-[450px] h-full fixed bottom-[40px] right-[5%] sm:right-[40px] z-[1000000]":
+            shouldDisplayFixed,
+        }
+      )}
+    >
       <div className="w-full h-full flex flex-col  justify-start gap-3 overflow-hidden p-4">
         <div className="flex items-center self-start gap-4">
           {/* Scale + Fade Lottie */}
@@ -499,9 +524,14 @@ const AgentConnectionError = ({
 type LiveAgentProps = {
   apiKey: string;
   agentId: string;
+  shouldDisplayFixed?: boolean;
 };
 
-export const LiveAgent = ({ apiKey, agentId }: LiveAgentProps) => {
+export const LiveAgent = ({
+  apiKey,
+  agentId,
+  shouldDisplayFixed = true,
+}: LiveAgentProps) => {
   const { getState, dispatch } = useStore();
   const {
     connected,
@@ -562,21 +592,36 @@ export const LiveAgent = ({ apiKey, agentId }: LiveAgentProps) => {
     return (
       <AgentInitState
         state={connecting ? "Connecting..." : "Initializing..."}
+        shouldDisplayFixed={shouldDisplayFixed}
       />
     );
 
   if (connectionError)
-    return <AgentConnectionError connectionError={connectionError} />;
+    return (
+      <AgentConnectionError
+        connectionError={connectionError}
+        shouldDisplayFixed={shouldDisplayFixed}
+      />
+    );
 
   if (!agentData)
     return (
       <AgentConnectionError
         connectionError={"It looks like this agent is not properly configured."}
+        shouldDisplayFixed={shouldDisplayFixed}
       />
     );
 
   return (
-    <div className="w-[90%] h-full min-w-[250px] min-h-[400px] max-w-[450px] max-h-[600px] rounded-4xl fixed bottom-[40px] right-[5%] sm:right-[40px] bg-white shadow-2xl drop-shadow-2xl z-[1000000] flex flex-col overflow-hidden">
+    <div
+      className={cn(
+        "w-full h-[90dvh] min-h-[400px] max-h-[600px] rounded-4xl bg-white shadow-2xl drop-shadow-2xl flex flex-col overflow-hidden",
+        {
+          "w-[90%] min-w-[250px] max-w-[450px] h-full fixed bottom-[40px] right-[5%] sm:right-[40px] z-[1000000]":
+            shouldDisplayFixed,
+        }
+      )}
+    >
       <div className="bg-white bg-linear-to-br from-indigo-500 to-sky-500 shadow-[0px_4px_16px_0px_#0000001f] rounded-4xl overflow-hidden w-full flex-1 p-1 flex flex-col">
         <AgentHeader agentName={agentData.name} />
         <Conversations
