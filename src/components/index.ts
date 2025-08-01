@@ -11,3 +11,4 @@ export * from "./charts";
 export * from "./templates";
 export * from "./popups";
 export * from "./media";
+export * from "./agent";
