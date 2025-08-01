@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import {
+  agentReducer,
   analyticsReducer,
   apiKeyReducer,
   appointmentReducer,
@@ -24,6 +25,7 @@ export const store = configureStore({
     Calendar: meetingProviderReducer,
     Appointment: appointmentReducer,
     Template: templateReducer,
+    Agent: agentReducer,
   },
 });
 
