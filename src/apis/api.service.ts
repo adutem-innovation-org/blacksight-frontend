@@ -51,11 +51,12 @@ export class ApiService {
     configs?: AxiosRequestConfig
   ) => {
     const config = {
+      ...configs,
       headers: {
         ...this.apiClient.defaults.headers,
         "Content-Type": "multipart/form-data",
+        ...configs?.headers,
       },
-      ...configs,
     };
     return this.apiClient.post<ResData, ResData>(
       url,
