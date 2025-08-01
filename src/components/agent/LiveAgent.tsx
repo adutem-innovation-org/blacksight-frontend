@@ -399,7 +399,7 @@ const Conversations = ({
 
 const AgentInitState = ({ state }: { state: string }) => {
   return (
-    <div className="w-full h-full min-w-[280px] min-h-[400px] max-w-[400px] max-h-[500px] rounded-4xl fixed bottom-[20px] right-[20px] bg-white shadow-2xl drop-shadow-2xl z-[1000000]">
+    <div className="w-[90%] h-full min-w-[250px] min-h-[400px] max-w-[450px] max-h-[600px] rounded-4xl fixed bottom-[40px] right-[5%] sm:right-[40px] bg-white shadow-2xl drop-shadow-2xl z-[1000000]">
       <div className="w-full h-full flex flex-col items-center justify-center gap-6 overflow-hidden">
         {/* Fade + Slide Nova AI */}
         <motion.h2
@@ -449,7 +449,7 @@ const AgentConnectionError = ({
   connectionError: string;
 }) => {
   return (
-    <div className="w-full h-full min-w-[280px] min-h-[400px] max-w-[400px] max-h-[500px] rounded-4xl fixed bottom-[20px] right-[20px] bg-white shadow-2xl drop-shadow-2xl z-[1000000]">
+    <div className="w-[90%] h-full min-w-[250px] min-h-[400px] max-w-[450px] max-h-[600px] rounded-4xl fixed bottom-[40px] right-[5%] sm:right-[40px] bg-white shadow-2xl drop-shadow-2xl z-[1000000]">
       <div className="w-full h-full flex flex-col  justify-start gap-3 overflow-hidden p-4">
         <div className="flex items-center self-start gap-4">
           {/* Scale + Fade Lottie */}
