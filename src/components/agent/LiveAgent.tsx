@@ -566,7 +566,7 @@ export const LiveAgent = ({ apiKey, agentId }: LiveAgentProps) => {
     );
 
   return (
-    <div className="w-full h-full min-w-[280px] min-h-[400px] max-w-[450px] max-h-[600px] rounded-4xl fixed bottom-[20px] right-[20px] bg-white shadow-2xl drop-shadow-2xl z-[1000000] flex flex-col overflow-hidden">
+    <div className="w-[90%] h-full min-w-[250px] min-h-[400px] max-w-[450px] max-h-[600px] rounded-4xl fixed bottom-[40px] right-[5%] sm:right-[40px] bg-white shadow-2xl drop-shadow-2xl z-[1000000] flex flex-col overflow-hidden">
       <div className="bg-white bg-linear-to-br from-indigo-500 to-sky-500 shadow-[0px_4px_16px_0px_#0000001f] rounded-4xl overflow-hidden w-full flex-1 p-1 flex flex-col">
         <AgentHeader agentName={agentData.name} />
         <Conversations
