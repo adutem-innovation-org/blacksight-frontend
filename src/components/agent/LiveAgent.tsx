@@ -267,7 +267,7 @@ export const Message = ({
     <div
       className={cn(
         // "flex items-start max-w-9/10 sm:max-w-2/3 opacity-0",
-        "flex items-start max-w-9/10 sm:max-w-2/3",
+        "flex items-start max-w-9/10",
         {
           "self-start justify-start": isBot,
           "self-end justify-end": !isBot,
@@ -278,9 +278,9 @@ export const Message = ({
       {/* Arrow */}
       <div
         className={cn("w-0 h-0 border-4", {
-          "border-b-transparent border-t-white border-r-white border-l-transparent":
+          "border-b-transparent border-t-primary border-r-primary border-l-transparent":
             isBot,
-          "border-b-transparent border-t-white border-l-white border-r-transparent order-7":
+          "border-b-transparent border-t-brand border-l-brand border-r-transparent order-7":
             !isBot,
         })}
       ></div>
@@ -288,10 +288,11 @@ export const Message = ({
       {/* Text */}
       <div
         className={cn(
-          "p-4 bg-white text-xs sm:text-sm whitespace-pre-line break-words",
+          "p-4 bg-brand text-white text-xs sm:text-sm whitespace-pre-line break-words",
           {
-            "rounded-md rounded-tl-none shadow-[2px_2px_4px_#0000001a]": isBot,
-            "rounded-md rounded-tr-none shadow-[-2px_2px_4px_#0000001a]":
+            "rounded-3xl rounded-tl-none shadow-[2px_2px_4px_#0000001a] bg-primary text-white":
+              isBot,
+            "rounded-3xl rounded-tr-none shadow-[-2px_2px_4px_#0000001a]":
               !isBot,
             "text-destructive": isError,
           }
@@ -335,14 +336,14 @@ const Typing = () => {
       {/* Arrow */}
       <div
         className={cn(
-          "w-0 h-0 border-4 border-b-transparent border-t-white border-r-white border-l-transparent"
+          "w-0 h-0 border-4 border-b-transparent border-t-primary border-r-primary border-l-transparent"
         )}
       ></div>
 
       {/* Typing animation */}
       <div
         className={cn(
-          "p-4 py-2 bg-white text-xs rounded-md rounded-tl-none shadow-[2px_2px_4px_#0000001a] italic"
+          "p-4 py-2 bg-primary text-white text-xs rounded-2xl rounded-tl-none shadow-[2px_2px_4px_#0000001a] italic"
         )}
       >
         Typing...
