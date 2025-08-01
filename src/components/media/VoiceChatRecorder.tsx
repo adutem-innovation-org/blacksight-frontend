@@ -8,15 +8,16 @@ type VoiceChatRecordProps = {
   cancelRecording: () => void;
   endRecording: () => void;
   canvasRef: React.RefObject<HTMLCanvasElement | null>;
+  transcribing: boolean;
 };
 
 export const VoiceChatRecorder = ({
   cancelRecording,
   endRecording,
   canvasRef,
+  transcribing,
 }: VoiceChatRecordProps) => {
   const { getState } = useStore();
-  const { transcribingSpeech } = getState("Bot");
 
   return (
     <div className="w-full flex flex-col pb-1">
@@ -31,7 +32,7 @@ export const VoiceChatRecorder = ({
           className="bg-transparent rounded-full h-10 w-10 aspect-square cursor-pointer hover:bg-gray-100/20 text-white mr-2 outline-none border-none focus:outline-none focus:border-none focus:bg-gray-100/10"
           size={"icon"}
           onClick={cancelRecording}
-          disabled={transcribingSpeech}
+          disabled={transcribing}
         >
           <X className="!w-5 !h-5" />
         </Button>
@@ -39,9 +40,9 @@ export const VoiceChatRecorder = ({
           className="bg-transparent rounded-full h-10 w-10 aspect-square cursor-pointer hover:bg-gray-100/20 text-white mr-2 outline-none border-none focus:outline-none focus:border-none focus:bg-gray-100/10"
           size={"icon"}
           onClick={endRecording}
-          disabled={transcribingSpeech}
+          disabled={transcribing}
         >
-          {transcribingSpeech ? (
+          {transcribing ? (
             <Spinner classNames="h-[20px]" type={"primary"} />
           ) : (
             <Check className="!w-5 !h-5" />

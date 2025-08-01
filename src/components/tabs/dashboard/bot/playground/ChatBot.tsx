@@ -651,6 +651,7 @@ export const ChatBot = ({ openBotConfig }: { openBotConfig: () => void }) => {
             canvasRef={canvasRef}
             endRecording={endRecording}
             cancelRecording={cancelRecording}
+            transcribing={transcribingSpeech}
           />
         )}
       </div>
