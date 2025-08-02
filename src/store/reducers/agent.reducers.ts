@@ -29,7 +29,7 @@ export const resetTranscribeSpeechReducer = (state: AgentState) => {
   state.transcribedText;
 };
 
-export const clearBotActionReducer = (
+export const clearAgentActionReducer = (
   state: AgentState,
   action: PayloadAction<{
     role: RoleEnum;

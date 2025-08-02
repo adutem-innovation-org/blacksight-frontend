@@ -12,7 +12,7 @@ import {
   resetAskAgentReducer,
   resetTranscribeSpeechReducer,
   newEnquiryReducer,
-  clearBotActionReducer,
+  clearAgentActionReducer,
   resetBookAppointmentReducer,
   resetSubmitTicketReducer,
 } from "../reducers";
@@ -25,7 +25,7 @@ const agentSlice = createSlice({
     newEnquiry: newEnquiryReducer,
     resetAskAgent: resetAskAgentReducer,
     resetTranscribeSpeech: resetTranscribeSpeechReducer,
-    clearBotAction: clearBotActionReducer,
+    clearAgentAction: clearAgentActionReducer,
     resetBookAppointment: resetBookAppointmentReducer,
     resetSubmitTicket: resetSubmitTicketReducer,
   },
@@ -44,7 +44,7 @@ export const {
   newEnquiry,
   resetAskAgent,
   resetTranscribeSpeech,
-  clearBotAction,
+  clearAgentAction,
   resetBookAppointment,
   resetSubmitTicket,
 } = agentSlice.actions;
