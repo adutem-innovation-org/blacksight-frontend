@@ -243,7 +243,7 @@ export const groupedSideTabs: Record<UserTypes, SidebarGroupType[]> = {
           name: "Knowledge Base",
           tabId: DashboardTabsEnum.KNOWLEDGE_BASE,
           iconClass: "fi fi-rr-folder-open",
-          path: "/knwoledge-base",
+          path: "/knowledge-base",
         },
         {
           name: "Templates",
@@ -267,17 +267,6 @@ export const groupedSideTabs: Record<UserTypes, SidebarGroupType[]> = {
           tabId: DashboardTabsEnum.CONVERSATIONS,
           iconClass: "fi fi-rr-messages",
           path: "/conversations",
-        },
-      ],
-    },
-    {
-      name: "Settings",
-      tabs: [
-        {
-          name: "Profile",
-          tabId: DashboardTabsEnum.PROFILE,
-          iconClass: "fi fi-rr-user",
-          path: "/profile",
         },
       ],
     },
