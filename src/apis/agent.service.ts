@@ -1,9 +1,13 @@
 import {
   AskAgentBody,
   AskAgentRes,
+  BookAppointmentBody,
+  BookAppointmentRes,
   ConnectToAgentRes,
   SpeechToTextBody,
   SpeechToTextRes,
+  SubmitTicketBody,
+  SubmitTicketRes,
 } from "@/interfaces";
 import { ApiService } from "./api.service";
 import { AGENT_URLS } from "./endpoints";
@@ -64,6 +68,46 @@ export class AgentApiService {
   ) => {
     return this.apiService.postWithFile<SpeechToTextBody, SpeechToTextRes>(
       this.urls.TRANSCRIBE_SPEECH,
+      data,
+      {
+        headers: {
+          "x-api-key": apiKey,
+          "x-agent-id": agentId,
+          "x-session-id": sessionId,
+        },
+        timeout: 40000,
+      }
+    );
+  };
+
+  bookAppointment = (
+    apiKey: string,
+    agentId: string,
+    sessionId: string,
+    data: BookAppointmentBody
+  ) => {
+    return this.apiService.post<BookAppointmentBody, BookAppointmentRes>(
+      this.urls.BOOK_APPOINTMENT,
+      data,
+      {
+        headers: {
+          "x-api-key": apiKey,
+          "x-agent-id": agentId,
+          "x-session-id": sessionId,
+        },
+        timeout: 40000,
+      }
+    );
+  };
+
+  submitTicket = (
+    apiKey: string,
+    agentId: string,
+    sessionId: string,
+    data: SubmitTicketBody
+  ) => {
+    return this.apiService.post<SubmitTicketBody, SubmitTicketRes>(
+      this.urls.SUBMIT_TICKET,
       data,
       {
         headers: {
