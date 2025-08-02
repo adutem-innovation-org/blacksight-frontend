@@ -4,9 +4,14 @@ import {
   Bot,
   ConfigureBotBody,
   Conversation,
+  EscalateChatBody,
+  EscalateChatRes,
   PaginationMetaData,
+  ScheduleAppointmentBody,
+  ScheduleAppointmentRes,
   SpeechToTextBody,
   StartConversationBody,
+  StoreState,
   UpdateBotConfigBody,
   UpdateBotInstructionsBody,
 } from "@/interfaces";
@@ -216,5 +221,32 @@ export const speechToText = createAsyncThunk<
     return res.text;
   } catch (error: any) {
     return rejectWithValue(error.message);
+  }
+});
+
+export const scheduleAppointment = createAsyncThunk<
+  ScheduleAppointmentRes["chatData"],
+  ScheduleAppointmentBody,
+  { rejectValue: { errors?: Record<string, string>; message: string } }
+>("schedule_appointment", async (body, { rejectWithValue }) => {
+  try {
+    const res = await botApiService.scheduleAppointment(body);
+
+    return res.chatData;
+  } catch (error: any) {
+    return rejectWithValue(error);
+  }
+});
+
+export const escalateChat = createAsyncThunk<
+  EscalateChatRes["chatData"],
+  EscalateChatBody,
+  { rejectValue: { errors?: Record<string, string>; message: string } }
+>("escalate_chat", async (body, { rejectWithValue, getState }) => {
+  try {
+    const res = await botApiService.escalateChat(body);
+    return res.chatData;
+  } catch (error: any) {
+    return rejectWithValue(error);
   }
 });

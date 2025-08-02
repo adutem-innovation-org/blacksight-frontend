@@ -70,6 +70,7 @@ export const initialBotState: BotState = {
   // Ask chatbot
   askingChatbot: false,
   askChatbotError: "",
+  action: null,
 
   // Get training conversation
   fetchingTrainingConversation: false,
@@ -86,4 +87,16 @@ export const initialBotState: BotState = {
   speechTranscribed: false,
   transcribeSpeechError: "",
   transcribedText: "",
+
+  // Schedule appointment
+  schedulingAppointment: false,
+  appointmentScheduled: false,
+  scheduleAppointmentErrors: {},
+  scheduleAppointmentErrorMessage: "",
+
+  // Escalate chat
+  escalatingChat: false,
+  chatEscalated: false,
+  escalateChatErrors: {},
+  escalateChatErrorMessage: "",
 };

@@ -1,5 +1,6 @@
 import { PaginationMetaData } from "@/interfaces/pagination";
 import { Bot, Conversation } from "./bot";
+import { BotActions } from "@/enums";
 
 export type BotState = {
   fetchingBotAnalytics: boolean;
@@ -72,6 +73,7 @@ export type BotState = {
   // Ask chatbot
   askingChatbot: boolean;
   askChatbotError: string;
+  action: BotActions | null;
 
   // Get training conversation
   fetchingTrainingConversation: boolean;
@@ -88,4 +90,16 @@ export type BotState = {
   speechTranscribed: boolean;
   transcribeSpeechError: string;
   transcribedText: string;
+
+  // Schedule appointment
+  schedulingAppointment: boolean;
+  appointmentScheduled: boolean;
+  scheduleAppointmentErrors: Record<string, string>;
+  scheduleAppointmentErrorMessage: string;
+
+  // Escalate chat
+  escalatingChat: boolean;
+  chatEscalated: boolean;
+  escalateChatErrors: Record<string, string>;
+  escalateChatErrorMessage: string;
 };

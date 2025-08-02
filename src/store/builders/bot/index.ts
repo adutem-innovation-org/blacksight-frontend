@@ -13,3 +13,5 @@ export * from "./speech-to-text.builder";
 export * from "./get-all-conversations.builder";
 export * from "./conversation-analytics.builder";
 export * from "./clone-bot.builder";
+export * from "./escalate-chat.builder";
+export * from "./schedule-appointment.builder";

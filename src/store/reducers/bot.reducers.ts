@@ -1,4 +1,4 @@
-import { RoleEnum } from "@/enums";
+import { RoleEnum, UserActions } from "@/enums";
 import { Bot, BotState } from "@/interfaces";
 import { PayloadAction } from "@reduxjs/toolkit";
 
@@ -112,4 +112,31 @@ export const resetSpeechToTextReducer = (state: BotState) => {
   state.speechTranscribed = false;
   state.transcribeSpeechError = "";
   state.transcribedText;
+};
+
+export const clearBotActionReducer = (
+  state: BotState,
+  action: PayloadAction<{
+    role: RoleEnum;
+    content: string;
+    action: UserActions;
+  }>
+) => {
+  state.action = null;
+  state.currentConversation = state.currentConversation || [];
+  state.currentConversation.push(action.payload);
+};
+
+export const resetScheduleAppointmentReducer = (state: BotState) => {
+  state.schedulingAppointment = false;
+  state.appointmentScheduled = false;
+  state.scheduleAppointmentErrors = {};
+  state.scheduleAppointmentErrorMessage = "";
+};
+
+export const resetEscalateChatReducer = (state: BotState) => {
+  state.escalatingChat = false;
+  state.chatEscalated = false;
+  state.escalateChatErrors = {};
+  state.escalateChatErrorMessage = "";
 };
