@@ -7,9 +7,13 @@ import {
   ConfigureBotRes,
   ConversationAnalyticsRes,
   DeleteBotRes,
+  EscalateChatBody,
+  EscalateChatRes,
   GetAllConversationsRes,
   GetBotsRes,
   GetTrainingConversationRes,
+  ScheduleAppointmentBody,
+  ScheduleAppointmentRes,
   SpeechToTextBody,
   SpeechToTextRes,
   StartConversationBody,
@@ -137,6 +141,23 @@ export class BotApiService {
       this.urls.SPEECH_TO_TEXT,
       data,
       { timeout: 40000 }
+    );
+  };
+
+  scheduleAppointment = (data: ScheduleAppointmentBody) => {
+    return this.apiService.post<
+      ScheduleAppointmentBody,
+      ScheduleAppointmentRes
+    >(this.urls.SCHEDULE_APPOINTMENT, data, {
+      timeout: 45000,
+    });
+  };
+
+  escalateChat = (data: EscalateChatBody) => {
+    return this.apiService.post<EscalateChatBody, EscalateChatRes>(
+      this.urls.ESCALATE_CHAT,
+      data,
+      { timeout: 45000 }
     );
   };
 }

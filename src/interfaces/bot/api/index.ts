@@ -12,3 +12,5 @@ export * from "./delete-bot";
 export * from "./speech-to-text";
 export * from "./get-all-conversations";
 export * from "./conversation-analytics";
+export * from "./schedule-appointment";
+export * from "./escalate-chat";
