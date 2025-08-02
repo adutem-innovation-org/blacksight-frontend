@@ -80,7 +80,6 @@ export const Register = () => {
     validationSchema: registerSchema,
     onSubmit: (values) => {
       // Split fullName into firstName and lastName
-      console.log("Dispatching signUpUser with", values);
       if (!values.fullName.trim()) {
         toast.error("Please enter your full name");
         return;
