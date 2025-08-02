@@ -93,6 +93,7 @@ import { createRoot } from "react-dom/client";
 import { setCurrentBot } from "../store";
 import { BotStatus } from "../enums/bot";
 import '../index.css'; // Tailwind CSS
+import { LiveAgent } from "@/components/agent/LiveAgent";
 
 const getWidgetAttributes = () => {
   const script = document.querySelector('script[data-api-key][data-agent-id]');
@@ -124,8 +125,8 @@ const WidgetApp = () => {
       knowledgeBases: [
         { tag: "", isActive: true, _id: "kb1", id: "kb1" }
       ] as [
-        { tag: string; isActive: boolean; _id: string; id: string }
-      ]
+          { tag: string; isActive: boolean; _id: string; id: string }
+        ]
     };
 
     store.dispatch(setCurrentBot(BOT));
@@ -153,7 +154,11 @@ const WidgetApp = () => {
               ×
             </button>
             <div className="w-full h-full">
-              <ChatBot openBotConfig={() => { }} />
+              <LiveAgent
+                apiKey={getWidgetAttributes().apiKey}
+                agentId={getWidgetAttributes().agentId}
+                shouldDisplayFixed={false}
+              />
             </div>
           </div>
         )}
