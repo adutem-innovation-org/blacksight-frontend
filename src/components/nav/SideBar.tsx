@@ -59,7 +59,8 @@ const SidebarHeader = () => {
 
       <button
         className={cn(
-          "p-1 text-gray-900 cursor-pointer bg-gray-100 rounded-sm mx-auto hidden sm:block",
+          // "p-1 text-gray-900 cursor-pointer bg-gray-100 rounded-sm mx-auto hidden sm:block",
+          "p-1 text-gray-900 cursor-pointer bg-white border border-gray-200 rounded-sm mx-auto hidden sm:block",
           {
             "sm:hidden": sidebarState === SideBarStateEnum.EXPANDED,
           }
@@ -70,7 +71,8 @@ const SidebarHeader = () => {
       </button>
       <button
         className={cn(
-          "p-1 text-gray-900 cursor-pointer bg-gray-100 rounded-sm hidden sm:block",
+          // "p-1 text-gray-900 cursor-pointer bg-gray-100 rounded-sm hidden sm:block",
+          "p-1 text-gray-900 cursor-pointer bg-white border border-gray-200 rounded-sm hidden sm:block",
           {
             "sm:hidden": sidebarState === SideBarStateEnum.COLLAPSED,
           }

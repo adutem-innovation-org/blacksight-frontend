@@ -25,7 +25,7 @@ export const AnalyticsCard = ({
   showProgressRing = true,
 }: AnalyticsCardProps) => {
   return (
-    <div className="bg-white rounded-sm flex justify-between py-5 px-6 items-center">
+    <div className="bg-white rounded-sm flex justify-between py-5 px-6 items-center border border-gray-200">
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-1">
           <p className="font-sfpro-medium text-gray-400 text-base flex items-center gap-2">

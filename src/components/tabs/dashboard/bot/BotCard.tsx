@@ -146,7 +146,8 @@ export const BotCard = ({
   const onSetActiveStatus = (status: boolean) => setActiveStatus(bot, status);
 
   return (
-    <div className="bg-white rounded-md overflow-hidden flex flex-col shadow-md">
+    // <div className="bg-white rounded-md overflow-hidden flex flex-col shadow-md">
+    <div className="bg-white rounded-md overflow-hidden flex flex-col border border-gray-200">
       {/* Bot image container */}
       <div className="h-[300px] w-full overflow-hidden flex items-center justify-center border-b relative">
         {/* Overlay */}

@@ -16,7 +16,7 @@ export const DashboardTabLayout = (props: PropsWithChildren) => {
     dispatch(changeSidebarMobileState(SideBarMobileStateEnum.VISIBLE));
 
   return (
-    <div className="w-dvw h-dvh bg-gray-100 overflow-hidden">
+    <div className="w-dvw h-dvh bg-[#f5f5f5] overflow-hidden">
       <DashboardLayoutContainer
         sidebarState={sidebarState}
         className="w-full h-full grid grid-rows-1"
