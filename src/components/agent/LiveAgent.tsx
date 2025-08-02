@@ -1,6 +1,6 @@
 import {
   askAgent,
-  clearBotAction,
+  clearAgentAction,
   connectAgent,
   newEnquiry,
   resetTranscribeSpeech,
@@ -405,7 +405,7 @@ const Conversations = ({
     // Clear action
     // Add new cancel message to conversation
     dispatch(
-      clearBotAction({
+      clearAgentAction({
         action: UserActions.CLOSE_APPOINTMENT_FORM,
         content: "Cancel the booking",
         role: RoleEnum.USER,
@@ -429,7 +429,7 @@ const Conversations = ({
     // Clear action
     // Add new cancel message to conversation
     dispatch(
-      clearBotAction({
+      clearAgentAction({
         action: UserActions.CLOSE_ESCALATION_FORM,
         content: "Cancel chat escalation",
         role: RoleEnum.USER,
@@ -439,7 +439,7 @@ const Conversations = ({
     const askAgentTmo = setTimeout(() => {
       dispatch(
         askAgent({
-          userQuery: "Cancel the booking",
+          userQuery: "Cancel chat escalation",
           action: UserActions.CLOSE_ESCALATION_FORM,
         })
       );
@@ -481,7 +481,6 @@ const Conversations = ({
         </div>
         <Promper recording={recording} launchRecorder={launchRecorder} />
 
-        {/* {appointmentFormOpen && ( */}
         <>
           <AppointmentForm
             open={appointmentFormOpen && action === BotActions.BOOK_APPOINTMENT}
