@@ -19,8 +19,8 @@ type Props = {
 
 export const DashboardHeader = ({ currentTab }: Props) => {
   return (
-    <div className="hidden sm:flex justify-between min-h-20 bg-white border-b border-b-gray-200 items-center px-4 sticky top-0 z-20">
-      <h2 className="capitalize font-inter font-semibold text-xl sm:text-2xl text-brand">
+    <div className="hidden sm:flex justify-between min-h-15 bg-white border-b border-b-gray-200 items-center px-4 sticky top-0 z-20">
+      <h2 className="capitalize font-inter font-medium text-xl text-brand">
         {currentTab}
       </h2>
 

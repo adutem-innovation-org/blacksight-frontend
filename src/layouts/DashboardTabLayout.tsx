@@ -1,4 +1,4 @@
-import { DashboardTabs, LiveAgent, Sidebar } from "@/components";
+import { GroupedSidebar, Sidebar } from "@/components";
 import { SideBarMobileStateEnum, SideBarStateEnum } from "@/enums";
 import { useStore } from "@/hooks";
 import { changeSidebarMobileState } from "@/store";
@@ -21,11 +21,12 @@ export const DashboardTabLayout = (props: PropsWithChildren) => {
         sidebarState={sidebarState}
         className="w-full h-full grid grid-rows-1"
       >
-        <Sidebar />
+        {/* <Sidebar /> */}
+        <GroupedSidebar />
 
         <div className="w-full flex flex-col h-full overflow-hidden">
           {/* Mobile header */}
-          <div className="sm:hidden flex p-4 bg-white mb-4 left-0 right-0 top-0 fixed h-20 z-35">
+          <div className="sm:hidden flex p-4 bg-white mb-4 left-0 right-0 top-0 fixed h-15 z-35">
             <button onClick={showSidebar}>
               <LayoutDashboard />
             </button>
@@ -48,7 +49,7 @@ const DashboardLayoutContainer = styled.div<{
 }>`
   grid-template-columns: ${(props) =>
     props.sidebarState === SideBarStateEnum.COLLAPSED
-      ? "100px 1fr"
+      ? "80px 1fr"
       : "280px 1fr"};
 
   transition: 0.1s ease;
