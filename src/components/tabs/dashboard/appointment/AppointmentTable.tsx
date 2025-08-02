@@ -208,7 +208,7 @@ export const columns: ColumnDef<Appointment>[] = [
     },
   },
   {
-    accessorKey: "appointmentDate",
+    accessorKey: "dateTimeInUTC",
     header: ({ column }) => {
       const sortDirection = column.getIsSorted();
       const sortDescending = () =>
@@ -228,7 +228,7 @@ export const columns: ColumnDef<Appointment>[] = [
               onClick={column.getToggleSortingHandler()}
               className="hover:bg-transparent py-4 px-4 w-full h-full justify-start font-semibold text-xs text-[#717680] hover:text-[#535862]"
             >
-              Appointment Date
+              Appointment Date (UTC)
               {sortDirection === "asc" && (
                 <ListFilter className="text-blue-600 rotate-180" />
               )}
@@ -244,10 +244,14 @@ export const columns: ColumnDef<Appointment>[] = [
         />
       );
     },
+    cell: ({ row }) => (
+      <div>{new Date(row.getValue("dateTimeInUTC")).toLocaleString()}</div>
+    ),
     sortingFn: "datetime",
   },
   {
-    accessorKey: "appointmentTime",
+    id: "dateTimeInCustomerTimezone",
+    accessorKey: "dateTimeInCustomerTimezone",
     header: ({ column }) => {
       const sortDirection = column.getIsSorted();
       const sortDescending = () =>
@@ -267,7 +271,7 @@ export const columns: ColumnDef<Appointment>[] = [
               onClick={column.getToggleSortingHandler()}
               className="hover:bg-transparent py-4 px-4 w-full h-full justify-start font-semibold text-xs text-[#717680] hover:text-[#535862]"
             >
-              Appointment Time (UTC)
+              Appointment Date (Customer Timezone)
               {sortDirection === "asc" && (
                 <ListFilter className="text-blue-600 rotate-180" />
               )}
@@ -283,7 +287,53 @@ export const columns: ColumnDef<Appointment>[] = [
         />
       );
     },
+    cell: ({ row }) => (
+      <div>
+        {new Date(row.getValue("dateTimeInUTC")).toLocaleString(undefined, {
+          timeZone: row.getValue("timezone"),
+        })}
+      </div>
+    ),
     sortingFn: "datetime",
+  },
+  {
+    accessorKey: "timezone",
+    header: ({ column }) => {
+      const sortDirection = column.getIsSorted();
+      const sortDescending = () =>
+        sortDirection === "desc"
+          ? column.clearSorting()
+          : column.toggleSorting(true);
+      const sortAscending = () =>
+        sortDirection === "asc"
+          ? column.clearSorting()
+          : column.toggleSorting(false);
+
+      return (
+        <SortingDropDown
+          Trigger={
+            <Button
+              variant={"ghost"}
+              onClick={column.getToggleSortingHandler()}
+              className="hover:bg-transparent py-4 px-4 w-full h-full justify-start text-xs font-semibold text-[#717680] hover:text-[#535862]"
+            >
+              Customer timezone
+              {sortDirection === "asc" && (
+                <ListFilter className="text-blue-600 rotate-180" />
+              )}
+              {sortDirection === "desc" && (
+                <ListFilter className="text-blue-600" />
+              )}
+              {!sortDirection && <ListFilter className="text-[#A4A7AE]" />}
+            </Button>
+          }
+          sortDescending={sortDescending}
+          sortAscending={sortAscending}
+          sortDirection={sortDirection}
+        />
+      );
+    },
+    cell: ({ row }) => <div>{row.getValue("timezone")}</div>,
   },
   {
     accessorKey: "createdAt",
@@ -465,8 +515,9 @@ export const AppointmentTable = ({
                           "customerPhone",
                           "customerEmail",
                           "status",
-                          "appointmentDate",
-                          "appointmentTime",
+                          "dateTimeInUTC",
+                          "dateTimeInCustomerTimezone",
+                          "timezone",
                           "createdAt",
                         ].includes(header.id),
                       })}
@@ -511,37 +562,6 @@ export const AppointmentTable = ({
                                 cell.getContext()
                               )}
                             </Badge>
-                          </TableCell>
-                        );
-                      }
-
-                      if (cell.id.includes("appointmentDate")) {
-                        return (
-                          <TableCell
-                            key={cell.id}
-                            className="font-sfpro-medium text-gray-900 text-sm"
-                          >
-                            {new Date(cell.getValue() as string).toDateString()}
-                          </TableCell>
-                        );
-                      }
-
-                      if (cell.id.includes("appointmentTime")) {
-                        const date = cell.row.getValue("appointmentDate"); // e.g. "2025-06-06"
-                        const time = cell.getValue(); // e.g. "17:00" or "17:00:00+04:00"
-
-                        // If time includes timezone offset (like +04:00), just combine and parse
-                        let localDate = new Date(`${date}T${time}`);
-
-                        // Convert to UTC ISO string
-                        const utcISOString = localDate.toLocaleTimeString();
-
-                        return (
-                          <TableCell
-                            key={cell.id}
-                            className="font-sfpro-medium text-gray-900 text-sm"
-                          >
-                            {utcISOString}
                           </TableCell>
                         );
                       }
@@ -638,8 +658,9 @@ type TableSettingProps = {
 };
 
 const headerMap: Record<string, string> = {
-  appointmentDate: "Appointment Date",
-  appointmentTime: "Appointment Time",
+  dateTimeInUTC: "Appointment Date (UTC)",
+  dateTimeInCustomerTimezone: "Appointment Date (CST)",
+  timezone: "Timezone",
   _id: "Appointment ID",
   conversationId: "Conversation ID",
   customerEmail: "Customer Email",
