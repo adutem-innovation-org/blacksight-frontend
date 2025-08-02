@@ -2,7 +2,7 @@
     "admin": [
         {
             "id": "totalUsers",
-            "title": "Total users",
+            "title": "All users",
             "icon": "fi fi-rr-users",
             "shouldCountUp": false,
             "showProgressRing": false

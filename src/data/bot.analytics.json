@@ -1,7 +1,7 @@
 [
     {
         "id": "totalBots",
-        "title": "Total Bots",
+        "title": "All Bots",
         "icon": "fi fi-rr-chatbot-speech-bubble text-[#047857]",
         "shouldCountUp": false,
         "showProgressRing": false

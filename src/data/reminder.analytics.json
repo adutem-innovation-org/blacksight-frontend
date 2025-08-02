@@ -1,7 +1,7 @@
 [
     {
         "id": "totalReminders",
-        "title": "Total reminders",
+        "title": "All reminders",
         "icon": "fi fi-rr-bell-ring text-[#B45309]",
         "shouldCountUp": false,
         "showProgressRing": false

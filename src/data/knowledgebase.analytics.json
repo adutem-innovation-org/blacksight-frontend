@@ -1,7 +1,7 @@
 [
     {
         "id": "totalKnowledgeBases",
-        "title": "Total Knowledge bases",
+        "title": "All Knowledge bases",
         "icon": "fi fi-rr-folder-open text-[#6D28D9]",
         "shouldCountUp": false,
         "showProgressRing": false

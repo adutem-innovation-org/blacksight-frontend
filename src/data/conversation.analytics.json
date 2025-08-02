@@ -1,7 +1,7 @@
 [
     {
         "id": "totalConversations",
-        "title": "Total conversations",
+        "title": "All conversations",
         "icon": "fi fi-rr-messages text-[#BE123C]",
         "shouldCountUp": false,
         "showProgressRing": false

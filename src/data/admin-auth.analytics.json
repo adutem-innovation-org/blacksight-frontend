@@ -1,7 +1,7 @@
 [
     {
         "id": "totalAdmins",
-        "title": "Total Admins",
+        "title": "All Admins",
         "icon": "fi fi-rr-folder-open text-[#6D28D9]",
         "shouldCountUp": false,
         "showProgressRing": false

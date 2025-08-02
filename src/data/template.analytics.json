@@ -1,7 +1,7 @@
 [
     {
         "id": "totalTemplates",
-        "title": "Total templates",
+        "title": "All templates",
         "icon": "fi fi-rr-at text-[#6D28D9]",
         "shouldCountUp": false,
         "showProgressRing": false
