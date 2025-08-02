@@ -1,12 +1,13 @@
 import { Button } from "@/components/form";
 import { VoiceChatRecorder } from "@/components/media";
 import { Loader } from "@/components/progress";
-import { RoleEnum } from "@/enums";
+import { BotActions, RoleEnum, UserActions } from "@/enums";
 import { useStore } from "@/hooks";
 import { Bot } from "@/interfaces";
 import { cn } from "@/lib/utils";
 import {
   askChatbot,
+  clearBotAction,
   getTrainingConversation,
   newMessage,
   resetGetTrainingConversation,
@@ -19,6 +20,7 @@ import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkBreaks from "remark-breaks";
 import throttle from "lodash.throttle";
+import { AppointmentForm, EscalationForm } from "@/components/agent";
 
 const ChatBotHeader = ({
   currentBot,
@@ -389,14 +391,95 @@ const Conversations = ({
   launchRecorder: () => void;
 }) => {
   const conversationContainerRef = useRef<any>(null);
-  const { getState } = useStore();
+  const formPortalRef = useRef<HTMLDivElement>(null);
+  const { getState, dispatch } = useStore();
   const {
     startingConversation,
     startConversationError,
     askingChatbot,
     fetchingTrainingConversation,
+    action,
+    currentBot,
+    currentConversationId,
   } = getState("Bot");
   const typing = startingConversation || askingChatbot;
+  const [appointmentFormOpen, setAppointmentFormOpen] = useState(false);
+  const [escalationFormOpen, setEscalationFormOpen] = useState(false);
+
+  useEffect(() => {
+    if (action === null) {
+      setAppointmentFormOpen(false);
+      setEscalationFormOpen(false);
+      return;
+    }
+
+    if (Object.values(BotActions).includes(action)) {
+      switch (action) {
+        case BotActions.BOOK_APPOINTMENT:
+          setAppointmentFormOpen(true);
+          break;
+        case BotActions.ESCALATE_CHAT:
+          setEscalationFormOpen(true);
+          break;
+      }
+    }
+  }, [action]);
+
+  const onAppointmentFormOpenChange = (val: boolean) => {
+    setAppointmentFormOpen(val);
+  };
+
+  const cancelBooking = () => {
+    // Clear action
+    // Add new cancel message to conversation
+    dispatch(
+      clearBotAction({
+        action: UserActions.CLOSE_APPOINTMENT_FORM,
+        content: "Cancel the booking",
+        role: RoleEnum.USER,
+      })
+    );
+    // Send api request to bot will query to cancel the booking
+    const askBotTmo = setTimeout(() => {
+      dispatch(
+        askChatbot({
+          botId: currentBot?._id!,
+          conversationId: currentConversationId!,
+          userQuery: "Cancel the booking",
+          action: UserActions.CLOSE_APPOINTMENT_FORM,
+        })
+      );
+      clearTimeout(askBotTmo);
+    }, 300);
+    // Close the form
+    setAppointmentFormOpen(false);
+  };
+
+  const cancelEscalation = () => {
+    // Clear action
+    // Add new cancel message to conversation
+    dispatch(
+      clearBotAction({
+        action: UserActions.CLOSE_ESCALATION_FORM,
+        content: "Cancel chat escalation",
+        role: RoleEnum.USER,
+      })
+    );
+    // Send api request to bot will query to cancel the escalation
+    const askBotTmo = setTimeout(() => {
+      dispatch(
+        askChatbot({
+          botId: currentBot?._id!,
+          conversationId: currentConversationId!,
+          userQuery: "Cancel chat escalation",
+          action: UserActions.CLOSE_APPOINTMENT_FORM,
+        })
+      );
+      clearTimeout(askBotTmo);
+    }, 300);
+    // Close the form
+    setEscalationFormOpen(false);
+  };
 
   const scrollToBottom = useCallback(() => {
     const containerRef = conversationContainerRef.current;
@@ -406,13 +489,16 @@ const Conversations = ({
   }, [conversationContainerRef]);
 
   useEffect(() => {
-    if ((currentConversation || []).length > 1) {
+    if ((currentConversation || []).length > 1 || typing) {
       scrollToBottom();
     }
-  }, [currentConversation]);
+  }, [currentConversation, typing]);
 
   return (
-    <div className="bg-gray-100 flex-1 rounded-[28px] flex flex-col justify-end p-6 gap-4 overflow-hidden relative">
+    <div
+      className="bg-gray-100 flex-1 rounded-[28px] flex flex-col justify-end p-6 gap-4 overflow-hidden relative"
+      ref={formPortalRef}
+    >
       {fetchingTrainingConversation ? (
         <Loader text1="Loading training conversations..." />
       ) : (
@@ -434,7 +520,30 @@ const Conversations = ({
               )}
             </div>
           </div>
+
           <Promper recording={recording} launchRecorder={launchRecorder} />
+
+          <>
+            <AppointmentForm
+              open={
+                appointmentFormOpen && action === BotActions.BOOK_APPOINTMENT
+              }
+              onOpenChange={onAppointmentFormOpenChange}
+              portal={formPortalRef as any}
+              cancelBooking={cancelBooking}
+              source={"bot"}
+            />
+          </>
+
+          <>
+            <EscalationForm
+              open={escalationFormOpen && action === BotActions.ESCALATE_CHAT}
+              onOpenChange={setEscalationFormOpen}
+              portal={formPortalRef as any}
+              cancelTicket={cancelEscalation}
+              source={"bot"}
+            />
+          </>
         </Fragment>
       )}
     </div>
@@ -635,11 +744,12 @@ export const ChatBot = ({ openBotConfig }: { openBotConfig: () => void }) => {
   }, [fetchTrainingConversationError]);
 
   return (
-    <div className="flex flex-col col-span-2">
+    <div className="flex flex-col col-span-2 ">
       <div className="h-10">
         <p className="text-2xl font-dmsans tracking-tight">Chatbot Agent</p>
       </div>
-      <div className="bg-white bg-linear-to-br from-indigo-500 to-sky-500 shadow-[0px_4px_16px_0px_#0000001f] rounded-4xl overflow-hidden w-full flex-1 p-1 flex flex-col">
+      {/* Never remove the drop-shadow style or else vaul will break */}
+      <div className="bg-white bg-linear-to-br from-indigo-500 to-sky-500 shadow-[0px_4px_16px_0px_#0000001f] rounded-4xl overflow-hidden w-full flex-1 p-1 flex flex-col drop-shadow">
         <ChatBotHeader currentBot={currentBot!} openBotConfig={openBotConfig} />
         <Conversations
           currentConversation={currentConversation}
