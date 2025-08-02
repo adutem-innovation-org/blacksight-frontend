@@ -47,7 +47,7 @@ export const DashboardTabs = () => {
       >
         <KnowledgeBaseTab />
       </Tabs.Panel>
-      <Tabs.Panel value={DashboardTabsEnum.BOTS} className="w-full h-full">
+      <Tabs.Panel value={DashboardTabsEnum.AGENTS} className="w-full h-full">
         <BotsTab />
       </Tabs.Panel>
       <Tabs.Panel

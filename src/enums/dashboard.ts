@@ -1,6 +1,6 @@
 export enum DashboardTabsEnum {
   ANALYTICS = "analytics",
-  BOTS = "bots",
+  AGENTS = "agents",
   KNOWLEDGE_BASE = "knowledge base",
   APPOINTMENTS = "appointments",
   USERS = "users",

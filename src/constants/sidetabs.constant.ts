@@ -22,10 +22,10 @@ export const sideTabs: Record<UserTypes, SideTabType[]> = {
       path: "/knowledge-base",
     },
     {
-      name: "Bots",
-      tabId: DashboardTabsEnum.BOTS,
+      name: "Agents",
+      tabId: DashboardTabsEnum.AGENTS,
       iconClass: "fi fi-rr-chatbot-speech-bubble",
-      path: "/bots",
+      path: "/agents",
     },
     {
       name: "Conversations",
@@ -72,10 +72,10 @@ export const sideTabs: Record<UserTypes, SideTabType[]> = {
       path: "/dashboard",
     },
     {
-      name: "Bots",
-      tabId: DashboardTabsEnum.BOTS,
+      name: "Agents",
+      tabId: DashboardTabsEnum.AGENTS,
       iconClass: "fi fi-rr-chatbot-speech-bubble",
-      path: "/bots",
+      path: "/agents",
     },
     {
       name: "Conversations",

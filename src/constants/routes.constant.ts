@@ -76,7 +76,7 @@ export const privatePages: RouteType[] = [
     Element: UsersTab,
   },
   {
-    path: "/bots",
+    path: "/agents",
     Element: BotsTab,
   },
   {
@@ -114,7 +114,7 @@ export const privatePagesMap = {
     "/onboard",
     "/dashboard",
     "/knowledge-base",
-    "/bots",
+    "/agents",
     "/conversations",
     "/appointments",
     "/reminder",
@@ -125,7 +125,7 @@ export const privatePagesMap = {
   ],
   [UserTypes.ADMIN]: [
     "/dashboard",
-    "/bots",
+    "/agents",
     "/conversations",
     "/appointments",
     "/knowledge-base",
@@ -142,7 +142,7 @@ export const pathToTabMap: Record<string, DashboardTabsEnum> = {
   "/knowledge-base": DashboardTabsEnum.KNOWLEDGE_BASE,
   "/appointments": DashboardTabsEnum.APPOINTMENTS,
   "/users": DashboardTabsEnum.USERS,
-  "/bots": DashboardTabsEnum.BOTS,
+  "/agents": DashboardTabsEnum.AGENTS,
   "/conversations": DashboardTabsEnum.CONVERSATIONS,
   "/calendars": DashboardTabsEnum.CALENDARS,
   "/reminder": DashboardTabsEnum.REMINDER,
