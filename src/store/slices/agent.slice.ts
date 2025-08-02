@@ -2,7 +2,9 @@ import { initialAgentState } from "@/constants";
 import { createSlice } from "@reduxjs/toolkit";
 import {
   askAgentBuilder,
+  bookAppointmentBuilder,
   connectAgentBuilder,
+  submitTicketBuilder,
   transcribeSpeechBuilder,
 } from "../builders";
 import {
@@ -10,6 +12,9 @@ import {
   resetAskAgentReducer,
   resetTranscribeSpeechReducer,
   newEnquiryReducer,
+  clearBotActionReducer,
+  resetBookAppointmentReducer,
+  resetSubmitTicketReducer,
 } from "../reducers";
 
 const agentSlice = createSlice({
@@ -20,11 +25,16 @@ const agentSlice = createSlice({
     newEnquiry: newEnquiryReducer,
     resetAskAgent: resetAskAgentReducer,
     resetTranscribeSpeech: resetTranscribeSpeechReducer,
+    clearBotAction: clearBotActionReducer,
+    resetBookAppointment: resetBookAppointmentReducer,
+    resetSubmitTicket: resetSubmitTicketReducer,
   },
   extraReducers(builder) {
     connectAgentBuilder(builder);
     askAgentBuilder(builder);
     transcribeSpeechBuilder(builder);
+    bookAppointmentBuilder(builder);
+    submitTicketBuilder(builder);
   },
 });
 
@@ -34,4 +44,7 @@ export const {
   newEnquiry,
   resetAskAgent,
   resetTranscribeSpeech,
+  clearBotAction,
+  resetBookAppointment,
+  resetSubmitTicket,
 } = agentSlice.actions;

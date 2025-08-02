@@ -1,4 +1,4 @@
-import { RoleEnum } from "@/enums";
+import { BotActions, RoleEnum } from "@/enums";
 import { AgentState } from "@/interfaces";
 import { askAgent } from "@/store/thunks";
 import { ActionReducerMapBuilder } from "@reduxjs/toolkit";
@@ -15,6 +15,7 @@ export const askAgentBuilder = (
     state.askingAgent = false;
     state.chatHistory = state.chatHistory || [];
     state.chatHistory.push(action.payload);
+    state.action = (action.payload?.action as BotActions) ?? null;
   });
 
   builder.addCase(askAgent.rejected, (state, action) => {

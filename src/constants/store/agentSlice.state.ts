@@ -11,9 +11,22 @@ export const initialAgentState: AgentState = {
 
   askingAgent: false,
   askAgentError: "",
+  action: null,
 
   transcribingSpeech: false,
   speechTranscribed: false,
   transcribedText: "",
   transcribeSpeechError: "",
+
+  // Book appointment
+  bookingAppointment: false,
+  appointmentBooked: false,
+  bookAppointmentErrors: {},
+  bookAppointmentErrorMessage: "",
+
+  // Submit ticket
+  submittingTicket: false,
+  ticketSubmitted: false,
+  submitTicketErrors: {},
+  submitTicketErrorMessage: "",
 };

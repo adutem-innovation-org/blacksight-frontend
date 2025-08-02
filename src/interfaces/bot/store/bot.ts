@@ -1,4 +1,4 @@
-import { BotStatus, RoleEnum } from "@/enums";
+import { BotActions, BotStatus, RoleEnum, UserActions } from "@/enums";
 
 export type Bot = {
   _id: string;
@@ -30,6 +30,7 @@ export type Bot = {
 export type Message = {
   role: RoleEnum;
   content: string;
+  action?: BotActions | UserActions;
 };
 
 export type Conversation = {

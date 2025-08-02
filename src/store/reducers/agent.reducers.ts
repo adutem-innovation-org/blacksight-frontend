@@ -1,4 +1,4 @@
-import { RoleEnum } from "@/enums";
+import { RoleEnum, UserActions } from "@/enums";
 import { AgentState } from "@/interfaces";
 import { PayloadAction } from "@reduxjs/toolkit";
 
@@ -27,4 +27,31 @@ export const resetTranscribeSpeechReducer = (state: AgentState) => {
   state.speechTranscribed = false;
   state.transcribeSpeechError = "";
   state.transcribedText;
+};
+
+export const clearBotActionReducer = (
+  state: AgentState,
+  action: PayloadAction<{
+    role: RoleEnum;
+    content: string;
+    action: UserActions;
+  }>
+) => {
+  state.action = null;
+  state.chatHistory = state.chatHistory || [];
+  state.chatHistory.push(action.payload);
+};
+
+export const resetBookAppointmentReducer = (state: AgentState) => {
+  state.bookingAppointment = false;
+  state.appointmentBooked = false;
+  state.bookAppointmentErrors = {};
+  state.bookAppointmentErrorMessage = "";
+};
+
+export const resetSubmitTicketReducer = (state: AgentState) => {
+  state.submittingTicket = false;
+  state.ticketSubmitted = false;
+  state.submitTicketErrors = {};
+  state.submitTicketErrorMessage = "";
 };
