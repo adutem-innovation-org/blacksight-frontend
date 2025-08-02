@@ -7,3 +7,4 @@ export * from "./remindertab.constant";
 export * from "./bottab.constant";
 export * from "./onboarding.constant";
 export * from "./templatetab.constant";
+export * from "./appointment.constant";
