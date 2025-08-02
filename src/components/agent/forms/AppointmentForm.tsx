@@ -1,5 +1,5 @@
 import { Drawer } from "vaul";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button, FormGroup } from "@/components/form";
 import { useFormik } from "formik";
@@ -7,15 +7,16 @@ import { TIME_ZONES } from "@/constants";
 import { X } from "lucide-react";
 import { agentScheduleAppointmentSchema } from "@/schemas";
 import { useStore } from "@/hooks";
-import { bookAppointment, resetBookAppointment } from "@/store";
+import { bookAppointment, scheduleAppointment } from "@/store";
 import { Loader } from "@/components/progress";
-import { SuccessComponent, ErrorDrawer } from "./Resuables";
+import { SuccessComponent, ErrorDrawer, usePairState } from "./Resuables";
 
 type AppointmentFormProps = {
   open: boolean;
   onOpenChange: (value: boolean) => void;
   portal: React.RefObject<HTMLDivElement>;
   cancelBooking: () => void;
+  source?: "bot" | "live-agent";
 };
 
 const snapPoints = ["280px", 1];
@@ -25,19 +26,17 @@ export const AppointmentForm = ({
   onOpenChange,
   portal,
   cancelBooking,
+  source = "live-agent",
 }: AppointmentFormProps) => {
   const { dispatch, getState } = useStore();
-  const {
-    bookingAppointment,
-    appointmentBooked,
-    bookAppointmentErrorMessage,
-    bookAppointmentErrors,
-  } = getState("Agent");
+  const { loading, success, error, errors, resetState } = usePairState(source);
+  const { currentBot, currentConversationId } = getState("Bot");
+
   const [confirmCancelBooking, setConfirmCancelBooking] = useState(false);
   const [snap, setSnap] = useState<number | string | null>(snapPoints[1]);
 
   const onErrorDrawerOpenChange = (val: boolean) => {
-    dispatch(resetBookAppointment());
+    dispatch(resetState());
   };
 
   const initialValues = {
@@ -53,7 +52,15 @@ export const AppointmentForm = ({
     initialValues,
     validationSchema: agentScheduleAppointmentSchema,
     onSubmit(values) {
-      dispatch(bookAppointment(values));
+      if (source === "bot")
+        return dispatch(
+          scheduleAppointment({
+            ...values,
+            botId: currentBot?._id!,
+            conversationId: currentConversationId!,
+          })
+        );
+      return dispatch(bookAppointment(values));
     },
   });
 
@@ -74,27 +81,27 @@ export const AppointmentForm = ({
   };
 
   useEffect(() => {
-    if (appointmentBooked) {
+    if (success) {
       validation.resetForm();
       const tmo = setTimeout(() => {
-        dispatch(resetBookAppointment());
+        dispatch(resetState());
         onOpenChange(false);
         clearTimeout(tmo);
       }, 3000);
     }
-  }, [appointmentBooked]);
+  }, [success]);
 
   useEffect(() => {
-    if (bookAppointmentErrorMessage) {
-      if (Object.keys(bookAppointmentErrors).length > 0) {
-        validation.setErrors(bookAppointmentErrors);
+    if (error) {
+      if (Object.keys(errors).length > 0) {
+        validation.setErrors(errors);
       }
       const tmo = setTimeout(() => {
-        dispatch(resetBookAppointment());
+        dispatch(resetState());
         clearTimeout(tmo);
       }, 2000);
     }
-  }, [bookAppointmentErrorMessage]);
+  }, [error]);
 
   return (
     <Drawer.Root
@@ -115,15 +122,13 @@ export const AppointmentForm = ({
         <div className="fixed inset-0 bg-black/40"></div>
 
         <Drawer.Content className="bg-gray-100 flex flex-col mt-24 h-[80%] fixed bottom-0 left-0 right-0 outline-none !rounded-t-4xl z-[100000] overflow-hidden">
-          {bookingAppointment && <Loader />}
+          {loading && <Loader />}
 
-          {appointmentBooked && (
-            <SuccessComponent text="Appointment Booked! 🎉🎉" />
-          )}
+          {success && <SuccessComponent text="Appointment Booked! 🎉🎉" />}
 
           <ErrorDrawer
-            error={bookAppointmentErrorMessage}
-            open={!!bookAppointmentErrorMessage}
+            error={error}
+            open={!!error}
             onOpenChange={onErrorDrawerOpenChange}
             portal={portal}
           />
@@ -135,7 +140,7 @@ export const AppointmentForm = ({
                 className="rounded-full"
                 size={"icon"}
                 onClick={triggerCancelBooking}
-                disabled={bookingAppointment}
+                disabled={loading}
               >
                 <X />
               </Button>
@@ -145,7 +150,7 @@ export const AppointmentForm = ({
           <div
             className={cn(
               "p-4 pb-20 bg-white rounded-t-4xl flex-1 overflow-y-auto no-scrollbar",
-              { hidden: appointmentBooked }
+              { hidden: success }
             )}
           >
             <div className="max-w-sm mx-auto space-y-4 px-1 sm:px-0">
@@ -164,7 +169,7 @@ export const AppointmentForm = ({
                   </Drawer.Description>
                 </div>
               )}
-              {!confirmCancelBooking && !appointmentBooked && (
+              {!confirmCancelBooking && !success && (
                 <div className="flex flex-col gap-2">
                   <Drawer.Title className="font-medium text-gray-900 text-xl">
                     Book an appointment
@@ -177,7 +182,7 @@ export const AppointmentForm = ({
               )}
 
               {/* Form */}
-              {!confirmCancelBooking && !appointmentBooked && (
+              {!confirmCancelBooking && !success && (
                 <form
                   className="mt-6"
                   onSubmit={(e) => {
@@ -236,7 +241,7 @@ export const AppointmentForm = ({
                   <Button
                     className="w-full cursor-pointer mt-6"
                     type="submit"
-                    disabled={bookingAppointment}
+                    disabled={loading}
                   >
                     Book appointment
                   </Button>
@@ -245,7 +250,7 @@ export const AppointmentForm = ({
                     type="button"
                     variant={"secondary_gray"}
                     onClick={triggerCancelBooking}
-                    disabled={bookingAppointment}
+                    disabled={loading}
                   >
                     Cancel
                   </Button>

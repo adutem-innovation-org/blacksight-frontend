@@ -1,6 +1,8 @@
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { Drawer } from "vaul";
 import { motion } from "framer-motion";
+import { useStore } from "@/hooks";
+import { resetBookAppointment, resetScheduleAppointment } from "@/store";
 
 export const SuccessComponent = ({ text }: { text: string }) => {
   return (
@@ -90,4 +92,70 @@ export const ErrorDrawer = ({
       </Drawer.Portal>
     </Drawer.NestedRoot>
   );
+};
+
+export const usePairState = (source: "bot" | "live-agent") => {
+  const { getState } = useStore();
+  const {
+    bookingAppointment,
+    appointmentBooked,
+    bookAppointmentErrorMessage,
+    bookAppointmentErrors,
+  } = getState("Agent");
+  const {
+    schedulingAppointment,
+    appointmentScheduled,
+    scheduleAppointmentErrorMessage,
+    scheduleAppointmentErrors,
+  } = getState("Bot");
+
+  return source === "bot"
+    ? {
+        loading: schedulingAppointment,
+        success: appointmentScheduled,
+        error: scheduleAppointmentErrorMessage,
+        errors: scheduleAppointmentErrors,
+        resetState: resetScheduleAppointment,
+      }
+    : {
+        loading: bookingAppointment,
+        success: appointmentBooked,
+        error: bookAppointmentErrorMessage,
+        errors: bookAppointmentErrors,
+        resetState: resetBookAppointment,
+      };
+};
+
+// For escalation
+
+export const usePairEscalationState = (source: "bot" | "live-agent") => {
+  const { getState } = useStore();
+  const {
+    submittingTicket,
+    ticketSubmitted,
+    submitTicketErrorMessage,
+    submitTicketErrors,
+  } = getState("Agent");
+  const {
+    escalatingChat,
+    chatEscalated,
+    escalateChatErrors,
+    escalateChatErrorMessage,
+  } = getState("Bot");
+
+  return source === "bot"
+    ? {
+        loading: escalatingChat,
+        success: chatEscalated,
+        error: escalateChatErrorMessage,
+        errors: escalateChatErrors,
+        resetState: resetScheduleAppointment,
+      }
+    : {
+        loading: submittingTicket,
+        success: ticketSubmitted,
+        error: submitTicketErrorMessage,
+        errors: submitTicketErrors,
+        resetState: resetBookAppointment,
+      };
 };

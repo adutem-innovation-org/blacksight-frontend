@@ -1,20 +1,25 @@
 import { Drawer } from "vaul";
 import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 import { Button, FormGroup } from "@/components/form";
 import { useFormik } from "formik";
 import { X } from "lucide-react";
 import { agentEscalateIssueSchema } from "@/schemas";
-import { resetSubmitTicket, submitTicket } from "@/store";
 import { useStore } from "@/hooks";
+import { escalateChat, submitTicket } from "@/store";
 import { Loader } from "@/components/progress";
-import { SuccessComponent, ErrorDrawer } from "./Resuables";
-import { cn } from "@/lib/utils";
+import {
+  SuccessComponent,
+  ErrorDrawer,
+  usePairEscalationState,
+} from "./Resuables";
 
 type EscalationFormProps = {
   open: boolean;
   onOpenChange: (value: boolean) => void;
   portal: React.RefObject<HTMLDivElement>;
   cancelTicket: () => void;
+  source?: "bot" | "live-agent";
 };
 
 const snapPoints = ["280px", 1];
@@ -24,19 +29,17 @@ export const EscalationForm = ({
   onOpenChange,
   portal,
   cancelTicket,
+  source = "live-agent",
 }: EscalationFormProps) => {
   const { dispatch, getState } = useStore();
-  const {
-    submittingTicket,
-    ticketSubmitted,
-    submitTicketErrorMessage,
-    submitTicketErrors,
-  } = getState("Agent");
+  const { loading, success, error, errors, resetState } =
+    usePairEscalationState(source);
+  const { currentBot, currentConversationId } = getState("Bot");
   const [confirmCancelTicket, setConfirmCancelTicket] = useState(false);
   const [snap, setSnap] = useState<number | string | null>(snapPoints[1]);
 
   const onErrorDrawerOpenChange = (val: boolean) => {
-    dispatch(resetSubmitTicket());
+    dispatch(resetState());
   };
 
   const initialValues = {
@@ -50,7 +53,15 @@ export const EscalationForm = ({
     initialValues,
     validationSchema: agentEscalateIssueSchema,
     onSubmit(values) {
-      dispatch(submitTicket(values));
+      if (source === "bot")
+        return dispatch(
+          escalateChat({
+            ...values,
+            botId: currentBot?._id!,
+            conversationId: currentConversationId!,
+          })
+        );
+      return dispatch(submitTicket(values));
     },
   });
 
@@ -71,27 +82,27 @@ export const EscalationForm = ({
   };
 
   useEffect(() => {
-    if (ticketSubmitted) {
+    if (success) {
       validation.resetForm();
       const tmo = setTimeout(() => {
-        dispatch(resetSubmitTicket());
+        dispatch(resetState());
         onOpenChange(false);
         clearTimeout(tmo);
       }, 3000);
     }
-  }, [ticketSubmitted]);
+  }, [success]);
 
   useEffect(() => {
-    if (submitTicketErrorMessage) {
-      if (Object.keys(submitTicketErrors).length > 0) {
-        validation.setErrors(submitTicketErrors);
+    if (error) {
+      if (Object.keys(errors).length > 0) {
+        validation.setErrors(errors);
       }
       const tmo = setTimeout(() => {
-        dispatch(resetSubmitTicket());
+        dispatch(resetState());
         clearTimeout(tmo);
       }, 2000);
     }
-  }, [submitTicketErrorMessage]);
+  }, [error]);
 
   return (
     <Drawer.Root
@@ -112,15 +123,13 @@ export const EscalationForm = ({
         <div className="fixed inset-0 bg-black/40"></div>
 
         <Drawer.Content className="bg-gray-100 flex flex-col mt-24 h-[80%] fixed bottom-0 left-0 right-0 outline-none !rounded-t-4xl z-[100000] overflow-hidden">
-          {submittingTicket && <Loader />}
+          {loading && <Loader />}
 
-          {ticketSubmitted && (
-            <SuccessComponent text="Ticket submitted! 🎉🎉" />
-          )}
+          {success && <SuccessComponent text="Ticket submitted! 🎉🎉" />}
 
           <ErrorDrawer
-            error={submitTicketErrorMessage}
-            open={!!submitTicketErrorMessage}
+            error={error}
+            open={!!error}
             onOpenChange={onErrorDrawerOpenChange}
             portal={portal}
           />
@@ -141,7 +150,7 @@ export const EscalationForm = ({
           <div
             className={cn(
               "p-4 pb-20 bg-white rounded-t-4xl flex-1 overflow-y-auto no-scrollbar",
-              { hidden: ticketSubmitted }
+              { hidden: success }
             )}
           >
             <div className="max-w-sm mx-auto space-y-4 px-1 sm:px-0">
@@ -161,7 +170,7 @@ export const EscalationForm = ({
                 </div>
               )}
 
-              {!confirmCancelTicket && !ticketSubmitted && (
+              {!confirmCancelTicket && !success && (
                 <div className="flex flex-col gap-2">
                   <Drawer.Title className="font-medium text-gray-900 text-xl">
                     Escalate a ticket
@@ -173,7 +182,7 @@ export const EscalationForm = ({
               )}
 
               {/* Form */}
-              {!confirmCancelTicket && !ticketSubmitted && (
+              {!confirmCancelTicket && !success && (
                 <form
                   className="mt-6"
                   onSubmit={(e) => {
