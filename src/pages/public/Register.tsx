@@ -12,6 +12,8 @@ import { UserTypes } from "@/enums";
 import { getAuthUser } from "@/helpers";
 import toast from "react-hot-toast";
 import blacksightLogo from "@/assets/images/blacksight_logo_side.png";
+import appleIcon from "@/assets/images/logos_apple.png";
+
 
 export const Register = () => {
   const navigate = useNavigate();
@@ -33,6 +35,7 @@ export const Register = () => {
   } = getState("Auth");
 
   const initialValues = {
+    fullName: "",
     firstName: "",
     lastName: "",
     email: "",
@@ -43,6 +46,7 @@ export const Register = () => {
   const registerSchema = yup.object({
     firstName: yup.string().required("Please provide first name"),
     lastName: yup.string().required("Please provide last name"),
+    fullName: yup.string().required("Please provide your full name"),
     email: yup
       .string()
       .required("Please enter email")
@@ -61,14 +65,37 @@ export const Register = () => {
       .oneOf([yup.ref("password")], "Passwords must match"),
   });
 
-  const validation = useFormik<RegisterUserBody & { confirmPassword: string }>({
+  // const validation = useFormik<RegisterUserBody & { confirmPassword: string }>({
+  //   enableReinitialize: false,
+  //   initialValues,
+  //   validationSchema: registerSchema,
+  //   onSubmit: (values) => {
+  //     dispatch(signUpUser(values));
+  //   },
+  // });
+
+  const validation = useFormik<RegisterUserBody & { confirmPassword: string; fullName: string }>({
     enableReinitialize: false,
     initialValues,
     validationSchema: registerSchema,
     onSubmit: (values) => {
-      dispatch(signUpUser(values));
+      // Split fullName into firstName and lastName
+      const [firstName, ...lastNameParts] = values.fullName.trim().split(" ");
+      const lastName = lastNameParts.join(" ");
+
+      // Prepare payload without fullName
+      const payload: RegisterUserBody & { confirmPassword: string } = {
+        ...values,
+        firstName,
+        lastName,
+      };
+
+      delete (payload as any).fullName; // Remove fullName before dispatch
+
+      dispatch(signUpUser(payload));
     },
   });
+
 
   // Successful authentication
   useEffect(() => {
@@ -138,30 +165,172 @@ export const Register = () => {
 
   const { handleChange, handleBlur, values } = validation;
 
+  // return (
+  //   <React.Fragment>
+  //     <div className="flex items-center">
+  //       <img src={blacksightLogo} className="max-h-10 object-contain" />
+  //     </div>
+
+  //     {/* Form */}
+  //     <div className="w-[90%] max-w-[450px]">
+  //       <div className="flex flex-col gap-2">
+  //         <h1 className="text-4xl font-bold text-center font-caladea">
+  //           Create New Account
+  //         </h1>
+  //         <p className="text-center text-sm">Get your Free Business Account</p>
+  //       </div>
+
+  //       <form
+  //         className="pt-8 w-full"
+  //         onSubmit={(e) => {
+  //           e.preventDefault();
+  //           validation.handleSubmit();
+  //           return false;
+  //         }}
+  //       >
+  //         <FormGroup
+  //           type="text"
+  //           groupLabel="First name"
+  //           placeholder="Enter your first name"
+  //           size="lg"
+  //           name="firstName"
+  //           disabled={signingUp || authenticatingWithGoogle}
+  //           validation={validation}
+  //         />
+  //         <FormGroup
+  //           type="text"
+  //           groupLabel="Last name"
+  //           placeholder="Enter your last name"
+  //           size="lg"
+  //           name="lastName"
+  //           disabled={signingUp || authenticatingWithGoogle}
+  //           validation={validation}
+  //         />
+  //         <FormGroup
+  //           type="text"
+  //           groupLabel="Email"
+  //           placeholder="Enter your email"
+  //           size="lg"
+  //           name="email"
+  //           disabled={signingUp || authenticatingWithGoogle}
+  //           validation={validation}
+  //         />
+  //         <FormGroup
+  //           type="password"
+  //           groupLabel="Password"
+  //           placeholder="Enter your password"
+  //           size="lg"
+  //           name="password"
+  //           disabled={signingUp || authenticatingWithGoogle}
+  //           validation={validation}
+  //         />
+  //         <FormGroup
+  //           type="password"
+  //           groupLabel="Confirm Password"
+  //           placeholder="Confirm password"
+  //           size="lg"
+  //           name="confirmPassword"
+  //           disabled={signingUp || authenticatingWithGoogle}
+  //           validation={validation}
+  //         />
+
+  //         {(signUpErrorMessage || googleAuthErrorMessage) && (
+  //           <InfoBlock variant={"error"} className="mt-8">
+  //             {signUpErrorMessage || googleAuthErrorMessage}
+  //           </InfoBlock>
+  //         )}
+
+  //         <Button
+  //           className="w-full cursor-pointer mt-10"
+  //           variant={"default"}
+  //           size={"md"}
+  //           disabled={signingUp || gettingOauthData || authenticatingWithGoogle}
+  //         >
+  //           {signingUp ? <Spinner type="form" /> : "Sign Up"}
+  //         </Button>
+  //         {params.basePath === UserTypes.USER && (
+  //           <Button
+  //             className="w-full cursor-pointer mt-4 flex items-center gap-2"
+  //             size={"md"}
+  //             variant={"outline"}
+  //             type="button"
+  //             disabled={
+  //               signingUp ||
+  //               gettingOauthData ||
+  //               !gapiReady ||
+  //               authenticatingWithGoogle
+  //             }
+  //             onClick={() => googleLogin()}
+  //           >
+  //             <img src={googleIcon} className="w-6 h-6" />
+  //             {authenticatingWithGoogle ? (
+  //               <Spinner type="form" />
+  //             ) : (
+  //               "Sign In with Google"
+  //             )}
+  //           </Button>
+  //         )}
+  //       </form>
+  //     </div>
+
+  //     {/* Footer */}
+  //     <div>
+  //       <div className="flex items-baseline gap-1">
+  //         <p className="text-sm text-gray-600 font-medium">
+  //           Already have an account?
+  //         </p>
+  //         <Link
+  //           aria-disabled={authenticatingWithGoogle || signingUp}
+  //           to={`/${params.basePath}/signin`}
+  //           className="text-sm text-blue-900 font-semibold"
+  //         >
+  //           Sign In
+  //         </Link>
+  //       </div>
+  //     </div>
+  //   </React.Fragment>
+  // );
+
+
+
   return (
     <React.Fragment>
-      <div className="flex items-center">
-        <img src={blacksightLogo} className="max-h-10 object-contain" />
-      </div>
+      {/* Logo */}
 
-      {/* Form */}
-      <div className="w-[90%] max-w-[450px]">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-4xl font-bold text-center font-caladea">
-            Create New Account
-          </h1>
-          <p className="text-center text-sm">Get your Free Business Account</p>
+      <div className="flex justify-center flex-col gap-4 ">
+
+
+        <div className="flex justify-center ">
+          <img src={blacksightLogo} className="max-h-10 object-contain" />
         </div>
 
-        <form
-          className="pt-8 w-full"
-          onSubmit={(e) => {
-            e.preventDefault();
-            validation.handleSubmit();
-            return false;
-          }}
-        >
-          <FormGroup
+        {/* Container */}
+        <div className="w-full  flex flex-col items-center">
+          {/* Title */}
+          <h1 className="text-2xl sm:text-3xl text-center text-blue-500">
+            Fill in your Details
+          </h1>
+
+          {/* Form */}
+          <form
+            className=" w-full"
+            onSubmit={(e) => {
+              e.preventDefault();
+              validation.handleSubmit();
+              return false;
+            }}
+          >
+            <FormGroup
+              type="text"
+              groupLabel="Name"
+              placeholder="Enter your full name"
+              size="lg"
+              name="fullName"
+              disabled={signingUp || authenticatingWithGoogle}
+              validation={validation}
+            />
+
+            {/* <FormGroup
             type="text"
             groupLabel="First name"
             placeholder="Enter your first name"
@@ -178,89 +347,110 @@ export const Register = () => {
             name="lastName"
             disabled={signingUp || authenticatingWithGoogle}
             validation={validation}
-          />
-          <FormGroup
-            type="text"
-            groupLabel="Email"
-            placeholder="Enter your email"
-            size="lg"
-            name="email"
-            disabled={signingUp || authenticatingWithGoogle}
-            validation={validation}
-          />
-          <FormGroup
-            type="password"
-            groupLabel="Password"
-            placeholder="Enter your password"
-            size="lg"
-            name="password"
-            disabled={signingUp || authenticatingWithGoogle}
-            validation={validation}
-          />
-          <FormGroup
-            type="password"
-            groupLabel="Confirm Password"
-            placeholder="Confirm password"
-            size="lg"
-            name="confirmPassword"
-            disabled={signingUp || authenticatingWithGoogle}
-            validation={validation}
-          />
+          /> */}
+            <FormGroup
+              type="text"
+              groupLabel="Email"
+              placeholder="Enter your email"
+              size="lg"
+              name="email"
+              disabled={signingUp || authenticatingWithGoogle}
+              validation={validation}
+            />
+            <FormGroup
+              type="password"
+              groupLabel="Password"
+              placeholder="Enter your password"
+              size="lg"
+              name="password"
+              disabled={signingUp || authenticatingWithGoogle}
+              validation={validation}
+            />
+            <FormGroup
+              type="password"
+              groupLabel="Confirm Password"
+              placeholder="Confirm password"
+              size="lg"
+              name="confirmPassword"
+              disabled={signingUp || authenticatingWithGoogle}
+              validation={validation}
+            />
 
-          {(signUpErrorMessage || googleAuthErrorMessage) && (
-            <InfoBlock variant={"error"} className="mt-8">
-              {signUpErrorMessage || googleAuthErrorMessage}
-            </InfoBlock>
-          )}
+            {(signUpErrorMessage || googleAuthErrorMessage) && (
+              <InfoBlock variant={"error"} className="mt-8">
+                {signUpErrorMessage || googleAuthErrorMessage}
+              </InfoBlock>
+            )}
 
-          <Button
-            className="w-full cursor-pointer mt-10"
-            variant={"default"}
-            size={"md"}
-            disabled={signingUp || gettingOauthData || authenticatingWithGoogle}
-          >
-            {signingUp ? <Spinner type="form" /> : "Sign Up"}
-          </Button>
-          {params.basePath === UserTypes.USER && (
             <Button
-              className="w-full cursor-pointer mt-4 flex items-center gap-2"
+              className="w-full cursor-pointer mt-10"
+              variant={"default"}
               size={"md"}
-              variant={"outline"}
-              type="button"
-              disabled={
-                signingUp ||
-                gettingOauthData ||
-                !gapiReady ||
-                authenticatingWithGoogle
-              }
-              onClick={() => googleLogin()}
+              disabled={signingUp || gettingOauthData || authenticatingWithGoogle}
             >
-              <img src={googleIcon} className="w-6 h-6" />
-              {authenticatingWithGoogle ? (
-                <Spinner type="form" />
-              ) : (
-                "Sign In with Google"
-              )}
+              {signingUp ? <Spinner type="form" /> : "Sign Up"}
             </Button>
-          )}
-        </form>
-      </div>
+           
+           
+                   {/* Divider Text */}
+            <p className="text-xs text-gray-500 text-center mt-4">Or Sign Up</p>
+    
+            <div className="flex flex-col sm:flex-row gap-3 mt-4 w-full">
+              {params.basePath === UserTypes.USER && (
+                <Button
+                  className="w-full cursor-pointer  flex items-center gap-2"
+                  size={"md"}
+                  variant={"outline"}
+                  type="button"
+                  disabled={
+                    signingUp ||
+                    gettingOauthData ||
+                    !gapiReady ||
+                    authenticatingWithGoogle
+                  }
+                  onClick={() => googleLogin()}
+                >
+                  <img src={googleIcon} className="w-6 h-6" />
+                  {authenticatingWithGoogle ? (
+                    <Spinner type="form" />
+                  ) : (
+                    "Sign Up with Google"
+                  )}
+                </Button>
+              )}
 
-      {/* Footer */}
-      <div>
-        <div className="flex items-baseline gap-1">
-          <p className="text-sm text-gray-600 font-medium">
-            Already have an account?
+
+              {/* Apple Sign In */}
+              <Button
+                className="flex-1 flex items-center justify-center gap-2 border rounded-xl py-3"
+                size="md"
+                type="button"
+                variant="outline"
+              >
+                <img src={appleIcon} className="w-5 h-5" />
+                Sign Up Using Apple
+              </Button>
+            </div>
+          </form>
+
+
+        </div>
+        {/* Footer Links */}
+        <div className="flex justify-between w-full mt-6 text-sm">
+          <p className="text-gray-600">
+            Already have an account?{" "}
+
+            <Link
+              aria-disabled={authenticatingWithGoogle || signingUp}
+              to={`/${params.basePath}/signin`}
+              className="text-sm text-blue-900 font-semibold"
+            >
+              Sign In
+            </Link>
           </p>
-          <Link
-            aria-disabled={authenticatingWithGoogle || signingUp}
-            to={`/${params.basePath}/signin`}
-            className="text-sm text-blue-900 font-semibold"
-          >
-            Sign In
-          </Link>
         </div>
       </div>
     </React.Fragment>
+
   );
 };

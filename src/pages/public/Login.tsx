@@ -263,7 +263,7 @@ export const Login = () => {
         {/* Container */}
         <div className="w-[90%] max-w-[450px] flex flex-col items-center">
           {/* Title */}
-          <h1 className="text-2xl sm:text-3xl font-semibold text-center text-blue-500">
+          <h1 className="text-2xl sm:text-3xl text-center text-blue-500">
             Enter your Login Details
           </h1>
 
