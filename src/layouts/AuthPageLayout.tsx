@@ -65,15 +65,14 @@ export const AuthPageLayout = ({
 
 
   return (
-    // <div className="grid grid-cols-1 lg:grid-cols-2 w-dvw min-h-dvh">
     <div className="grid grid-cols-1 lg:grid-cols-2 w-dvw min-h-dvh overflow-auto md:overflow-hidden">
 
       {/* ✅ LEFT SIDE (Blue background + text) */}
 
-      <div className="relative hidden lg:flex flex-col justify-center items-center text-center p-10 text-white bg-gradient-to-b from-[#3975D0] to-[#1D3C6A]">
+      <div className="w-full relative hidden lg:flex flex-col justify-center items-center text-center  text-white bg-gradient-to-b from-[#3975D0] to-[#1D3C6A]">
         {/* Icon */}
         <div className="mb-6">
-          <img src={botIcon} className="max-h-70 object-contain" />
+          <img src={botIcon} className="max-h-50 object-contain" />
 
 
         </div>

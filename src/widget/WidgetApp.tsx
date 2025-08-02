@@ -94,6 +94,7 @@ import { setCurrentBot } from "../store";
 import { BotStatus } from "../enums/bot";
 import '../index.css'; // Tailwind CSS
 import { LiveAgent } from "@/components/agent/LiveAgent";
+import botIcon from "@/assets/images/botIcon.png";
 
 const getWidgetAttributes = () => {
   const script = document.querySelector('script[data-api-key][data-agent-id]');
@@ -141,7 +142,8 @@ const WidgetApp = () => {
             onClick={() => setOpen(true)}
             aria-label="Open chat"
           >
-            💬
+            <img src={botIcon} className="max-h-10 object-contain" />
+
           </button>
         )}
         {open && (

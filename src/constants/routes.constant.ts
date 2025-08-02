@@ -73,7 +73,7 @@ export const authenticationPages: RouteType[] = [
     path: "signup",
     Element: Register,
     title: "Create Account",
-    description: "Let's get you started! Enter your details to create your new account.",
+    description: "Want to Explore our AI agents? Create an account and get started",
   },
   {
     path: "verify-email",
