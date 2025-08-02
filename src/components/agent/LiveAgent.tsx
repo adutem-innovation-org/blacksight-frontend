@@ -1,5 +1,6 @@
 import {
   askAgent,
+  clearBotAction,
   connectAgent,
   newEnquiry,
   resetTranscribeSpeech,
@@ -8,11 +9,11 @@ import {
 import { Fragment, use, useCallback, useEffect, useRef, useState } from "react";
 import { useStore } from "@/hooks";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-import { motion } from "framer-motion";
+import { m, motion } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
 import { cn } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
-import { RoleEnum } from "@/enums";
+import { BotActions, RoleEnum, UserActions } from "@/enums";
 import { Loader } from "../progress";
 import { Mic, Send } from "lucide-react";
 import { Button } from "../form";
@@ -21,6 +22,7 @@ import { useRecorder } from "@/hooks";
 import { getOrCreateSessionId } from "@/helpers";
 import { VoiceChatRecorder } from "../media";
 import toast from "react-hot-toast";
+import { AppointmentForm, EscalationForm } from "./forms";
 
 const AgentHeader = ({ agentName }: { agentName: string }) => {
   return (
@@ -362,9 +364,90 @@ const Conversations = ({
   launchRecorder: () => void;
 }) => {
   const conversationContainerRef = useRef<any>(null);
-  const { getState } = useStore();
-  const { askingAgent } = getState("Agent");
+  const formPortalRef = useRef<HTMLDivElement>(null);
+  const { getState, dispatch } = useStore();
+  const { askingAgent, action } = getState("Agent");
   const typing = askingAgent;
+  const [appointmentFormOpen, setAppointmentFormOpen] = useState(false);
+  const [escalationFormOpen, setEscalationFormOpen] = useState(false);
+
+  // useEffect(() => {
+  //   if (formPortalRef.current) {
+  //     // setAppointmentFormOpen(true);
+  //     // setEscalationFormOpen(true);
+  //   }
+  // }, [formPortalRef]);
+
+  useEffect(() => {
+    if (action === null) {
+      setAppointmentFormOpen(false);
+      setEscalationFormOpen(false);
+      return;
+    }
+
+    if (Object.values(BotActions).includes(action)) {
+      switch (action) {
+        case BotActions.BOOK_APPOINTMENT:
+          setAppointmentFormOpen(true);
+          break;
+        case BotActions.ESCALATE_CHAT:
+          setEscalationFormOpen(true);
+          break;
+      }
+    }
+  }, [action]);
+
+  const onAppointmentFormOpenChange = (val: boolean) => {
+    setAppointmentFormOpen(val);
+  };
+
+  const cancelBooking = () => {
+    // Clear action
+    // Add new cancel message to conversation
+    dispatch(
+      clearBotAction({
+        action: UserActions.CLOSE_APPOINTMENT_FORM,
+        content: "Cancel the booking",
+        role: RoleEnum.USER,
+      })
+    );
+    // Send api request to bot will query to cancel the booking
+    const askAgentTmo = setTimeout(() => {
+      dispatch(
+        askAgent({
+          userQuery: "Cancel the booking",
+          action: UserActions.CLOSE_APPOINTMENT_FORM,
+        })
+      );
+      clearTimeout(askAgentTmo);
+    }, 300);
+    // Close the form
+    setAppointmentFormOpen(false);
+  };
+
+  const cancelEscalation = () => {
+    // Clear action
+    // Add new cancel message to conversation
+    dispatch(
+      clearBotAction({
+        action: UserActions.CLOSE_ESCALATION_FORM,
+        content: "Cancel chat escalation",
+        role: RoleEnum.USER,
+      })
+    );
+    // Send api request to bot will query to cancel the escalation
+    const askAgentTmo = setTimeout(() => {
+      dispatch(
+        askAgent({
+          userQuery: "Cancel the booking",
+          action: UserActions.CLOSE_ESCALATION_FORM,
+        })
+      );
+      clearTimeout(askAgentTmo);
+    }, 300);
+    // Close the form
+    setEscalationFormOpen(false);
+  };
 
   const scrollToBottom = useCallback(() => {
     const containerRef = conversationContainerRef.current;
@@ -380,7 +463,10 @@ const Conversations = ({
   }, [chatHistory, typing]);
 
   return (
-    <div className="bg-gray-100 flex-1 rounded-[28px] flex flex-col justify-end p-4 gap-4 overflow-hidden relative">
+    <div
+      className="bg-gray-100 flex-1 rounded-[28px] flex flex-col justify-end p-4 gap-4 overflow-hidden relative"
+      ref={formPortalRef}
+    >
       <Fragment>
         <div
           className="flex-1 overflow-auto no-scrollbar py-4" // Removed scroll-smooth
@@ -394,6 +480,25 @@ const Conversations = ({
           </div>
         </div>
         <Promper recording={recording} launchRecorder={launchRecorder} />
+
+        {/* {appointmentFormOpen && ( */}
+        <>
+          <AppointmentForm
+            open={appointmentFormOpen && action === BotActions.BOOK_APPOINTMENT}
+            onOpenChange={onAppointmentFormOpenChange}
+            portal={formPortalRef as any}
+            cancelBooking={cancelBooking}
+          />
+        </>
+
+        <>
+          <EscalationForm
+            open={escalationFormOpen && action === BotActions.ESCALATE_CHAT}
+            onOpenChange={setEscalationFormOpen}
+            portal={formPortalRef as any}
+            cancelTicket={cancelEscalation}
+          />
+        </>
       </Fragment>
     </div>
   );
