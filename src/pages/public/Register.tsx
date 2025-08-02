@@ -45,8 +45,8 @@ export const Register = () => {
 
   const registerSchema = yup.object({
     firstName: yup.string().required("Please provide first name"),
-    lastName: yup.string().required("Please provide last name"),
-    fullName: yup.string().required("Please provide your full name"),
+    // lastName: yup.string().required("Please provide last name"),
+    // fullName: yup.string().required("Please provide your full name"),
     email: yup
       .string()
       .required("Please enter email")
@@ -385,6 +385,7 @@ export const Register = () => {
             <Button
               className="w-full cursor-pointer mt-10"
               variant={"default"}
+              type="submit"
               size={"md"}
               disabled={signingUp || gettingOauthData || authenticatingWithGoogle}
             >
