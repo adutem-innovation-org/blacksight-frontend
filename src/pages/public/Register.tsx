@@ -44,9 +44,9 @@ export const Register = () => {
   };
 
   const registerSchema = yup.object({
-    firstName: yup.string().required("Please provide first name"),
+    // firstName: yup.string().required("Please provide first name"),
     // lastName: yup.string().required("Please provide last name"),
-    // fullName: yup.string().required("Please provide your full name"),
+    fullName: yup.string().required("Please provide your full name"),
     email: yup
       .string()
       .required("Please enter email")
@@ -80,6 +80,11 @@ export const Register = () => {
     validationSchema: registerSchema,
     onSubmit: (values) => {
       // Split fullName into firstName and lastName
+      console.log("Dispatching signUpUser with", values);
+      if (!values.fullName.trim()) {
+        toast.error("Please enter your full name");
+        return;
+      }
       const [firstName, ...lastNameParts] = values.fullName.trim().split(" ");
       const lastName = lastNameParts.join(" ");
 
@@ -425,7 +430,7 @@ export const Register = () => {
               <Button
                 className="flex-1 flex items-center justify-center gap-2 border rounded-xl py-3"
                 size="md"
-                type="button"
+                // type="button"
                 variant="outline"
               >
                 <img src={appleIcon} className="w-5 h-5" />
