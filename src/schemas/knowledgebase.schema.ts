@@ -18,4 +18,12 @@ export const knowledgeBaseSchema = yup.object({
       schema.required("File is required when adding a new knowledge base"),
     otherwise: (schema) => schema.notRequired(),
   }),
+  url: yup
+    .string()
+    .url("Please enter a valid url")
+    .when("source", {
+      is: (source: KnowledgeBaseSources) => source === KnowledgeBaseSources.URL,
+      then: (schema) => schema.required("Please provide a valid url"),
+      otherwise: (schema) => schema.notRequired(),
+    }),
 });

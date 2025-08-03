@@ -18,18 +18,23 @@ import { Loader } from "@/components/progress";
 import { EmptyRecordsTemplate } from "@/components/templates";
 import {
   AddKnowledgeBaseForm,
+  AddKnowledgeBaseSourceWidgets,
   KnowledgeBaseDetailsDrawer,
   KnowledgeBaseTable,
 } from "./knowledge-base";
-import { SideBarStateEnum, UserTypes } from "@/enums";
+import { KnowledgeBaseSources, SideBarStateEnum, UserTypes } from "@/enums";
 import databaseIcon from "@/assets/images/database.png";
 import toast from "react-hot-toast";
 import { DeactivateDialog, DeleteDialog } from "@/components/popups";
 import { resetDocumentElement } from "@/helpers";
 import { cn } from "@/lib/utils";
+import { KBSourceType } from "@/constants";
 
-const Header = ({ openCreateForm }: { openCreateForm: () => void }) => {
-  const { user } = useProfile();
+const Header = ({
+  openCreateForm,
+}: {
+  openCreateForm: (data: KBSourceType) => void;
+}) => {
   const { getState } = useStore();
   const {
     fetchingKnowledgeBaseAnalytics,
@@ -44,10 +49,11 @@ const Header = ({ openCreateForm }: { openCreateForm: () => void }) => {
   return (
     <header
       className={cn(
-        "flex justify-between flex-col items-stretch gap-6 md:gap-5 xl:flex-row xl:items-center",
-        {
-          "lg:flex-row lg:items-center": isCollapsed,
-        }
+        // "flex justify-between flex-col items-stretch gap-6 md:gap-5 xl:flex-row xl:items-center",
+        // {
+        //   "lg:flex-row lg:items-center": isCollapsed,
+        // }
+        "grid grid-cols-1 xl:grid-cols-[1fr,min-content] xl:flex gap-5"
       )}
     >
       {fetchKnowledgeBaseAnalyticsErrorMessage ? (
@@ -65,7 +71,8 @@ const Header = ({ openCreateForm }: { openCreateForm: () => void }) => {
       ) : (
         <div
           className={cn(
-            "grid grid-cols-1 gap-6 md:gap-5 flex-1 max-w-5xl lg:grid-cols-2",
+            // "grid grid-cols-1 gap-6 md:gap-5 flex-1 max-w-5xl lg:grid-cols-2",
+            "grid grid-cols-1 gap-5 flex-1 lg:grid-cols-2 order-4 xl:order-1 xl:max-w-5xl xl:items-center",
             {
               "md:grid-cols-2": isCollapsed,
             }
@@ -88,7 +95,9 @@ const Header = ({ openCreateForm }: { openCreateForm: () => void }) => {
         </div>
       )}
 
-      <div
+      <AddKnowledgeBaseSourceWidgets openForm={openCreateForm} />
+
+      {/* <div
         className={cn("self-end xl:self-center", {
           "lg:self-center": isCollapsed,
         })}
@@ -98,7 +107,7 @@ const Header = ({ openCreateForm }: { openCreateForm: () => void }) => {
             Add Knowledge base
           </Button>
         )}
-      </div>
+      </div> */}
     </header>
   );
 };
@@ -127,7 +136,16 @@ export const KnowledgeBaseTab = () => {
 
   // Create knowledge base
   const [createFormOpen, setCreateFormOpen] = useState(() => false);
-  const openCreateForm = () => setCreateFormOpen(true);
+  const [sourceData, setSourceData] = useState<KBSourceType | null>(null);
+  const openCreateForm = (data: KBSourceType) => {
+    setSourceData(data);
+    setCreateFormOpen(true);
+  };
+
+  const onOpenCreateFormChange = (value: boolean) => {
+    setCreateFormOpen(value);
+    setSourceData(null);
+  };
 
   // View knowledge base details
   const [
@@ -285,8 +303,8 @@ export const KnowledgeBaseTab = () => {
                 ? "You currently have no knowledge base. Click 'Add Knowledge base' to get started."
                 : "Knowledge base collection is currently empty"
             }
-            onClickCta={openCreateForm}
-            showCta={user?.userType === UserTypes.USER}
+            // onClickCta={openCreateForm}
+            // showCta={user?.userType === UserTypes.USER}
           />
         ) : (
           <KnowledgeBaseTable
@@ -303,8 +321,9 @@ export const KnowledgeBaseTab = () => {
         />
 
         <AddKnowledgeBaseForm
-          isOpen={createFormOpen}
-          onOpenChange={setCreateFormOpen}
+          isOpen={createFormOpen && !!sourceData}
+          onOpenChange={onOpenCreateFormChange}
+          sourceData={sourceData}
         />
 
         {knowledgeBaseToDelete && (
