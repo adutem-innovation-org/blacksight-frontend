@@ -9,3 +9,4 @@ export const ACTIVATE_KNOWLEDGE_BASE = "/activate";
 export const ADD_KNOWLEDGE_BASE = "/create";
 export const GET_KNOWLEDGE_BASES = "/all";
 export const DELETE_KNOWLEDGE_BASE = "/delete";
+export const GENERATE_KNOWLEDGE_BASE = "/generate";

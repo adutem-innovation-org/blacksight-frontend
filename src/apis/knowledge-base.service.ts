@@ -2,6 +2,8 @@ import {
   AddKnowledgeBaseBody,
   AddKnowledgeBaseRes,
   DeleteKnowledgeBaseRes,
+  GenerateKnowledgeBaseBody,
+  GenerateKnowledgeBaseRes,
   GetKNowledgeBasesRes,
   KnowledgeBaseAnalyticsRes,
   UpdateKBStatusRes,
@@ -43,6 +45,15 @@ export class KnowledgeBaseApiService {
       AddKnowledgeBaseBody,
       AddKnowledgeBaseRes
     >(this.urls.ADD_KNOWLEDGE_BASE, data, { timeout: 100000 });
+  };
+
+  generateKnowledgeBase = (data: GenerateKnowledgeBaseBody) => {
+    return this.apiService.post<
+      GenerateKnowledgeBaseBody,
+      GenerateKnowledgeBaseRes
+    >(this.urls.GENERATE_KNOWLEDGE_BASE, data, {
+      timeout: 100000,
+    });
   };
 
   deactivateKB = (id: string) => {
