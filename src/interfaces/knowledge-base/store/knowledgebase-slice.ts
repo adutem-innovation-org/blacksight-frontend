@@ -29,4 +29,10 @@ export type KnowledgeBaseState = {
   deletingKnowledgeBase: boolean;
   knowledgeBaseDeleted: boolean;
   deleteKnowledgeBaseErrorMessage: string;
+
+  // Generate knowledge base
+  generatingKnowledgeBase: boolean;
+  knowledgeBaseGenerated: boolean;
+  generateKnowledgeBaseError: string;
+  generatedKB: string;
 };

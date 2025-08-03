@@ -1,5 +1,9 @@
 import { KnowledgeBaseApiService } from "@/apis";
-import { KnowledgeBase } from "@/interfaces";
+import {
+  GenerateKnowledgeBaseBody,
+  GenerateKnowledgeBaseRes,
+  KnowledgeBase,
+} from "@/interfaces";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const knowledgeBaseApiService = KnowledgeBaseApiService.getInstance();
@@ -39,6 +43,19 @@ export const addKnowledgeBase = createAsyncThunk(
     }
   }
 );
+
+export const generateKnowledgeBase = createAsyncThunk<
+  GenerateKnowledgeBaseRes,
+  GenerateKnowledgeBaseBody,
+  { rejectValue: { message: string } }
+>("generate_knowledgebase", async (data, { rejectWithValue }) => {
+  try {
+    const response = await knowledgeBaseApiService.generateKnowledgeBase(data);
+    return response;
+  } catch (error: any) {
+    return rejectWithValue(error);
+  }
+});
 
 export const updateKBStatus = createAsyncThunk<
   KnowledgeBase,

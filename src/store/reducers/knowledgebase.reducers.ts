@@ -21,6 +21,18 @@ export const resetAddKnowledgeBaseReducer = (state: KnowledgeBaseState) => {
   state.addKnowledgeBaseErrorMessage = "";
 };
 
+export const resetGenerateKnowledgeBaseReducer = (
+  state: KnowledgeBaseState
+) => {
+  state.generatingKnowledgeBase = false;
+  state.knowledgeBaseGenerated = false;
+  state.generateKnowledgeBaseError = "";
+};
+
+export const clearGeneratedKBReducer = (state: KnowledgeBaseState) => {
+  state.generatedKB = "";
+};
+
 export const resetDeleteKnowledgeBaseReducer = (state: KnowledgeBaseState) => {
   state.deletingKnowledgeBase = false;
   state.knowledgeBaseDeleted = false;
