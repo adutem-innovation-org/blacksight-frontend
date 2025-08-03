@@ -11,17 +11,26 @@ import { INDUSTRIES, KBSourceType } from "@/constants";
 import { FileTypes, KnowledgeBaseSources } from "@/enums";
 import { useStore } from "@/hooks";
 import { cn } from "@/lib/utils";
-import { knowledgeBaseSchema } from "@/schemas";
+import { generateKnowledgeBaseSchema, knowledgeBaseSchema } from "@/schemas";
 import {
   addKnowledgeBase,
+  clearGeneratedKB,
+  generateKnowledgeBase,
   getAllKnowledgeBases,
   getKnowledgeBaseAnalytics,
   resetAddKnowledgeBase,
+  resetGenerateKnowledgeBase,
 } from "@/store";
 import { Divider } from "@mantine/core";
 import { useFormik } from "formik";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
+import { motion } from "framer-motion";
+import { Typewriter } from "react-simple-typewriter";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import { GeneratingLoader } from "./GeneratingLoader";
+import { AiPromptForm } from "./AiPrompForm";
+import { DefaultKBForm } from "./DefaultKBForm";
 
 interface AddKnowledgeBaseProps {
   isOpen: boolean;
@@ -40,23 +49,36 @@ export const AddKnowledgeBaseForm = ({
     knowledgeBaseAdded,
     addKnowledgeBaseErrorMessage,
     addKnowledgeBaseErrors,
+
+    // Generate knowledge base
+    generatingKnowledgeBase,
+    knowledgeBaseGenerated,
+    generateKnowledgeBaseError,
+    generatedKB,
   } = getState("KnowledgeBase");
   const [currentFile, setCurrentFile] = useState<File | null>(null);
 
-  const initialValues = {
-    tag: "",
-    source: sourceData?.source,
-    text: "",
-    file: "",
-    url: "",
+  const initialValues = useMemo(
+    () => ({
+      tag: "",
+      source: sourceData?.source,
+      text: "",
+      file: "",
+      url: "",
+      generatedKB: "",
+    }),
+    [sourceData]
+  );
 
-    // for prompt
-    businessName: "",
-    businessDescripton: "",
-    industry: "",
-    prompt: "",
-    answer: "",
-  };
+  const initialAiPromptValues = useMemo(
+    () => ({
+      prompt: "",
+      businessName: "",
+      businessDescription: "",
+      industry: "",
+    }),
+    []
+  );
 
   const validation = useFormik({
     enableReinitialize: true,
@@ -83,15 +105,46 @@ export const AddKnowledgeBaseForm = ({
           formData.append("url", values.url);
           break;
         case KnowledgeBaseSources.PROMPT:
-          formData.append("prompt", values.prompt);
-          formData.append("businessName", values.businessName);
-          formData.append("businessDescripton", values.businessDescripton);
-          formData.append("industry", values.industry);
+          formData.append("generatedKB", values.generatedKB);
           break;
       }
       dispatch(addKnowledgeBase(formData));
     },
   });
+
+  const aiPromptValidation = useFormik({
+    enableReinitialize: false,
+    initialValues: initialAiPromptValues,
+    validationSchema: generateKnowledgeBaseSchema,
+    onSubmit: (values) => {
+      let fullPrompt = `
+            Instruction: ${values.prompt}
+
+            Business Name: ${values.businessName}
+            Business Description: ${values.businessDescription}
+            Industry: ${values.industry}
+          `;
+      dispatch(
+        generateKnowledgeBase({
+          prompt: fullPrompt,
+        })
+      );
+    },
+  });
+
+  useEffect(() => {
+    if (knowledgeBaseGenerated) {
+      validation.setFieldValue("generatedKB", generatedKB);
+      dispatch(resetGenerateKnowledgeBase());
+    }
+  }, [knowledgeBaseGenerated]);
+
+  useEffect(() => {
+    if (generateKnowledgeBaseError) {
+      toast.error(generateKnowledgeBaseError);
+      dispatch(resetGenerateKnowledgeBase());
+    }
+  }, [generateKnowledgeBaseError]);
 
   const onSelectFile = (e: any) => {
     let file = e.target.files[0];
@@ -104,6 +157,24 @@ export const AddKnowledgeBaseForm = ({
   const removeSelectedFile = (name: string) => {
     setCurrentFile(null);
     validation.setFieldValue(name, "");
+  };
+
+  const generateKB = () => {
+    aiPromptValidation.handleSubmit();
+  };
+
+  const rejectGeneratedKB = () => {
+    validation.setFieldValue("generatedKB", "");
+    dispatch(clearGeneratedKB());
+  };
+
+  const handleOpenChange = (val: boolean) => {
+    if (!val) {
+      validation.resetForm();
+      aiPromptValidation.resetForm();
+      dispatch(clearGeneratedKB());
+    }
+    onOpenChange(val);
   };
 
   useEffect(() => {
@@ -136,7 +207,7 @@ export const AddKnowledgeBaseForm = ({
   }, [addKnowledgeBaseErrorMessage]);
 
   return (
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       {/* <DialogTrigger>Open</DialogTrigger> */}
       <DialogContent
         onPointerDownOutside={(e) => e.preventDefault()}
@@ -144,8 +215,10 @@ export const AddKnowledgeBaseForm = ({
         className={cn(
           "!rounded-3xl p-0 max-h-[85dvh] h-max overflow-y-hidden overflow-x-hidden flex flex-col",
           {
-            "!w-[90dvw] !max-w-[800px] !sm:max-w-auto":
-              validation.values.source === KnowledgeBaseSources.TEXT_INPUT,
+            "!w-[90dvw] !max-w-[800px] !sm:max-w-auto": [
+              KnowledgeBaseSources.TEXT_INPUT,
+              KnowledgeBaseSources.PROMPT,
+            ].includes(sourceData?.source!),
           }
         )}
       >
@@ -159,20 +232,31 @@ export const AddKnowledgeBaseForm = ({
           />
         )}
         <DialogHeader className="p-8 pb-0">
-          <div className="flex items-center gap-3">
-            <span className="bg-white border rounded-lg w-10 h-10 grid place-items-center">
-              <i
-                className={cn(
-                  sourceData?.iconClass,
-                  "flex text-xl text-gray-500"
-                )}
-              ></i>
-            </span>
-            <DialogTitle className="font-medium tracking-tighter text-xl">
-              {sourceData?.label}
-            </DialogTitle>
-          </div>
-          <DialogDescription>{sourceData?.description}</DialogDescription>
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <div className="flex items-center gap-3">
+              <span className="bg-white border rounded-lg w-10 h-10 grid place-items-center">
+                <i
+                  className={cn(
+                    sourceData?.iconClass,
+                    "flex text-xl text-gray-500"
+                  )}
+                ></i>
+              </span>
+              <DialogTitle className="font-medium tracking-tighter text-xl">
+                {sourceData?.label}
+              </DialogTitle>
+            </div>
+            <DialogDescription>
+              {sourceData?.source === KnowledgeBaseSources.PROMPT &&
+              generatingKnowledgeBase
+                ? "Generating knowledgebase..."
+                : sourceData?.description}
+            </DialogDescription>
+          </motion.div>
         </DialogHeader>
 
         <form
@@ -181,79 +265,62 @@ export const AddKnowledgeBaseForm = ({
             validation.handleSubmit();
             return false;
           }}
-          className="flex flex-col flex-1 overflow-hidden"
+          className="flex flex-col flex-1 overflow-hidden relative"
         >
-          <div className="overflow-y-auto flex-1 pb-8 no-scrollbar">
-            <div className="px-8">
-              <FormGroup
-                type="text"
-                groupLabel="Tag"
-                placeholder="A short description/title"
-                size="md"
-                name="tag"
+          <div className="overflow-y-auto flex-1 pb-8 no-scrollbar relative overflow-hidden">
+            {sourceData?.source !== KnowledgeBaseSources.PROMPT && (
+              <DefaultKBForm
                 validation={validation}
-                containerClassName="gap-2 mt-4"
+                onSelectFile={onSelectFile}
+                removeSelectedFile={removeSelectedFile}
               />
-
-              {validation.values.source === KnowledgeBaseSources.URL && (
-                <FormGroup
-                  type="text"
-                  groupLabel="URL"
-                  placeholder="https://example.com"
-                  size="md"
-                  name="url"
-                  validation={validation}
-                  containerClassName="gap-2 mt-4"
-                />
-              )}
-
-              {validation.values.source === KnowledgeBaseSources.FILE && (
-                <FormGroup
-                  type="file-input"
-                  groupLabel={"Upload file"}
-                  size="md"
-                  name={"file"}
-                  validation={validation}
-                  containerClassName="gap-2 mt-4"
-                  handleFileChange={onSelectFile}
-                  accept="text/plain, text/markdown, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf"
-                  removeSelectedFile={removeSelectedFile}
-                  fileTypes={[FileTypes.PDF, FileTypes.DOCX, FileTypes.TXT]}
-                  maxFileSize={15}
-                />
-              )}
-
-              {validation.values.source === KnowledgeBaseSources.TEXT_INPUT && (
-                <FormGroup
-                  type="textarea"
-                  name="text"
-                  groupLabel="Text Content"
-                  placeholder="Enter your text content here"
-                  size="lg"
-                  validation={validation}
-                  containerClassName="gap-2 mt-4"
-                />
-              )}
-            </div>
+            )}
 
             {/* For adding from prompt */}
             {validation.values.source === KnowledgeBaseSources.PROMPT && (
-              <AiPromptForm validation={validation} />
+              <AiPromptForm
+                validation={validation}
+                aiPromptValidation={aiPromptValidation}
+              />
             )}
+
+            {/* Generating overlay */}
+            {generatingKnowledgeBase && <GeneratingLoader />}
           </div>
 
           <div className="flex gap-4 justify-end border-t border-gray-200 p-8">
-            {validation.values.source === KnowledgeBaseSources.PROMPT && (
-              <Button
-                type="button"
-                variant={"secondary_gray"}
-                className="bg-gray-200 duration-300 hover:bg-gray-100 px-6 rounded-2xl"
-              >
-                Generate KB ✨
-              </Button>
-            )}
+            {validation.values.source === KnowledgeBaseSources.PROMPT &&
+              generatedKB && (
+                <Button
+                  type="button"
+                  variant={"secondary_gray"}
+                  className="bg-gray-200 duration-300 hover:bg-gray-100 px-6 rounded-2xl font-dmsans tracking-tighter !font-medium"
+                  onClick={rejectGeneratedKB}
+                >
+                  Reject KB 🚫
+                </Button>
+              )}
+            {validation.values.source === KnowledgeBaseSources.PROMPT &&
+              !generatedKB && (
+                <Button
+                  type="button"
+                  variant={"secondary_gray"}
+                  className="bg-gray-200 duration-300 hover:bg-gray-100 px-6 rounded-2xl font-dmsans tracking-tighter !font-medium"
+                  onClick={generateKB}
+                  disabled={generatingKnowledgeBase || addingKnowledgeBase}
+                >
+                  {/* {generatedKB && !generatingKnowledgeBase && "Regenerate KB 💫"} */}
+                  {generatingKnowledgeBase && "Generating KB..."}
+                  {!generatedKB && !generatingKnowledgeBase && "Generate KB ✨"}
+                </Button>
+              )}
+
             <Button
-              className="cursor-pointer w-full rounded-2xl px-8"
+              className={cn("cursor-pointer w-full rounded-2xl px-8", {
+                hidden:
+                  validation.values.source === KnowledgeBaseSources.PROMPT &&
+                  !generatedKB,
+              })}
               type="submit"
               disabled={addingKnowledgeBase}
             >
@@ -265,55 +332,5 @@ export const AddKnowledgeBaseForm = ({
         </form>
       </DialogContent>
     </Dialog>
-  );
-};
-
-const AiPromptForm = ({ validation }: { validation: any }) => {
-  return (
-    <div className="px-8">
-      <FormGroup
-        type="text"
-        groupLabel="Business name"
-        placeholder="Business name"
-        size="md"
-        name="businessName"
-        containerClassName="gap-2 mt-4"
-        validation={validation}
-      />
-
-      <FormGroup
-        type="textarea"
-        name="businessDescription"
-        groupLabel="Description"
-        placeholder="Briefly describe your business"
-        size="sm"
-        validation={validation}
-        containerClassName="gap-2 mt-4"
-        maxLength={200}
-        inputClassName="h-20 !resize-none !text-sm"
-      />
-
-      <FormGroup
-        type="select"
-        groupLabel="What industry is your business in?"
-        size="md"
-        name="industry"
-        validation={validation}
-        containerClassName="gap-2 mt-4"
-        options={INDUSTRIES}
-      />
-
-      <FormGroup
-        type="textarea"
-        name="prompt"
-        groupLabel="Prompt"
-        placeholder="You are a helpful assistant that generates high-quality content. Please provide informative and accurate responses."
-        size="sm"
-        validation={validation}
-        containerClassName="gap-2 mt-4"
-        maxLength={1000}
-        inputClassName="h-25 !resize-none"
-      />
-    </div>
   );
 };

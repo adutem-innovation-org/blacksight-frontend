@@ -26,4 +26,20 @@ export const knowledgeBaseSchema = yup.object({
       then: (schema) => schema.required("Please provide a valid url"),
       otherwise: (schema) => schema.notRequired(),
     }),
+  generatedKB: yup.string().when("source", {
+    is: (source: KnowledgeBaseSources) =>
+      source === KnowledgeBaseSources.PROMPT,
+    then: (schema) =>
+      schema.required("Please provide generated knowledge base"),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+});
+
+export const generateKnowledgeBaseSchema = yup.object({
+  businessName: yup.string().required("Please provide your business name"),
+  businessDescription: yup
+    .string()
+    .required("Please provide your business description"),
+  industry: yup.string().required("Please provide your business industry"),
+  prompt: yup.string(),
 });
