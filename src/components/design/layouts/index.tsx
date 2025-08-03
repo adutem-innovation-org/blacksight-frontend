@@ -20,7 +20,7 @@ export const DashboardContent = ({
 >) => {
   return (
     <DashboardContentContainer
-      className={cn("w-full h-full mt-20 sm:mt-0 p-4", className)}
+      className={cn("w-full h-full mt-15 sm:mt-0 p-4", className)}
       {...props}
     />
   );
