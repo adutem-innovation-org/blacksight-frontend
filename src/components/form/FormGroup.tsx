@@ -17,6 +17,7 @@ import { Textarea } from "./Textarea";
 import { PhoneInput } from "./PhoneInput";
 import { CheckboxGroup, CheckboxItemType } from "./CheckboxGroup";
 import { RadioGroup } from "./RadioGroup";
+import { FileTypes } from "@/enums";
 
 export type FormikValidation = Pick<
   ReturnType<typeof useFormik>,
@@ -66,6 +67,8 @@ interface FormGroupProps {
   hidden?: boolean;
   inputRef?: any;
   accept?: string;
+  fileTypes?: FileTypes[];
+  maxFileSize?: string | number;
   removeSelectedFile?: (name: string) => void;
   info?: string;
   noOptionsContent?: any;
@@ -95,6 +98,7 @@ export const FormGroup = ({
   hidden,
   inputRef,
   accept,
+  fileTypes,
   removeSelectedFile,
   info,
   noOptionsContent,
@@ -102,6 +106,7 @@ export const FormGroup = ({
   radioOptions,
   inputClassName,
   action,
+  maxFileSize,
 }: FormGroupProps) => {
   if (type === "checkbox-group" && !checkboxItems)
     throw Error("Checkbox items required for checkbox input");
@@ -161,6 +166,7 @@ export const FormGroup = ({
             value={validation.values[name]}
             error={validation.touched[name] && validation.errors[name]}
             maxLength={maxLength}
+            inputClassName={inputClassName}
           />
         </GroupContainer>
       );
@@ -335,12 +341,14 @@ export const FormGroup = ({
             onBlur={validation.handleBlur}
             handleFileChange={handleFileChange}
             accept={accept}
+            fileTypes={fileTypes}
             disabled={disabled}
             hidden={hidden}
             inputRef={inputRef}
             value={validation.values[name]}
             removeSelectedFile={removeSelectedFile}
             error={validation.touched[name] && validation.errors[name]}
+            maxFileSize={maxFileSize}
           />
         </GroupContainer>
       );

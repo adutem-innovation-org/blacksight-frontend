@@ -8,3 +8,23 @@ export * from "./notification";
 export * from "./knowledge-base";
 export * from "./auth";
 export * from "./template";
+
+export enum FileTypes {
+  PDF = "pdf",
+  DOCX = "docx",
+  TXT = "txt",
+
+  JPEG = "jpeg",
+  PNG = "png",
+  GIF = "gif",
+  SVG = "svg",
+
+  MP3 = "mp3",
+  MP4 = "mp4",
+  WAV = "wav",
+  OGG = "ogg",
+  WEBM = "webm",
+  AVI = "avi",
+  MOV = "mov",
+  MKV = "mkv",
+}
