@@ -9,6 +9,7 @@ export * from "./onboarding.constant";
 export * from "./templatetab.constant";
 export * from "./appointment.constant";
 export * from "./knowledge-base.constant";
+export * from "./security.constant";
 
 export const INDUSTRIES = [
   { value: "E-commerce", label: "E-commerce" },
