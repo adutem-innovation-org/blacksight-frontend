@@ -153,7 +153,7 @@ const ApiKeyCard = ({
   }, [secret]);
 
   return (
-    <div className="text-sm text-gray-600 bg-gray-100 mt-5 border-y bordr-gray-200 py-4">
+    <div className="text-sm text-gray-600 bg-gray-100 mt-5 border-y border-gray-200 py-4">
       <div className="flex justify-between items-center w-full">
         {/* Left content */}
         <div className="flex items-center gap-3">
