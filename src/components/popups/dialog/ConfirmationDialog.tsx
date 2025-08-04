@@ -39,7 +39,7 @@ export const ConfirmationDialog = ({
       <AlertDialogOverlay className="fixed inset bg-black/10 backdrop-blur-[2px]" />
       <AlertDialogContent
         onOpenAutoFocus={(e) => e.preventDefault()}
-        className="rounded-4xl backdrop-blur-md"
+        className="rounded-4xl"
       >
         {loading && <Loader />}
         <AlertDialogHeader>
