@@ -6,6 +6,7 @@ import {
   CalendarsTab,
   ConversationsTab,
   KnowledgeBaseTab,
+  PasswordAndSecurityTab,
   ProfileTab,
   ReminderTab,
   SubscriptionsTab,
@@ -163,6 +164,10 @@ export const privatePages: RouteType[] = [
     path: "/account/api-keys",
     Element: ApiKeysTab,
   },
+  {
+    path: "/account/security",
+    Element: PasswordAndSecurityTab,
+  },
 ];
 
 export const privatePagesMap = {
@@ -179,6 +184,7 @@ export const privatePagesMap = {
     "/templates",
     "/profile",
     "/account/api-keys",
+    "/account/security",
   ],
   [UserTypes.ADMIN]: [
     "/dashboard",
@@ -208,4 +214,5 @@ export const pathToTabMap: Record<string, DashboardTabsEnum> = {
   "/subscriptions": DashboardTabsEnum.SUBSCRIPTIONS,
   "/profile": DashboardTabsEnum.PROFILE,
   "/account/api-keys": DashboardTabsEnum.API_KEYS,
+  "/account/security": DashboardTabsEnum.SECURITY,
 };

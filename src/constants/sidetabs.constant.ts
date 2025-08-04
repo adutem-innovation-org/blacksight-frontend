@@ -226,7 +226,7 @@ export const groupedSideTabs: Record<UserTypes, SidebarGroupType[]> = {
           name: "Password & Security",
           tabId: DashboardTabsEnum.SECURITY,
           iconClass: "fi fi-rr-shield-keyhole",
-          path: "/security",
+          path: "/account/security",
         },
       ],
     },
