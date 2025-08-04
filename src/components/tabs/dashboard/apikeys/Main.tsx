@@ -81,7 +81,7 @@ export const ApiKeyTabMainContent = ({ error }: { error: string }) => {
 
       {!fetchingApiKey && !error && !apiKey?.secretKey && <NoApiKey />}
 
-      {!fetchingApiKey && !error && apiKey && (
+      {!fetchingApiKey && !error && apiKey && apiKey.secretKey && (
         <ApiKeyCard
           secret={apiKey.secretKey}
           isActive={!apiKey.disabled}
