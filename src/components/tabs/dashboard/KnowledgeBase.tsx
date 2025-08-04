@@ -25,7 +25,7 @@ import {
 import { KnowledgeBaseSources, SideBarStateEnum, UserTypes } from "@/enums";
 import databaseIcon from "@/assets/images/database.png";
 import toast from "react-hot-toast";
-import { DeactivateDialog, DeleteDialog } from "@/components/popups";
+import { ConfirmationDialog, DeleteDialog } from "@/components/popups";
 import { resetDocumentElement } from "@/helpers";
 import { cn } from "@/lib/utils";
 import { KBSourceType } from "@/constants";
@@ -338,7 +338,7 @@ export const KnowledgeBaseTab = () => {
         )}
 
         {kbToDeactivate && (
-          <DeactivateDialog
+          <ConfirmationDialog
             isOpen={deactivateDialogOpen}
             onOpenChange={setDeactivateDialogOpen}
             cancelOperation={endDeactivateOperation}

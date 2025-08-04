@@ -1,2 +1,2 @@
 export * from "./DeleteDialog";
-export * from "./DeactivateDialog";
+export * from "./ConfirmationDialog";

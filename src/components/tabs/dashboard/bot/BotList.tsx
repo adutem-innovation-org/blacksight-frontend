@@ -14,7 +14,7 @@ import {
   resetCloneBot,
 } from "@/store";
 import toast from "react-hot-toast";
-import { DeactivateDialog, DeleteDialog } from "@/components/popups";
+import { ConfirmationDialog, DeleteDialog } from "@/components/popups";
 import { Loader } from "@/components/progress";
 import { AddKnowledgeBaseForm } from "../knowledge-base";
 
@@ -250,7 +250,7 @@ export const BotList = ({ bots }: BotListProps) => {
       )}
 
       {botToDeactivate && (
-        <DeactivateDialog
+        <ConfirmationDialog
           isOpen={deactivateDialogOpen}
           onOpenChange={setDeactivateDialogOpen}
           cancelOperation={endDeactivateOperation}

@@ -7,10 +7,11 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
+  AlertDialogOverlay,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
-interface DeactivateDialogProps {
+interface ConfirmationDialog {
   isOpen: boolean;
   onOpenChange: (value: boolean) => void;
   cancelOperation: () => void;
@@ -18,9 +19,11 @@ interface DeactivateDialogProps {
   loading: boolean;
   title?: string;
   description?: string;
+  cancelCtaText?: string;
+  confirmCtaText?: string;
 }
 
-export const DeactivateDialog = ({
+export const ConfirmationDialog = ({
   isOpen,
   onOpenChange,
   cancelOperation,
@@ -28,10 +31,16 @@ export const DeactivateDialog = ({
   loading,
   title,
   description,
-}: DeactivateDialogProps) => {
+  cancelCtaText = "Cancel",
+  confirmCtaText = "Continue",
+}: ConfirmationDialog) => {
   return (
     <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
-      <AlertDialogContent onOpenAutoFocus={(e) => e.preventDefault()}>
+      <AlertDialogOverlay className="fixed inset bg-black/10 backdrop-blur-[2px]" />
+      <AlertDialogContent
+        onOpenAutoFocus={(e) => e.preventDefault()}
+        className="rounded-4xl backdrop-blur-md"
+      >
         {loading && <Loader />}
         <AlertDialogHeader>
           <AlertDialogTitle>{title || "Are you sure?"}</AlertDialogTitle>
@@ -46,18 +55,18 @@ export const DeactivateDialog = ({
               e.preventDefault();
               cancelOperation();
             }}
-            className="cursor-pointer"
+            className="cursor-pointer rounded-lg"
           >
-            Cancel
+            {cancelCtaText}
           </AlertDialogCancel>
           <AlertDialogAction
-            className="cursor-pointer bg-brand hover:bg-brand/70"
             onClick={(e) => {
               e.preventDefault();
               confirmOperation();
             }}
+            className="cursor-pointer bg-brand hover:bg-brand/70 rounded-lg"
           >
-            Continue
+            {confirmCtaText}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
