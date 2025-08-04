@@ -2,6 +2,7 @@ import {
   ActivateApiKeyRes,
   CreateApiKeyRes,
   DeactivateApiKeyRes,
+  DeleteApiKeyRes,
   GetApiKeyRes,
   RenegerateApiKeyRes,
 } from "@/interfaces";
@@ -55,6 +56,12 @@ export class ApiKeyApiService {
   regenerateApiKey = (id: string) => {
     return this.apiService.put<null, RenegerateApiKeyRes>(
       `${this.urls.REGENERATE_API_KEY}/${id}`
+    );
+  };
+
+  deleteApiKey = (id: string) => {
+    return this.apiService.delete<DeleteApiKeyRes>(
+      `${this.urls.DELETE_API_KEY}/${id}`
     );
   };
 }
