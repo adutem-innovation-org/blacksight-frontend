@@ -37,6 +37,8 @@ import {
   SuspendUserBody,
   SuspendUserRes,
   LiftUserSuspensionRes,
+  EnableMfaMethodRes,
+  EnableMfaMethodBody,
 } from "@/interfaces";
 import { ApiService } from "./api.service";
 import { AUTH_URLS } from "./endpoints";
@@ -347,5 +349,24 @@ export class AuthApiService {
    */
   liftUserSuspension = (userId: string): Promise<LiftUserSuspensionRes> => {
     return this.apiService.post(`${this.urls.LIFT_USER_SUSPENSION}/${userId}`);
+  };
+
+  /*
+  ========================================
+MFA CODES
+  =======================================
+  */
+
+  enableEmailMFA = () => {
+    return this.apiService.post<null, EnableMfaMethodRes>(
+      this.urls.ENABLE_EMAIL_MFA
+    );
+  };
+
+  enableSMSMFA = (data: EnableMfaMethodBody) => {
+    return this.apiService.post<EnableMfaMethodBody, EnableMfaMethodRes>(
+      this.urls.ENABLE_SMS_MFA,
+      data
+    );
   };
 }

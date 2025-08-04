@@ -34,3 +34,10 @@ export const GET_USER_ANALYTICS = "/admin/user-analytics";
 export const GET_ADMIN_ANALYTICS = "/admin/admin-analytics";
 export const SUSPEND_USER = "/admin/suspend/user";
 export const LIFT_USER_SUSPENSION = "/admin/lift-suspension/user";
+
+// MFA
+export const SETUP_MFA = "/mfa/setup";
+export const ENABLE_EMAIL_MFA = "/mfa/enable/email";
+export const ENABLE_SMS_MFA = "/mfa/enable/sms";
+export const SEND_MFA_CODE = "/mfa/send-code";
+export const VERIFY_MFA_CODE = "/mfa/verify-code";

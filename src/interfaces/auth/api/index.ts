@@ -21,3 +21,4 @@ export * from "./onboard-business";
 export * from "./get-user-analytics";
 export * from "./get-admin-analytics";
 export * from "./suspension";
+export * from "./enable-mfa-method";
