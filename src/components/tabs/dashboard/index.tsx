@@ -96,3 +96,4 @@ export * from "./Calendars";
 export * from "./Conversations";
 export * from "@/helpers";
 export * from "./TemplatesTab";
+export * from "./ApiKeysTab";
