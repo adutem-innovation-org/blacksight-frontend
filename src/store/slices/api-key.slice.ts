@@ -4,6 +4,7 @@ import {
   activateApiKeyBuilder,
   createApiKeyBuilder,
   deactivateApiKeyBuilder,
+  deleteApiKeyBuilder,
   getApiKeyBuilder,
   regenerateApiKeyBuilder,
 } from "../builders";
@@ -11,6 +12,7 @@ import {
   resetActivateApiKeyReducer,
   resetCreateApiKeyReducer,
   resetDeactivateApiKeyReducer,
+  resetDeleteApiKeyReducer,
   resetGetApiKeyReducer,
   resetRegenerateApiKeyReducer,
 } from "../reducers";
@@ -24,6 +26,7 @@ const apiKeySlice = createSlice({
     resetDeactivateApiKey: resetDeactivateApiKeyReducer,
     resetActivateApiKey: resetActivateApiKeyReducer,
     resetRegenerateApiKey: resetRegenerateApiKeyReducer,
+    resetDeleteApiKey: resetDeleteApiKeyReducer,
   },
   extraReducers(builder) {
     getApiKeyBuilder(builder);
@@ -31,6 +34,7 @@ const apiKeySlice = createSlice({
     deactivateApiKeyBuilder(builder);
     activateApiKeyBuilder(builder);
     regenerateApiKeyBuilder(builder);
+    deleteApiKeyBuilder(builder);
   },
 });
 
@@ -41,4 +45,5 @@ export const {
   resetDeactivateApiKey,
   resetGetApiKey,
   resetRegenerateApiKey,
+  resetDeleteApiKey,
 } = apiKeySlice.actions;
