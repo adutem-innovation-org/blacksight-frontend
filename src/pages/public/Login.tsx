@@ -12,6 +12,7 @@ import { UserTypes } from "@/enums";
 import toast from "react-hot-toast";
 import { getAuthUser } from "@/helpers";
 import blacksightLogo from "@/assets/images/blacksight_logo_side.png";
+import appleIcon from "@/assets/images/logos_apple.png";
 
 export const Login = () => {
   const params = useParams() as { basePath: UserTypes };
@@ -127,123 +128,259 @@ export const Login = () => {
     }
   }, [googleAuthErrorMessage]);
 
+  // return (
+  //   <React.Fragment>
+  //     <div className="flex items-center">
+  //       <img src={blacksightLogo} className="max-h-10 object-contain" />
+  //     </div>
+
+  //     {/* Form */}
+  //     <div className="w-[90%] max-w-[450px]">
+  //       <div className="flex flex-col gap-2">
+  //         <h1 className="text-4xl font-bold text-center font-caladea">
+  //           Welcome Back
+  //         </h1>
+  //         <p className="text-center text-sm">
+  //           Sign in to continue to Blacksight
+  //         </p>
+  //       </div>
+  //       <form
+  //         className="pt-8 w-full"
+  //         onSubmit={(e) => {
+  //           e.preventDefault();
+  //           validation.handleSubmit();
+  //           return false;
+  //         }}
+  //       >
+  //         <FormGroup
+  //           type="text"
+  //           groupLabel="Email"
+  //           placeholder="Enter your email"
+  //           size="lg"
+  //           name="email"
+  //           disabled={signingIn}
+  //           validation={validation}
+  //         />
+  //         <FormGroup
+  //           type="password"
+  //           groupLabel="Password"
+  //           placeholder="Enter your password"
+  //           size="lg"
+  //           name="password"
+  //           disabled={signingIn}
+  //           validation={validation}
+  //         />
+  //         <div className="flex justify-between items-center mt-3">
+  //           <div className="flex items-center gap-1.5 cursor-pointer">
+  //             <Checkbox size={"md"} id="remember-me" />
+  //             <label
+  //               className="text-sm text-gray-600 font-medium cursor-pointer"
+  //               htmlFor="remember-me"
+  //             >
+  //               Remember me
+  //             </label>
+  //           </div>
+  //           <Link
+  //             to={`/${params.basePath}/forgot-password`}
+  //             className="text-sm text-blue-900 font-semibold"
+  //           >
+  //             Forgot Password
+  //           </Link>
+  //         </div>
+
+  //         {(signInErrorMessage || googleAuthErrorMessage) && (
+  //           <InfoBlock variant={"error"} className="mt-8">
+  //             {signInErrorMessage || googleAuthErrorMessage}
+  //           </InfoBlock>
+  //         )}
+
+  //         <Button
+  //           className="w-full cursor-pointer mt-10"
+  //           variant={"default"}
+  //           size={"md"}
+  //           disabled={signingIn || gettingOauthData || authenticatingWithGoogle}
+  //         >
+  //           {signingIn ? <Spinner type="form" /> : "Sign In"}
+  //         </Button>
+
+  //         {params.basePath === UserTypes.USER && (
+  //           <Button
+  //             className="w-full cursor-pointer mt-4 flex items-center gap-2"
+  //             size={"md"}
+  //             type="button"
+  //             variant={"outline"}
+  //             disabled={
+  //               signingIn ||
+  //               gettingOauthData ||
+  //               !gapiReady ||
+  //               authenticatingWithGoogle
+  //             }
+  //             onClick={() => googleLogin()}
+  //           >
+  //             <img src={googleIcon} className="w-6 h-6" />
+  //             {authenticatingWithGoogle ? (
+  //               <Spinner type="form" />
+  //             ) : (
+  //               "Sign In with Google"
+  //             )}
+  //           </Button>
+  //         )}
+  //       </form>
+  //     </div>
+
+  //     {/* Footer */}
+  //     <div>
+  //       {params.basePath === UserTypes.USER && (
+  //         <div className="flex items-baseline gap-1">
+  //           <p className="text-sm text-gray-600 font-medium">
+  //             Don't have an account?
+  //           </p>
+  //           <Link
+  //             aria-disabled={authenticatingWithGoogle || signingIn}
+  //             to={`/${params.basePath}/signup`}
+  //             className="text-sm text-blue-900 font-semibold"
+  //           >
+  //             Sign Up
+  //           </Link>
+  //         </div>
+  //       )}
+  //     </div>
+  //   </React.Fragment>
+  // );
+
+
   return (
     <React.Fragment>
-      <div className="flex items-center">
-        <img src={blacksightLogo} className="max-h-10 object-contain" />
-      </div>
+      {/* Logo */}
 
-      {/* Form */}
-      <div className="w-[90%] max-w-[450px]">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-4xl font-bold text-center font-caladea">
-            Welcome Back
-          </h1>
-          <p className="text-center text-sm">
-            Sign in to continue to Blacksight
-          </p>
+      <div className="flex justify-center flex-col gap-4">
+
+
+        <div className="flex justify-center ">
+          <img src={blacksightLogo} className="max-h-10 object-contain" />
         </div>
-        <form
-          className="pt-8 w-full"
-          onSubmit={(e) => {
-            e.preventDefault();
-            validation.handleSubmit();
-            return false;
-          }}
-        >
-          <FormGroup
-            type="text"
-            groupLabel="Email"
-            placeholder="Enter your email"
-            size="lg"
-            name="email"
-            disabled={signingIn}
-            validation={validation}
-          />
-          <FormGroup
-            type="password"
-            groupLabel="Password"
-            placeholder="Enter your password"
-            size="lg"
-            name="password"
-            disabled={signingIn}
-            validation={validation}
-          />
-          <div className="flex justify-between items-center mt-3">
-            <div className="flex items-center gap-1.5 cursor-pointer">
-              <Checkbox size={"md"} id="remember-me" />
-              <label
-                className="text-sm text-gray-600 font-medium cursor-pointer"
-                htmlFor="remember-me"
-              >
-                Remember me
-              </label>
-            </div>
-            <Link
-              to={`/${params.basePath}/forgot-password`}
-              className="text-sm text-blue-900 font-semibold"
-            >
-              Forgot Password
-            </Link>
-          </div>
 
-          {(signInErrorMessage || googleAuthErrorMessage) && (
-            <InfoBlock variant={"error"} className="mt-8">
-              {signInErrorMessage || googleAuthErrorMessage}
-            </InfoBlock>
-          )}
+        {/* Container */}
+        <div className="w-[90%] max-w-[450px] flex flex-col items-center">
+          {/* Title */}
+          <h1 className="text-2xl sm:text-3xl text-center text-blue-500">
+            Enter your Login Details
+          </h1>
 
-          <Button
-            className="w-full cursor-pointer mt-10"
-            variant={"default"}
-            size={"md"}
-            disabled={signingIn || gettingOauthData || authenticatingWithGoogle}
+          {/* Form */}
+          <form
+            className="w-full space-y-4"
+            onSubmit={(e) => {
+              e.preventDefault();
+              validation.handleSubmit();
+              return false;
+            }}
           >
-            {signingIn ? <Spinner type="form" /> : "Sign In"}
-          </Button>
+            <FormGroup
+              type="text"
+              groupLabel="Email"
+              placeholder="Enter your Email Address"
+              size="lg"
+              name="email"
+              disabled={signingIn}
+              validation={validation}
+            />
 
-          {params.basePath === UserTypes.USER && (
+            <FormGroup
+              type="password"
+              groupLabel="Password"
+              placeholder="Enter your Password"
+              size="lg"
+              name="password"
+              disabled={signingIn}
+              validation={validation}
+            />
+
+            {/* Remember Me + Forgot Password */}
+            <div className="flex justify-between items-center mt-3">
+              <div className="flex items-center gap-1.5 cursor-pointer">
+                <Checkbox size="md" id="remember-me" />
+                <label
+                  className="text-sm text-gray-600 font-medium cursor-pointer"
+                  htmlFor="remember-me"
+                >
+                  Remember me
+                </label>
+              </div>
+            </div>
+
+            {/* Error Block */}
+            {(signInErrorMessage || googleAuthErrorMessage) && (
+              <InfoBlock variant="error" className="mt-4">
+                {signInErrorMessage || googleAuthErrorMessage}
+              </InfoBlock>
+            )}
+
+            {/* Sign In Button */}
             <Button
-              className="w-full cursor-pointer mt-4 flex items-center gap-2"
-              size={"md"}
-              type="button"
-              variant={"outline"}
-              disabled={
-                signingIn ||
-                gettingOauthData ||
-                !gapiReady ||
-                authenticatingWithGoogle
-              }
-              onClick={() => googleLogin()}
+              className="w-full mt-6 py-3 text-lg font-medium rounded-lg"
+              variant="default"
+              size="md"
+              disabled={signingIn || gettingOauthData || authenticatingWithGoogle}
             >
-              <img src={googleIcon} className="w-6 h-6" />
-              {authenticatingWithGoogle ? (
-                <Spinner type="form" />
-              ) : (
-                "Sign In with Google"
-              )}
+              {signingIn ? <Spinner type="form" /> : "Login"}
             </Button>
-          )}
-        </form>
-      </div>
 
-      {/* Footer */}
-      <div>
-        {params.basePath === UserTypes.USER && (
-          <div className="flex items-baseline gap-1">
-            <p className="text-sm text-gray-600 font-medium">
-              Don't have an account?
-            </p>
-            <Link
-              aria-disabled={authenticatingWithGoogle || signingIn}
-              to={`/${params.basePath}/signup`}
-              className="text-sm text-blue-900 font-semibold"
-            >
-              Sign Up
+            {/* Divider Text */}
+            <p className="text-xs text-gray-500 text-center mt-2">Or Sign in</p>
+    
+            <div className="flex flex-col sm:flex-row gap-3 mt-4 w-full">
+              {/* Google Sign In */}
+              {params.basePath === UserTypes.USER && (
+                <Button
+                  className="flex-1 flex items-center justify-center gap-2 border rounded-xl py-3"
+                  size="md"
+                  type="button"
+                  variant="outline"
+                  disabled={
+                    signingIn ||
+                    gettingOauthData ||
+                    !gapiReady ||
+                    authenticatingWithGoogle
+                  }
+                  onClick={() => googleLogin()}
+                >
+                  <img src={googleIcon} className="w-5 h-5" />
+                  {authenticatingWithGoogle ? <Spinner type="form" /> : "Sign in Using Google"}
+                </Button>
+              )}
+
+              {/* Apple Sign In */}
+              <Button
+                className="flex-1 flex items-center justify-center gap-2 border rounded-xl py-3"
+                size="md"
+                type="button"
+                variant="outline"
+              >
+                <img src={appleIcon} className="w-5 h-5" />
+                Sign in Using Apple
+              </Button>
+            </div>
+
+
+
+          </form>
+
+        </div>
+        {/* Footer Links */}
+        <div className="flex justify-between w-full mt-6 text-sm">
+          <p className="text-gray-600">
+            Forgotten Password?{" "}
+            <Link to={`/${params.basePath}/forgot-password`} className="text-blue-500 font-medium">
+              Click Here.
             </Link>
-          </div>
-        )}
+          </p>
+          <Link to={`/${params.basePath}/signup`} className="text-blue-500 font-medium">
+            Sign Up
+          </Link>
+        </div>
       </div>
     </React.Fragment>
+
   );
 };

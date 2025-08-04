@@ -7,6 +7,7 @@ export interface RegisterUserRes extends ApiSuccessResponse {
 }
 
 export type RegisterUserBody = {
+  fullName: string;
   firstName: string;
   lastName: string;
   email: string;
