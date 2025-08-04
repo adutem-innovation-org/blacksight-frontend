@@ -79,11 +79,14 @@ export const ChangePasswordSection = () => {
   const openForm = () => setFormOpen(true);
 
   return (
-    <div className="py-4 px-6 bg-gray-50 rounded-2xl">
-      <div className="flex justify-between items-center">
+    <div className="p-6 py-5 bg-gray-50 rounded-2xl">
+      <div className="flex justify-start items-center gap-3">
+        <div className="bg-gray-200 w-12 h-12 rounded-lg flex justify-center items-center">
+          <i className="fi fi-sr-key flex bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent text-2xl"></i>
+        </div>
         {/* Left content */}
         <div>
-          <h2 className="text-xl md:text-2xl font-medium tracking-tighter text-gray-600">
+          <h2 className="text-xl font-medium tracking-tighter text-gray-600">
             Change your password
           </h2>
           <p className="text-sm text-gray-600 mt-1">
@@ -92,7 +95,7 @@ export const ChangePasswordSection = () => {
         </div>
 
         <Button
-          className="rounded-lg !text-sm py-0"
+          className="rounded-lg !text-sm py-0 ml-auto"
           size={"sm"}
           type="button"
           onClick={openForm}
