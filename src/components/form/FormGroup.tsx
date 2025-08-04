@@ -172,7 +172,7 @@ export const FormGroup = ({
       );
     case "password":
       return (
-        <GroupContainer>
+        <GroupContainer className={containerClassName}>
           <Label>{groupLabel}</Label>
           <PasswordInput
             placeholder={placeholder}
