@@ -207,13 +207,26 @@ export const groupedSideTabs: Record<UserTypes, SidebarGroupType[]> = {
       ],
     },
     {
-      name: "Settings",
+      name: "Account",
+
       tabs: [
         {
           name: "Profile",
           tabId: DashboardTabsEnum.PROFILE,
           iconClass: "fi fi-rr-user",
           path: "/profile",
+        },
+        {
+          name: "API Keys",
+          tabId: DashboardTabsEnum.API_KEYS,
+          iconClass: "fi fi-rr-key",
+          path: "/account/api-keys",
+        },
+        {
+          name: "Password & Security",
+          tabId: DashboardTabsEnum.SECURITY,
+          iconClass: "fi fi-rr-shield-keyhole",
+          path: "/security",
         },
       ],
     },

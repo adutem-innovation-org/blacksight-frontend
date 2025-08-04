@@ -8,6 +8,8 @@ export enum DashboardTabsEnum {
   SUBSCRIPTIONS = "subscriptions",
   REMINDER = "reminder",
   PROFILE = "profile",
+  API_KEYS = "api-keys",
+  SECURITY = "security",
   ACTIVITIES = "activities",
   CALENDARS = "calendars",
   TEMPLATES = "templates",

@@ -1,5 +1,6 @@
 import {
   AnalyticsTab,
+  ApiKeysTab,
   AppointmentsTab,
   BotsTab,
   CalendarsTab,
@@ -34,7 +35,6 @@ type RouteType = {
   description?: string;
 };
 
-
 // export const authenticationPages: RouteType[] = [
 //   {
 //     path: "signin",
@@ -67,31 +67,36 @@ export const authenticationPages: RouteType[] = [
     path: "signin",
     Element: Login,
     title: "Welcome Back",
-    description: "We are glad to have you back.\n Enter your login details to resume your activities.",
+    description:
+      "We are glad to have you back.\n Enter your login details to resume your activities.",
   },
   {
     path: "signup",
     Element: Register,
     title: "Create Account",
-    description: "Want to Explore our AI agents? Create an account and get started",
+    description:
+      "Want to Explore our AI agents? Create an account and get started",
   },
   {
     path: "verify-email",
     Element: VerifyAccount,
     title: "Verify Your Email",
-    description: "We sent a verification link to your email. Please check your inbox to verify your account.",
+    description:
+      "We sent a verification link to your email. Please check your inbox to verify your account.",
   },
   {
     path: "forgot-password",
     Element: ForgotPassword,
     title: "Forgot Password",
-    description: "Enter your email address and we will send you instructions to reset your password.",
+    description:
+      "Enter your email address and we will send you instructions to reset your password.",
   },
   {
     path: "reset-password",
     Element: ResetPassword,
     title: "Reset Password",
-    description: "Set your new password below to regain access to your account.",
+    description:
+      "Set your new password below to regain access to your account.",
   },
   {
     path: "logout",
@@ -100,7 +105,6 @@ export const authenticationPages: RouteType[] = [
     description: "We are logging you out of your account. See you again soon!",
   },
 ];
-
 
 export const privatePages: RouteType[] = [
   {
@@ -155,6 +159,10 @@ export const privatePages: RouteType[] = [
     path: "/profile",
     Element: ProfileTab,
   },
+  {
+    path: "/account/api-keys",
+    Element: ApiKeysTab,
+  },
 ];
 
 export const privatePagesMap = {
@@ -170,6 +178,7 @@ export const privatePagesMap = {
     "/calendars",
     "/templates",
     "/profile",
+    "/account/api-keys",
   ],
   [UserTypes.ADMIN]: [
     "/dashboard",
@@ -198,4 +207,5 @@ export const pathToTabMap: Record<string, DashboardTabsEnum> = {
   "/workspace": DashboardTabsEnum.WORKSPACE,
   "/subscriptions": DashboardTabsEnum.SUBSCRIPTIONS,
   "/profile": DashboardTabsEnum.PROFILE,
+  "/account/api-keys": DashboardTabsEnum.API_KEYS,
 };
