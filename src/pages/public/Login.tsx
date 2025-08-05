@@ -74,6 +74,7 @@ export const Login = () => {
       if (isSignedIn) {
         dispatch(resetSignInUser());
         const user = getAuthUser();
+
         if (user) {
           if (user.userType === UserTypes.ADMIN)
             return navigate("/dashboard", { replace: true });
@@ -81,6 +82,17 @@ export const Login = () => {
           if (!user.isOnboarded && !user.skippedOnboarding)
             return navigate(`/onboard`);
           return navigate("/dashboard", { replace: true });
+        }
+
+        const tempData = getTempData();
+
+        if (tempData) {
+          return navigate(`/user/2fa`, {
+            state: {
+              mfaMethods: tempData.mfaMethods,
+              requiresMFA: tempData.requiresMFA,
+            },
+          });
         }
       }
     };

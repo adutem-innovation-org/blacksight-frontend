@@ -46,6 +46,15 @@ export const signInUser = createAsyncThunk(
           ? authApiService.loginAdmin
           : authApiService.loginUser;
       const response = await signInApi(data.body);
+      if ("requiresMFA" in response && response.requiresMFA) {
+        ApiService.setAuthorization(response.tempToken);
+        saveTempSession(response.tempToken, response);
+      } else if ("token" in response && response.token) {
+        ApiService.setAuthorization(response.token);
+        saveSession(response.token, response.user);
+      } else {
+        return thunkAPI.rejectWithValue({ message: "Unable to login" });
+      }
       // ApiService.setAuthorization(response.token);
       // saveSession(response.token, response.user);
       return { message: "Successful" };
