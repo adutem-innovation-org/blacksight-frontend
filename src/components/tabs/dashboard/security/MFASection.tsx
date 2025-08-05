@@ -15,6 +15,7 @@ import { MFAMethods } from "@/enums";
 import { SmsMfaSetupForm } from "./SmsMfaSetupForm";
 import { resetDocumentElement } from "@/helpers";
 import { ConfirmationDialog } from "@/components/popups";
+import { Loader } from "@/components/progress";
 
 export const MFASection = () => {
   const { getState } = useStore();
@@ -72,9 +73,12 @@ const AvailableMethods = () => {
   const {
     mfaMethodEnabled,
     enableMfaMethodErrorMessage,
+
     disablingMfaMethod,
-    disableMfaMethodErrorMessage,
     mfaMethodDisabled,
+    disableMfaMethodErrorMessage,
+
+    fetchingMfaStatus,
   } = getState("Auth");
   const [smsMfaSetupFormOpen, setSmsMfaSetupFormOpen] = useState(false);
   const [currentMethod, setCurrentMethod] = useState<MFAMethods | null>(null);
@@ -151,15 +155,22 @@ const AvailableMethods = () => {
       <h3 className="text-base font-semibold tracking-tight text-gray-600">
         Available methods
       </h3>
-      <div className="mt-4 flex flex-col gap-4">
-        {availableMFAMethods.map((method) => (
-          <MethodCard
-            {...method}
-            enableMethod={enableMethod}
-            currentMethod={currentMethod}
-          />
-        ))}
-      </div>
+
+      {fetchingMfaStatus ? (
+        <div className="h-20 relative">
+          <Loader />
+        </div>
+      ) : (
+        <div className="mt-4 flex flex-col gap-4">
+          {availableMFAMethods.map((method) => (
+            <MethodCard
+              {...method}
+              enableMethod={enableMethod}
+              currentMethod={currentMethod}
+            />
+          ))}
+        </div>
+      )}
 
       <SmsMfaSetupForm
         isOpen={smsMfaSetupFormOpen && currentMethod === MFAMethods.SMS}
