@@ -20,6 +20,7 @@ import {
   ForgotPassword,
   Login,
   Logout,
+  MfaVerification,
   Onboarding,
   Register,
   ResetPassword,
@@ -104,6 +105,10 @@ export const authenticationPages: RouteType[] = [
     Element: Logout,
     title: "Signing Out",
     description: "We are logging you out of your account. See you again soon!",
+  },
+  {
+    path: "2fa",
+    Element: MfaVerification,
   },
 ];
 

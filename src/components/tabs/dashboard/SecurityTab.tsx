@@ -1,8 +1,25 @@
 import { DashboardContent } from "@/components/design";
-import React from "react";
+import React, { useEffect } from "react";
 import { SecurityTabHeader, SecurityTabMainContent } from "./security";
+import { useStore } from "@/hooks";
+import { getMfaStatus, resetGetMfaStatus } from "@/store";
 
 export const PasswordAndSecurityTab = () => {
+  const { dispatch, getState } = useStore();
+  const { mfaStatusFetched, mfaEnabled, availableMethods } = getState("Auth");
+
+  useEffect(() => {
+    if (!availableMethods) {
+      dispatch(getMfaStatus());
+    }
+  }, []);
+
+  useEffect(() => {
+    if (mfaStatusFetched) {
+      dispatch(resetGetMfaStatus());
+    }
+  }, [mfaStatusFetched]);
+
   return (
     <React.Fragment>
       <DashboardContent>

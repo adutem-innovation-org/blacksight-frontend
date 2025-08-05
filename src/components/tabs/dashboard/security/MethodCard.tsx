@@ -1,15 +1,13 @@
-import { Button } from "@/components/form";
+import { Switch } from "@/components/form";
 import { Spinner } from "@/components/progress";
 import { MFAMethods } from "@/enums";
 import { useStore } from "@/hooks";
 import { cn } from "@/lib/utils";
-import { enableEmailMfa, enableSMSMfa } from "@/store";
-import { useEffect, useState } from "react";
+import { Tooltip } from "@mantine/core";
 
 export const MethodCard = ({
   label,
   method,
-  enabled,
   description,
   iconClass,
   enableMethod,
@@ -17,14 +15,19 @@ export const MethodCard = ({
 }: {
   label: string;
   method: MFAMethods;
-  enabled: boolean;
   description: any;
   iconClass: string;
-  enableMethod: (method: MFAMethods) => void;
+  enableMethod: (method: MFAMethods, enabled: boolean) => void;
   currentMethod: MFAMethods | null;
 }) => {
   const { getState } = useStore();
-  const { enablingMfaMethod } = getState("Auth");
+  const { enablingMfaMethod, availableMethods, disablingMfaMethod } =
+    getState("Auth");
+  const enabled = availableMethods?.includes(method);
+
+  const handleMethodStatusChange = (enabled: boolean) => {
+    enableMethod(method, enabled);
+  };
 
   return (
     <div className="p-6 py-5 bg-gray-50 rounded-2xl">
@@ -45,8 +48,23 @@ export const MethodCard = ({
             {description}
           </p>
         </div>
+        <Tooltip
+          label={enabled ? "Disable" : "Enable"}
+          className="!rounded-md !text-xs"
+          transitionProps={{ transition: "pop", duration: 300 }}
+          disabled={enablingMfaMethod || disablingMfaMethod}
+        >
+          <div className="flex items-center relative gap-1 ml-auto">
+            <Switch
+              disabled={enablingMfaMethod || disablingMfaMethod}
+              checked={enabled}
+              onCheckedChange={handleMethodStatusChange}
+            />
+            {enablingMfaMethod && currentMethod === method && <Spinner />}
+          </div>
+        </Tooltip>
 
-        <Button
+        {/* <Button
           className="rounded-lg !text-sm py-0 ml-auto"
           size={"sm"}
           type="button"
@@ -55,7 +73,7 @@ export const MethodCard = ({
         >
           {enablingMfaMethod && currentMethod === method && <Spinner />}
           {enabled ? "Disable" : "Setup"}{" "}
-        </Button>
+        </Button> */}
       </div>
     </div>
   );
