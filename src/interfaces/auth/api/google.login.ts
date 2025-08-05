@@ -1,4 +1,4 @@
-import { RegisterUserRes } from "./register-user";
+import { TempAuthData, FullAuthData } from "../store";
 
 export type GoogleLoginBody = {
   id: string;
@@ -9,4 +9,4 @@ export type GoogleLoginBody = {
   photoUrl: string;
 };
 
-export type GoogleLoginRes = RegisterUserRes;
+export type GoogleLoginRes = TempAuthData | FullAuthData;

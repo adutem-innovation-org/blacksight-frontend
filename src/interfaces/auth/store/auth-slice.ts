@@ -1,6 +1,5 @@
 import { PaginationMetaData } from "@/interfaces/pagination";
-import { PaginatedUserData, UserData } from "./user";
-import { AdminUserAnalytics } from "../api";
+import { PaginatedUserData } from "./user";
 import { MFAMethods } from "@/enums";
 
 export type AuthState = {
@@ -146,4 +145,27 @@ export type AuthState = {
   enableMfaMethodErrors: Record<string, string>;
   enableMfaMethodErrorMessage: string;
   availableMethods: MFAMethods[] | null;
+
+  // Disable mfa
+  disablingMfaMethod: boolean;
+  mfaMethodDisabled: boolean;
+  disableMfaMethodErrorMessage: string;
+
+  // Get mfa status
+  fetchingMfaStatus: boolean;
+  mfaStatusFetched: boolean;
+  fetchMfaStatusErrorMessage: string;
+  mfaEnabled: boolean;
+
+  // Send mfa code
+  sendingMfaCode: boolean;
+  mfaCodeSent: boolean;
+  sendMfaCodeErrors: Record<string, string>;
+  sendMfaCodeErrorMessage: string;
+
+  // Verify mfa code
+  verifyingMfaCode: boolean;
+  mfaCodeVerified: boolean;
+  verifyMfaCodeErrors: Record<string, string>;
+  verifyMfaCodeErrorMessage: string;
 };
