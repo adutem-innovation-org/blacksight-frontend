@@ -1,6 +1,7 @@
 import { PaginationMetaData } from "@/interfaces/pagination";
 import { PaginatedUserData, UserData } from "./user";
 import { AdminUserAnalytics } from "../api";
+import { MFAMethods } from "@/enums";
 
 export type AuthState = {
   signingIn: boolean;
@@ -132,4 +133,17 @@ export type AuthState = {
   adminCreated: boolean;
   createAdminErrors: Record<string, string>;
   createAdminErrorMessage: string;
+
+  /**
+   * ====================
+   * Multi factor authentication
+   * ====================
+   */
+
+  // Enable mfa
+  enablingMfaMethod: boolean;
+  mfaMethodEnabled: boolean;
+  enableMfaMethodErrors: Record<string, string>;
+  enableMfaMethodErrorMessage: string;
+  availableMethods: MFAMethods[] | null;
 };

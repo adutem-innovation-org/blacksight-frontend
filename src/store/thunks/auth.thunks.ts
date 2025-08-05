@@ -8,6 +8,7 @@ import {
   Business,
   ChangePasswordBody,
   CreateAdminBody,
+  EnableSMSMfaMethodBody,
   ForgotPasswordBody,
   GetAdminsRes,
   GetUsersRes,
@@ -342,6 +343,37 @@ export const createAdmin = createAsyncThunk<
   try {
     const res = await authApiService.createAdmin(data);
     return res.user;
+  } catch (error: any) {
+    return rejectWithValue(error);
+  }
+});
+
+/**
+ * ================
+ * Multi factor authentication
+ * ================
+ */
+export const enableEmailMfa = createAsyncThunk<
+  void,
+  void,
+  { rejectValue: { message: string } }
+>("enable_email_mfa", async (_, { rejectWithValue }) => {
+  try {
+    await authApiService.enableEmailMfa();
+    return;
+  } catch (error: any) {
+    return rejectWithValue(error);
+  }
+});
+
+export const enableSMSMfa = createAsyncThunk<
+  void,
+  EnableSMSMfaMethodBody,
+  { rejectValue: { message: string; errors: Record<string, string> } }
+>("enable_sms_mfa", async (data, { rejectWithValue }) => {
+  try {
+    await authApiService.enableSMSMfa(data);
+    return;
   } catch (error: any) {
     return rejectWithValue(error);
   }

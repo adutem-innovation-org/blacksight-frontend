@@ -130,4 +130,17 @@ export const initialAuthState: AuthState = {
   adminCreated: false,
   createAdminErrors: {},
   createAdminErrorMessage: "",
+
+  /**
+   * ====================
+   * Multi factor authentication
+   * ====================
+   */
+
+  // Enable mfa
+  enablingMfaMethod: false,
+  mfaMethodEnabled: false,
+  enableMfaMethodErrors: {},
+  enableMfaMethodErrorMessage: "",
+  availableMethods: null,
 };

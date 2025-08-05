@@ -153,3 +153,10 @@ export const resetCreateAdminReducer = (state: AuthState) => {
   state.createAdminErrors = {};
   state.createAdminErrorMessage = "";
 };
+
+export const resetEnableMfaMethodReducer = (state: AuthState) => {
+  state.enablingMfaMethod = false;
+  state.mfaMethodEnabled = false;
+  state.enableMfaMethodErrors = {};
+  state.enableMfaMethodErrorMessage = "";
+};

@@ -4,6 +4,7 @@ import {
   changePasswordBuilder,
   continueWithGoogleBuilder,
   createAdminBuilder,
+  enableMfaMethodBuilder,
   forgotPasswordBuilder,
   getAdminAnalyticsBuilder,
   getAdminsBuilder,
@@ -49,6 +50,7 @@ import {
   resetLiftUserSuspensionReducer,
   resetCreateAdminReducer,
   resetSkipOnboardingReducer,
+  resetEnableMfaMethodReducer,
 } from "../reducers";
 
 const authSlice = createSlice({
@@ -77,6 +79,7 @@ const authSlice = createSlice({
     resetLiftUserSuspension: resetLiftUserSuspensionReducer,
     resetCreateAdmin: resetCreateAdminReducer,
     resetSkipOnboarding: resetSkipOnboardingReducer,
+    resetEnableMfaMethod: resetEnableMfaMethodReducer,
   },
   initialState: initialAuthState,
   extraReducers: (builder) => {
@@ -103,6 +106,7 @@ const authSlice = createSlice({
     liftUserSuspensionBuilder(builder);
     createAdminBuilder(builder);
     skipOnboardingBuilder(builder);
+    enableMfaMethodBuilder(builder);
   },
 });
 
@@ -130,4 +134,5 @@ export const {
   resetSuspendUser,
   resetLiftUserSuspension,
   resetCreateAdmin,
+  resetEnableMfaMethod,
 } = authSlice.actions;

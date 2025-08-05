@@ -17,3 +17,4 @@ export * from "./get-user-analytics.builder";
 export * from "./get-admin-analytics.builder";
 export * from "./user-suspension.builder";
 export * from "./create-admin";
+export * from "./enable-mfa-method.builder";
