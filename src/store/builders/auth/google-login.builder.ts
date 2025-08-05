@@ -9,7 +9,7 @@ export const continueWithGoogleBuilder = (
     state.authenticatingWithGoogle = true;
   });
 
-  builder.addCase(continueWithGoogle.fulfilled, (state) => {
+  builder.addCase(continueWithGoogle.fulfilled, (state, action) => {
     state.authenticatingWithGoogle = false;
     state.googleAuthSuccess = true;
   });

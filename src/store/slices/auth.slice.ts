@@ -4,16 +4,19 @@ import {
   changePasswordBuilder,
   continueWithGoogleBuilder,
   createAdminBuilder,
+  disableMfaMethodBuilder,
   enableMfaMethodBuilder,
   forgotPasswordBuilder,
   getAdminAnalyticsBuilder,
   getAdminsBuilder,
   getAdminUserAnalyticsBuilder,
+  getMfaStatusBuilder,
   getProfileBuilder,
   getUsersBuilder,
   liftUserSuspensionBuilder,
   onboardUserBuilder,
   resetPasswordBuilder,
+  sendMfaCodeBuilder,
   sendOtpBuilder,
   setupPasswordBuilder,
   signInUserBuilder,
@@ -25,6 +28,7 @@ import {
   updateBusinessContactInfoBuilder,
   updateProfileBuilder,
   verifyEmailBuilder,
+  verifyMfaCodeBuilder,
 } from "../builders";
 import {
   changeGapiStateReducer,
@@ -51,6 +55,10 @@ import {
   resetCreateAdminReducer,
   resetSkipOnboardingReducer,
   resetEnableMfaMethodReducer,
+  resetGetMfaStatusReducer,
+  resetSendMfaCodeReducer,
+  resetVerifyMfaCodeReducer,
+  resetDisableMfaMethodReducer,
 } from "../reducers";
 
 const authSlice = createSlice({
@@ -80,6 +88,10 @@ const authSlice = createSlice({
     resetCreateAdmin: resetCreateAdminReducer,
     resetSkipOnboarding: resetSkipOnboardingReducer,
     resetEnableMfaMethod: resetEnableMfaMethodReducer,
+    resetGetMfaStatus: resetGetMfaStatusReducer,
+    resetSendMfaCode: resetSendMfaCodeReducer,
+    resetVerifyMfaCode: resetVerifyMfaCodeReducer,
+    resetDisableMfaMethod: resetDisableMfaMethodReducer,
   },
   initialState: initialAuthState,
   extraReducers: (builder) => {
@@ -107,6 +119,10 @@ const authSlice = createSlice({
     createAdminBuilder(builder);
     skipOnboardingBuilder(builder);
     enableMfaMethodBuilder(builder);
+    getMfaStatusBuilder(builder);
+    sendMfaCodeBuilder(builder);
+    verifyMfaCodeBuilder(builder);
+    disableMfaMethodBuilder(builder);
   },
 });
 
@@ -135,4 +151,8 @@ export const {
   resetLiftUserSuspension,
   resetCreateAdmin,
   resetEnableMfaMethod,
+  resetGetMfaStatus,
+  resetSendMfaCode,
+  resetVerifyMfaCode,
+  resetDisableMfaMethod,
 } = authSlice.actions;

@@ -1,22 +1,27 @@
 import { AuthApiService } from "@/apis";
 import { ApiService } from "@/apis/api.service";
 import { UserTypes } from "@/enums";
-import { clearSession, saveSession } from "@/helpers";
+import { clearSession, saveSession, saveTempSession } from "@/helpers";
 import {
   AdminAuthAnalytics,
   AdminUserAnalytics,
   Business,
   ChangePasswordBody,
   CreateAdminBody,
+  DisableMfaMethodBody,
+  DisableMfaMethodRes,
   EnableSMSMfaMethodBody,
   ForgotPasswordBody,
   GetAdminsRes,
+  GetMfaStatusRes,
   GetUsersRes,
   GoogleLoginBody,
   LoginUserBody,
   OnboardBusinessBody,
   RegisterUserBody,
   ResetPasswordBody,
+  SendMfaCodeBody,
+  SendMfaCodeRes,
   SetupPasswordBody,
   SuspendUserBody,
   UpdateAddressBody,
@@ -25,6 +30,8 @@ import {
   UpdateProfileBody,
   UserData,
   VerifyEmailBody,
+  VerifyMfaCodeBody,
+  VerifyMfaCodeRes,
 } from "@/interfaces";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
@@ -39,8 +46,8 @@ export const signInUser = createAsyncThunk(
           ? authApiService.loginAdmin
           : authApiService.loginUser;
       const response = await signInApi(data.body);
-      ApiService.setAuthorization(response.token);
-      saveSession(response.token, response.user);
+      // ApiService.setAuthorization(response.token);
+      // saveSession(response.token, response.user);
       return { message: "Successful" };
     } catch (error: any) {
       return thunkAPI.rejectWithValue(JSON.stringify(error));
@@ -202,9 +209,16 @@ export const continueWithGoogle = createAsyncThunk(
   async (data: GoogleLoginBody, thunkAPI) => {
     try {
       const response = await authApiService.googleAuth(data);
-      ApiService.setAuthorization(response.token);
-      saveSession(response.token, response.user);
-      return { message: "Successful" };
+      if ("requiresMFA" in response && response.requiresMFA) {
+        ApiService.setAuthorization(response.tempToken);
+        saveTempSession(response.tempToken, response);
+      } else if ("token" in response && response.token) {
+        ApiService.setAuthorization(response.token);
+        saveSession(response.token, response.user);
+      } else {
+        return thunkAPI.rejectWithValue({ message: "Unable to login" });
+      }
+      return response;
     } catch (error) {
       return thunkAPI.rejectWithValue(JSON.stringify(error));
     }
@@ -373,6 +387,61 @@ export const enableSMSMfa = createAsyncThunk<
 >("enable_sms_mfa", async (data, { rejectWithValue }) => {
   try {
     await authApiService.enableSMSMfa(data);
+    return;
+  } catch (error: any) {
+    return rejectWithValue(error);
+  }
+});
+
+export const disableMfaMethod = createAsyncThunk<
+  DisableMfaMethodRes,
+  DisableMfaMethodBody,
+  { rejectValue: { message: string; errors: Record<string, string> } }
+>("disable_mfa_method", async (data, { rejectWithValue }) => {
+  try {
+    const res = await authApiService.disableMfaMethod(data);
+    return res;
+  } catch (error: any) {
+    return rejectWithValue(error);
+  }
+});
+
+export const getMfaStatus = createAsyncThunk<
+  GetMfaStatusRes,
+  void,
+  { rejectValue: { message: string } }
+>("get_mfa_status", async (_, { rejectWithValue }) => {
+  try {
+    const res = await authApiService.getMfaStatus();
+    return res;
+  } catch (error: any) {
+    return rejectWithValue(error);
+  }
+});
+
+export const sendMfaCode = createAsyncThunk<
+  SendMfaCodeRes,
+  SendMfaCodeBody,
+  { rejectValue: { message: string; errors: Record<string, string> } }
+>("send_mfa_code", async (data, { rejectWithValue }) => {
+  try {
+    const res = await authApiService.sendMfaCode(data);
+    return res;
+  } catch (error: any) {
+    return rejectWithValue(error);
+  }
+});
+
+export const verifyMfaCode = createAsyncThunk<
+  void,
+  VerifyMfaCodeBody,
+  { rejectValue: { message: string; errors: Record<string, string> } }
+>("verify_mfa_code", async (data, { rejectWithValue }) => {
+  try {
+    const res = await authApiService.verifyMfaCode(data);
+    console.log(res);
+    ApiService.setAuthorization(res.token);
+    saveSession(res.token, res.user);
     return;
   } catch (error: any) {
     return rejectWithValue(error);
