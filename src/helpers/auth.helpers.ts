@@ -1,5 +1,5 @@
 import { AuthApiService } from "@/apis";
-import { UserTypes } from "@/enums";
+import { MFAMethods, UserTypes } from "@/enums";
 import { UserData } from "@/interfaces";
 
 export const saveSession = (token: string, user: UserData) => {
@@ -7,16 +7,53 @@ export const saveSession = (token: string, user: UserData) => {
   sessionStorage.setItem("blacksight_access_token", token);
 };
 
+export const saveTempSession = (
+  tempToken: string,
+  tempData: {
+    requiresMFA: boolean;
+    mfaMethods: MFAMethods[];
+    tempToken: string;
+  }
+) => {
+  sessionStorage.setItem("blacksight_temp_token", tempToken);
+  sessionStorage.setItem("blacksight_temp_data", JSON.stringify(tempData));
+};
+
 export const clearSession = () => {
   sessionStorage.removeItem("blacksight_auth_user");
   sessionStorage.removeItem("blacksight_access_token");
 };
 
+export const clearTempSession = () => {
+  sessionStorage.removeItem("blacksight_temp_token");
+  sessionStorage.removeItem("blacksight_temp_data");
+};
+
 export const getAuthUser = (): UserData | null => {
   const userJSON = sessionStorage.getItem("blacksight_auth_user");
   if (!userJSON) return null;
-  const userData = JSON.parse(userJSON);
-  return userData;
+  try {
+    const userData = JSON.parse(userJSON);
+    return userData;
+  } catch (error) {
+    return null;
+  }
+};
+
+export const getTempData = (): {
+  requiresMFA: boolean;
+  mfaMethods: MFAMethods[];
+  tempToken: string;
+  expiresAt: number;
+} | null => {
+  const tempDataJSON = sessionStorage.getItem("blacksight_temp_data");
+  if (!tempDataJSON) return null;
+  try {
+    const tempData = JSON.parse(tempDataJSON);
+    return tempData;
+  } catch (error) {
+    return null;
+  }
 };
 
 export const getOAuthReqBody = async (access_token: string) => {
