@@ -6,7 +6,12 @@ export const requestInterceptor = (config: InternalAxiosRequestConfig<any>) => {
     !config.headers.Authorization.toString().startsWith("Bearer ")
   ) {
     const token = sessionStorage.getItem("blacksight_access_token");
-    config.headers.Authorization = token ? `Bearer ${token}` : undefined;
+    const tempToken = sessionStorage.getItem("blacksight_temp_token");
+    if (tempToken && config.url?.includes("/mfa")) {
+      config.headers.Authorization = `Bearer ${tempToken}`;
+    } else {
+      config.headers.Authorization = token ? `Bearer ${token}` : undefined;
+    }
   }
   return config;
 };
