@@ -38,7 +38,7 @@ import {
   SuspendUserRes,
   LiftUserSuspensionRes,
   EnableMfaMethodRes,
-  EnableMfaMethodBody,
+  EnableSMSMfaMethodBody,
 } from "@/interfaces";
 import { ApiService } from "./api.service";
 import { AUTH_URLS } from "./endpoints";
@@ -357,14 +357,14 @@ MFA CODES
   =======================================
   */
 
-  enableEmailMFA = () => {
+  enableEmailMfa = () => {
     return this.apiService.post<null, EnableMfaMethodRes>(
       this.urls.ENABLE_EMAIL_MFA
     );
   };
 
-  enableSMSMFA = (data: EnableMfaMethodBody) => {
-    return this.apiService.post<EnableMfaMethodBody, EnableMfaMethodRes>(
+  enableSMSMfa = (data: EnableSMSMfaMethodBody) => {
+    return this.apiService.post<EnableSMSMfaMethodBody, EnableMfaMethodRes>(
       this.urls.ENABLE_SMS_MFA,
       data
     );
