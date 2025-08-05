@@ -1,6 +1,12 @@
 import { InfoBlock } from "@/components/InfoBlock";
 import { availableMFAMethods } from "@/constants";
 import { MethodCard } from "./MethodCard";
+import { useStore } from "@/hooks";
+import toast from "react-hot-toast";
+import { useEffect, useState } from "react";
+import { enableEmailMfa, resetEnableMfaMethod } from "@/store";
+import { MFAMethods } from "@/enums";
+import { SmsMfaSetupForm } from "./SmsMfaSetupForm";
 
 export const MFASection = () => {
   return (
@@ -41,6 +47,39 @@ const MFASectionHeader = () => {
 };
 
 const AvailableMethods = () => {
+  const { getState, dispatch } = useStore();
+  const { mfaMethodEnabled, enableMfaMethodErrorMessage } = getState("Auth");
+  const [smsMfaSetupFormOpen, setSmsMfaSetupFormOpen] = useState(false);
+  const [currentMethod, setCurrentMethod] = useState<MFAMethods | null>(null);
+
+  const onOpenChange = (val: boolean) => {
+    setSmsMfaSetupFormOpen(val);
+    setCurrentMethod(null);
+  };
+
+  const enableMethod = (method: MFAMethods) => {
+    setCurrentMethod(method);
+    if (method === MFAMethods.SMS) {
+      setSmsMfaSetupFormOpen(true);
+    } else {
+      dispatch(enableEmailMfa());
+    }
+  };
+
+  useEffect(() => {
+    if (mfaMethodEnabled) {
+      toast.success("Enabled");
+      dispatch(resetEnableMfaMethod());
+    }
+  }, [mfaMethodEnabled]);
+
+  useEffect(() => {
+    if (enableMfaMethodErrorMessage) {
+      toast.error(enableMfaMethodErrorMessage);
+      dispatch(resetEnableMfaMethod());
+    }
+  }, [enableMfaMethodErrorMessage]);
+
   return (
     <div className="mt-10">
       <h3 className="text-base font-semibold tracking-tight text-gray-600">
@@ -48,9 +87,18 @@ const AvailableMethods = () => {
       </h3>
       <div className="mt-4 flex flex-col gap-4">
         {availableMFAMethods.map((method) => (
-          <MethodCard {...method} />
+          <MethodCard
+            {...method}
+            enableMethod={enableMethod}
+            currentMethod={currentMethod}
+          />
         ))}
       </div>
+
+      <SmsMfaSetupForm
+        isOpen={smsMfaSetupFormOpen && currentMethod === MFAMethods.SMS}
+        onOpenChange={onOpenChange}
+      />
     </div>
   );
 };

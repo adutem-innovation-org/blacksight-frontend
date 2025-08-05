@@ -1,6 +1,10 @@
 import { Button } from "@/components/form";
+import { Spinner } from "@/components/progress";
 import { MFAMethods } from "@/enums";
+import { useStore } from "@/hooks";
 import { cn } from "@/lib/utils";
+import { enableEmailMfa, enableSMSMfa } from "@/store";
+import { useEffect, useState } from "react";
 
 export const MethodCard = ({
   label,
@@ -8,13 +12,20 @@ export const MethodCard = ({
   enabled,
   description,
   iconClass,
+  enableMethod,
+  currentMethod,
 }: {
   label: string;
   method: MFAMethods;
   enabled: boolean;
   description: any;
   iconClass: string;
+  enableMethod: (method: MFAMethods) => void;
+  currentMethod: MFAMethods | null;
 }) => {
+  const { getState } = useStore();
+  const { enablingMfaMethod } = getState("Auth");
+
   return (
     <div className="p-6 py-5 bg-gray-50 rounded-2xl">
       <div className="flex justify-start items-center gap-6">
@@ -39,7 +50,10 @@ export const MethodCard = ({
           className="rounded-lg !text-sm py-0 ml-auto"
           size={"sm"}
           type="button"
+          onClick={() => enableMethod(method)}
+          disabled={enablingMfaMethod}
         >
+          {enablingMfaMethod && currentMethod === method && <Spinner />}
           {enabled ? "Disable" : "Setup"}{" "}
         </Button>
       </div>
