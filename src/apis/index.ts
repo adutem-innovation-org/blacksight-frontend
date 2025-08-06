@@ -8,3 +8,4 @@ export * from "./appointment.service";
 export * from "./api-key.service";
 export * from "./template.service";
 export * from "./agent.service";
+export * from "./product-recommendation.service";
