@@ -1,3 +1,8 @@
+/**
+ * ===========================
+ * TAB CONSTANTS BARREL EXPORT
+ * ===========================
+ */
 export * from "./routes.constant";
 export * from "./store";
 export * from "./regex";
@@ -10,6 +15,7 @@ export * from "./templatetab.constant";
 export * from "./appointment.constant";
 export * from "./knowledge-base.constant";
 export * from "./security.constant";
+export * from "./product-recommendation.constant";
 
 export const INDUSTRIES = [
   { value: "E-commerce", label: "E-commerce" },
@@ -43,3 +49,10 @@ export const INDUSTRIES = [
   { value: "Events", label: "Event Planning & Services" },
   { value: "Art", label: "Art & Design" },
 ];
+
+/**
+ * ================================
+ * TABLE COLUMNS BARREL EXPORTS
+ * ================================
+ */
+export * from "./columns";
