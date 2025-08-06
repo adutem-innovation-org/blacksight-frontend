@@ -78,7 +78,7 @@ export default defineConfig(({ mode }) => {
         "@": path.resolve(__dirname, "./src"),
       },
     },
-    base: isWidget ? "https://cdn.blacksight.ai/widget/" : "/", // 👈 asset base URL
+    base: isWidget ? "https://blacksight.co/widget/" : "/", // 👈 asset base URL
     build: isWidget
       ? {
           outDir: "dist/widget",
