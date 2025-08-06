@@ -35,7 +35,9 @@ export const DashboardTabLayout = (props: PropsWithChildren) => {
           <DashboardHeader currentTab={currentTab} />
 
           {/* Dashboard content */}
-          <div className="w-full h-full overflow-hidden">{props.children}</div>
+          <div className="w-full h-full overflow-hidden relative">
+            {props.children}
+          </div>
         </div>
       </DashboardLayoutContainer>
 
