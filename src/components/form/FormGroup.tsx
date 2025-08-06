@@ -335,6 +335,7 @@ export const FormGroup = ({
           <div className="flex gap-1.5 items-center">
             <Label className="min-w-max">{groupLabel}</Label>
             {error && ErrorTooltip}
+            {info && !error && InfoTooltip}
           </div>
           <FileInput
             name={name}
