@@ -161,7 +161,7 @@ const ApiKeyCard = ({
             <Key className="w-5 h-5" />
           </div>
           <div className="flex flex-col overflow-hidden">
-            <p className="text-sm tracking-tight font-medium text-gray-800 overflow-hidden text-ellipsis whitespace-nowrap max-w-[80px] min-[400px]:max-w-[120px">
+            <p className="text-sm tracking-tight font-medium text-gray-800 overflow-hidden text-ellipsis whitespace-nowrap max-w-[80px] min-[400px]:max-w-[120px]">
               Blacksight API Key
             </p>
             <p className="text-xs text-gray-400 tracking-tight overflow-hidden text-ellipsis whitespace-nowrap max-w-[80px] min-[400px]:max-w-[120px]">
