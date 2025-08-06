@@ -165,6 +165,12 @@ export const groupedSideTabs: Record<UserTypes, SidebarGroupType[]> = {
       name: "Tools",
       tabs: [
         {
+          name: "Product Recommender",
+          tabId: DashboardTabsEnum.PRODUCT_RECOMMENDER,
+          iconClass: "fi fi-rr-brain-circuit",
+          path: "/tools/product-recommender",
+        },
+        {
           name: "Reminder",
           tabId: DashboardTabsEnum.REMINDER,
           iconClass: "fi fi-rr-bell-ring",
@@ -207,13 +213,26 @@ export const groupedSideTabs: Record<UserTypes, SidebarGroupType[]> = {
       ],
     },
     {
-      name: "Settings",
+      name: "Account",
+
       tabs: [
         {
           name: "Profile",
           tabId: DashboardTabsEnum.PROFILE,
           iconClass: "fi fi-rr-user",
           path: "/profile",
+        },
+        {
+          name: "API Keys",
+          tabId: DashboardTabsEnum.API_KEYS,
+          iconClass: "fi fi-rr-key",
+          path: "/account/api-keys",
+        },
+        {
+          name: "Password & Security",
+          tabId: DashboardTabsEnum.SECURITY,
+          iconClass: "fi fi-rr-shield-keyhole",
+          path: "/account/security",
         },
       ],
     },

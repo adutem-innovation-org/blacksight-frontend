@@ -4,13 +4,18 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import googleIcon from "@/assets/images/google.png";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import { emailRegex, passwordRegex } from "@/constants";
+import { availableMFAMethods, emailRegex, passwordRegex } from "@/constants";
 import { LoginUserBody } from "@/interfaces";
 import { useGoogleAuth, useStore } from "@/hooks";
 import { resetContinueWithGoogle, resetSignInUser, signInUser } from "@/store";
 import { UserTypes } from "@/enums";
 import toast from "react-hot-toast";
-import { getAuthUser } from "@/helpers";
+import {
+  clearSession,
+  clearTempSession,
+  getAuthUser,
+  getTempData,
+} from "@/helpers";
 import blacksightLogo from "@/assets/images/blacksight_logo_side.png";
 import appleIcon from "@/assets/images/logos_apple.png";
 
@@ -69,6 +74,7 @@ export const Login = () => {
       if (isSignedIn) {
         dispatch(resetSignInUser());
         const user = getAuthUser();
+
         if (user) {
           if (user.userType === UserTypes.ADMIN)
             return navigate("/dashboard", { replace: true });
@@ -76,6 +82,17 @@ export const Login = () => {
           if (!user.isOnboarded && !user.skippedOnboarding)
             return navigate(`/onboard`);
           return navigate("/dashboard", { replace: true });
+        }
+
+        const tempData = getTempData();
+
+        if (tempData) {
+          return navigate(`/user/2fa`, {
+            state: {
+              mfaMethods: tempData.mfaMethods,
+              requiresMFA: tempData.requiresMFA,
+            },
+          });
         }
       }
     };
@@ -87,6 +104,7 @@ export const Login = () => {
       if (googleAuthSuccess) {
         dispatch(resetContinueWithGoogle());
         const user = getAuthUser();
+
         if (user) {
           if (user.userType === UserTypes.ADMIN)
             return navigate("/dashboard", { replace: true });
@@ -94,6 +112,17 @@ export const Login = () => {
           if (!user.isOnboarded && !user.skippedOnboarding)
             return navigate(`/onboard`);
           return navigate("/dashboard", { replace: true });
+        }
+
+        const tempData = getTempData();
+
+        if (tempData) {
+          return navigate(`/user/2fa`, {
+            state: {
+              mfaMethods: tempData.mfaMethods,
+              requiresMFA: tempData.requiresMFA,
+            },
+          });
         }
       }
     };
@@ -127,6 +156,11 @@ export const Login = () => {
       }, 1400);
     }
   }, [googleAuthErrorMessage]);
+
+  useEffect(() => {
+    clearSession();
+    clearTempSession();
+  }, []);
 
   // return (
   //   <React.Fragment>
@@ -248,14 +282,11 @@ export const Login = () => {
   //   </React.Fragment>
   // );
 
-
   return (
     <React.Fragment>
       {/* Logo */}
 
       <div className="flex justify-center flex-col gap-4">
-
-
         <div className="flex justify-center ">
           <img src={blacksightLogo} className="max-h-10 object-contain" />
         </div>
@@ -321,13 +352,16 @@ export const Login = () => {
               className="w-full mt-6 py-3 text-lg font-medium rounded-lg"
               variant="default"
               size="md"
-              disabled={signingIn || gettingOauthData || authenticatingWithGoogle}
+              disabled={
+                signingIn || gettingOauthData || authenticatingWithGoogle
+              }
             >
               {signingIn ? <Spinner type="form" /> : "Login"}
             </Button>
 
             {/* Divider Text */}
             <p className="text-xs text-gray-500 text-center mt-2">Or Sign in</p>
+
 
             <div className="flex flex-col sm:flex-row gap-3 mt-4 w-full">
               {/* Google Sign In */}
@@ -346,7 +380,11 @@ export const Login = () => {
                   onClick={() => googleLogin()}
                 >
                   <img src={googleIcon} className="w-5 h-5" />
-                  {authenticatingWithGoogle ? <Spinner type="form" /> : "Sign in Using Google"}
+                  {authenticatingWithGoogle ? (
+                    <Spinner type="form" />
+                  ) : (
+                    "Sign in Using Google"
+                  )}
                 </Button>
               )}
 
@@ -366,7 +404,6 @@ export const Login = () => {
               )}
             </div>
           </form>
-
         </div>
         {/* Footer Links */}
         {params.basePath === UserTypes.USER && (
@@ -386,6 +423,5 @@ export const Login = () => {
         )}
       </div>
     </React.Fragment>
-
   );
 };

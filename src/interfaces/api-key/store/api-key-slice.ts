@@ -21,4 +21,8 @@ export interface ApiKeyState {
   regeneratingApiKey: boolean;
   apiKeyRegenerated: boolean;
   regenerateApiKeyError: string;
+
+  deletingApiKey: boolean;
+  apiKeyDeleted: boolean;
+  deleteApiKeyError: string;
 }

@@ -2,7 +2,7 @@ import { Loader } from "@/components";
 import { pathToTabMap, privatePagesMap } from "@/constants";
 import { UserTypes } from "@/enums";
 import { useAuth, useStore } from "@/hooks";
-import { changeTab } from "@/store";
+import { changeTab, getMfaStatus } from "@/store";
 import { useEffect } from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
@@ -11,6 +11,13 @@ export const PrivateRoute = () => {
     useAuth();
   const location = useLocation();
   const { dispatch } = useStore();
+
+  // It will be reset in the security tab
+  useEffect(() => {
+    if (isAuthorized) {
+      dispatch(getMfaStatus());
+    }
+  }, []);
 
   useEffect(() => {
     if (

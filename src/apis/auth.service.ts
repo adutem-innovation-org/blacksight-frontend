@@ -37,6 +37,16 @@ import {
   SuspendUserBody,
   SuspendUserRes,
   LiftUserSuspensionRes,
+  EnableMfaMethodRes,
+  EnableSMSMfaMethodBody,
+  GetMfaStatusRes,
+  SendMfaCodeBody,
+  SendMfaCodeRes,
+  VerifyMfaCodeBody,
+  VerifyMfaCodeRes,
+  CheckTempAuthRes,
+  DisableMfaMethodBody,
+  DisableMfaMethodRes,
 } from "@/interfaces";
 import { ApiService } from "./api.service";
 import { AUTH_URLS } from "./endpoints";
@@ -347,5 +357,53 @@ export class AuthApiService {
    */
   liftUserSuspension = (userId: string): Promise<LiftUserSuspensionRes> => {
     return this.apiService.post(`${this.urls.LIFT_USER_SUSPENSION}/${userId}`);
+  };
+
+  /*
+  ========================================
+MFA CODES
+  =======================================
+  */
+
+  enableEmailMfa = () => {
+    return this.apiService.post<null, EnableMfaMethodRes>(
+      this.urls.ENABLE_EMAIL_MFA
+    );
+  };
+
+  enableSMSMfa = (data: EnableSMSMfaMethodBody) => {
+    return this.apiService.post<EnableSMSMfaMethodBody, EnableMfaMethodRes>(
+      this.urls.ENABLE_SMS_MFA,
+      data
+    );
+  };
+
+  disableMfaMethod = (data: DisableMfaMethodBody) => {
+    return this.apiService.post<DisableMfaMethodBody, DisableMfaMethodRes>(
+      this.urls.DISABLE_MFA_METHOD,
+      data
+    );
+  };
+
+  getMfaStatus = () => {
+    return this.apiService.get<GetMfaStatusRes>(this.urls.GET_MFA_STATUS);
+  };
+
+  sendMfaCode = (data: SendMfaCodeBody) => {
+    return this.apiService.post<SendMfaCodeBody, SendMfaCodeRes>(
+      this.urls.SEND_MFA_CODE,
+      data
+    );
+  };
+
+  verifyMfaCode = (data: VerifyMfaCodeBody) => {
+    return this.apiService.post<VerifyMfaCodeBody, VerifyMfaCodeRes>(
+      this.urls.VERIFY_MFA_CODE,
+      data
+    );
+  };
+
+  checkTempAuth = () => {
+    return this.apiService.get<CheckTempAuthRes>(this.urls.CHECK_TEMP_AUTH);
   };
 }

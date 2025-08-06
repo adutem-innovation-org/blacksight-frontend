@@ -29,3 +29,9 @@ export const resetRegenerateApiKeyReducer = (state: ApiKeyState) => {
   state.apiKeyRegenerated = false;
   state.regenerateApiKeyError = "";
 };
+
+export const resetDeleteApiKeyReducer = (state: ApiKeyState) => {
+  state.deletingApiKey = false;
+  state.apiKeyDeleted = false;
+  state.deleteApiKeyError = "";
+};

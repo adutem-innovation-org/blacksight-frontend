@@ -1,4 +1,4 @@
-import { UserTypes } from "@/enums";
+import { MFAMethods, UserTypes } from "@/enums";
 
 type AddressInfo = {
   country: string;
@@ -61,3 +61,12 @@ export type PaginatedUserData = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type TempAuthData = {
+  requiresMFA: boolean;
+  mfaMethods: MFAMethods[];
+  tempToken: string;
+  expiresAt: number;
+};
+
+export type FullAuthData = { user: UserData; token: string };

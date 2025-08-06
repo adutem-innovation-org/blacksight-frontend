@@ -4,3 +4,4 @@ export * from "./Checkbox";
 export * from "./Button";
 export * from "./ResendOtp";
 export * from "./SearchInput";
+export * from "./Switch";

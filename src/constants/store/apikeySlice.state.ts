@@ -21,4 +21,8 @@ export const initialApiKeyState: ApiKeyState = {
   regeneratingApiKey: false,
   apiKeyRegenerated: false,
   regenerateApiKeyError: "",
+
+  deletingApiKey: false,
+  apiKeyDeleted: false,
+  deleteApiKeyError: "",
 };

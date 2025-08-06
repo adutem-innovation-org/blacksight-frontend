@@ -68,3 +68,16 @@ export const regenerateApiKey = createAsyncThunk<
     return rejectWithValue(error.message);
   }
 });
+
+export const deleteApiKey = createAsyncThunk<
+  void,
+  string,
+  { rejectValue: string }
+>("delete_api_key", async (id: string, { rejectWithValue }) => {
+  try {
+    await apiKeyApiService.deleteApiKey(id);
+    return;
+  } catch (error: any) {
+    return rejectWithValue(error.message);
+  }
+});

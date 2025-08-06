@@ -1,10 +1,13 @@
 import {
   AnalyticsTab,
+  ApiKeysTab,
   AppointmentsTab,
   BotsTab,
   CalendarsTab,
   ConversationsTab,
   KnowledgeBaseTab,
+  PasswordAndSecurityTab,
+  ProductRecommenderTab,
   ProfileTab,
   ReminderTab,
   SubscriptionsTab,
@@ -18,6 +21,7 @@ import {
   ForgotPassword,
   Login,
   Logout,
+  MfaVerification,
   Onboarding,
   Register,
   ResetPassword,
@@ -33,7 +37,6 @@ type RouteType = {
   title?: string;
   description?: string;
 };
-
 
 // export const authenticationPages: RouteType[] = [
 //   {
@@ -67,31 +70,36 @@ export const authenticationPages: RouteType[] = [
     path: "signin",
     Element: Login,
     title: "Welcome Back",
-    description: "We are glad to have you back.\n Enter your login details to resume your activities.",
+    description:
+      "We are glad to have you back.\n Enter your login details to resume your activities.",
   },
   {
     path: "signup",
     Element: Register,
     title: "Create Account",
-    description: "Want to Explore our AI agents? Create an account and get started",
+    description:
+      "Want to Explore our AI agents? Create an account and get started",
   },
   {
     path: "verify-email",
     Element: VerifyAccount,
     title: "Verify Your Email",
-    description: "We sent a verification link to your email. Please check your inbox to verify your account.",
+    description:
+      "We sent a verification link to your email. Please check your inbox to verify your account.",
   },
   {
     path: "forgot-password",
     Element: ForgotPassword,
     title: "Forgot Password",
-    description: "Enter your email address and we will send you instructions to reset your password.",
+    description:
+      "Enter your email address and we will send you instructions to reset your password.",
   },
   {
     path: "reset-password",
     Element: ResetPassword,
     title: "Reset Password",
-    description: "Set your new password below to regain access to your account.",
+    description:
+      "Set your new password below to regain access to your account.",
   },
   {
     path: "logout",
@@ -99,8 +107,11 @@ export const authenticationPages: RouteType[] = [
     title: "Signing Out",
     description: "We are logging you out of your account. See you again soon!",
   },
+  {
+    path: "2fa",
+    Element: MfaVerification,
+  },
 ];
-
 
 export const privatePages: RouteType[] = [
   {
@@ -155,6 +166,18 @@ export const privatePages: RouteType[] = [
     path: "/profile",
     Element: ProfileTab,
   },
+  {
+    path: "/account/api-keys",
+    Element: ApiKeysTab,
+  },
+  {
+    path: "/account/security",
+    Element: PasswordAndSecurityTab,
+  },
+  {
+    path: "/tools/product-recommender",
+    Element: ProductRecommenderTab,
+  },
 ];
 
 export const privatePagesMap = {
@@ -167,9 +190,12 @@ export const privatePagesMap = {
     "/appointments",
     "/reminder",
     "/payment-tracker",
+    "/tools/product-recommender",
     "/calendars",
     "/templates",
     "/profile",
+    "/account/api-keys",
+    "/account/security",
   ],
   [UserTypes.ADMIN]: [
     "/dashboard",
@@ -194,8 +220,11 @@ export const pathToTabMap: Record<string, DashboardTabsEnum> = {
   "/conversations": DashboardTabsEnum.CONVERSATIONS,
   "/calendars": DashboardTabsEnum.CALENDARS,
   "/reminder": DashboardTabsEnum.REMINDER,
+  "/tools/product-recommender": DashboardTabsEnum.PRODUCT_RECOMMENDER,
   "/templates": DashboardTabsEnum.TEMPLATES,
   "/workspace": DashboardTabsEnum.WORKSPACE,
   "/subscriptions": DashboardTabsEnum.SUBSCRIPTIONS,
   "/profile": DashboardTabsEnum.PROFILE,
+  "/account/api-keys": DashboardTabsEnum.API_KEYS,
+  "/account/security": DashboardTabsEnum.SECURITY,
 };

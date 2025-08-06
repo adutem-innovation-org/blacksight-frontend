@@ -7,3 +7,4 @@ export * from "./RootRedirect";
 export * from "./VerifyAccount";
 export * from "./UserRedirect";
 export * from "./NotFound";
+export * from "./MfaVerification";

@@ -11,3 +11,4 @@ export const DEACTIVATE_API_KEY = "/deactivate";
 // General
 export const REGENERATE_API_KEY = "/regenerate";
 export const ACTIVATE_API_KEY = "/activate";
+export const DELETE_API_KEY = "/delete";

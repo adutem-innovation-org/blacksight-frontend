@@ -153,3 +153,36 @@ export const resetCreateAdminReducer = (state: AuthState) => {
   state.createAdminErrors = {};
   state.createAdminErrorMessage = "";
 };
+
+export const resetEnableMfaMethodReducer = (state: AuthState) => {
+  state.enablingMfaMethod = false;
+  state.mfaMethodEnabled = false;
+  state.enableMfaMethodErrors = {};
+  state.enableMfaMethodErrorMessage = "";
+};
+
+export const resetGetMfaStatusReducer = (state: AuthState) => {
+  state.fetchingMfaStatus = false;
+  state.mfaStatusFetched = false;
+  state.fetchMfaStatusErrorMessage = "";
+};
+
+export const resetSendMfaCodeReducer = (state: AuthState) => {
+  state.sendingMfaCode = false;
+  state.mfaCodeSent = false;
+  state.sendMfaCodeErrors = {};
+  state.sendMfaCodeErrorMessage = "";
+};
+
+export const resetVerifyMfaCodeReducer = (state: AuthState) => {
+  state.verifyingMfaCode = false;
+  state.mfaCodeVerified = false;
+  state.verifyMfaCodeErrors = {};
+  state.verifyMfaCodeErrorMessage = "";
+};
+
+export const resetDisableMfaMethodReducer = (state: AuthState) => {
+  state.disablingMfaMethod = false;
+  state.mfaMethodDisabled = false;
+  state.disableMfaMethodErrorMessage = "";
+};

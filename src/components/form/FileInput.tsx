@@ -2,6 +2,8 @@ import React, { useRef } from "react";
 import { Button } from "./Button";
 import { FileUp, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Badge } from "../badge";
+import { FileTypes } from "@/enums";
 
 type Props = {
   name: string;
@@ -14,6 +16,8 @@ type Props = {
   value?: any;
   removeSelectedFile?: (name: string) => void;
   error?: any;
+  fileTypes?: FileTypes[];
+  maxFileSize?: string | number;
 };
 
 export const FileInput = ({
@@ -27,6 +31,8 @@ export const FileInput = ({
   value,
   removeSelectedFile,
   error,
+  fileTypes,
+  maxFileSize,
 }: Props) => {
   const ref = useRef<any>(null);
 
@@ -72,23 +78,40 @@ export const FileInput = ({
           <Button
             variant={"secondary_gray"}
             className="rounded-full border-none bg-gray-100 w-14 h-14 hover:bg-gray-200 mb-1"
+            type="button"
             onClick={openFileExplorer}
           >
             <i className="fi fi-rr-file-upload flex text-brand text-2xl"></i>
           </Button>
-          <div className="flex items-baseline flex-col sm:flex-row gap-0 sm:gap-1.5">
-            <Button
-              variant={"link"}
-              className="text-brand p-0 hover:no-underline h-auto"
-              onClick={openFileExplorer}
-            >
-              Click to Upload
-            </Button>{" "}
-            <p className="font-sfpro">or drag and drop</p>
+          <div className="flex flex-col items-center">
+            <div className="flex items-baseline flex-col sm:flex-row gap-0 sm:gap-1.5 leading-tight">
+              <Button
+                variant={"link"}
+                className="text-brand p-0 hover:no-underline h-auto leading-tight !text-sm 
+                !font-dmsans tracking-tight !font-medium"
+                type="button"
+                onClick={openFileExplorer}
+              >
+                Click to Upload
+              </Button>{" "}
+              <span className="leading-tight text-sm tracking-tight font-dmsans font-medium">
+                or drag and drop
+              </span>
+            </div>
+
+            {maxFileSize && (
+              <p className="font-dmsans font-medium text-xs mt-0.5 text-gray-500">
+                (Max file size: {maxFileSize}MB)
+              </p>
+            )}
           </div>
-          <p className="font-dmsans font-medium text-sm">
-            (Max File size: 25MB)
-          </p>
+          <div className="flex items-center gap-2">
+            {fileTypes?.map((item: any, index: number) => (
+              <Badge variant={"gray"} size={"sm"}>
+                {item}
+              </Badge>
+            ))}
+          </div>
         </div>
       </div>
       {/* )} */}

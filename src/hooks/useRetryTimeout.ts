@@ -9,6 +9,11 @@ export const useRetryTimeout = () => {
     setSeconds(30);
   }, []);
 
+  const clearRetryTimeout = useCallback(() => {
+    setMinutes(0);
+    setSeconds(0);
+  }, []);
+
   useEffect(() => {
     const interval = setInterval(() => {
       if (seconds > 0) {
@@ -30,5 +35,5 @@ export const useRetryTimeout = () => {
     };
   }, [seconds]);
 
-  return { resetRetryTimeout, seconds, minutes };
+  return { resetRetryTimeout, clearRetryTimeout, seconds, minutes };
 };

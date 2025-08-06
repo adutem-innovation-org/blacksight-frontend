@@ -28,4 +28,10 @@ export const initialKnowledgeBaseState: KnowledgeBaseState = {
   deletingKnowledgeBase: false,
   knowledgeBaseDeleted: false,
   deleteKnowledgeBaseErrorMessage: "",
+
+  // Generate knowledge base
+  generatingKnowledgeBase: false,
+  knowledgeBaseGenerated: false,
+  generateKnowledgeBaseError: "",
+  generatedKB: "",
 };
