@@ -360,8 +360,10 @@ export const Login = () => {
             </Button>
 
             {/* Divider Text */}
-            <p className="text-xs text-gray-500 text-center mt-2">Or Sign in</p>
+              {params.basePath === UserTypes.USER && (
 
+            <p className="text-xs text-gray-500 text-center mt-2">Or Sign in</p>
+              )}
 
             <div className="flex flex-col sm:flex-row gap-3 mt-4 w-full">
               {/* Google Sign In */}
