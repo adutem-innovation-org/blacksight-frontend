@@ -87,7 +87,8 @@ export const MfaVerification = () => {
     },
   });
 
-  const { minutes, seconds, resetRetryTimeout } = useRetryTimeout();
+  const { minutes, seconds, resetRetryTimeout, clearRetryTimeout } =
+    useRetryTimeout();
 
   const sendInitialCode = () => {
     if (!selectedMethod) return;
@@ -130,16 +131,25 @@ export const MfaVerification = () => {
       const methodText =
         selectedMethod === MFAMethods.EMAIL ? "email" : "phone";
       toast.success(`A verification code has been sent to your ${methodText}`);
+      const tmo = setTimeout(() => {
+        dispatch(resetSendMfaCode());
+        clearTimeout(tmo);
+      }, 1400);
     }
   }, [mfaCodeSent, hasAttemptedResend, selectedMethod]);
 
   useEffect(() => {
     if (sendMfaCodeErrorMessage) {
       toast.error(sendMfaCodeErrorMessage);
+      clearRetryTimeout();
+      setHasCodeBeenSent(false);
       const tmo = setTimeout(() => {
         dispatch(resetSendMfaCode());
         clearTimeout(tmo);
       }, 1400);
+      if (sendMfaCodeErrorMessage.toLowerCase().includes("expired")) {
+        redirectToLogin();
+      }
     }
   }, [sendMfaCodeErrorMessage]);
 
@@ -298,6 +308,7 @@ export const MfaVerification = () => {
 
   // Countdown timer
   useEffect(() => {
+    console.log(timeRemaining);
     if (timeRemaining === null) {
       redirectToLogin();
       return;
