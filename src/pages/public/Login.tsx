@@ -328,7 +328,7 @@ export const Login = () => {
 
             {/* Divider Text */}
             <p className="text-xs text-gray-500 text-center mt-2">Or Sign in</p>
-    
+
             <div className="flex flex-col sm:flex-row gap-3 mt-4 w-full">
               {/* Google Sign In */}
               {params.basePath === UserTypes.USER && (
@@ -350,35 +350,40 @@ export const Login = () => {
                 </Button>
               )}
 
+
               {/* Apple Sign In */}
-              <Button
-                className="flex-1 flex items-center justify-center gap-2 border rounded-xl py-3"
-                size="md"
-                type="button"
-                variant="outline"
-              >
-                <img src={appleIcon} className="w-5 h-5" />
-                Sign in Using Apple
-              </Button>
+              {params.basePath === UserTypes.USER && (
+
+                <Button
+                  className="flex-1 flex items-center justify-center gap-2 border rounded-xl py-3"
+                  size="md"
+                  type="button"
+                  variant="outline"
+                >
+                  <img src={appleIcon} className="w-5 h-5" />
+                  Sign in Using Apple
+                </Button>
+              )}
             </div>
-
-
-
           </form>
 
         </div>
         {/* Footer Links */}
-        <div className="flex justify-between w-full mt-6 text-sm">
-          <p className="text-gray-600">
-            Forgotten Password?{" "}
-            <Link to={`/${params.basePath}/forgot-password`} className="text-blue-500 font-medium">
-              Click Here.
+        {params.basePath === UserTypes.USER && (
+
+          <div className="flex justify-between w-full mt-6 text-sm">
+            <p className="text-gray-600">
+              Forgotten Password?{" "}
+              <Link to={`/${params.basePath}/forgot-password`} className="text-blue-500 font-medium">
+                Click Here.
+              </Link>
+            </p>
+            <Link to={`/${params.basePath}/signup`} className="text-blue-500 font-medium">
+              Sign Up
             </Link>
-          </p>
-          <Link to={`/${params.basePath}/signup`} className="text-blue-500 font-medium">
-            Sign Up
-          </Link>
-        </div>
+          </div>
+
+        )}
       </div>
     </React.Fragment>
 
