@@ -398,8 +398,10 @@ export const Register = () => {
            
            
                    {/* Divider Text */}
+              {params.basePath === UserTypes.USER && (
+
             <p className="text-xs text-gray-500 text-center mt-4">Or Sign Up</p>
-    
+              )}
             <div className="flex flex-col sm:flex-row gap-3 mt-4 w-full">
               {params.basePath === UserTypes.USER && (
                 <Button
@@ -426,6 +428,7 @@ export const Register = () => {
 
 
               {/* Apple Sign In */}
+{params.basePath === UserTypes.USER && (
               <Button
                 className="flex-1 flex items-center justify-center gap-2 border rounded-xl py-3"
                 size="md"
@@ -435,12 +438,16 @@ export const Register = () => {
                 <img src={appleIcon} className="w-5 h-5" />
                 Sign Up Using Apple
               </Button>
+
+
+              )}
             </div>
           </form>
 
 
         </div>
         {/* Footer Links */}
+        {params.basePath === UserTypes.USER && (
         <div className="flex justify-between w-full mt-6 text-sm">
           <p className="text-gray-600">
             Already have an account?{" "}
@@ -454,6 +461,7 @@ export const Register = () => {
             </Link>
           </p>
         </div>
+        )}
       </div>
     </React.Fragment>
 
