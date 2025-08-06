@@ -7,6 +7,7 @@ import {
   ConversationsTab,
   KnowledgeBaseTab,
   PasswordAndSecurityTab,
+  ProductRecommenderTab,
   ProfileTab,
   ReminderTab,
   SubscriptionsTab,
@@ -173,6 +174,10 @@ export const privatePages: RouteType[] = [
     path: "/account/security",
     Element: PasswordAndSecurityTab,
   },
+  {
+    path: "/tools/product-recommender",
+    Element: ProductRecommenderTab,
+  },
 ];
 
 export const privatePagesMap = {
@@ -185,6 +190,7 @@ export const privatePagesMap = {
     "/appointments",
     "/reminder",
     "/payment-tracker",
+    "/tools/product-recommender",
     "/calendars",
     "/templates",
     "/profile",
@@ -214,6 +220,7 @@ export const pathToTabMap: Record<string, DashboardTabsEnum> = {
   "/conversations": DashboardTabsEnum.CONVERSATIONS,
   "/calendars": DashboardTabsEnum.CALENDARS,
   "/reminder": DashboardTabsEnum.REMINDER,
+  "/tools/product-recommender": DashboardTabsEnum.PRODUCT_RECOMMENDER,
   "/templates": DashboardTabsEnum.TEMPLATES,
   "/workspace": DashboardTabsEnum.WORKSPACE,
   "/subscriptions": DashboardTabsEnum.SUBSCRIPTIONS,

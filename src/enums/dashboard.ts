@@ -15,6 +15,7 @@ export enum DashboardTabsEnum {
   TEMPLATES = "templates",
   TRACKER = "payment tracker",
   CONVERSATIONS = "conversations",
+  PRODUCT_RECOMMENDER = "product recommendation",
 }
 
 export enum SideBarStateEnum {

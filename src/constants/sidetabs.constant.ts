@@ -165,6 +165,12 @@ export const groupedSideTabs: Record<UserTypes, SidebarGroupType[]> = {
       name: "Tools",
       tabs: [
         {
+          name: "Product Recommender",
+          tabId: DashboardTabsEnum.PRODUCT_RECOMMENDER,
+          iconClass: "fi fi-rr-brain-circuit",
+          path: "/tools/product-recommender",
+        },
+        {
           name: "Reminder",
           tabId: DashboardTabsEnum.REMINDER,
           iconClass: "fi fi-rr-bell-ring",
