@@ -81,7 +81,7 @@ export const ChangePasswordSection = () => {
   return (
     <div className="p-6 py-5 bg-gray-50 rounded-2xl">
       <div className="flex justify-start items-center gap-3">
-        <div className="bg-gray-200 w-12 h-12 rounded-lg flex justify-center items-center">
+        <div className="bg-gray-200 w-12 h-12 rounded-lg justify-center items-center hidden min-[480px]:flex">
           <i className="fi fi-sr-key flex bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent text-2xl"></i>
         </div>
         {/* Left content */}
@@ -100,7 +100,7 @@ export const ChangePasswordSection = () => {
           type="button"
           onClick={openForm}
         >
-          Edit
+          <span className="hidden min-[480px]:inline">Edit</span>
           <Pencil />
         </Button>
       </div>

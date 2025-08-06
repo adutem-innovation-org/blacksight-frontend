@@ -44,7 +44,7 @@ export const MethodCard = ({
           <h2 className="text-xl font-medium tracking-tighter text-gray-600">
             {label}
           </h2>
-          <p className="text-sm text-gray-600 mt-1 max-w-[600px]">
+          <p className="text-sm text-gray-600 mt-1 max-w-[700px] hidden sm:block">
             {description}
           </p>
         </div>
