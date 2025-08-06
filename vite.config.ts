@@ -1,14 +1,18 @@
 import path from "path";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
-import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 import { defineConfig } from "vite";
+import viteCompression from "vite-plugin-compression";
 
 export default defineConfig(({ mode }) => {
   const isWidget = process.env.BUILD_WIDGET === "true";
 
   return {
-    plugins: [react(), tailwindcss(), isWidget && cssInjectedByJsPlugin()].filter(Boolean),
+    plugins: [
+      react(),
+      tailwindcss(),
+      viteCompression({ algorithm: "brotliCompress" }) // compress build
+    ],
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),
@@ -17,7 +21,7 @@ export default defineConfig(({ mode }) => {
     build: isWidget
       ? {
           outDir: "dist/widget",
-          cssCodeSplit: false, // 👈 THIS IS CRITICAL
+          cssCodeSplit: true, // ✅ keep CSS in separate file
           lib: {
             entry: "src/widget/WidgetApp.tsx",
             name: "BlacksightWidget",
@@ -25,10 +29,18 @@ export default defineConfig(({ mode }) => {
             formats: ["iife"],
           },
           rollupOptions: {
+            external: [
+              "react",
+              "react-dom",
+              "@mantine/core",
+              "@mantine/dates"
+            ],
             output: {
               globals: {
                 react: "React",
                 "react-dom": "ReactDOM",
+                "@mantine/core": "mantine.core",
+                "@mantine/dates": "mantine.dates"
               },
               entryFileNames: "blacksight-widget.iife.js",
               chunkFileNames: "assets/[name]-[hash].js",
