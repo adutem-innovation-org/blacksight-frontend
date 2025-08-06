@@ -398,8 +398,10 @@ export const Register = () => {
            
            
                    {/* Divider Text */}
+              {params.basePath === UserTypes.USER && (
+
             <p className="text-xs text-gray-500 text-center mt-4">Or Sign Up</p>
-    
+              )}
             <div className="flex flex-col sm:flex-row gap-3 mt-4 w-full">
               {params.basePath === UserTypes.USER && (
                 <Button
