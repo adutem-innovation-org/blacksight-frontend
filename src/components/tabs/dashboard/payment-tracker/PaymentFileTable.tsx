@@ -24,10 +24,12 @@ import { IPaymentFile } from "@/interfaces";
 
 type PaymentFilesTableProps = {
   triggerDeletePaymentFile: (data: IPaymentFile) => void;
+  openUploadForm: () => void;
 };
 
 export const PaymentFilesTable = ({
   triggerDeletePaymentFile,
+  openUploadForm,
 }: PaymentFilesTableProps) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -73,6 +75,7 @@ export const PaymentFilesTable = ({
           onChange={(event: any) =>
             table.getColumn("tag")?.setFilterValue(event.target.value)
           }
+          openUploadForm={openUploadForm}
         />
       </div>
 

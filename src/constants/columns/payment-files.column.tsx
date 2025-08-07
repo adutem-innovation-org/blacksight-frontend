@@ -149,6 +149,9 @@ export const paymentFilesTableColumns: ColumnDef<IPaymentFile>[] = [
                     loading: "Downloading...",
                     success: "Download successful.🎉",
                     error: "Download failed.🥹",
+                  },
+                  {
+                    duration: 5000,
                   }
                 );
               },

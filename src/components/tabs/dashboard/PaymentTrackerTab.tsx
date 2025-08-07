@@ -68,6 +68,7 @@ export const PaymentTrackerTab = () => {
             {paymentFiles && paymentFiles.length > 0 && (
               <PaymentFilesTable
                 triggerDeletePaymentFile={triggerDeletePaymentFile}
+                openUploadForm={openUploadForm}
               />
             )}
           </div>
