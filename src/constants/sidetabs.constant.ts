@@ -52,9 +52,9 @@ export const sideTabs: Record<UserTypes, SideTabType[]> = {
     },
     {
       name: "Payment Tracker",
-      tabId: DashboardTabsEnum.TRACKER,
+      tabId: DashboardTabsEnum.PAYMENT_TRACKER,
       iconClass: "fi fi-rr-credit-card",
-      path: "/payment-tracker",
+      path: "/tools/payment-tracker",
     },
     {
       name: "Calenders",
@@ -178,9 +178,9 @@ export const groupedSideTabs: Record<UserTypes, SidebarGroupType[]> = {
         },
         {
           name: "Payment Tracker",
-          tabId: DashboardTabsEnum.TRACKER,
+          tabId: DashboardTabsEnum.PAYMENT_TRACKER,
           iconClass: "fi fi-rr-credit-card",
-          path: "/payment-tracker",
+          path: "/tools/payment-tracker",
         },
       ],
     },
