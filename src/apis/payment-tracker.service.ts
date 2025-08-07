@@ -1,4 +1,5 @@
 import {
+  DeletePaymentFileRes,
   GetAllPaymentFilesRes,
   UploadPaymentFileBody,
   UploadPaymentFileRes,
@@ -33,6 +34,12 @@ export class PaymentTrackerApiService {
   getAllPaymentFiles = () => {
     return this.apiService.get<GetAllPaymentFilesRes>(
       this.urls.GET_ALL_PAYMENT_FILES
+    );
+  };
+
+  deletePaymentFile = (id: string) => {
+    return this.apiService.delete<DeletePaymentFileRes>(
+      `${this.urls.DELETE_PAYMENT_FILE}/${id}`
     );
   };
 }
