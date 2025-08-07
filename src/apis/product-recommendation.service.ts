@@ -33,6 +33,6 @@ export class ProductRecommendationApiService {
     return this.apiService.postWithFile<
       AddProductsSourceBody,
       AddProductsSourceRes
-    >(this.urls.ADD_PRODUCTS_SOURCE, data);
+    >(this.urls.ADD_PRODUCTS_SOURCE, data, { timeout: 100000 });
   };
 }
