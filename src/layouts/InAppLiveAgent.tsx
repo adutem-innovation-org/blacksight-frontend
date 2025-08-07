@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { ArrowDown } from "lucide-react";
 import { useState } from "react";
+import chatLottie from "@/assets/lotties/Chat.json";
 
 export const InAppLiveAgent = () => {
   const [isOpen, setIsOpen] = useState(false);
