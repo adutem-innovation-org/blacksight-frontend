@@ -1,4 +1,4 @@
-import { productSourceData, productSourceTableColumns } from "@/constants";
+import { productSourceTableColumns } from "@/constants";
 import {
   ColumnFiltersState,
   flexRender,
@@ -19,15 +19,24 @@ import {
   Table,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
+import { useStore } from "@/hooks";
+import { IProductsSource } from "@/interfaces";
 
-type ProductSourceTableProps = {};
+type ProductSourceTableProps = {
+  triggerDeleteProductsSource: (data: IProductsSource) => void;
+};
 
-export const ProductSourceTable = () => {
+export const ProductSourceTable = ({
+  triggerDeleteProductsSource,
+}: ProductSourceTableProps) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const { getState } = useStore();
+  const { productsSources } = getState("ProductRecommendation");
 
   const table = useReactTable({
-    data: productSourceData,
+    data: productsSources || [],
+    meta: { triggerDeleteProductsSource },
     columns: productSourceTableColumns,
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,

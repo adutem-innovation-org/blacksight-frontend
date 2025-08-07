@@ -8,6 +8,7 @@ export * from "./notification";
 export * from "./knowledge-base";
 export * from "./auth";
 export * from "./template";
+export * from "./product-recommendation";
 
 export enum FileTypes {
   PDF = "pdf",
@@ -27,4 +28,12 @@ export enum FileTypes {
   AVI = "avi",
   MOV = "mov",
   MKV = "mkv",
+
+  ZIP = "zip",
+  RAR = "rar",
+  TAR = "tar",
+
+  CSV = "csv",
+  XLSX = "xlsx",
+  XLS = "xls",
 }

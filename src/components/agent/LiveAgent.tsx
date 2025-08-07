@@ -23,6 +23,7 @@ import { getOrCreateSessionId } from "@/helpers";
 import { VoiceChatRecorder } from "../media";
 import toast from "react-hot-toast";
 import { AppointmentForm, EscalationForm } from "./forms";
+import chatLottie from "@/assets/lotties/Chat.json";
 
 const AgentHeader = ({ agentName }: { agentName: string }) => {
   return (
@@ -538,7 +539,7 @@ const AgentInitState = ({
           transition={{ duration: 0.6, delay: 0.2 }}
           className="w-50 h-50"
         >
-          <DotLottieReact src={"./lotties/Chat.lottie"} loop autoplay />
+          <DotLottieReact data={chatLottie} loop autoplay />
         </motion.div>
 
         {/* Typing Text */}
@@ -589,7 +590,7 @@ const AgentConnectionError = ({
             transition={{ duration: 0.5, delay: 0.2 }}
             className="w-10 h-10 rounded-full border gap-2"
           >
-            <DotLottieReact src={"./lotties/Chat.lottie"} loop autoplay />
+            <DotLottieReact data={chatLottie} loop autoplay />
           </motion.div>
 
           {/* Slide from Left + Fade */}

@@ -1,6 +1,6 @@
 import { KnowledgeBaseSources } from "@/enums";
 
-export type IProductSource = {
+export type IProductsSource = {
   _id: string;
   source:
     | KnowledgeBaseSources.API
@@ -10,11 +10,15 @@ export type IProductSource = {
   createdBy: {
     email: string;
   };
+  documentId: string;
+  businessId: string;
+  chunks: string[];
+  createdAt: Date;
   updatedAt: Date;
   metaData: {
     name?: string;
     size?: string;
     url?: string;
-    updateInterval?: "Daily" | "Weekly" | "Monthly";
+    updateInterval?: "Daily" | "Weekly" | "Monthly" | "Never";
   };
 };

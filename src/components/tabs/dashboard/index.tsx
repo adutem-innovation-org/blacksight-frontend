@@ -99,3 +99,4 @@ export * from "./TemplatesTab";
 export * from "./ApiKeysTab";
 export * from "./SecurityTab";
 export * from "./ProductRecommenderTab";
+export * from "./PaymentTrackerTab";

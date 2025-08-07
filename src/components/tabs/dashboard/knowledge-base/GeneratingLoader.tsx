@@ -2,6 +2,7 @@ import { Loader } from "@/components/progress";
 import { motion } from "framer-motion";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { Typewriter } from "react-simple-typewriter";
+import aiLoading from "@/assets/lotties/AI_loading.json";
 
 export const GeneratingLoader = () => {
   return (
@@ -15,11 +16,7 @@ export const GeneratingLoader = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="w-40 h-40"
             >
-              <DotLottieReact
-                src={"./lotties/AI_loading.lottie"}
-                loop
-                autoplay
-              />
+              <DotLottieReact data={aiLoading} loop autoplay />
             </motion.div>
           </>
         }

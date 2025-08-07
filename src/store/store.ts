@@ -9,6 +9,7 @@ import {
   knowledgeBaseReducer,
   layoutReducer,
   meetingProviderReducer,
+  productRecommendationReducer,
   reminderReducer,
   templateReducer,
 } from "./slices";
@@ -26,6 +27,7 @@ export const store = configureStore({
     Appointment: appointmentReducer,
     Template: templateReducer,
     Agent: agentReducer,
+    ProductRecommendation: productRecommendationReducer,
   },
 });
 

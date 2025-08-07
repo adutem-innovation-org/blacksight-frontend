@@ -21,13 +21,10 @@ import {
   resetAddKnowledgeBase,
   resetGenerateKnowledgeBase,
 } from "@/store";
-import { Divider } from "@mantine/core";
 import { useFormik } from "formik";
 import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
-import { Typewriter } from "react-simple-typewriter";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { GeneratingLoader } from "./GeneratingLoader";
 import { AiPromptForm } from "./AiPrompForm";
 import { DefaultKBForm } from "./DefaultKBForm";

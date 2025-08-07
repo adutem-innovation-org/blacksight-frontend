@@ -7,3 +7,4 @@ export * from "./accounts.schema";
 export * from "./workspace.schema";
 export * from "./calendar.schema";
 export * from "./template.schema";
+export * from "./products-source.schema";

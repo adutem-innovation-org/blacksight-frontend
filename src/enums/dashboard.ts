@@ -13,7 +13,7 @@ export enum DashboardTabsEnum {
   ACTIVITIES = "activities",
   CALENDARS = "calendars",
   TEMPLATES = "templates",
-  TRACKER = "payment tracker",
+  PAYMENT_TRACKER = "payment tracker",
   CONVERSATIONS = "conversations",
   PRODUCT_RECOMMENDER = "product recommendation",
 }

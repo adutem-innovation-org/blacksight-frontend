@@ -9,6 +9,7 @@ import { CalendarState } from "../calendar";
 import { ReminderState } from "../reminder";
 import { TemplateState } from "../template";
 import { AgentState } from "../agent";
+import { ProductRecommendationState } from "../product-recommendation";
 
 export type StoreState = {
   Auth: AuthState;
@@ -22,4 +23,5 @@ export type StoreState = {
   Calendar: CalendarState;
   Template: TemplateState;
   Agent: AgentState;
+  ProductRecommendation: ProductRecommendationState;
 };

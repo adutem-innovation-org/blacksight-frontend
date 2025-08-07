@@ -3,6 +3,8 @@ import { Drawer } from "vaul";
 import { motion } from "framer-motion";
 import { useStore } from "@/hooks";
 import { resetBookAppointment, resetScheduleAppointment } from "@/store";
+import errorLottie from "@/assets/lotties/Error.json";
+import successLottie from "@/assets/lotties/success.json";
 
 export const SuccessComponent = ({ text }: { text: string }) => {
   return (
@@ -18,7 +20,7 @@ export const SuccessComponent = ({ text }: { text: string }) => {
         transition={{ duration: 0.6, delay: 0.2 }}
         className="w-50 h-50"
       >
-        <DotLottieReact src={"./lotties/success.lottie"} autoplay />
+        <DotLottieReact data={successLottie} autoplay />
       </motion.div>
       <motion.p
         initial={{ opacity: 0, y: 40 }}
@@ -46,7 +48,7 @@ const ErrorComponent = ({ error }: { error: string }) => {
         transition={{ duration: 0.6, delay: 0.2 }}
         className="w-40 h-40"
       >
-        <DotLottieReact src={"./lotties/Error.lottie"} autoplay />
+        <DotLottieReact data={errorLottie} autoplay />
       </motion.div>
       <motion.p
         initial={{ opacity: 0, y: 40 }}

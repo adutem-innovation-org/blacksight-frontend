@@ -9,3 +9,4 @@ export * from "./appointment.slice";
 export * from "./api-key.slice";
 export * from "./template.slice";
 export * from "./agent.slice";
+export * from "./product-recommendation.slice";
