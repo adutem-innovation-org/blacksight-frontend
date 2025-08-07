@@ -39,8 +39,8 @@ export default defineConfig(({ mode }) => {
           external: [
             "react",
             "react-dom",
-            "@mantine/core",
-            "@mantine/dates",
+            // "@mantine/core",
+            // "@mantine/dates",
             "react-hot-toast",
             "react-redux",
             "redux",
@@ -49,8 +49,8 @@ export default defineConfig(({ mode }) => {
             globals: {
               react: "React",
               "react-dom": "ReactDOM",
-              "@mantine/core": "mantine.core",
-              "@mantine/dates": "mantine.dates",
+              // "@mantine/core": "mantine.core",
+              // "@mantine/dates": "mantine.dates",
               "react-hot-toast": "ReactHotToast",
               "react-redux": "ReactRedux",
               redux: "Redux",
