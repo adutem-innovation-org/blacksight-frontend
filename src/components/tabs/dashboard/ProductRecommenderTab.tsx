@@ -108,9 +108,20 @@ export const ProductRecommenderTab = () => {
           <div className="w-full max-w-6xl mt-4 md:mt-8 flex flex-col gap-6">
             <ProductRecommenderTabHeader />
             <UploadProductsWidget openForm={openCreateForm} />
-            <ProductSourceTable
-              triggerDeleteProductsSource={triggerDeleteProductsSource}
-            />
+            {productsSources && productsSources.length === 0 && (
+              <div className="min-h-25 flex flex-col items-center justify-center text-center text-sm text-gray-600 bg-white mt-5 italic font-medium gap-1 p-4 py-6">
+                <p>No products sources found.</p>
+                <p>
+                  Start by creating a products source (i.e. a products
+                  database), using any of the options above.
+                </p>
+              </div>
+            )}
+            {productsSources && productsSources.length > 0 && (
+              <ProductSourceTable
+                triggerDeleteProductsSource={triggerDeleteProductsSource}
+              />
+            )}
           </div>
 
           <AddProductsForm

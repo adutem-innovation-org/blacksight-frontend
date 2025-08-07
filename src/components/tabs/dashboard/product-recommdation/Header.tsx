@@ -1,3 +1,5 @@
+import { HowItWorks } from "./HowItWorks";
+
 export const ProductRecommenderTabHeader = () => {
   return (
     <header>
@@ -9,6 +11,7 @@ export const ProductRecommenderTabHeader = () => {
           Manage your uploaded product data files — including plans, packages,
           and subscriptions — used to power personalized recommendations.
         </p>
+        <HowItWorks />
       </div>
     </header>
   );
