@@ -94,6 +94,27 @@ const WidgetApp = () => {
 export default WidgetApp;
 
 // Auto-mount
+// if (typeof window !== "undefined") {
+//   const ROOT_ID = "blacksight-widget-root";
+
+//   if (!document.getElementById(ROOT_ID)) {
+//     const host = document.createElement("div");
+//     host.id = ROOT_ID;
+//     document.body.appendChild(host);
+
+//     // Attach shadow root
+//     const shadowRoot = host.attachShadow({ mode: "open" });
+
+//     // Create a wrapper inside shadow root
+//     const shadowWrapper = document.createElement("div");
+//     shadowRoot.appendChild(shadowWrapper);
+
+//     // Mount into shadow wrapper
+//     const root = createRoot(shadowWrapper);
+//     root.render(<WidgetApp />);
+//   }
+// }
+
 if (typeof window !== "undefined") {
   const ROOT_ID = "blacksight-widget-root";
 
@@ -102,19 +123,27 @@ if (typeof window !== "undefined") {
     host.id = ROOT_ID;
     document.body.appendChild(host);
 
-    // Attach shadow root
+    // 1️⃣ Inject Tailwind CSS link into document head if not already added
+    const TAILWIND_CDN = "https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css";
+    if (!document.querySelector(`link[href="${TAILWIND_CDN}"]`)) {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = TAILWIND_CDN;
+      document.head.appendChild(link);
+    }
+
+    // 2️⃣ Attach Shadow Root
     const shadowRoot = host.attachShadow({ mode: "open" });
 
-    // Create a wrapper inside shadow root
-    const shadowWrapper = document.createElement("div");
-    shadowRoot.appendChild(shadowWrapper);
+    // 3️⃣ Create wrapper inside shadow DOM
+    const wrapper = document.createElement("div");
+    shadowRoot.appendChild(wrapper);
 
-    // Mount into shadow wrapper
-    const root = createRoot(shadowWrapper);
+    // 4️⃣ Mount React app inside shadow DOM
+    const root = createRoot(wrapper);
     root.render(<WidgetApp />);
   }
 }
-
 
 
 
