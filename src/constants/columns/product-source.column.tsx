@@ -1,5 +1,5 @@
 import { KnowledgeBaseSources } from "@/enums";
-import { IProductSource } from "@/interfaces";
+import { IProductsSource } from "@/interfaces";
 import { cn } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { DropdownComp, writeTextToClipboard } from "@/components";
@@ -12,7 +12,7 @@ const sourceIcon: { [key: string]: string } = {
   [KnowledgeBaseSources.TEXT_INPUT]: "fi fi-rr-text",
 };
 
-const getDescription = (data: IProductSource) => {
+const getDescription = (data: IProductsSource) => {
   switch (data.source) {
     case KnowledgeBaseSources.FILE:
       return data.metaData?.size;
@@ -23,7 +23,7 @@ const getDescription = (data: IProductSource) => {
   }
 };
 
-export const productSourceTableColumns: ColumnDef<IProductSource>[] = [
+export const productSourceTableColumns: ColumnDef<IProductsSource>[] = [
   {
     accessorKey: "tag",
     header: "Name",
@@ -83,7 +83,11 @@ export const productSourceTableColumns: ColumnDef<IProductSource>[] = [
   {
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => {
+    cell: ({ row, table }) => {
+      const meta = table.options.meta as {
+        triggerDeleteProductsSource: (data: IProductsSource) => void;
+      };
+
       return (
         <DropdownComp
           data={[
@@ -99,7 +103,7 @@ export const productSourceTableColumns: ColumnDef<IProductSource>[] = [
             {
               placeholder: "Delete source",
               onClick: () => {
-                console.log(row.original._id);
+                meta.triggerDeleteProductsSource(row.original);
               },
               Icon: Trash,
             },
