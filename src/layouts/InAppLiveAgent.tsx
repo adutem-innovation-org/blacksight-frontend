@@ -44,7 +44,7 @@ export const InAppLiveAgent = () => {
           <div className="flex items-center self-start gap-3">
             {/* Scale + Fade Lottie */}
             <div className="w-10 h-10 rounded-full border gap-2">
-              <DotLottieReact src={"./lotties/Chat.lottie"} loop autoplay />
+              <DotLottieReact data={chatLottie} loop autoplay />
             </div>
 
             {/* Slide from Left + Fade */}
