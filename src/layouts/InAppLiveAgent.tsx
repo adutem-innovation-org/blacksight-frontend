@@ -23,12 +23,11 @@ export const InAppLiveAgent = () => {
     <div className="fixed z-[100000] bottom-[20px] right-[5%] sm:right-[20px] h-max w-[90%] min-w-[250px] max-w-[450px] flex flex-col gap-2 items-end">
       {isOpen && (
         <LiveAgent
-          apiKey="065a802cdcb8f993f9e3cf34cd04fa25636b61189b54f13c53ea91c177a0eeb8"
-          agentId="684702278a6bccca8c1c9606"
+          // apiKey="065a802cdcb8f993f9e3cf34cd04fa25636b61189b54f13c53ea91c177a0eeb8"
+          // agentId="684702278a6bccca8c1c9606"
           // Prod
-          // apiKey="f5cfa4777f1a6f229fca1d720bdd98101ae7c9c67b40bc3f2f92fbe60d16b1a0"
-          // agentId="agent_123"
-          // agentId="688c0f5c405c0145f9506062"
+          apiKey="f5cfa4777f1a6f229fca1?d720bdd98101ae7c9c67b40bc3f2f92fbe60d16b1a0"
+          agentId="688c0f5c405c0145f9506062"
           shouldDisplayFixed={false}
         />
       )}
