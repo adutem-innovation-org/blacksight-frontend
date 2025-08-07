@@ -62,13 +62,15 @@ export const PaymentFilesTable = ({
         return "hidden md:table-cell"; // Hidden on mobile, visible from 692px+
       case "actions":
         return ""; // Always visible
+      case "totalRecords":
+        return "hidden sm:table-cell";
       default:
         return "";
     }
   };
 
   return (
-    <div className="grid grid-rows-[80px_max-content]">
+    <div className="grid grid-rows-auto sm:grid-rows-[80px_max-content] gap-4">
       <div>
         <SearchSection
           value={(table.getColumn("tag")?.getFilterValue() as string) ?? ""}
