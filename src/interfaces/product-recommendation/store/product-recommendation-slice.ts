@@ -1,11 +1,12 @@
 import { PaginationMetaData } from "@/interfaces/pagination";
-import { IProductSource } from "./product-source";
+import { IProductsSource } from "./product-source";
+import { boolean } from "yup";
 
 export interface ProductRecommendationState {
   fetchingProductsSources: boolean;
   productsSourcesFetched: boolean;
   fetchProductsSourcesError: string;
-  productsSources: IProductSource[] | null;
+  productsSources: IProductsSource[] | null;
   meta: PaginationMetaData | null;
 
   // Add products sources
@@ -13,4 +14,9 @@ export interface ProductRecommendationState {
   productsSourceAdded: boolean;
   addProductsSourceErrors: Record<string, string>;
   addProductsSourceErrorMessage: string;
+
+  // Delete products source
+  deletingProductsSource: boolean;
+  productsSourceDeleted: boolean;
+  deleteProductsSourceError: string;
 }

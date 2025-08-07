@@ -1,6 +1,6 @@
 import { KnowledgeBaseSources } from "@/enums";
 
-export type IProductSource = {
+export type IProductsSource = {
   _id: string;
   source:
     | KnowledgeBaseSources.API

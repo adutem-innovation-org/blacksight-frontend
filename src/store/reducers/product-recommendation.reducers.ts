@@ -16,3 +16,11 @@ export const resetAddProductsSourceReducer = (
   state.addProductsSourceErrors = {};
   state.addProductsSourceErrorMessage = "";
 };
+
+export const resetDeleteProductsSourceReducer = (
+  state: ProductRecommendationState
+) => {
+  state.deletingProductsSource = false;
+  state.productsSourceDeleted = false;
+  state.deleteProductsSourceError = "";
+};

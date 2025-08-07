@@ -12,4 +12,9 @@ export const initialProductRecommendationState: ProductRecommendationState = {
   productsSourceAdded: false,
   addProductsSourceErrors: {},
   addProductsSourceErrorMessage: "",
+
+  // Delete products source
+  deletingProductsSource: false,
+  productsSourceDeleted: false,
+  deleteProductsSourceError: "",
 };

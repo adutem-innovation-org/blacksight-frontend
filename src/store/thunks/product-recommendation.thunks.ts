@@ -2,7 +2,7 @@ import { ProductRecommendationApiService } from "@/apis";
 import {
   AddProductsSourceBody,
   GetProductsSourcesRes,
-  IProductSource,
+  IProductsSource,
 } from "@/interfaces";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
@@ -34,5 +34,18 @@ export const addProductsSource = createAsyncThunk<
     return;
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error);
+  }
+});
+
+export const deleteProductsSource = createAsyncThunk<
+  void,
+  string,
+  { rejectValue: string }
+>("delete_products_source", async (id, { rejectWithValue }) => {
+  try {
+    await productRecommendationApiService.deleteProductsSource(id);
+    return;
+  } catch (error: any) {
+    return rejectWithValue(error.message as string);
   }
 });
