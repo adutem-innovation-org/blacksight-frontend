@@ -19,6 +19,7 @@ import toast from "react-hot-toast";
 import { IProductsSource } from "@/interfaces";
 import { resetDocumentElement } from "@/helpers";
 import { ConfirmationDialog } from "@/components/popups";
+import { InfoBlock } from "@/components/InfoBlock";
 
 export const ProductRecommenderTab = () => {
   // Upload product source
@@ -109,13 +110,18 @@ export const ProductRecommenderTab = () => {
             <ProductRecommenderTabHeader />
             <UploadProductsWidget openForm={openCreateForm} />
             {productsSources && productsSources.length === 0 && (
-              <div className="min-h-25 flex flex-col items-center justify-center text-center text-sm text-gray-600 bg-white mt-5 italic font-medium gap-1 p-4 py-6">
-                <p>No products sources found.</p>
+              <InfoBlock
+                className="min-h-25 flex flex-col items-center justify-center text-center text-sm mt-5 font-medium gap-1 p-4 py-6"
+                variant={"neutral"}
+              >
+                <p className="text-base font-medium tracking-tight">
+                  No products sources found.
+                </p>
                 <p>
                   Start by creating a products source (i.e. a products
                   database), using any of the options above.
                 </p>
-              </div>
+              </InfoBlock>
             )}
             {productsSources && productsSources.length > 0 && (
               <ProductSourceTable
