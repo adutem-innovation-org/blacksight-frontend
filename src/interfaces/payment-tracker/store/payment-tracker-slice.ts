@@ -12,4 +12,8 @@ export interface PaymentTrackerState {
   paymentFileUploaded: boolean;
   uploadPaymentFileErrorMsg: string;
   uploadPaymentFileErrors: Record<string, string>;
+
+  deletingPaymentFile: boolean;
+  paymentFileDeleted: boolean;
+  deletePaymentFileError: string;
 }

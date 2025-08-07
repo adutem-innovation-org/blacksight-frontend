@@ -33,3 +33,16 @@ export const getAllPaymentFiles = createAsyncThunk<
     return rejectWithValue(error);
   }
 });
+
+export const deletePaymentFile = createAsyncThunk<
+  void,
+  string,
+  { rejectValue: string }
+>("delete_payment_file", async (id, { rejectWithValue }) => {
+  try {
+    await paymentTrackerApiService.deletePaymentFile(id);
+    return;
+  } catch (error: any) {
+    return rejectWithValue(error?.message);
+  }
+});

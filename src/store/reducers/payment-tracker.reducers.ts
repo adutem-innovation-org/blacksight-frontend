@@ -12,3 +12,9 @@ export const resetUploadPaymentFileReducer = (state: PaymentTrackerState) => {
   state.uploadPaymentFileErrorMsg = "";
   state.uploadPaymentFileErrors = {};
 };
+
+export const resetDeletePaymentFileReducer = (state: PaymentTrackerState) => {
+  state.deletingPaymentFile = false;
+  state.paymentFileDeleted = false;
+  state.deletePaymentFileError = "";
+};

@@ -12,4 +12,9 @@ export const initialPaymentTrackerState: PaymentTrackerState = {
   paymentFileUploaded: false,
   uploadPaymentFileErrorMsg: "",
   uploadPaymentFileErrors: {},
+
+  // Delete payment file
+  deletingPaymentFile: false,
+  paymentFileDeleted: false,
+  deletePaymentFileError: "",
 };
