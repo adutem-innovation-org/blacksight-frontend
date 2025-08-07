@@ -10,6 +10,7 @@ import { ReminderState } from "../reminder";
 import { TemplateState } from "../template";
 import { AgentState } from "../agent";
 import { ProductRecommendationState } from "../product-recommendation";
+import { PaymentTrackerState } from "../payment-tracker";
 
 export type StoreState = {
   Auth: AuthState;
@@ -24,4 +25,5 @@ export type StoreState = {
   Template: TemplateState;
   Agent: AgentState;
   ProductRecommendation: ProductRecommendationState;
+  PaymentTracker: PaymentTrackerState;
 };
