@@ -35,4 +35,8 @@ export class ProductRecommendationApiService {
       AddProductsSourceRes
     >(this.urls.ADD_PRODUCTS_SOURCE, data, { timeout: 100000 });
   };
+
+  deleteProductsSource = (id: string) => {
+    return this.apiService.delete(`${this.urls.DELETE_PRODUCTS_SOURCE}/${id}`);
+  };
 }
