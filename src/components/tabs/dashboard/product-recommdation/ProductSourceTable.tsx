@@ -19,15 +19,18 @@ import {
   Table,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
+import { useStore } from "@/hooks";
 
 type ProductSourceTableProps = {};
 
 export const ProductSourceTable = () => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const { getState } = useStore();
+  const { productsSources } = getState("ProductRecommendation");
 
   const table = useReactTable({
-    data: productSourceData,
+    data: productsSources || [],
     columns: productSourceTableColumns,
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
