@@ -4,5 +4,5 @@ import { IProductSource } from "../store";
 export type AddProductsSourceBody = FormData;
 
 export interface AddProductsSourceRes extends ApiSuccessResponse {
-  source: IProductSource;
+  productsSource: IProductSource;
 }

@@ -9,3 +9,4 @@ export * from "./appointmentSlice.state";
 export * from "./apikeySlice.state";
 export * from "./templateSlice.state";
 export * from "./agentSlice.state";
+export * from "./product-recommendationSlice";
