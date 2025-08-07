@@ -90,7 +90,7 @@ export const productSourceTableColumns: ColumnDef<IProductSource>[] = [
             {
               placeholder: "Copy source ID",
               onClick: () => {
-                writeTextToClipboard(row.getValue("id")).then(() => {
+                writeTextToClipboard(row.getValue("_id")).then(() => {
                   toast.success("Copied to clipboard");
                 });
               },
