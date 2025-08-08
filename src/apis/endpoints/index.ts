@@ -9,3 +9,4 @@ export * as API_KEY_URLS from "./api-key";
 export * as TEMPLATE_URLS from "./template";
 export * as AGENT_URLS from "./agent";
 export * as RECOMMENDATION_URLS from "./product-recommendation";
+export * as PAYMENT_TRACKER_URLS from "./payment-tracker";

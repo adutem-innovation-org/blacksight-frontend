@@ -8,7 +8,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { botImages } from "@/constants";
 import { BotTabsEnum } from "@/enums";
-import { getRandomArrayItem, isAdmin, isSuperAdmin, isUser } from "@/helpers";
+import {
+  getRandomArrayItem,
+  isAdmin,
+  isSuperAdmin,
+  isUser,
+  writeTextToClipboard,
+} from "@/helpers";
 import { useProfile } from "@/hooks";
 import { Bot } from "@/interfaces";
 import { cn } from "@/lib/utils";
@@ -30,6 +36,7 @@ type ActionsProps = {
   onViewConfiguration: () => void;
   onDelete: () => void;
   onClone: () => void;
+  onCopy: () => void;
   setActiveStatus: (status: boolean) => void;
   isActive: boolean;
 };
@@ -39,6 +46,7 @@ const Actions = ({
   onViewConfiguration,
   onDelete,
   onClone,
+  onCopy,
   setActiveStatus,
   isActive,
 }: ActionsProps) => {
@@ -53,6 +61,14 @@ const Actions = ({
         className="px-2 py-2.5 rounded-lg border-none min-w-50 bg-white z-1000 shadow-[0px_4px_16px_0px_#0000001f]"
         align="end"
       >
+        <CustomDropdownItem
+          placeholder="Copy agent ID"
+          childrenPosition="behind"
+          className={"py-2"}
+          onClick={onCopy}
+        >
+          <Cog />
+        </CustomDropdownItem>
         {user && isUser(user) && (
           <CustomDropdownItem
             placeholder="Edit Configuration"
@@ -143,6 +159,14 @@ export const BotCard = ({
 
   const onClone = () => onCloneBot(bot);
 
+  const onCopy = () => {
+    writeTextToClipboard(bot._id)
+      .then(() => {
+        toast.success("Copied to clipboard.");
+      })
+      .catch(() => toast.error("Unable to copy"));
+  };
+
   const onSetActiveStatus = (status: boolean) => setActiveStatus(bot, status);
 
   return (
@@ -159,6 +183,7 @@ export const BotCard = ({
               onViewConfiguration={onViewConfiguration}
               onDelete={onDelete}
               onClone={onClone}
+              onCopy={onCopy}
               setActiveStatus={onSetActiveStatus}
               isActive={bot.isActive}
             />

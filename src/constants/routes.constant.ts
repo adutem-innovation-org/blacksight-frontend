@@ -7,6 +7,7 @@ import {
   ConversationsTab,
   KnowledgeBaseTab,
   PasswordAndSecurityTab,
+  PaymentFileBCPsTab,
   PaymentTrackerTab,
   ProductRecommenderTab,
   ProfileTab,
@@ -183,6 +184,10 @@ export const privatePages: RouteType[] = [
     path: "/tools/payment-tracker",
     Element: PaymentTrackerTab,
   },
+  {
+    path: "/tools/payment-tracker/bcps",
+    Element: PaymentFileBCPsTab,
+  },
 ];
 
 export const privatePagesMap = {
@@ -195,6 +200,7 @@ export const privatePagesMap = {
     "/appointments",
     "/reminder",
     "/tools/payment-tracker",
+    "/tools/payment-tracker/bcps",
     "/tools/product-recommender",
     "/calendars",
     "/templates",
@@ -226,6 +232,7 @@ export const pathToTabMap: Record<string, DashboardTabsEnum> = {
   "/calendars": DashboardTabsEnum.CALENDARS,
   "/reminder": DashboardTabsEnum.REMINDER,
   "/tools/payment-tracker": DashboardTabsEnum.PAYMENT_TRACKER,
+  "/tools/payment-tracker/bcps": DashboardTabsEnum.PAYMENT_TRACKER_BCPS,
   "/tools/product-recommender": DashboardTabsEnum.PRODUCT_RECOMMENDER,
   "/templates": DashboardTabsEnum.TEMPLATES,
   "/workspace": DashboardTabsEnum.WORKSPACE,

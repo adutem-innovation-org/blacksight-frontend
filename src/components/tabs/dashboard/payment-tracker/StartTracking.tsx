@@ -3,7 +3,11 @@ import pulse from "@/assets/lotties/AI_loading.json";
 import { Button } from "@/components/form";
 import { ChartNoAxesCombined } from "lucide-react";
 
-export const StartTracking = () => {
+export const StartTracking = ({
+  startTracking,
+}: {
+  startTracking: () => void;
+}) => {
   return (
     <div className="flex-1 w-full flex flex-col pt-16 sm:pt-12 items-center overflow-hidden">
       <DotLottieReact
@@ -17,6 +21,7 @@ export const StartTracking = () => {
  px-8 h-12 bg-gradient-to-r from-[#028CF3] to-[#3BCEAC]
 "
         size={"sm"}
+        onClick={startTracking}
       >
         Start tracking
         <ChartNoAxesCombined />

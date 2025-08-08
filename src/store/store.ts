@@ -9,6 +9,7 @@ import {
   knowledgeBaseReducer,
   layoutReducer,
   meetingProviderReducer,
+  paymentTrackedReducer,
   productRecommendationReducer,
   reminderReducer,
   templateReducer,
@@ -28,6 +29,7 @@ export const store = configureStore({
     Template: templateReducer,
     Agent: agentReducer,
     ProductRecommendation: productRecommendationReducer,
+    PaymentTracker: paymentTrackedReducer,
   },
 });
 

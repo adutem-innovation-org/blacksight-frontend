@@ -10,3 +10,4 @@ export * from "./apikey.reducers";
 export * from "./template.reducers";
 export * from "./agent.reducers";
 export * from "./product-recommendation.reducers";
+export * from "./payment-tracker.reducers";

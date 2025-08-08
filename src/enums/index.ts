@@ -9,6 +9,7 @@ export * from "./knowledge-base";
 export * from "./auth";
 export * from "./template";
 export * from "./product-recommendation";
+export * from "./payment-tracker";
 
 export enum FileTypes {
   PDF = "pdf",
