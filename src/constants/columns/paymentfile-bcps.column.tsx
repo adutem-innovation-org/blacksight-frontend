@@ -94,7 +94,7 @@ export const bcpsTableColumns: ColumnDef<IBCP>[] = [
     enableHiding: false,
     cell: ({ row, table }) => {
       const meta = table.options.meta as {
-        triggerDeletePaymentFile: (data: IBCP) => void;
+        triggerDeleteBCP: (data: IBCP) => void;
         openFileBCPs: (data: IBCP) => void;
       };
       return (
@@ -133,7 +133,7 @@ export const bcpsTableColumns: ColumnDef<IBCP>[] = [
             {
               placeholder: "Delete record",
               onClick: () => {
-                toast.success("Coming soon.🙌😃");
+                meta.triggerDeleteBCP(row.original);
               },
               Icon: Trash,
             },

@@ -36,9 +36,11 @@ const globalFilterFn = (row: Row<IBCP>, columnId: string, value: string) => {
   });
 };
 
-type BCPsTableProps = {};
+type BCPsTableProps = {
+  triggerDeleteBCP: (data: IBCP) => void;
+};
 
-export const BCPsTable = () => {
+export const BCPsTable = ({ triggerDeleteBCP }: BCPsTableProps) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
@@ -48,7 +50,9 @@ export const BCPsTable = () => {
 
   const table = useReactTable({
     data: BCPs || [],
-    meta: {},
+    meta: {
+      triggerDeleteBCP,
+    },
     columns: bcpsTableColumns,
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
