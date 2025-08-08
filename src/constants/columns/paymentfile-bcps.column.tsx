@@ -1,15 +1,12 @@
 import { IBCP } from "@/interfaces";
 import { ColumnDef } from "@tanstack/react-table";
-import { DropdownComp, writeTextToClipboard } from "@/components";
-import toast from "react-hot-toast";
 import {
-  BellRing,
-  Copy,
-  Download,
-  FolderOpen,
-  Pencil,
-  Trash,
-} from "lucide-react";
+  ClipBoardClock,
+  DropdownComp,
+  writeTextToClipboard,
+} from "@/components";
+import toast from "react-hot-toast";
+import { BellRing, Copy, Pencil, Trash } from "lucide-react";
 
 export const bcpsTableColumns: ColumnDef<IBCP>[] = [
   {
@@ -113,11 +110,18 @@ export const bcpsTableColumns: ColumnDef<IBCP>[] = [
               Icon: Copy,
             },
             {
-              placeholder: "Create reminder",
+              placeholder: "Instant reminder",
               onClick: () => {
                 toast.success("Coming soon.🙌😃");
               },
               Icon: BellRing,
+            },
+            {
+              placeholder: "Schedule reminder",
+              onClick: () => {
+                toast.success("Coming soon.🙌😃");
+              },
+              Icon: ClipBoardClock as any,
             },
             {
               placeholder: "Update record",
