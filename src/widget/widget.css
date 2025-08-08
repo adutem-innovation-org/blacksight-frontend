@@ -1,4 +1,8 @@
-/* Basic styles for the chatbot widget */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Any custom widget styles */
 #blacksight-widget-root {
   font-family: "Inter", Arial, sans-serif;
 }
