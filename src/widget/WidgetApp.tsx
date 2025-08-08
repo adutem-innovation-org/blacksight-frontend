@@ -94,36 +94,25 @@ const WidgetApp = () => {
 export default WidgetApp;
 
 // Auto-mount
-// if (typeof window !== "undefined") {
-//   const ROOT_ID = "blacksight-widget-root";
-
-//   if (!document.getElementById(ROOT_ID)) {
-//     const host = document.createElement("div");
-//     host.id = ROOT_ID;
-//     document.body.appendChild(host);
-
-//     // Attach shadow root
-//     const shadowRoot = host.attachShadow({ mode: "open" });
-
-//     // Create a wrapper inside shadow root
-//     const shadowWrapper = document.createElement("div");
-//     shadowRoot.appendChild(shadowWrapper);
-
-//     // Mount into shadow wrapper
-//     const root = createRoot(shadowWrapper);
-//     root.render(<WidgetApp />);
-//   }
-// }
-
 if (typeof window !== "undefined") {
-  const ROOT_ID = "blacksight-widget-root";
+  // --- PATCH: Prevent Fast Refresh from running in Shadow DOM ---
+  if (
+    process.env.NODE_ENV !== "production" &&
+    (window as any).RefreshRuntime &&
+    typeof (window as any).RefreshRuntime.injectIntoGlobalHook !== "function"
+  ) {
+    // Remove the runtime to prevent the error
+    delete (window as any).RefreshRuntime;
+  }
+  // -------------------------------------------------------------
 
+  const ROOT_ID = "blacksight-widget-root";
   if (!document.getElementById(ROOT_ID)) {
     const host = document.createElement("div");
     host.id = ROOT_ID;
     document.body.appendChild(host);
 
-    // 1️⃣ Inject Tailwind CSS link into document head if not already added
+    // Inject Tailwind CSS link (optional, for both envs)
     const TAILWIND_CDN = "https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css";
     if (!document.querySelector(`link[href="${TAILWIND_CDN}"]`)) {
       const link = document.createElement("link");
@@ -132,89 +121,17 @@ if (typeof window !== "undefined") {
       document.head.appendChild(link);
     }
 
-    // 2️⃣ Attach Shadow Root
-    const shadowRoot = host.attachShadow({ mode: "open" });
-
-    // 3️⃣ Create wrapper inside shadow DOM
-    const wrapper = document.createElement("div");
-    shadowRoot.appendChild(wrapper);
-
-    // 4️⃣ Mount React app inside shadow DOM
-    const root = createRoot(wrapper);
-    root.render(<WidgetApp />);
+    if (process.env.NODE_ENV === "production") {
+      // Attach Shadow Root in production
+      const shadowRoot = host.attachShadow({ mode: "open" });
+      const wrapper = document.createElement("div");
+      shadowRoot.appendChild(wrapper);
+      const root = createRoot(wrapper);
+      root.render(<WidgetApp />);
+    } else {
+      // Mount directly in development (no Shadow DOM)
+      const root = createRoot(host);
+      root.render(<WidgetApp />);
+    }
   }
 }
-
-
-
-// // src/widget/WidgetApp.tsx
-// import { MantineProvider } from "@mantine/core";
-// import React, { useState, useEffect, Suspense } from "react";
-// import { createRoot } from "react-dom/client";
-
-// // Load icon via static URL, not import
-// const BOT_ICON_URL = "https://blacksight.co/widget/assets/botIcon.png";
-
-// // Lazy load chat (ensure LiveAgent handles all heavy lifting internally)
-// const LiveAgent = React.lazy(() =>
-//   import("@/components/agent/LiveAgent").then((mod) => ({
-//     default: mod.LiveAgent,
-//   }))
-// );
-
-// const getWidgetAttributes = () => {
-//   const script = document.querySelector("script[data-api-key][data-agent-id]");
-//   return {
-//     apiKey: script?.getAttribute("data-api-key") || "",
-//     agentId: script?.getAttribute("data-agent-id") || "",
-//   };
-// };
-
-// const WidgetApp = () => {
-//   const [open, setOpen] = useState(false);
-
-//   return (
-//     <MantineProvider>
-//     <div className="fixed bottom-5 right-5 z-[9999]">
-//       {!open && (
-//         <button
-//           onClick={() => setOpen(true)}
-//           className="rounded-full w-14 h-14 bg-indigo-500 text-white border-none shadow-md flex items-center justify-center"
-//         >
-//           <img src={BOT_ICON_URL} alt="Open Chat" className="max-h-10" />
-//         </button>
-//       )}
-//       {open && (
-//         <div className="w-[400px] h-[600px] bg-white rounded-2xl shadow-2xl overflow-hidden relative">
-//           <button
-//             className="absolute top-2 right-2 text-2xl bg-transparent border-none z-10"
-//             onClick={() => setOpen(false)}
-//           >
-//             ×
-//           </button>
-//           <Suspense fallback={<div className="p-4">Loading chat...</div>}>
-//             <LiveAgent
-//               apiKey={getWidgetAttributes().apiKey}
-//               agentId={getWidgetAttributes().agentId}
-//               shouldDisplayFixed={false}
-//             />
-//           </Suspense>
-//         </div>
-//       )}
-//     </div>
-//     </MantineProvider>
-//   );
-// };
-
-// // Auto-mount
-// if (typeof window !== "undefined") {
-//   const rootId = "blacksight-widget-root";
-//   if (!document.getElementById(rootId)) {
-//     const rootDiv = document.createElement("div");
-//     rootDiv.id = rootId;
-//     document.body.appendChild(rootDiv);
-//     createRoot(rootDiv).render(<WidgetApp />);
-//   }
-// }
-
-// export default WidgetApp;
