@@ -4,6 +4,7 @@ import {
   UploadPaymentFileBody,
   UploadPaymentFileRes,
   GetPaymentFileBCPsRes,
+  DeleteBCPRes,
 } from "@/interfaces";
 import { ApiService } from "./api.service";
 import { PAYMENT_TRACKER_URLS } from "./endpoints";
@@ -47,6 +48,12 @@ export class PaymentTrackerApiService {
   getPaymentFileBCPs = (fileId: string) => {
     return this.apiService.get<GetPaymentFileBCPsRes>(
       `${this.urls.GET_PAYMENT_FILE_BCPS.replace(":fileId", fileId)}`
+    );
+  };
+
+  deleteBCP = (id: string) => {
+    return this.apiService.delete<DeleteBCPRes>(
+      `${this.urls.DELETE_BCP}/${id}`
     );
   };
 }
