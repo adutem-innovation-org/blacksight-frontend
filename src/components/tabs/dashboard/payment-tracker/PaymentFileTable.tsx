@@ -103,10 +103,10 @@ export const PaymentFilesTable = ({
                     <TableHead
                       key={header.id}
                       className={cn(
-                        "p-4 hover:bg-gray-200 text-base font-dmsans font-medium tracking-tight",
+                        "py-4 px-2 hover:bg-gray-200 text-base font-dmsans font-medium tracking-tight",
                         getColumnClasses(header.id),
                         {
-                          "!p-0":
+                          "!py-0":
                             header.column.getCanFilter() ||
                             header.column.getCanSort(),
                           "hover:bg-transparent": header.id === "actions",
