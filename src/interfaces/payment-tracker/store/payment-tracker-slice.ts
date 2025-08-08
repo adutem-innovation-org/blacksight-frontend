@@ -1,5 +1,6 @@
 import { PaginationMetaData } from "@/interfaces/pagination";
 import { IPaymentFile } from "./payment-file";
+import { IBCP } from "./bcp";
 
 export interface PaymentTrackerState {
   fetchingPaymentFiles: boolean;
@@ -16,4 +17,10 @@ export interface PaymentTrackerState {
   deletingPaymentFile: boolean;
   paymentFileDeleted: boolean;
   deletePaymentFileError: string;
+
+  fetchingBCPs: boolean;
+  bcpsFetched: boolean;
+  fetchBCPsError: string;
+  BCPs: IBCP[] | null;
+  BCPsMeta: PaginationMetaData | null;
 }

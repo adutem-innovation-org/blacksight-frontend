@@ -17,4 +17,11 @@ export const initialPaymentTrackerState: PaymentTrackerState = {
   deletingPaymentFile: false,
   paymentFileDeleted: false,
   deletePaymentFileError: "",
+
+  // Fetch BCPs
+  fetchingBCPs: false,
+  bcpsFetched: false,
+  fetchBCPsError: "",
+  BCPs: null,
+  BCPsMeta: null,
 };

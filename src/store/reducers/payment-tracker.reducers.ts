@@ -18,3 +18,14 @@ export const resetDeletePaymentFileReducer = (state: PaymentTrackerState) => {
   state.paymentFileDeleted = false;
   state.deletePaymentFileError = "";
 };
+
+export const resetGetPaymentFileBCPsReducer = (state: PaymentTrackerState) => {
+  state.fetchingBCPs = false;
+  state.bcpsFetched = false;
+  state.fetchBCPsError = "";
+};
+
+export const clearBCPsReducer = (state: PaymentTrackerState) => {
+  state.BCPs = null;
+  state.BCPsMeta = null;
+};

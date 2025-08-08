@@ -1,6 +1,7 @@
 import { PaymentTrackerApiService } from "@/apis";
 import {
   GetAllPaymentFilesRes,
+  GetPaymentFileBCPsRes,
   UploadPaymentFileBody,
   UploadPaymentFileRes,
 } from "@/interfaces";
@@ -42,6 +43,18 @@ export const deletePaymentFile = createAsyncThunk<
   try {
     await paymentTrackerApiService.deletePaymentFile(id);
     return;
+  } catch (error: any) {
+    return rejectWithValue(error?.message);
+  }
+});
+
+export const getPaymentFileBCPs = createAsyncThunk<
+  GetPaymentFileBCPsRes,
+  string,
+  { rejectValue: string }
+>("get_payment_file_bcps", async (fileId, { rejectWithValue }) => {
+  try {
+    return await paymentTrackerApiService.getPaymentFileBCPs(fileId);
   } catch (error: any) {
     return rejectWithValue(error?.message);
   }
