@@ -95,7 +95,7 @@ export const bcpsTableColumns: ColumnDef<IBCP>[] = [
     cell: ({ row, table }) => {
       const meta = table.options.meta as {
         triggerDeleteBCP: (data: IBCP) => void;
-        openFileBCPs: (data: IBCP) => void;
+        openUpdateForm: (data: IBCP) => void;
       };
       return (
         <DropdownComp
@@ -126,7 +126,7 @@ export const bcpsTableColumns: ColumnDef<IBCP>[] = [
             {
               placeholder: "Update record",
               onClick: () => {
-                toast.success("Coming soon.🙌😃");
+                meta.openUpdateForm(row.original);
               },
               Icon: Pencil,
             },

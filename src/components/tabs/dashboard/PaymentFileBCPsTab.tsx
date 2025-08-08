@@ -14,7 +14,7 @@ import { BCPTabBreadCrumb, PaymentBCPsHeader } from "./payment-bcp";
 import { InfoBlock } from "@/components/InfoBlock";
 import { Button } from "@/components/form";
 import { RefreshCcw } from "lucide-react";
-import { BCPsTable } from "./payment-tracker";
+import { BCPsTable, UpdateBCPForm } from "./payment-tracker";
 import toast from "react-hot-toast";
 import { IBCP } from "@/interfaces";
 import { resetDocumentElement } from "@/helpers";
@@ -34,6 +34,20 @@ export const PaymentFileBCPsTab = () => {
     bcpDeleted,
     deleteBCPError,
   } = getState("PaymentTracker");
+  const [updateFormOpen, setUpdateFormOpen] = useState(false);
+  const [bcpToUpdate, setBCPToUpdate] = useState<IBCP | null>(null);
+
+  const openUpdateForm = (data: IBCP) => {
+    setUpdateFormOpen(true);
+    setBCPToUpdate(data);
+  };
+
+  const onOpenChange = (val: boolean) => {
+    setUpdateFormOpen(val);
+    setBCPToUpdate(null);
+    // Reset pointer event on page ✅ Radix bug
+    resetDocumentElement();
+  };
 
   // Delete payment file
   const [deleteModalOpen, setDeleteModalOpen] = useState(() => false);
@@ -134,7 +148,10 @@ export const PaymentFileBCPsTab = () => {
             )}
 
             {!fetchBCPsError && BCPs && (
-              <BCPsTable triggerDeleteBCP={triggerDeleteBCP} />
+              <BCPsTable
+                triggerDeleteBCP={triggerDeleteBCP}
+                openUpdateForm={openUpdateForm}
+              />
             )}
 
             <ConfirmationDialog
@@ -145,6 +162,12 @@ export const PaymentFileBCPsTab = () => {
               loading={deletingBCP}
               confirmCtaText="Delete"
               description="This action cannot be undone. This will permanently delete this customer's record."
+            />
+
+            <UpdateBCPForm
+              isOpen={updateFormOpen}
+              onOpenChange={onOpenChange}
+              bcpToUpdate={bcpToUpdate}
             />
           </div>
         </div>
