@@ -105,7 +105,7 @@ export const PaymentTrackerTab = () => {
         <div className="flex-1 flex flex-col overflow-auto items-center h-full">
           <div
             className={cn(
-              "w-full max-w-6xl mt-4 md:mt-8 flex flex-col gap-6 flex-1"
+              "w-full max-w-[1440px] mt-4 md:mt-8 flex flex-col gap-6 flex-1"
             )}
           >
             <PaymentTrackerTabHeader />
