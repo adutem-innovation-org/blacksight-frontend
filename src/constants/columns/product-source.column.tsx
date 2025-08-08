@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { DropdownComp, writeTextToClipboard } from "@/components";
 import toast from "react-hot-toast";
-import { Copy, Trash } from "lucide-react";
+import { Copy, Trash, Unplug } from "lucide-react";
 
 const sourceIcon: { [key: string]: string } = {
   [KnowledgeBaseSources.API]: "fi fi-rr-plug-connection",
@@ -99,6 +99,13 @@ export const productSourceTableColumns: ColumnDef<IProductsSource>[] = [
                 });
               },
               Icon: Copy,
+            },
+            {
+              placeholder: "Attach to Agent",
+              onClick: () => {
+                toast.success("Coming soon.🙌😃");
+              },
+              Icon: Unplug,
             },
             {
               placeholder: "Delete source",
