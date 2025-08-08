@@ -7,6 +7,8 @@ import botIcon from "@/assets/images/botIcon.png";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 import { MantineProvider } from "@mantine/core";
+// @ts-ignore
+import widgetCss from "./widget.css?raw"; // Use the built/purged CSS
 
 // Lazy load LiveAgent so it’s only loaded when needed
 const LiveAgent = React.lazy(() =>
@@ -95,43 +97,18 @@ export default WidgetApp;
 
 // Auto-mount
 if (typeof window !== "undefined") {
-  // --- PATCH: Prevent Fast Refresh from running in Shadow DOM ---
-  if (
-    process.env.NODE_ENV !== "production" &&
-    (window as any).RefreshRuntime &&
-    typeof (window as any).RefreshRuntime.injectIntoGlobalHook !== "function"
-  ) {
-    // Remove the runtime to prevent the error
-    delete (window as any).RefreshRuntime;
-  }
-  // -------------------------------------------------------------
-
   const ROOT_ID = "blacksight-widget-root";
   if (!document.getElementById(ROOT_ID)) {
     const host = document.createElement("div");
     host.id = ROOT_ID;
     document.body.appendChild(host);
 
-    // Inject Tailwind CSS link (optional, for both envs)
-    const TAILWIND_CDN = "https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css";
-    if (!document.querySelector(`link[href="${TAILWIND_CDN}"]`)) {
-      const link = document.createElement("link");
-      link.rel = "stylesheet";
-      link.href = TAILWIND_CDN;
-      document.head.appendChild(link);
-    }
+    // Inject widget CSS
+    const style = document.createElement("style");
+    style.textContent = widgetCss;
+    document.head.appendChild(style);
 
-    if (process.env.NODE_ENV === "production") {
-      // Attach Shadow Root in production
-      const shadowRoot = host.attachShadow({ mode: "open" });
-      const wrapper = document.createElement("div");
-      shadowRoot.appendChild(wrapper);
-      const root = createRoot(wrapper);
-      root.render(<WidgetApp />);
-    } else {
-      // Mount directly in development (no Shadow DOM)
-      const root = createRoot(host);
-      root.render(<WidgetApp />);
-    }
+    const root = createRoot(host);
+    root.render(<WidgetApp />);
   }
 }
