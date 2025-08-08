@@ -80,7 +80,7 @@ export const paymentFilesTableColumns: ColumnDef<IPaymentFile>[] = [
   {
     id: "totalRecords",
     accessorFn: (row) => row.metaData?.recordCount,
-    header: "Total Records",
+    header: "Total uploads",
     enableSorting: false,
     enableHiding: false,
     cell: ({ row }) => (
