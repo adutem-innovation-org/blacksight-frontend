@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { clearBCPs, getPaymentFileBCPs } from "@/store";
 import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { PaymentBCPsHeader } from "./payment-bcp";
+import { BCPTabBreadCrumb, PaymentBCPsHeader } from "./payment-bcp";
 import { InfoBlock } from "@/components/InfoBlock";
 import { Button } from "@/components/form";
 import { RefreshCcw } from "lucide-react";
@@ -45,9 +45,10 @@ export const PaymentFileBCPsTab = () => {
         <div className="flex-1 flex flex-col overflow-auto items-center h-full no-scrollbar">
           <div
             className={cn(
-              "w-full max-w-[1680px] mt-4 md:mt-8 flex flex-col gap-6 flex-1 no-scrollbar"
+              "w-full max-w-[1680px] mt-4 md:mt-6 flex flex-col gap-6 flex-1 no-scrollbar"
             )}
           >
+            <BCPTabBreadCrumb />
             <PaymentBCPsHeader />
             {fetchBCPsError && (
               <div className="mt-6 flex flex-col gap-4">
