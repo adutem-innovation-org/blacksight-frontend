@@ -24,4 +24,9 @@ export const initialPaymentTrackerState: PaymentTrackerState = {
   fetchBCPsError: "",
   BCPs: null,
   BCPsMeta: null,
+
+  // Delete BCP
+  deletingBCP: false,
+  bcpDeleted: false,
+  deleteBCPError: "",
 };

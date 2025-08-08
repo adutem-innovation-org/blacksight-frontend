@@ -29,3 +29,9 @@ export const clearBCPsReducer = (state: PaymentTrackerState) => {
   state.BCPs = null;
   state.BCPsMeta = null;
 };
+
+export const resetDeleteBCPReducer = (state: PaymentTrackerState) => {
+  state.deletingBCP = false;
+  state.bcpDeleted = false;
+  state.deleteBCPError = "";
+};

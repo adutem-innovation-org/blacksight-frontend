@@ -7,6 +7,7 @@ import {
   resetUploadPaymentFileReducer,
 } from "../reducers";
 import {
+  deleteBCPBuilder,
   deletePaymentFileBuilder,
   getAllPaymentFilesBuilder,
   getPaymentFileBCPsBuilder,
@@ -24,12 +25,14 @@ const paymentTrackerSlice = createSlice({
     resetDeletePaymentFile: resetDeletePaymentFileReducer,
     resetGetPaymentFileBCPs: resetGetPaymentFileBCPsReducer,
     clearBCPs: clearBCPsReducer,
+    resetDeleteBCP: resetDeletePaymentFileReducer,
   },
   extraReducers: (builder) => {
     getAllPaymentFilesBuilder(builder);
     uploadPaymentFileBuilder(builder);
     deletePaymentFileBuilder(builder);
     getPaymentFileBCPsBuilder(builder);
+    deleteBCPBuilder(builder);
   },
 });
 
@@ -40,4 +43,5 @@ export const {
   resetDeletePaymentFile,
   resetGetPaymentFileBCPs,
   clearBCPs,
+  resetDeleteBCP,
 } = paymentTrackerSlice.actions;

@@ -23,4 +23,8 @@ export interface PaymentTrackerState {
   fetchBCPsError: string;
   BCPs: IBCP[] | null;
   BCPsMeta: PaginationMetaData | null;
+
+  deletingBCP: boolean;
+  bcpDeleted: boolean;
+  deleteBCPError: string;
 }
