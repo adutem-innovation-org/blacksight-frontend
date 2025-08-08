@@ -27,4 +27,9 @@ export interface PaymentTrackerState {
   deletingBCP: boolean;
   bcpDeleted: boolean;
   deleteBCPError: string;
+
+  updatingBCP: boolean;
+  bcpUpdated: boolean;
+  updateBCPErrors: Record<string, string>;
+  updateBCPErrorMsg: string;
 }

@@ -35,3 +35,10 @@ export const resetDeleteBCPReducer = (state: PaymentTrackerState) => {
   state.bcpDeleted = false;
   state.deleteBCPError = "";
 };
+
+export const resetUpdateBCPReducer = (state: PaymentTrackerState) => {
+  state.updatingBCP = false;
+  state.bcpUpdated = false;
+  state.updateBCPErrorMsg = "";
+  state.updateBCPErrors = {};
+};

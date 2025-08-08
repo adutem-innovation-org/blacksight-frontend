@@ -3,6 +3,8 @@ import {
   GetAllPaymentFilesRes,
   GetPaymentFileBCPsRes,
   IBCP,
+  UpdateBCPBody,
+  UpdateBCPRes,
   UploadPaymentFileBody,
   UploadPaymentFileRes,
 } from "@/interfaces";
@@ -71,5 +73,18 @@ export const deleteBCP = createAsyncThunk<
     return res.bcp;
   } catch (error: any) {
     return rejectWithValue(error?.message);
+  }
+});
+
+export const updateBCP = createAsyncThunk<
+  IBCP,
+  { id: string; data: UpdateBCPBody },
+  { rejectValue: { message: string; errors: Record<string, string> | null } }
+>("update_bcp", async ({ id, data }, { rejectWithValue }) => {
+  try {
+    const res = await paymentTrackerApiService.updateBCP(id, data);
+    return res.bcp;
+  } catch (error: any) {
+    return rejectWithValue(error);
   }
 });

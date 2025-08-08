@@ -4,6 +4,7 @@ import {
   resetDeletePaymentFileReducer,
   resetGetAllPaymentFilesReducer,
   resetGetPaymentFileBCPsReducer,
+  resetUpdateBCPReducer,
   resetUploadPaymentFileReducer,
 } from "../reducers";
 import {
@@ -11,10 +12,10 @@ import {
   deletePaymentFileBuilder,
   getAllPaymentFilesBuilder,
   getPaymentFileBCPsBuilder,
+  updateBCPBuilder,
   uploadPaymentFileBuilder,
 } from "../builders";
 import { createSlice } from "@reduxjs/toolkit";
-import { deletePaymentFile } from "../thunks";
 
 const paymentTrackerSlice = createSlice({
   name: "PaymentTracker",
@@ -26,6 +27,7 @@ const paymentTrackerSlice = createSlice({
     resetGetPaymentFileBCPs: resetGetPaymentFileBCPsReducer,
     clearBCPs: clearBCPsReducer,
     resetDeleteBCP: resetDeletePaymentFileReducer,
+    resetUpdateBCP: resetUpdateBCPReducer,
   },
   extraReducers: (builder) => {
     getAllPaymentFilesBuilder(builder);
@@ -33,6 +35,7 @@ const paymentTrackerSlice = createSlice({
     deletePaymentFileBuilder(builder);
     getPaymentFileBCPsBuilder(builder);
     deleteBCPBuilder(builder);
+    updateBCPBuilder(builder);
   },
 });
 
@@ -44,4 +47,5 @@ export const {
   resetGetPaymentFileBCPs,
   clearBCPs,
   resetDeleteBCP,
+  resetUpdateBCP,
 } = paymentTrackerSlice.actions;

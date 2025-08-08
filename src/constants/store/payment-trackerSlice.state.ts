@@ -29,4 +29,10 @@ export const initialPaymentTrackerState: PaymentTrackerState = {
   deletingBCP: false,
   bcpDeleted: false,
   deleteBCPError: "",
+
+  // Update BCP
+  updatingBCP: false,
+  bcpUpdated: false,
+  updateBCPErrorMsg: "",
+  updateBCPErrors: {},
 };
