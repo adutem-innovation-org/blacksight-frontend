@@ -3,7 +3,30 @@ import { cn } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { DropdownComp, writeTextToClipboard } from "@/components";
 import toast from "react-hot-toast";
-import { Copy, Download, FolderOpen, Trash } from "lucide-react";
+import { BellRing, Copy, Download, FolderOpen, Trash } from "lucide-react";
+
+const ClipBoardClock = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="lucide lucide-clipboard-clock-icon lucide-clipboard-clock"
+    >
+      <path d="M16 14v2.2l1.6 1" />
+      <path d="M16 4h2a2 2 0 0 1 2 2v.832" />
+      <path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h2" />
+      <circle cx="16" cy="16" r="6" />
+      <rect x="8" y="2" width="8" height="4" rx="1" />
+    </svg>
+  );
+};
 
 const handleDownload = async (fileUrl: string, originalName: string) => {
   if (!fileUrl) return;
@@ -137,6 +160,20 @@ export const paymentFilesTableColumns: ColumnDef<IPaymentFile>[] = [
                 meta.openFileBCPs(row.original);
               },
               Icon: FolderOpen,
+            },
+            {
+              placeholder: "Instant reminder",
+              onClick: () => {
+                toast.success("Coming soon.🙌😃");
+              },
+              Icon: BellRing,
+            },
+            {
+              placeholder: "Schedule reminder",
+              onClick: () => {
+                toast.success("Coming soon.🙌😃");
+              },
+              Icon: ClipBoardClock as any,
             },
             {
               placeholder: "Download file",
