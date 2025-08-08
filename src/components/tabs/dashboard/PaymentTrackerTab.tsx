@@ -11,6 +11,7 @@ import { Loader } from "@/components/progress";
 import {
   deletePaymentFile,
   getAllPaymentFiles,
+  getPaymentFileBCPs,
   resetDeletePaymentFile,
 } from "@/store";
 import { IPaymentFile } from "@/interfaces";
@@ -18,10 +19,12 @@ import { resetDocumentElement } from "@/helpers";
 import toast from "react-hot-toast";
 import { ConfirmationDialog } from "@/components/popups";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
 export const PaymentTrackerTab = () => {
   const [uploadFormOpen, setUploadFormOpen] = React.useState(false);
   const { dispatch, getState } = useStore();
+  const navigate = useNavigate();
   const {
     fetchingPaymentFiles,
     paymentFiles,
@@ -61,6 +64,13 @@ export const PaymentTrackerTab = () => {
     }
   };
 
+  // BCPs
+  const openFileBCPs = (data: IPaymentFile) => {
+    return navigate(`/tools/payment-tracker/bcps`, {
+      state: { paymentFileId: data._id },
+    });
+  };
+
   useEffect(() => {
     if (!paymentFiles && !fetchingPaymentFiles) {
       dispatch(getAllPaymentFiles());
@@ -70,7 +80,7 @@ export const PaymentTrackerTab = () => {
   // Delete Products source effects
   useEffect(() => {
     if (paymentFileDeleted) {
-      toast.success("Products source deleted.");
+      toast.success("File deleted.");
       // Get all payment files
       dispatch(getAllPaymentFiles());
       // Reset store state
@@ -106,6 +116,7 @@ export const PaymentTrackerTab = () => {
               <PaymentFilesTable
                 triggerDeletePaymentFile={triggerDeletePaymentFile}
                 openUploadForm={openUploadForm}
+                openFileBCPs={openFileBCPs}
               />
             )}
           </div>

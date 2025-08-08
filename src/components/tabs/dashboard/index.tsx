@@ -100,3 +100,4 @@ export * from "./ApiKeysTab";
 export * from "./SecurityTab";
 export * from "./ProductRecommenderTab";
 export * from "./PaymentTrackerTab";
+export * from "./PaymentFileBCPsTab";
