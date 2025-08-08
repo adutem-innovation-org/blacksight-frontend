@@ -21,24 +21,27 @@ import {
 import { cn } from "@/lib/utils";
 import { useStore } from "@/hooks";
 import { IPaymentFile } from "@/interfaces";
+import { Loader } from "@/components/progress";
 
 type PaymentFilesTableProps = {
   triggerDeletePaymentFile: (data: IPaymentFile) => void;
   openUploadForm: () => void;
+  openFileBCPs: (data: IPaymentFile) => void;
 };
 
 export const PaymentFilesTable = ({
   triggerDeletePaymentFile,
   openUploadForm,
+  openFileBCPs,
 }: PaymentFilesTableProps) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const { getState } = useStore();
-  const { paymentFiles } = getState("PaymentTracker");
+  const { paymentFiles, fetchingBCPs } = getState("PaymentTracker");
 
   const table = useReactTable({
     data: paymentFiles || [],
-    meta: { triggerDeletePaymentFile },
+    meta: { triggerDeletePaymentFile, openFileBCPs },
     columns: paymentFilesTableColumns,
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
@@ -70,7 +73,12 @@ export const PaymentFilesTable = ({
   };
 
   return (
-    <div className="grid grid-rows-auto sm:grid-rows-[80px_max-content] gap-4">
+    <div
+      className={cn(
+        "grid grid-rows-auto sm:grid-rows-[80px_max-content] gap-4 relative"
+      )}
+    >
+      {fetchingBCPs && <Loader className="bg-gray-100" />}
       <div>
         <SearchSection
           value={(table.getColumn("tag")?.getFilterValue() as string) ?? ""}

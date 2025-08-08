@@ -117,6 +117,7 @@ export const paymentFilesTableColumns: ColumnDef<IPaymentFile>[] = [
     cell: ({ row, table }) => {
       const meta = table.options.meta as {
         triggerDeletePaymentFile: (data: IPaymentFile) => void;
+        openFileBCPs: (data: IPaymentFile) => void;
       };
       return (
         <DropdownComp
@@ -133,7 +134,7 @@ export const paymentFilesTableColumns: ColumnDef<IPaymentFile>[] = [
             {
               placeholder: "Open file",
               onClick: () => {
-                toast.success("Coming soon.🙌😃");
+                meta.openFileBCPs(row.original);
               },
               Icon: FolderOpen,
             },
@@ -158,7 +159,7 @@ export const paymentFilesTableColumns: ColumnDef<IPaymentFile>[] = [
               Icon: Download,
             },
             {
-              placeholder: "Delete source",
+              placeholder: "Delete file",
               onClick: () => {
                 meta.triggerDeletePaymentFile(row.original);
               },
