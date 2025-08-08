@@ -21,7 +21,14 @@ export const InAppLiveAgent = () => {
     isOpen ? closeLiveAgent() : openLiveAgent();
   };
   return (
-    <div className="fixed z-[100000] bottom-[20px] right-[5%] sm:right-[20px] h-max w-[90%] min-w-[250px] max-w-[450px] flex flex-col gap-2 items-end">
+    <div
+      className={cn(
+        "fixed z-[100000] bottom-[20px] right-[5%] sm:right-[20px] h-max w-[90%] min-w-[250px] max-w-[450px] flex flex-col gap-2 items-end",
+        {
+          "!max-w-max": !isOpen,
+        }
+      )}
+    >
       {isOpen && (
         <LiveAgent
           // apiKey="065a802cdcb8f993f9e3cf34cd04fa25636b61189b54f13c53ea91c177a0eeb8"
