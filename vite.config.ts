@@ -98,16 +98,16 @@ export default defineConfig(({ mode }) => {
           },
         }
       : {
-          outDir: "dist",
-          rollupOptions: {
-            output: {
-              chunkFileNames: "assets/[name]-[hash].js",
-              assetFileNames: "assets/[name]-[hash][extname]",
-            },
+        outDir: "dist",
+        rollupOptions: {
+          output: {
+            chunkFileNames: "assets/[name]-[hash].js",
+            assetFileNames: "assets/[name]-[hash][extname]",
           },
         },
-    define: {
-      "process.env": {},
-    },
+      },
+    define: isWidget
+      ? { "process.env.NODE_ENV": '"production"' }
+      : { "process.env.NODE_ENV": '"development"' },
   };
 });
