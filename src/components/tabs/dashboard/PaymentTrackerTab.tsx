@@ -1,6 +1,7 @@
 import { DashboardContent } from "@/components/design";
 import React, { useEffect, useState } from "react";
 import {
+  InstantFileReminderForm,
   PaymentFilesTable,
   PaymentTrackerTabHeader,
   StartTracking,
@@ -23,6 +24,8 @@ import { useNavigate } from "react-router-dom";
 
 export const PaymentTrackerTab = () => {
   const [uploadFormOpen, setUploadFormOpen] = React.useState(false);
+  const [instantReminderFormOpen, setInstantReminderFormOpen] = useState(false);
+  const [currentFile, setCurrentFile] = useState<IPaymentFile | null>(null);
   const { dispatch, getState } = useStore();
   const navigate = useNavigate();
   const {
@@ -36,6 +39,16 @@ export const PaymentTrackerTab = () => {
   } = getState("PaymentTracker");
 
   const openUploadForm = () => setUploadFormOpen(true);
+  const openInstantReminderForm = (data: IPaymentFile) => {
+    setCurrentFile(data);
+    setInstantReminderFormOpen(true);
+  };
+
+  const closeInstantReminderForm = (val: boolean) => {
+    setInstantReminderFormOpen(val);
+    setCurrentFile(null);
+    resetDocumentElement();
+  };
 
   // Delete payment file
   const [deleteModalOpen, setDeleteModalOpen] = useState(() => false);
@@ -117,6 +130,7 @@ export const PaymentTrackerTab = () => {
                 triggerDeletePaymentFile={triggerDeletePaymentFile}
                 openUploadForm={openUploadForm}
                 openFileBCPs={openFileBCPs}
+                openInstantReminderForm={openInstantReminderForm}
               />
             )}
           </div>
@@ -124,6 +138,12 @@ export const PaymentTrackerTab = () => {
           <UploadPaymentFileForm
             isOpen={uploadFormOpen}
             onOpenChange={setUploadFormOpen}
+          />
+
+          <InstantFileReminderForm
+            isOpen={instantReminderFormOpen}
+            onOpenChange={closeInstantReminderForm}
+            currentFile={currentFile}
           />
 
           <ConfirmationDialog

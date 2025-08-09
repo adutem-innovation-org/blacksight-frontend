@@ -122,6 +122,7 @@ export const paymentFilesTableColumns: ColumnDef<IPaymentFile>[] = [
       const meta = table.options.meta as {
         triggerDeletePaymentFile: (data: IPaymentFile) => void;
         openFileBCPs: (data: IPaymentFile) => void;
+        openInstantReminderForm: (data: IPaymentFile) => void;
       };
       return (
         <DropdownComp
@@ -145,7 +146,7 @@ export const paymentFilesTableColumns: ColumnDef<IPaymentFile>[] = [
             {
               placeholder: "Instant reminder",
               onClick: () => {
-                toast.success("Coming soon.🙌😃");
+                meta.openInstantReminderForm(row.original);
               },
               Icon: BellRing,
             },
