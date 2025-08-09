@@ -34,4 +34,10 @@ export const initialReminderState: ReminderState = {
   deletingReminder: false,
   reminderDeleted: false,
   deleteReminderError: "",
+
+  // Send instant reminder
+  sendingInstantReminder: false,
+  instantReminderSent: false,
+  sendInstantReminderErrors: {},
+  sendInstantReminderErrorMsg: "",
 };

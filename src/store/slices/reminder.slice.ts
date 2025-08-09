@@ -4,6 +4,7 @@ import {
   resetDeleteReminderReducer,
   resetGetAllRemindersReducer,
   resetGetReminderAnalyticsReducer,
+  resetSendInstantReminderReducer,
   resetUpdateReminderReducer,
   resetUpdateReminderStatusReducer,
 } from "../reducers";
@@ -13,6 +14,7 @@ import {
   deleteReminderBuilder,
   getAllRemindersBuilder,
   getReminderAnalyticsBuilder,
+  sendInstantReminderBuilder,
   updateReminderBuilder,
   updateReminderStatusBuilder,
 } from "../builders";
@@ -27,6 +29,7 @@ const reminderSlice = createSlice({
     resetUpdateReminder: resetUpdateReminderReducer,
     resetUpdateReminderStatus: resetUpdateReminderStatusReducer,
     resetDeleteReminder: resetDeleteReminderReducer,
+    resetSendInstantReminder: resetSendInstantReminderReducer,
   },
   extraReducers(builder) {
     getReminderAnalyticsBuilder(builder);
@@ -35,6 +38,7 @@ const reminderSlice = createSlice({
     updateReminderBuilder(builder);
     updateReminderStatusBuilder(builder);
     deleteReminderBuilder(builder);
+    sendInstantReminderBuilder(builder);
   },
 });
 
@@ -46,4 +50,5 @@ export const {
   resetUpdateReminder,
   resetUpdateReminderStatus,
   resetDeleteReminder,
+  resetSendInstantReminder,
 } = reminderSlice.actions;

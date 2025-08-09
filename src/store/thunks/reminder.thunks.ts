@@ -1,5 +1,9 @@
 import { ReminderApiService } from "@/apis";
-import { Reminder } from "@/interfaces";
+import {
+  CreateReminderRes,
+  Reminder,
+  SendInstantReminderBody,
+} from "@/interfaces";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const reminderApiService = ReminderApiService.getInstance();
@@ -88,5 +92,18 @@ export const deleteReminder = createAsyncThunk<
     return res.reminder;
   } catch (error: any) {
     return rejectWithValue(error.message);
+  }
+});
+
+export const sendInstantReminder = createAsyncThunk<
+  CreateReminderRes["reminder"],
+  SendInstantReminderBody,
+  { rejectValue: { message: string; errors?: Record<string, string> | null } }
+>("send_instant_reminder", async (data, { rejectWithValue }) => {
+  try {
+    const response = await reminderApiService.sendInstantReminder(data);
+    return response.reminder;
+  } catch (error: any) {
+    return rejectWithValue(error);
   }
 });

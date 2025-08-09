@@ -35,4 +35,10 @@ export type ReminderState = {
   deletingReminder: boolean;
   reminderDeleted: boolean;
   deleteReminderError: string;
+
+  // Send instant reminder
+  sendingInstantReminder: boolean;
+  instantReminderSent: boolean;
+  sendInstantReminderErrors: Record<string, string>;
+  sendInstantReminderErrorMsg: string;
 };
