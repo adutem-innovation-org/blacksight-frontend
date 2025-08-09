@@ -9,3 +9,5 @@ export const CREATE_REMINDER = "/create";
 export const GET_ALL_REMINDERS = "/all";
 export const DELETE_REMINDER = "/delete";
 export const UPDATE_REMINDER = "/update";
+
+export const SEND_INSTANT_REMINDER = "/instant";
