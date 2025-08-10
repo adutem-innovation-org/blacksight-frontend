@@ -2,6 +2,5 @@ export * from "./ReminderDetailsDrawer";
 export * from "./ReminderTable";
 export * from "./CreateReminderForm";
 export * from "./UpdateReminderDrawer";
-// export * from "./SampleDashboard";
 export * from "./analytics";
 export * from "./history";
