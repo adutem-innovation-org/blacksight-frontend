@@ -1,6 +1,6 @@
 // Reminder
 // General
-export const REMINDER_ANALYTICS = "/analytics";
+export const REMINDER_ANALYTICS = "/analytics/summary";
 export const ACTIVATE_REMINDER = "/activate";
 export const DEACTIVATE_REMINDER = "/deactivate";
 
