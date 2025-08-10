@@ -7,6 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { kbSources, KBSourceType } from "@/constants";
 import { DashboardTabsEnum, UserTypes } from "@/enums";
 import { useProfile, useStore } from "@/hooks";
 import { botSchema } from "@/schemas";
@@ -22,9 +23,9 @@ import {
   resetGetConnectedProviders,
 } from "@/store";
 import { useFormik } from "formik";
-import { Plus } from "lucide-react";
 import { useEffect, useMemo } from "react";
 import toast from "react-hot-toast";
+import { AddKbAction } from "./Action";
 
 export const EmptySelectOptions = ({
   description,
@@ -60,7 +61,7 @@ export const EmptySelectOptions = ({
 interface ConfigureBotProps {
   isOpen: boolean;
   onOpenChange: (value: boolean) => void;
-  addKB: () => void;
+  addKB: (sourceData: KBSourceType) => void;
 }
 
 export const ConfigureBotForm = ({
@@ -244,21 +245,13 @@ export const ConfigureBotForm = ({
                 <EmptySelectOptions
                   description="You are yet to add a knowledge base."
                   // onClickCta={goToKnowledgeBase}
-                  onClickCta={addKB}
+                  onClickCta={() => addKB(kbSources[0])}
                   ctaText="Add knowledge base"
                   loading={fetchingAllKnowledgeBases}
                 />
               }
               containerClassName="gap-2 mt-4"
-              action={
-                <Button
-                  onClick={addKB}
-                  className="h-8 !text-xs px-2.5"
-                  type="button"
-                >
-                  Create <Plus />
-                </Button>
-              }
+              action={<AddKbAction addKB={addKB} />}
             />
 
             <FormGroup
