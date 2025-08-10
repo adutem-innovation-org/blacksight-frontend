@@ -1,5 +1,5 @@
 import { PaginationMetaData } from "@/interfaces/pagination";
-import { Reminder } from "./reminder";
+import { IReminder, Reminder } from "./reminder";
 import { NewReminderAnalyticsRes } from "../api";
 
 export type ReminderState = {
@@ -13,7 +13,7 @@ export type ReminderState = {
   fetchingAllReminders: boolean;
   allRemindersFetched: boolean;
   fetchAllRemindersErrorMessage: string;
-  reminders: Reminder[] | null;
+  reminders: IReminder[] | null;
   meta: PaginationMetaData | null;
 
   // Create reminder
