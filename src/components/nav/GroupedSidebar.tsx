@@ -150,6 +150,7 @@ const SidebarGroup = ({ group }: { group: SidebarGroupType }) => {
   const btnRef = useRef<HTMLDivElement | null>(null);
   const tabsRef = useRef<HTMLUListElement | null>(null);
   const location = useLocation();
+  const isCollapsed = sidebarState === SideBarStateEnum.COLLAPSED;
 
   const openGroup = () => {
     if (tabsRef.current) {
@@ -179,6 +180,27 @@ const SidebarGroup = ({ group }: { group: SidebarGroupType }) => {
     }
   };
 
+  const reworkGroupHeight = () => {
+    if (tabsRef.current) {
+      if (
+        tabsRef.current.style.maxHeight &&
+        tabsRef.current.style.maxHeight !== "0px"
+      ) {
+        if (isCollapsed) {
+          tabsRef.current.style.overflow = "visible";
+          tabsRef.current.style.maxHeight = "max-content";
+        } else {
+          tabsRef.current.style.overflow = "hidden";
+          tabsRef.current.style.maxHeight = tabsRef.current.scrollHeight + "px";
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
+    reworkGroupHeight();
+  }, [isCollapsed]);
+
   useEffect(() => {
     // Set initial open state
     openGroup();
@@ -200,8 +222,6 @@ const SidebarGroup = ({ group }: { group: SidebarGroupType }) => {
       openGroup();
     }
   }, [location.pathname, group.tabs]);
-
-  const isCollapsed = sidebarState === SideBarStateEnum.COLLAPSED;
 
   return (
     <div className="flex flex-col gap-2 border-b border-b-gray-100/80">
