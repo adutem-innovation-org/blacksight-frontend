@@ -181,7 +181,7 @@ const SidebarTabs = () => {
   const isCollapsed = sidebarState === SideBarStateEnum.COLLAPSED;
 
   return (
-    <div className="px-5 py-8 overflow-auto h-full">
+    <div className="px-5 py-8 overflow-auto h-full no-scrollbar">
       <ul
         className={cn("flex flex-col gap-5", {
           "sm:gap-6 sm:items-center": isCollapsed,
