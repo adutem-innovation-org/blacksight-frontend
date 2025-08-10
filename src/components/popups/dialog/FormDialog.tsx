@@ -28,6 +28,7 @@ interface FormDialogProps extends React.PropsWithChildren {
     Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>
   >;
   ctaDisabled?: boolean;
+  ctaClassName?: string;
 }
 
 export const FormDialog = ({
@@ -43,6 +44,7 @@ export const FormDialog = ({
   ctaText,
   CtaIcon,
   ctaDisabled,
+  ctaClassName,
 }: FormDialogProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
@@ -95,7 +97,10 @@ export const FormDialog = ({
           {/* Footer   */}
           <div className="flex gap-4 justify-end border-t border-gray-200 p-4 min-[420px]:p-8">
             <Button
-              className="w-full cursor-pointer bg-brand rounded-2xl"
+              className={cn(
+                "w-full cursor-pointer bg-brand rounded-2xl",
+                ctaClassName
+              )}
               type="submit"
               disabled={loading || ctaDisabled}
             >
