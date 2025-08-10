@@ -3,6 +3,7 @@ import {
   CreateReminderRes,
   DeleteReminderRes,
   GetRemindersRes,
+  NewReminderAnalyticsRes,
   ReminderAnalyticsRes,
   SendInstantReminderBody,
   UpdateReminderBody,
@@ -30,7 +31,7 @@ export class ReminderApiService {
   }
 
   getReminderAnalytics = () => {
-    return this.apiService.get<ReminderAnalyticsRes>(
+    return this.apiService.get<NewReminderAnalyticsRes>(
       this.urls.REMINDER_ANALYTICS
     );
   };
