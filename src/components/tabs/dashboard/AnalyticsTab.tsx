@@ -108,17 +108,6 @@ export const AnalyticsTab = () => {
                 <TopUsersWidget />
               </div>
             )}
-
-            <div className="bg-white h-[400px] rounded-sm p-6 flex flex-col gap-4">
-              <div>
-                <p className="text-2xl text-[#8884d8] font-semibold font-urbanist">
-                  Popular booking time
-                </p>
-              </div>
-              <div className="h-full rounded-xl flex items-end justify-start pt-5">
-                <PopularBookingTimeChart />
-              </div>
-            </div>
           </div>
         </DashboardTableLayoutDiv>
       </DashboardContent>
