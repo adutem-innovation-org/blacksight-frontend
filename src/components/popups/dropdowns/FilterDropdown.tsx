@@ -50,7 +50,11 @@ export const TableFilterDropdown = ({
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger className="flex items-center py-4 px-4 gap-1 w-full h-full border-none outline-none font-semibold text-xs hover:text-[#535862]">
         {columnHeader}
-        {open ? <ChevronUp className="text-blue-600" /> : <ChevronDown />}
+        {open ? (
+          <ChevronUp className="text-blue-600 w-4 h-4" />
+        ) : (
+          <ChevronDown className="w-5 h-5" />
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent
         className="bg-white w-[230px] rounded-lg border-none z-20 px-2 py-2.5 shadow-[0px_4px_16px_#0000001F]"
