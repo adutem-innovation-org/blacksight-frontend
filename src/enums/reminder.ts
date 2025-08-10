@@ -52,4 +52,5 @@ export enum ReminderStatus {
   FAILED = "failed",
   CANCELLED = "cancelled",
   COMPLETED = "completed", // For recurring reminders that have ended
+  NILL = "-",
 }
