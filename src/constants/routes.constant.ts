@@ -11,6 +11,8 @@ import {
   PaymentTrackerTab,
   ProductRecommenderTab,
   ProfileTab,
+  ReminderAnalyticsTab,
+  ReminderHistoryTab,
   ReminderTab,
   SubscriptionsTab,
   TemplateTab,
@@ -148,10 +150,10 @@ export const privatePages: RouteType[] = [
     path: "/calendars",
     Element: CalendarsTab,
   },
-  {
-    path: "/reminder",
-    Element: ReminderTab,
-  },
+  // {
+  //   path: "/reminder",
+  //   Element: ReminderTab,
+  // },
   {
     path: "/templates",
     Element: TemplateTab,
@@ -188,6 +190,14 @@ export const privatePages: RouteType[] = [
     path: "/tools/payment-tracker/bcps",
     Element: PaymentFileBCPsTab,
   },
+  {
+    path: "/reminder/analytics",
+    Element: ReminderAnalyticsTab,
+  },
+  {
+    path: "/reminder/history",
+    Element: ReminderHistoryTab,
+  },
 ];
 
 export const privatePagesMap = {
@@ -198,7 +208,9 @@ export const privatePagesMap = {
     "/agents",
     "/conversations",
     "/appointments",
-    "/reminder",
+    // "/reminder",
+    "/reminder/analytics",
+    "/reminder/history",
     "/tools/payment-tracker",
     "/tools/payment-tracker/bcps",
     "/tools/product-recommender",
@@ -230,7 +242,9 @@ export const pathToTabMap: Record<string, DashboardTabsEnum> = {
   "/agents": DashboardTabsEnum.AGENTS,
   "/conversations": DashboardTabsEnum.CONVERSATIONS,
   "/calendars": DashboardTabsEnum.CALENDARS,
-  "/reminder": DashboardTabsEnum.REMINDER,
+  // "/reminder": DashboardTabsEnum.REMINDER,
+  "/reminder/analytics": DashboardTabsEnum.REMINDER_ANALYTICS,
+  "/reminder/history": DashboardTabsEnum.REMINDER_HISTORY,
   "/tools/payment-tracker": DashboardTabsEnum.PAYMENT_TRACKER,
   "/tools/payment-tracker/bcps": DashboardTabsEnum.PAYMENT_TRACKER_BCPS,
   "/tools/product-recommender": DashboardTabsEnum.PRODUCT_RECOMMENDER,

@@ -101,3 +101,4 @@ export * from "./SecurityTab";
 export * from "./ProductRecommenderTab";
 export * from "./PaymentTrackerTab";
 export * from "./PaymentFileBCPsTab";
+export * from "./reminder";

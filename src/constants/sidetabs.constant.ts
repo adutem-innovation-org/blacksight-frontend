@@ -44,12 +44,12 @@ export const sideTabs: Record<UserTypes, SideTabType[]> = {
       iconClass: "fi fi-rr-reservation-table",
       path: "/appointments",
     },
-    {
-      name: "Reminder",
-      tabId: DashboardTabsEnum.REMINDER,
-      iconClass: "fi fi-rr-bell-ring",
-      path: "/reminder",
-    },
+    // {
+    //   name: "Reminder",
+    //   tabId: DashboardTabsEnum.REMINDER,
+    //   iconClass: "fi fi-rr-bell-ring",
+    //   path: "/reminder",
+    // },
     {
       name: "Payment Tracker",
       tabId: DashboardTabsEnum.PAYMENT_TRACKER,
@@ -170,17 +170,34 @@ export const groupedSideTabs: Record<UserTypes, SidebarGroupType[]> = {
           iconClass: "fi fi-rr-brain-circuit",
           path: "/tools/product-recommender",
         },
-        {
-          name: "Reminder",
-          tabId: DashboardTabsEnum.REMINDER,
-          iconClass: "fi fi-rr-bell-ring",
-          path: "/reminder",
-        },
+        // {
+        //   name: "Reminder",
+        //   tabId: DashboardTabsEnum.REMINDER,
+        //   iconClass: "fi fi-rr-bell-ring",
+        //   path: "/reminder",
+        // },
         {
           name: "Payment Tracker",
           tabId: DashboardTabsEnum.PAYMENT_TRACKER,
           iconClass: "fi fi-rr-credit-card",
           path: "/tools/payment-tracker",
+        },
+      ],
+    },
+    {
+      name: "Reminder",
+      tabs: [
+        {
+          name: "Analytics",
+          tabId: DashboardTabsEnum.REMINDER_ANALYTICS,
+          iconClass: "fi fi-rr-chart-pie",
+          path: "/reminder/analytics",
+        },
+        {
+          name: "History",
+          tabId: DashboardTabsEnum.REMINDER_HISTORY,
+          iconClass: "fi fi-rr-rectangle-vertical-history",
+          path: "/reminder/history",
         },
       ],
     },
