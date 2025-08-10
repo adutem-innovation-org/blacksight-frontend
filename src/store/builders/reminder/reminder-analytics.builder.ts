@@ -13,7 +13,8 @@ export const getReminderAnalyticsBuilder = (
   builder.addCase(getReminderAnalytics.fulfilled, (state, action) => {
     state.fetchingReminderAnalytics = false;
     state.reminderAnalyticsFetched = true;
-    state.reminderAnalytics = action.payload;
+    // state.reminderAnalytics = action.payload;
+    state.analyticsData = action.payload;
   });
 
   builder.addCase(getReminderAnalytics.rejected, (state, action) => {

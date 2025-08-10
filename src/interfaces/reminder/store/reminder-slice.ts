@@ -1,11 +1,13 @@
 import { PaginationMetaData } from "@/interfaces/pagination";
 import { Reminder } from "./reminder";
+import { NewReminderAnalyticsRes } from "../api";
 
 export type ReminderState = {
   fetchingReminderAnalytics: boolean;
   reminderAnalyticsFetched: boolean;
   fetchReminderAnalyticsErrorMessage: string;
   reminderAnalytics: Record<string, number> | null;
+  analyticsData: NewReminderAnalyticsRes["data"] | null;
 
   // Get all reminders
   fetchingAllReminders: boolean;

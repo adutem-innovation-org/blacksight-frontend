@@ -5,6 +5,7 @@ export const initialReminderState: ReminderState = {
   reminderAnalyticsFetched: false,
   fetchReminderAnalyticsErrorMessage: "",
   reminderAnalytics: null,
+  analyticsData: null,
 
   // Get all reminders
   fetchingAllReminders: false,
