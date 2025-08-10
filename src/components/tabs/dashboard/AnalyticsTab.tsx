@@ -10,17 +10,14 @@ import { getAllAppointments, getAnalytics, getUsers } from "@/store";
 import React, { useEffect, useMemo } from "react";
 import {
   AppointmentAndTokenUsage,
-  AppointmentWidget,
   BookingAndResponseTimeChart,
-  TokenUsageWidget,
   TopUsersWidget,
 } from "./analytics";
 import { motion } from "framer-motion";
 
 const AnalyticsHeader = () => {
   const { getState } = useStore();
-  const { analytics, fetchingAnalytics, fetchAnalyticsError } =
-    getState("Analytics");
+  const { analytics, fetchAnalyticsError } = getState("Analytics");
   const { user } = useProfile();
 
   const formattedAnalytics = useMemo(() => {
