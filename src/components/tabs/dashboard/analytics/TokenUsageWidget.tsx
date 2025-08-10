@@ -37,8 +37,8 @@ const TokenUsageChart = ({ data }: Props) => {
     // <div className="border rounded-2xl p-4 shadow bg-white dark:bg-gray-950 space-y-4">
     //</div>
     <React.Fragment>
-      <div className="flex justify-between items-center">
-        <p className="text-2xl text-[#0090FF] font-semibold font-urbanist">
+      <div className="flex justify-between items-center flex-wrap gap-y-1">
+        <p className="text-2xl text-[#0090FF] font-semibold font-urbanist whitespace-nowrap">
           Token Usage
         </p>
         <DropdownMenu>

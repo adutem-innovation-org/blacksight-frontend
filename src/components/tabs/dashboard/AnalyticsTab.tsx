@@ -9,7 +9,9 @@ import { useProfile, useStore } from "@/hooks";
 import { getAllAppointments, getAnalytics, getUsers } from "@/store";
 import React, { useEffect, useMemo } from "react";
 import {
+  AppointmentAndTokenUsage,
   AppointmentWidget,
+  BookingAndResponseTimeChart,
   TokenUsageWidget,
   TopUsersWidget,
 } from "./analytics";
@@ -95,50 +97,8 @@ export const AnalyticsTab = () => {
             <AnalyticsHeader />
           </motion.div>
           <div className="bg-transparent md:flex-1 grid gap-4">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.2 }}
-              className="grid grid-cols-1 md:grid-cols-2 gap-4"
-              style={{ gridAutoRows: "400px" }}
-            >
-              {/* Bookings chart */}
-              <div className="bg-white p-6 flex flex-col gap-4 rounded-sm">
-                <div>
-                  <p className="text-2xl text-brand font-semibold font-urbanist">
-                    Bookings
-                  </p>
-                </div>
-                <div className="h-full rounded-xl flex items-end justify-start pt-5">
-                  <BookingVolumeChart stat={analytics?.bookingStat} />
-                </div>
-              </div>
-
-              {user && user.userType === UserTypes.USER ? (
-                <ResponseTimeWidget analytics={analytics} />
-              ) : (
-                <div className="bg-white p-6 flex flex-col gap-4 rounded-sm"></div>
-              )}
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.4 }}
-              className="grid grid-cols-1 lg:grid-cols-3 gap-4"
-              style={{ gridAutoRows: "600px" }}
-            >
-              <AppointmentWidget />
-
-              <div className="rounded-sm bg-white col-span-1 p-6 flex flex-col gap-4">
-                {user && user.userType === UserTypes.USER ? (
-                  <TokenUsageWidget analytics={analytics} />
-                ) : (
-                  <></>
-                )}
-              </div>
-            </motion.div>
-
+            <BookingAndResponseTimeChart />
+            <AppointmentAndTokenUsage />
             {user && user.userType === UserTypes.ADMIN && (
               <div
                 className="grid grid-cols-1 lg:grid-cols-3 gap-4"
