@@ -562,7 +562,10 @@ export const AppointmentTable = ({
                     {row.getVisibleCells().map((cell) => {
                       if (cell.id.includes("status")) {
                         return (
-                          <TableCell key={cell.id}>
+                          <TableCell
+                            key={cell.id}
+                            className="font-dmsans tracking-tight"
+                          >
                             <Badge
                               variant={
                                 badgeVariantMap[
@@ -585,7 +588,7 @@ export const AppointmentTable = ({
                         return (
                           <TableCell
                             key={cell.id}
-                            className="font-sfpro-medium text-gray-900 text-sm whitespace-nowrap"
+                            className="font-dmsans tracking-tight text-gray-900 text-sm whitespace-nowrap"
                           >
                             {new Date(
                               cell.getValue() as string
@@ -597,7 +600,7 @@ export const AppointmentTable = ({
                       return (
                         <TableCell
                           key={cell.id}
-                          className="font-sfpro-medium text-gray-900 text-sm"
+                          className="font-dmsans tracking-tight text-gray-900 text-sm"
                         >
                           {flexRender(
                             cell.column.columnDef.cell,
