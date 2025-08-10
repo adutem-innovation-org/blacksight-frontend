@@ -572,7 +572,7 @@ export const AppointmentTable = ({
                                   cell.getValue() as keyof typeof badgeVariantMap
                                 ]
                               }
-                              className="font-sfpro-medium"
+                              className="font-dmsans"
                               size={"sm"}
                             >
                               {flexRender(
