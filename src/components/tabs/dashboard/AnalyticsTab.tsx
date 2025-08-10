@@ -13,6 +13,7 @@ import {
   TokenUsageWidget,
   TopUsersWidget,
 } from "./analytics";
+import { motion } from "framer-motion";
 
 const AnalyticsHeader = () => {
   const { getState } = useStore();
@@ -86,9 +87,18 @@ export const AnalyticsTab = () => {
     <React.Fragment>
       <DashboardContent>
         <DashboardTableLayoutDiv className="no-scrollbar overflow-auto">
-          <AnalyticsHeader />
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <AnalyticsHeader />
+          </motion.div>
           <div className="bg-transparent md:flex-1 grid gap-4">
-            <div
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.2 }}
               className="grid grid-cols-1 md:grid-cols-2 gap-4"
               style={{ gridAutoRows: "400px" }}
             >
@@ -109,9 +119,12 @@ export const AnalyticsTab = () => {
               ) : (
                 <div className="bg-white p-6 flex flex-col gap-4 rounded-sm"></div>
               )}
-            </div>
+            </motion.div>
 
-            <div
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.4 }}
               className="grid grid-cols-1 lg:grid-cols-3 gap-4"
               style={{ gridAutoRows: "600px" }}
             >
@@ -124,7 +137,7 @@ export const AnalyticsTab = () => {
                   <></>
                 )}
               </div>
-            </div>
+            </motion.div>
 
             {user && user.userType === UserTypes.ADMIN && (
               <div
