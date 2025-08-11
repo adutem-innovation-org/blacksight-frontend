@@ -21,6 +21,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useStore } from "@/hooks";
 import { IProductsSource } from "@/interfaces";
+import { getAllProductsSources } from "@/store";
 
 type ProductSourceTableProps = {
   triggerDeleteProductsSource: (data: IProductsSource) => void;
@@ -35,8 +36,12 @@ export const ProductSourceTable = ({
 }: ProductSourceTableProps) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const { getState } = useStore();
+  const { dispatch, getState } = useStore();
   const { productsSources } = getState("ProductRecommendation");
+
+  const onRefresh = () => {
+    dispatch(getAllProductsSources());
+  };
 
   const table = useReactTable({
     data: productsSources || [],
@@ -74,17 +79,18 @@ export const ProductSourceTable = ({
   };
 
   return (
-    <div className="grid grid-rows-[80px_max-content]">
-      <div>
+    <div className="grid grid-rows-auto sm:grid-rows-[80px_max-content] relative max-w-full overflow-hidden">
+      <div className="max-w-full">
         <SearchSection
           value={(table.getColumn("tag")?.getFilterValue() as string) ?? ""}
           onChange={(event: any) =>
             table.getColumn("tag")?.setFilterValue(event.target.value)
           }
+          onRefresh={onRefresh}
         />
       </div>
 
-      <div>
+      <div className="md:border-t w-full overflow-hidden">
         <Table>
           {/* Table Header */}
           <TableHeader>
