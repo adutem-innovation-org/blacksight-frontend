@@ -1,6 +1,7 @@
 import {
   AddProductsSourceBody,
   AddProductsSourceRes,
+  AttachAgentToProductSourceReq,
   GetProductsSourcesRes,
 } from "@/interfaces";
 import { ApiService } from "./api.service";
@@ -38,5 +39,15 @@ export class ProductRecommendationApiService {
 
   deleteProductsSource = (id: string) => {
     return this.apiService.delete(`${this.urls.DELETE_PRODUCTS_SOURCE}/${id}`);
+  };
+
+  attachAgentToProductSource = (
+    id: string,
+    data: AttachAgentToProductSourceReq
+  ) => {
+    return this.apiService.post(
+      `${this.urls.ATTACH_AGENT_TO_PRODUCT_SOURCE}/${id}`,
+      data
+    );
   };
 }
