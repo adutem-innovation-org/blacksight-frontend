@@ -42,48 +42,76 @@ export const InAppLiveAgent = () => {
 
       <div
         className={cn(
-          "rounded-4xl bg-white shadow-2xl drop-shadow-2xl flex flex-col gap-2 p-4 transition-discrete duration-300 ease-in-out",
-          {
-            "p-0": isOpen,
-          }
+          "rounded-full bg-white shadow-2xl drop-shadow-2xl flex flex-col gap-2 p-2 transition-discrete duration-300 ease-in-out"
         )}
       >
-        {!isOpen && (
-          <div className="flex items-center self-start gap-3">
-            {/* Scale + Fade Lottie */}
-            <div className="w-10 h-10 rounded-full border gap-2">
-              <DotLottieReact data={chatLottie} loop autoplay />
-            </div>
-
-            {/* Slide from Left + Fade */}
-            <p className="text-center font-semibold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-              👋 Got questions?
-            </p>
-          </div>
-        )}
-
         <Button
-          className={cn("rounded-full cursor-pointer", {
-            "!px-8 !text-sm": !isOpen,
-            "!p-0 w-16 h-16 !bg-white border-none": isOpen,
-          })}
+          className={cn(
+            "rounded-full cursor-pointer !p-0 w-15 h-15 hover:bg-primary",
+            {
+              "!text-sm": !isOpen,
+              "border-none": isOpen,
+            }
+          )}
           size={"sm"}
           onClick={handleToggleClick}
         >
-          {isOpen ? (
-            <>
-              <span className="w-11 h-11 rounded-full bg-primary flex justify-center items-center">
+          <>
+            <span className="w-11 h-11 rounded-full bg-primary flex justify-center items-center">
+              {isOpen ? (
                 <ArrowDown />
-              </span>
-            </>
-          ) : (
-            <>
-              <i className="fi fi-sr-messages flex" />
-              Speak to Blacksight AI
-            </>
-          )}
+              ) : (
+                <DotLottieReact data={chatLottie} loop autoplay />
+              )}
+            </span>
+          </>
         </Button>
       </div>
     </div>
   );
 };
+
+//  <div
+//         className={cn(
+//           "rounded-4xl bg-white shadow-2xl drop-shadow-2xl flex flex-col gap-2 p-4 transition-discrete duration-300 ease-in-out",
+//           {
+//             "p-0": isOpen,
+//           }
+//         )}
+//       >
+//         {!isOpen && (
+//           <div className="flex items-center self-start gap-3">
+//             {/* Scale + Fade Lottie */}
+//             <div className="w-10 h-10 rounded-full border gap-2">
+//               <DotLottieReact data={chatLottie} loop autoplay />
+//             </div>
+
+//             {/* Slide from Left + Fade */}
+//             <p className="text-center font-semibold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+//               👋 Got questions?
+//             </p>
+//           </div>
+//         )}
+
+//         <Button
+//           className={cn("rounded-full cursor-pointer", {
+//             "!px-8 !text-sm": !isOpen,
+//             "!p-0 w-16 h-16 !bg-white border-none": isOpen,
+//           })}
+//           size={"sm"}
+//           onClick={handleToggleClick}
+//         >
+//           {isOpen ? (
+//             <>
+//               <span className="w-11 h-11 rounded-full bg-primary flex justify-center items-center">
+//                 <ArrowDown />
+//               </span>
+//             </>
+//           ) : (
+//             <>
+//               <i className="fi fi-sr-messages flex" />
+//               Speak to Blacksight AI
+//             </>
+//           )}
+//         </Button>
+//       </div>
