@@ -6,6 +6,7 @@ import {
   ProductSourceTable,
   AddProductsForm,
   AttachAgentForm,
+  DetachAgentForm,
 } from "./product-recommdation";
 import { KBSourceType } from "@/constants";
 import { Loader } from "@/components/progress";
@@ -36,11 +37,6 @@ export const ProductRecommenderTab = () => {
     deletingProductsSource,
     productsSourceDeleted,
     deleteProductsSourceError,
-
-    // Attach agent to product source
-    attachingAgent,
-    agentAttached,
-    attachAgentErrorMsg,
   } = getState("ProductRecommendation");
   const { fetchingAllBots, bots } = getState("Bot");
   // Attach agent to product source
@@ -70,6 +66,26 @@ export const ProductRecommenderTab = () => {
   const endAttachAgentOperation = () => {
     closeAttachAgentModal();
     setProductSourceToAttachAgent(null);
+    // Reset pointer event on page ✅ Radix bug
+    resetDocumentElement();
+  };
+
+  // Detach agent from product source
+  const [detachAgentModalOpen, setDetachAgentModalOpen] = useState(false);
+  const [productSourceToDetach, setProductSourceToDetach] =
+    useState<IProductsSource | null>(null);
+
+  const openDetachAgentModal = () => setDetachAgentModalOpen(true);
+  const closeDetachAgentModal = () => setDetachAgentModalOpen(false);
+
+  const triggerDetachAgent = (data: IProductsSource) => {
+    setProductSourceToDetach(data);
+    openDetachAgentModal();
+  };
+
+  const endDetachAgentOperation = () => {
+    closeDetachAgentModal();
+    setProductSourceToDetach(null);
     // Reset pointer event on page ✅ Radix bug
     resetDocumentElement();
   };
@@ -172,6 +188,7 @@ export const ProductRecommenderTab = () => {
               <ProductSourceTable
                 triggerDeleteProductsSource={triggerDeleteProductsSource}
                 triggerAttachAgent={triggerAttachAgent}
+                triggerDetachAgent={triggerDetachAgent}
               />
             )}
           </div>
@@ -186,6 +203,12 @@ export const ProductRecommenderTab = () => {
             isOpen={attachAgentModalOpen && !!productSourceToAttachAgent}
             endAttachAgentOperation={endAttachAgentOperation}
             productSource={productSourceToAttachAgent}
+          />
+
+          <DetachAgentForm
+            isOpen={detachAgentModalOpen && !!productSourceToDetach}
+            endDetachAgentOperation={endDetachAgentOperation}
+            productSource={productSourceToDetach}
           />
 
           <ConfirmationDialog

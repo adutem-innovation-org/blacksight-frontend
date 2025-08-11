@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { DropdownComp, writeTextToClipboard } from "@/components";
 import toast from "react-hot-toast";
-import { Copy, Trash, Unplug } from "lucide-react";
+import { Copy, Plug, Trash, Unplug } from "lucide-react";
 
 const sourceIcon: { [key: string]: string } = {
   [KnowledgeBaseSources.API]: "fi fi-rr-plug-connection",
@@ -57,9 +57,7 @@ export const productSourceTableColumns: ColumnDef<IProductsSource>[] = [
     accessorFn: (row) => row.connectedBots.length,
     header: "Connected Bots",
     cell: ({ row }) => (
-      <p className="!text-sm tracking-tight text-center">
-        {row.getValue("connectedBots")}
-      </p>
+      <p className="!text-sm tracking-tight">{row.getValue("connectedBots")}</p>
     ),
   },
   {
@@ -97,6 +95,7 @@ export const productSourceTableColumns: ColumnDef<IProductsSource>[] = [
       const meta = table.options.meta as {
         triggerDeleteProductsSource: (data: IProductsSource) => void;
         triggerAttachAgent: (data: IProductsSource) => void;
+        triggerDetachAgent: (data: IProductsSource) => void;
       };
 
       return (
@@ -116,8 +115,19 @@ export const productSourceTableColumns: ColumnDef<IProductsSource>[] = [
               onClick: () => {
                 meta.triggerAttachAgent(row.original);
               },
-              Icon: Unplug,
+              Icon: Plug,
             },
+            ...(row.original.connectedBots.length > 0
+              ? [
+                  {
+                    placeholder: "Detach from Agent",
+                    onClick: () => {
+                      meta.triggerDetachAgent(row.original);
+                    },
+                    Icon: Unplug,
+                  },
+                ]
+              : []),
             {
               placeholder: "Delete source",
               onClick: () => {
