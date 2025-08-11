@@ -2,6 +2,7 @@ import {
   AddProductsSourceBody,
   AddProductsSourceRes,
   AttachAgentToProductSourceReq,
+  DetachAgentFromProductSourceReq,
   GetProductsSourcesRes,
 } from "@/interfaces";
 import { ApiService } from "./api.service";
@@ -47,6 +48,16 @@ export class ProductRecommendationApiService {
   ) => {
     return this.apiService.post(
       `${this.urls.ATTACH_AGENT_TO_PRODUCT_SOURCE}/${id}`,
+      data
+    );
+  };
+
+  detachAgentFromProductSource = (
+    id: string,
+    data: DetachAgentFromProductSourceReq
+  ) => {
+    return this.apiService.post(
+      `${this.urls.DETACH_AGENT_FROM_PRODUCT_SOURCE}/${id}`,
       data
     );
   };
