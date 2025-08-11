@@ -1,7 +1,4 @@
 import { MyProfile } from "./MyProfile";
-import { Security } from "./SecurityTab";
-import { Billing } from "./Billing";
-import { DataExport } from "./DataExport";
 import { ProfileTabsEnum } from "@/enums";
 import { Tabs } from "@mantine/core";
 import { BusinessInfo } from "./BusinessInfo";
@@ -21,15 +18,6 @@ export const ProfileTabs = ({ activeTab }: Props) => {
         className="w-full h-full"
       >
         <BusinessInfo />
-      </Tabs.Panel>
-      <Tabs.Panel value={ProfileTabsEnum.SECURTIY} className="w-full h-full">
-        <Security />
-      </Tabs.Panel>
-      <Tabs.Panel value={ProfileTabsEnum.BILLING} className="w-full h-full">
-        <Billing />
-      </Tabs.Panel>
-      <Tabs.Panel value={ProfileTabsEnum.DATA_EXPORT} className="w-full h-full">
-        <DataExport />
       </Tabs.Panel>
     </Tabs>
   );
