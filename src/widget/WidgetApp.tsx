@@ -2,7 +2,7 @@ import React, { useState, useEffect, Suspense } from "react";
 import { Provider } from "react-redux";
 import { store } from "../store";
 import { createRoot } from "react-dom/client";
-// import "../index.css"; // Tailwind CSS
+import "../index.css"; // Tailwind CSS
 import botIcon from "@/assets/images/botIcon.png";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
