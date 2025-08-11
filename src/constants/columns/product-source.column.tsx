@@ -53,6 +53,16 @@ export const productSourceTableColumns: ColumnDef<IProductsSource>[] = [
     ),
   },
   {
+    id: "connectedBots",
+    accessorFn: (row) => row.connectedBots.length,
+    header: "Connected Bots",
+    cell: ({ row }) => (
+      <p className="!text-sm tracking-tight text-center">
+        {row.getValue("connectedBots")}
+      </p>
+    ),
+  },
+  {
     id: "createdBy",
     accessorFn: (row) => row.createdBy.email,
     header: "Created By",
