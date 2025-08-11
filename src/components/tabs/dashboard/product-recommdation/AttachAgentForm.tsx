@@ -55,11 +55,13 @@ export const AttachAgentForm = ({
 
   const AGENTS = useMemo(() => {
     if (!bots) return [];
-    return bots.map((bot) => ({
-      label: bot.name,
-      value: bot._id,
-    }));
-  }, [bots]);
+    return bots.reduce((agg, curr) => {
+      if (!productSource?.connectedBots.find((bot) => bot._id === curr._id)) {
+        return [...agg, { label: curr.name, value: curr._id }];
+      }
+      return agg;
+    }, [] as { label: string; value: string }[]);
+  }, [bots, productSource]);
 
   const handleOpenChange = () => {
     validation.resetForm();
