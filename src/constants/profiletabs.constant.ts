@@ -9,10 +9,10 @@ export const profileTabs = [
     name: "Business Info",
     tabId: ProfileTabsEnum.BUSINESS_INFO,
   },
-  {
-    name: "API Key & Security",
-    tabId: ProfileTabsEnum.SECURTIY,
-  },
+  // {
+  //   name: "API Key & Security",
+  //   tabId: ProfileTabsEnum.SECURTIY,
+  // },
   // {
   //   name: "Billing",
   //   tabId: ProfileTabsEnum.BILLING,
