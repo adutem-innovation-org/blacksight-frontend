@@ -24,8 +24,8 @@ export const getAllReminders = createAsyncThunk(
   "get_all_reminders",
   async (_: void, thunkAPI) => {
     try {
-      const { data, meta } = await reminderApiService.getReminders();
-      return { data, meta };
+      const { data, ...rest } = await reminderApiService.getReminders();
+      return { data, meta: rest.meta || rest.pagination };
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message as string);
     }

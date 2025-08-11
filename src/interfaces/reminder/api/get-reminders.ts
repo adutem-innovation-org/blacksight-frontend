@@ -1,5 +1,5 @@
 import { ApiSuccessResponse } from "@/interfaces/api-response";
-import { Reminder } from "../store";
+import { IReminder } from "../store";
 import { PaginatedRes } from "@/interfaces/pagination";
 
-export type GetRemindersRes = ApiSuccessResponse & PaginatedRes<Reminder>;
+export type GetRemindersRes = ApiSuccessResponse & PaginatedRes<IReminder>;
