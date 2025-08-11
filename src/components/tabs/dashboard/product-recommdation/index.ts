@@ -3,3 +3,4 @@ export * from "./SearchSection";
 export * from "./UploadProductWidget";
 export * from "./ProductSourceTable";
 export * from "./AddProductsForm";
+export * from "./AttachAgentForm";

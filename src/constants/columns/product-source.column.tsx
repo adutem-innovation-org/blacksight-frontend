@@ -86,6 +86,7 @@ export const productSourceTableColumns: ColumnDef<IProductsSource>[] = [
     cell: ({ row, table }) => {
       const meta = table.options.meta as {
         triggerDeleteProductsSource: (data: IProductsSource) => void;
+        triggerAttachAgent: (data: IProductsSource) => void;
       };
 
       return (
@@ -103,7 +104,7 @@ export const productSourceTableColumns: ColumnDef<IProductsSource>[] = [
             {
               placeholder: "Attach to Agent",
               onClick: () => {
-                toast.success("Coming soon.🙌😃");
+                meta.triggerAttachAgent(row.original);
               },
               Icon: Unplug,
             },
