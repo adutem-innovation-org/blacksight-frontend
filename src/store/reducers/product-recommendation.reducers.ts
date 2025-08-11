@@ -24,3 +24,9 @@ export const resetDeleteProductsSourceReducer = (
   state.productsSourceDeleted = false;
   state.deleteProductsSourceError = "";
 };
+
+export const resetAttachAgentReducer = (state: ProductRecommendationState) => {
+  state.attachingAgent = false;
+  state.agentAttached = false;
+  state.attachAgentErrorMsg = "";
+};
