@@ -2,6 +2,7 @@ import { ProductRecommendationApiService } from "@/apis";
 import {
   AddProductsSourceBody,
   AttachAgentToProductSourceReq,
+  DetachAgentFromProductSourceReq,
   GetProductsSourcesRes,
   IProductsSource,
 } from "@/interfaces";
@@ -60,6 +61,25 @@ export const attachAgentToProductSource = createAsyncThunk<
   async ({ id, data }, { rejectWithValue }) => {
     try {
       await productRecommendationApiService.attachAgentToProductSource(
+        id,
+        data
+      );
+      return;
+    } catch (error: any) {
+      return rejectWithValue(error.message as string);
+    }
+  }
+);
+
+export const detachAgentFromProductSource = createAsyncThunk<
+  void,
+  { id: string; data: DetachAgentFromProductSourceReq },
+  { rejectValue: string }
+>(
+  "detach_agent_from_product_source",
+  async ({ id, data }, { rejectWithValue }) => {
+    try {
+      await productRecommendationApiService.detachAgentFromProductSource(
         id,
         data
       );

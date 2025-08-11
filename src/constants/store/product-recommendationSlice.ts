@@ -22,4 +22,9 @@ export const initialProductRecommendationState: ProductRecommendationState = {
   attachingAgent: false,
   agentAttached: false,
   attachAgentErrorMsg: "",
+
+  // Detach agent
+  detachingAgent: false,
+  agentDetached: false,
+  detachAgentErrorMsg: "",
 };

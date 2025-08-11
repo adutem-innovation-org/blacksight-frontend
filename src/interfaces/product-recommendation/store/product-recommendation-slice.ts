@@ -24,4 +24,9 @@ export interface ProductRecommendationState {
   attachingAgent: boolean;
   agentAttached: boolean;
   attachAgentErrorMsg: string;
+
+  // Detach agent from products source
+  detachingAgent: boolean;
+  agentDetached: boolean;
+  detachAgentErrorMsg: string;
 }

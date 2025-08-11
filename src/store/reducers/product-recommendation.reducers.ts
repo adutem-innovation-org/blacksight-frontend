@@ -30,3 +30,9 @@ export const resetAttachAgentReducer = (state: ProductRecommendationState) => {
   state.agentAttached = false;
   state.attachAgentErrorMsg = "";
 };
+
+export const resetDetachAgentReducer = (state: ProductRecommendationState) => {
+  state.detachingAgent = false;
+  state.agentDetached = false;
+  state.detachAgentErrorMsg = "";
+};
