@@ -4,6 +4,7 @@ import { useStore } from "@/hooks";
 import { IProductsSource } from "@/interfaces";
 import {
   attachAgentToProductSource,
+  getAllBots,
   getAllProductsSources,
   resetAttachAgent,
 } from "@/store";
@@ -73,6 +74,7 @@ export const AttachAgentForm = ({
       toast.success("Agent attached successfully");
       dispatch(resetAttachAgent());
       dispatch(getAllProductsSources());
+      dispatch(getAllBots());
       endAttachAgentOperation();
     }
   }, [agentAttached]);
