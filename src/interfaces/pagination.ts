@@ -10,5 +10,6 @@ export type PaginationMetaData = {
 export type PaginatedRes<T> = {
   data: T[];
   meta: PaginationMetaData;
+  pagination: PaginationMetaData;
   status: string;
 };
