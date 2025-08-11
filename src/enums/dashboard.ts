@@ -33,9 +33,8 @@ export enum SideBarMobileStateEnum {
 }
 
 export enum ProfileTabsEnum {
+  OVERVIEW = "overview",
   MY_PROFILE = "my-profile",
-  SECURTIY = "security",
   BILLING = "billing",
-  DATA_EXPORT = "data-export",
   BUSINESS_INFO = "business-info",
 }
