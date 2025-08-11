@@ -2,7 +2,7 @@ import { DashboardContent } from "@/components/design";
 import { Loader } from "@/components/progress";
 import { useStore } from "@/hooks";
 import { cn } from "@/lib/utils";
-import { getAllReminders } from "@/store";
+import { getAllReminders, resetGetAllReminders } from "@/store";
 import React, { useEffect } from "react";
 import { ReminderHistoryBreadCrumb } from "./ReminderHistoryBreadCrumb";
 import { motion } from "framer-motion";
@@ -18,6 +18,7 @@ export const ReminderHistoryTab = () => {
     fetchingAllReminders,
     reminders,
     fetchAllRemindersErrorMessage,
+    allRemindersFetched,
 
     // Delete reminder
     deletingReminder,
@@ -35,6 +36,12 @@ export const ReminderHistoryTab = () => {
       dispatch(getAllReminders());
     }
   }, []);
+
+  useEffect(() => {
+    if (allRemindersFetched) {
+      dispatch(resetGetAllReminders());
+    }
+  }, [allRemindersFetched]);
 
   if (fetchingAllReminders) return <Loader />;
 
