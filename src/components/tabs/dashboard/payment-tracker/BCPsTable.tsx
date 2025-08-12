@@ -22,6 +22,8 @@ import { cn } from "@/lib/utils";
 import { useStore } from "@/hooks";
 import { SearchBCPs } from "./SearchBCP";
 import { IBCP } from "@/interfaces";
+import { useLocation } from "react-router-dom";
+import { getPaymentFileBCPs } from "@/store";
 
 // Custom global filter function for multi-column OR search
 const globalFilterFn = (row: Row<IBCP>, columnId: string, value: string) => {
@@ -48,9 +50,14 @@ export const BCPsTable = ({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
+  const location = useLocation();
 
-  const { getState } = useStore();
+  const { dispatch, getState } = useStore();
   const { BCPs } = getState("PaymentTracker");
+
+  const onRefresh = () => {
+    dispatch(getPaymentFileBCPs(location.state.paymentFileId));
+  };
 
   const table = useReactTable({
     data: BCPs || [],
@@ -102,19 +109,20 @@ export const BCPsTable = ({
   return (
     <div
       className={cn(
-        "grid grid-rows-auto sm:grid-rows-[80px_max-content] relative"
+        "grid grid-rows-auto sm:grid-rows-[80px_max-content] relative max-w-full overflow-x-hidden"
       )}
     >
-      <div>
+      <div className="max-w-full">
         <SearchBCPs
           value={globalFilter ?? ""}
           onChange={(event: any) => {
             table.setGlobalFilter(String(event.target.value));
           }}
+          onRefresh={onRefresh}
         />
       </div>
 
-      <div>
+      <div className="md:border-t w-full overflow-x-auto">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
