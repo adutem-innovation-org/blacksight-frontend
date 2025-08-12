@@ -8,19 +8,19 @@ export const PersonalAddressInfo = () => {
     return [
       {
         label: "Country",
-        value: user?.addressInfo.country ?? "-",
+        value: user?.addressInfo?.country ?? "-",
       },
       {
         label: "City",
-        value: user?.addressInfo.city ?? "-",
+        value: user?.addressInfo?.city ?? "-",
       },
       {
         label: "State",
-        value: user?.addressInfo.state ?? "-",
+        value: user?.addressInfo?.state ?? "-",
       },
       {
         label: "Postal Code",
-        value: user?.addressInfo.zipCode ?? "-",
+        value: user?.addressInfo?.zipCode ?? "-",
       },
     ];
   }, [user]);

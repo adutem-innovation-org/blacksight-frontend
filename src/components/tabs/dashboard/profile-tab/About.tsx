@@ -21,7 +21,7 @@ export const ProfileAboutSection = () => {
       {
         label: "Address",
         value:
-          user?.addressInfo.city || user?.addressInfo.country
+          user?.addressInfo?.city || user?.addressInfo?.country
             ? `${user?.addressInfo?.city}, ` + user?.addressInfo?.country
             : "-",
       },
