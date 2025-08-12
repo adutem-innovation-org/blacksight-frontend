@@ -74,13 +74,6 @@ export const InstantFileReminderForm = ({
         return;
       }
 
-      if (
-        [ReminderChannels.BOTH, ReminderChannels.SMS].includes(values.channel)
-      ) {
-        toast.success("Coming soon.🙌😃");
-        return;
-      }
-
       dispatch(sendInstantReminder(values));
     },
   });
