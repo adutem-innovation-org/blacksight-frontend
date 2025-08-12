@@ -9,6 +9,14 @@ import {
   SquarePen,
   UserRoundCog,
 } from "lucide-react";
+import { useState } from "react";
+import {
+  AddressInfoForm,
+  BasicInfoForm,
+  ContactInfoForm,
+  PersonalInfoForm,
+} from "./forms";
+import { resetDocumentElement } from "@/helpers";
 
 export const ProfileTopTab = ({
   activeTab,
@@ -17,6 +25,24 @@ export const ProfileTopTab = ({
   activeTab: ProfileTabsEnum;
   setActiveTab: (tab: ProfileTabsEnum) => void;
 }) => {
+  const [personalInfoFormOpen, setPersonalInfoFormOpen] = useState(false);
+  const [addressInfoFormOpen, setAddressInfoFormOpen] = useState(false);
+  const [basicInfoFormOpen, setBasicInfoFormOpen] = useState(false);
+  const [contactInfoFormOpen, setContactInfoFormOpen] = useState(false);
+
+  const openPersonalInfoForm = () => setPersonalInfoFormOpen(true);
+  const openAddressInfoForm = () => setAddressInfoFormOpen(true);
+  const openBasicInfoForm = () => setBasicInfoFormOpen(true);
+  const openContactInfoForm = () => setContactInfoFormOpen(true);
+
+  const handleCloseForm = (val: boolean) => {
+    setPersonalInfoFormOpen(false);
+    setAddressInfoFormOpen(false);
+    setBasicInfoFormOpen(false);
+    setContactInfoFormOpen(false);
+    resetDocumentElement();
+  };
+
   return (
     <div className="w-full mb-6 mt-12">
       <div className="w-full flex justify-between items-center">
@@ -48,27 +74,55 @@ export const ProfileTopTab = ({
           data={[
             {
               placeholder: "Personal Info",
-              onClick: () => {},
+              onClick: () => {
+                openPersonalInfoForm();
+              },
               Icon: UserRoundCog,
             },
             {
               placeholder: "Address",
-              onClick: () => {},
+              onClick: () => {
+                openAddressInfoForm();
+              },
               Icon: MapPinHouse,
             },
             {
               placeholder: "Business Info",
-              onClick: () => {},
+              onClick: () => {
+                openBasicInfoForm();
+              },
               Icon: Building2,
             },
             {
               placeholder: "Contact Info",
-              onClick: () => {},
+              onClick: () => {
+                openContactInfoForm();
+              },
               Icon: Contact,
             },
           ]}
         />
       </div>
+
+      <PersonalInfoForm
+        isOpen={personalInfoFormOpen}
+        onOpenChange={handleCloseForm}
+      />
+
+      <AddressInfoForm
+        isOpen={addressInfoFormOpen}
+        onOpenChange={handleCloseForm}
+      />
+
+      <BasicInfoForm
+        isOpen={basicInfoFormOpen}
+        onOpenChange={handleCloseForm}
+      />
+
+      <ContactInfoForm
+        isOpen={contactInfoFormOpen}
+        onOpenChange={handleCloseForm}
+      />
     </div>
   );
 };
