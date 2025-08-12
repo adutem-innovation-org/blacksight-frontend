@@ -54,3 +54,10 @@ export enum ReminderStatus {
   COMPLETED = "completed", // For recurring reminders that have ended
   NILL = "-",
 }
+
+export enum OffsetRange {
+  MINUTE = "Minute",
+  HOUR = "Hour",
+  DAY = "Day",
+  WEEK = "Week",
+}
