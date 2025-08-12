@@ -28,6 +28,7 @@ type PaymentFilesTableProps = {
   openUploadForm: () => void;
   openFileBCPs: (data: IPaymentFile) => void;
   openInstantReminderForm: (data: IPaymentFile) => void;
+  openScheduleReminderForm: (data: IPaymentFile) => void;
 };
 
 export const PaymentFilesTable = ({
@@ -35,6 +36,7 @@ export const PaymentFilesTable = ({
   openUploadForm,
   openFileBCPs,
   openInstantReminderForm,
+  openScheduleReminderForm,
 }: PaymentFilesTableProps) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -43,7 +45,12 @@ export const PaymentFilesTable = ({
 
   const table = useReactTable({
     data: paymentFiles || [],
-    meta: { triggerDeletePaymentFile, openFileBCPs, openInstantReminderForm },
+    meta: {
+      triggerDeletePaymentFile,
+      openFileBCPs,
+      openInstantReminderForm,
+      openScheduleReminderForm,
+    },
     columns: paymentFilesTableColumns,
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,

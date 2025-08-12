@@ -4,6 +4,7 @@ import {
   InstantFileReminderForm,
   PaymentFilesTable,
   PaymentTrackerTabHeader,
+  ScheduleFileReminderForm,
   StartTracking,
   UploadPaymentFileForm,
 } from "./payment-tracker";
@@ -26,6 +27,9 @@ export const PaymentTrackerTab = () => {
   const [uploadFormOpen, setUploadFormOpen] = React.useState(false);
   const [instantReminderFormOpen, setInstantReminderFormOpen] = useState(false);
   const [currentFile, setCurrentFile] = useState<IPaymentFile | null>(null);
+  const [scheduleReminderFormOpen, setScheduleReminderFormOpen] =
+    useState(false);
+
   const { dispatch, getState } = useStore();
   const navigate = useNavigate();
   const {
@@ -37,6 +41,17 @@ export const PaymentTrackerTab = () => {
     paymentFileDeleted,
     deletePaymentFileError,
   } = getState("PaymentTracker");
+
+  const openScheduleReminderForm = (data: IPaymentFile) => {
+    setCurrentFile(data);
+    setScheduleReminderFormOpen(true);
+  };
+
+  const closeScheduleReminderForm = (val: boolean) => {
+    setScheduleReminderFormOpen(val);
+    setCurrentFile(null);
+    resetDocumentElement();
+  };
 
   const openUploadForm = () => setUploadFormOpen(true);
   const openInstantReminderForm = (data: IPaymentFile) => {
@@ -131,6 +146,7 @@ export const PaymentTrackerTab = () => {
                 openUploadForm={openUploadForm}
                 openFileBCPs={openFileBCPs}
                 openInstantReminderForm={openInstantReminderForm}
+                openScheduleReminderForm={openScheduleReminderForm}
               />
             )}
           </div>
@@ -143,6 +159,12 @@ export const PaymentTrackerTab = () => {
           <InstantFileReminderForm
             isOpen={instantReminderFormOpen}
             onOpenChange={closeInstantReminderForm}
+            currentFile={currentFile}
+          />
+
+          <ScheduleFileReminderForm
+            isOpen={scheduleReminderFormOpen}
+            onOpenChange={closeScheduleReminderForm}
             currentFile={currentFile}
           />
 

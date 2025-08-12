@@ -123,6 +123,7 @@ export const paymentFilesTableColumns: ColumnDef<IPaymentFile>[] = [
         triggerDeletePaymentFile: (data: IPaymentFile) => void;
         openFileBCPs: (data: IPaymentFile) => void;
         openInstantReminderForm: (data: IPaymentFile) => void;
+        openScheduleReminderForm: (data: IPaymentFile) => void;
       };
       return (
         <DropdownComp
@@ -153,7 +154,7 @@ export const paymentFilesTableColumns: ColumnDef<IPaymentFile>[] = [
             {
               placeholder: "Schedule reminder",
               onClick: () => {
-                toast.success("Coming soon.🙌😃");
+                meta.openScheduleReminderForm(row.original);
               },
               Icon: ClipBoardClock as any,
             },
