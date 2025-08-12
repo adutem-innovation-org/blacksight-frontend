@@ -105,6 +105,8 @@ export const bcpsTableColumns: ColumnDef<IBCP>[] = [
       const meta = table.options.meta as {
         triggerDeleteBCP: (data: IBCP) => void;
         openUpdateForm: (data: IBCP) => void;
+        openInstantBCPReminderForm: (data: IBCP) => void;
+        openScheduleBCPReminderForm: (data: IBCP) => void;
       };
       return (
         <DropdownComp
@@ -121,14 +123,18 @@ export const bcpsTableColumns: ColumnDef<IBCP>[] = [
             {
               placeholder: "Instant reminder",
               onClick: () => {
-                toast.success("Coming soon.🙌😃");
+                if (!row.original.email && !row.original.phone)
+                  return toast.error("No email or phone number present.");
+                meta.openInstantBCPReminderForm(row.original);
               },
               Icon: BellRing,
             },
             {
               placeholder: "Schedule reminder",
               onClick: () => {
-                toast.success("Coming soon.🙌😃");
+                if (!row.original.email && !row.original.phone)
+                  return toast.error("No email or phone number present.");
+                meta.openScheduleBCPReminderForm(row.original);
               },
               Icon: ClipBoardClock as any,
             },

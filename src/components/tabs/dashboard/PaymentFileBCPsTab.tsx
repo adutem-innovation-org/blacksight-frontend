@@ -10,7 +10,12 @@ import {
 } from "@/store";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { BCPTabBreadCrumb, PaymentBCPsHeader } from "./payment-bcp";
+import {
+  BCPTabBreadCrumb,
+  InstantBCPReminderForm,
+  ScheduleBCPReminderForm,
+  PaymentBCPsHeader,
+} from "./payment-bcp";
 import { InfoBlock } from "@/components/InfoBlock";
 import { Button } from "@/components/form";
 import { RefreshCcw } from "lucide-react";
@@ -36,6 +41,37 @@ export const PaymentFileBCPsTab = () => {
   } = getState("PaymentTracker");
   const [updateFormOpen, setUpdateFormOpen] = useState(false);
   const [bcpToUpdate, setBCPToUpdate] = useState<IBCP | null>(null);
+  const [instantReminderFormOpen, setInstantReminderFormOpen] = useState(false);
+  const [fileId, setFileId] = useState<string | null | undefined>();
+  const [bcpToRemind, setBCPToRemind] = useState<IBCP | null>();
+  const [scheduleReminderFormOpen, setScheduleReminderFormOpen] =
+    useState(false);
+
+  const openScheduleReminderForm = (bcpToRemind: IBCP) => {
+    setFileId(bcpToRemind.fileId);
+    setBCPToRemind(bcpToRemind);
+    setScheduleReminderFormOpen(true);
+  };
+
+  const closeScheduleReminderForm = (val: boolean) => {
+    setScheduleReminderFormOpen(val);
+    setFileId(null);
+    setBCPToRemind(null);
+    resetDocumentElement();
+  };
+
+  const openInstantReminderForm = (bcpToRemind: IBCP) => {
+    setFileId(bcpToRemind.fileId);
+    setBCPToRemind(bcpToRemind);
+    setInstantReminderFormOpen(true);
+  };
+
+  const closeInstantReminderForm = (val: boolean) => {
+    setInstantReminderFormOpen(val);
+    setFileId(null);
+    setBCPToRemind(null);
+    resetDocumentElement();
+  };
 
   const openUpdateForm = (data: IBCP) => {
     setUpdateFormOpen(true);
@@ -147,6 +183,8 @@ export const PaymentFileBCPsTab = () => {
               <BCPsTable
                 triggerDeleteBCP={triggerDeleteBCP}
                 openUpdateForm={openUpdateForm}
+                openInstantBCPReminderForm={openInstantReminderForm}
+                openScheduleBCPReminderForm={openScheduleReminderForm}
               />
             )}
 
@@ -164,6 +202,22 @@ export const PaymentFileBCPsTab = () => {
               isOpen={updateFormOpen}
               onOpenChange={onOpenChange}
               bcpToUpdate={bcpToUpdate}
+            />
+
+            <InstantBCPReminderForm
+              isOpen={instantReminderFormOpen}
+              onOpenChange={closeInstantReminderForm}
+              fileId={fileId}
+              fromSingleBCP={!!bcpToRemind}
+              bcpToRemind={bcpToRemind}
+            />
+
+            <ScheduleBCPReminderForm
+              isOpen={scheduleReminderFormOpen}
+              onOpenChange={closeScheduleReminderForm}
+              fileId={fileId}
+              fromSingleBCP={!!bcpToRemind}
+              bcpToRemind={bcpToRemind}
             />
           </div>
         </div>

@@ -6,3 +6,5 @@ export * from "./BCPsTable";
 export * from "./UpdateBCP";
 export * from "./InstantReminderForm";
 export * from "./ScheduleReminderForm";
+export * from "./RecurringReminderFormGroups";
+export * from "./EventBasedReminderFormGroup";
