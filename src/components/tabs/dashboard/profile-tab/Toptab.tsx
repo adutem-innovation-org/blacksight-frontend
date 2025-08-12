@@ -1,7 +1,14 @@
 import { Button } from "@/components/form";
+import { DropdownComp } from "@/components/popups";
 import { ProfileTabsEnum } from "@/enums";
 import { cn } from "@/lib/utils";
-import { SquarePen } from "lucide-react";
+import {
+  Building2,
+  Contact,
+  MapPinHouse,
+  SquarePen,
+  UserRoundCog,
+} from "lucide-react";
 
 export const ProfileTopTab = ({
   activeTab,
@@ -26,15 +33,41 @@ export const ProfileTopTab = ({
           </Button>
         </div>
 
-        <Button
-          className="
+        <DropdownComp
+          Trigger={() => (
+            <Button
+              className="
         rounded-md h-10 !text-sm !font-dmsans tracking-tight font-medium
         "
-          variant={"brand"}
-        >
-          <SquarePen />
-          Edit Profile
-        </Button>
+              variant={"brand"}
+            >
+              <SquarePen />
+              Edit Profile
+            </Button>
+          )}
+          data={[
+            {
+              placeholder: "Personal Info",
+              onClick: () => {},
+              Icon: UserRoundCog,
+            },
+            {
+              placeholder: "Address",
+              onClick: () => {},
+              Icon: MapPinHouse,
+            },
+            {
+              placeholder: "Business Info",
+              onClick: () => {},
+              Icon: Building2,
+            },
+            {
+              placeholder: "Contact Info",
+              onClick: () => {},
+              Icon: Contact,
+            },
+          ]}
+        />
       </div>
     </div>
   );
