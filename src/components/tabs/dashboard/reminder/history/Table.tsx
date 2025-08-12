@@ -22,6 +22,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { IReminder } from "@/interfaces";
 
 // Function to get responsive classes for each column
 const getColumnClasses = (columnId: string) => {
@@ -45,7 +46,15 @@ const getColumnClasses = (columnId: string) => {
   }
 };
 
-export const ReminderHistoryTable = () => {
+type ReminderHistoryTableProps = {
+  triggerDeleteReminder: (reminder: IReminder) => void;
+  triggerSetActiveStatus: (reminder: IReminder, isActive: boolean) => void;
+};
+
+export const ReminderHistoryTable = ({
+  triggerDeleteReminder,
+  triggerSetActiveStatus,
+}: ReminderHistoryTableProps) => {
   const { getState, dispatch } = useStore();
   const { reminders } = getState("Reminder");
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -60,7 +69,10 @@ export const ReminderHistoryTable = () => {
 
   const table = useReactTable({
     data: reminders || [],
-    meta: {},
+    meta: {
+      triggerDeleteReminder,
+      triggerSetActiveStatus,
+    },
     columns: remindersHistoryColumns,
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,

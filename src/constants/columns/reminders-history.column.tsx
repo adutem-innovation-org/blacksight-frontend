@@ -250,7 +250,13 @@ export const remindersHistoryColumns: ColumnDef<IReminder>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row, table }) => {
-      const meta = table.options.meta as {};
+      const meta = table.options.meta as {
+        triggerDeleteReminder: (reminder: IReminder) => void;
+        triggerSetActiveStatus: (
+          reminder: IReminder,
+          isActive: boolean
+        ) => void;
+      };
       return (
         <DropdownComp
           data={[
@@ -261,17 +267,26 @@ export const remindersHistoryColumns: ColumnDef<IReminder>[] = [
               },
               Icon: Pencil,
             },
+            ...(row.original.status === ReminderStatus.PENDING
+              ? [
+                  {
+                    placeholder: row.getValue("isActive")
+                      ? "Pause reminder"
+                      : "Resume reminder",
+                    onClick: () => {
+                      meta.triggerSetActiveStatus(
+                        row.original,
+                        !row.getValue("isActive")
+                      );
+                    },
+                    Icon: row.getValue("isActive") ? Ban : CircleFadingArrowUp,
+                  },
+                ]
+              : []),
             {
-              placeholder: row.getValue("isActive") ? "Deactivate" : "Activate",
+              placeholder: "Delete reminder",
               onClick: () => {
-                toast.success("Coming soon.🙌😃");
-              },
-              Icon: row.getValue("isActive") ? Ban : CircleFadingArrowUp,
-            },
-            {
-              placeholder: "Delete record",
-              onClick: () => {
-                toast.success("Coming soon.🙌😃");
+                meta.triggerDeleteReminder(row.original);
               },
               Icon: Trash,
             },
