@@ -227,7 +227,10 @@ export const FormGroup = ({
     case "date-time":
       return (
         <GroupContainer className={containerClassName}>
-          <Label>{groupLabel}</Label>
+          <div className="flex gap-1.5 items-center">
+            <Label className="min-w-max">{groupLabel}</Label>
+            {info && InfoTooltip}
+          </div>
           <DateInput
             placeholder={placeholder || label}
             onChange={(value: DateValue) => {
