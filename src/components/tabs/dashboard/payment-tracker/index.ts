@@ -5,3 +5,4 @@ export * from "./PaymentFileTable";
 export * from "./BCPsTable";
 export * from "./UpdateBCP";
 export * from "./InstantReminderForm";
+export * from "./ScheduleReminderForm";
