@@ -1,8 +1,8 @@
 // Reminder
 // General
 export const REMINDER_ANALYTICS = "/analytics/summary";
-export const ACTIVATE_REMINDER = "/activate";
-export const DEACTIVATE_REMINDER = "/deactivate";
+export const RESUME_REMINDER = "/resume";
+export const PAUSE_REMINDER = "/pause";
 
 // User
 export const CREATE_REMINDER = "/create";

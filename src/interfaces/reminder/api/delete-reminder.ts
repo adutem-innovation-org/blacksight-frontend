@@ -1,6 +1,6 @@
 import { ApiSuccessResponse } from "@/interfaces/api-response";
-import { Reminder } from "../store";
+import { IReminder } from "../store";
 
 export interface DeleteReminderRes extends ApiSuccessResponse {
-  reminder: Reminder;
+  reminder: IReminder;
 }

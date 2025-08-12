@@ -55,15 +55,15 @@ export class ReminderApiService {
     >(`${this.urls.UPDATE_REMINDER}/${id}`, data);
   };
 
-  activateReminder = (id: string) => {
+  resumeReminder = (id: string) => {
     return this.apiService.update<any, UpdateReminderStatusRes>(
-      `${this.urls.ACTIVATE_REMINDER}/${id}`
+      `${this.urls.RESUME_REMINDER}/${id}`
     );
   };
 
-  deactivateReminder = (id: string) => {
+  pauseReminder = (id: string) => {
     return this.apiService.update<any, UpdateReminderStatusRes>(
-      `${this.urls.DEACTIVATE_REMINDER}/${id}`
+      `${this.urls.PAUSE_REMINDER}/${id}`
     );
   };
 
