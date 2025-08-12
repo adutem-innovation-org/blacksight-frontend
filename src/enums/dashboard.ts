@@ -1,4 +1,3 @@
-import { REMINDER_ANALYTICS } from "./../apis/endpoints/reminder";
 export enum DashboardTabsEnum {
   ANALYTICS = "analytics",
   AGENTS = "agents",
@@ -7,7 +6,6 @@ export enum DashboardTabsEnum {
   USERS = "users",
   WORKSPACE = "workspace",
   SUBSCRIPTIONS = "subscriptions",
-  // REMINDER = "reminder",
   REMINDER_ANALYTICS = "reminder analytics",
   REMINDER_HISTORY = "reminders",
   PROFILE = "profile",
