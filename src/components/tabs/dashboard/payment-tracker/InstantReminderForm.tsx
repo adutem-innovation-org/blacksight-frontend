@@ -74,7 +74,7 @@ export const InstantFileReminderForm = ({
         return;
       }
 
-      dispatch(sendInstantReminder(values));
+      dispatch(sendInstantReminder({ data: values }));
     },
   });
 

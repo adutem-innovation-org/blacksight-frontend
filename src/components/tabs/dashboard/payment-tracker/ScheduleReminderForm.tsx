@@ -127,7 +127,7 @@ export const ScheduleFileReminderForm = ({
         );
       }
 
-      dispatch(createScheduledReminder(values));
+      dispatch(createScheduledReminder({ data: values }));
     },
   });
 

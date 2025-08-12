@@ -98,26 +98,38 @@ export const deleteReminder = createAsyncThunk<
 
 export const sendInstantReminder = createAsyncThunk<
   CreateReminderRes["reminder"],
-  SendInstantReminderBody,
+  { notFile?: boolean; data: SendInstantReminderBody },
   { rejectValue: { message: string; errors?: Record<string, string> | null } }
->("send_instant_reminder", async (data, { rejectWithValue }) => {
-  try {
-    const response = await reminderApiService.sendInstantReminder(data);
-    return response.reminder;
-  } catch (error: any) {
-    return rejectWithValue(error);
+>(
+  "send_instant_reminder",
+  async ({ notFile = false, data }, { rejectWithValue }) => {
+    try {
+      const api = notFile
+        ? reminderApiService.sendInstantBCPReminder
+        : reminderApiService.sendInstantReminder;
+      const response = await api(data);
+      return response.reminder;
+    } catch (error: any) {
+      return rejectWithValue(error);
+    }
   }
-});
+);
 
 export const createScheduledReminder = createAsyncThunk<
   CreateReminderRes["reminder"],
-  CreateScheduledReminderBody,
+  { notFile?: boolean; data: CreateScheduledReminderBody },
   { rejectValue: { message: string; errors?: Record<string, string> | null } }
->("create_scheduled_reminder", async (data, { rejectWithValue }) => {
-  try {
-    const response = await reminderApiService.createScheduledReminder(data);
-    return response.reminder;
-  } catch (error: any) {
-    return rejectWithValue(error);
+>(
+  "create_scheduled_reminder",
+  async ({ notFile = false, data }, { rejectWithValue }) => {
+    try {
+      const api = notFile
+        ? reminderApiService.createScheduledBCPReminder
+        : reminderApiService.createScheduledReminder;
+      const response = await api(data);
+      return response.reminder;
+    } catch (error: any) {
+      return rejectWithValue(error);
+    }
   }
-});
+);
