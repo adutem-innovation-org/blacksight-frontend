@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   resetCreateReminderReducer,
+  resetCreateScheduledReminderReducer,
   resetDeleteReminderReducer,
   resetGetAllRemindersReducer,
   resetGetReminderAnalyticsReducer,
@@ -11,6 +12,7 @@ import {
 import { initialReminderState } from "@/constants";
 import {
   createReminderBuilder,
+  createScheduledReminderBuilder,
   deleteReminderBuilder,
   getAllRemindersBuilder,
   getReminderAnalyticsBuilder,
@@ -30,6 +32,7 @@ const reminderSlice = createSlice({
     resetUpdateReminderStatus: resetUpdateReminderStatusReducer,
     resetDeleteReminder: resetDeleteReminderReducer,
     resetSendInstantReminder: resetSendInstantReminderReducer,
+    resetCreateScheduledReminder: resetCreateScheduledReminderReducer,
   },
   extraReducers(builder) {
     getReminderAnalyticsBuilder(builder);
@@ -39,6 +42,7 @@ const reminderSlice = createSlice({
     updateReminderStatusBuilder(builder);
     deleteReminderBuilder(builder);
     sendInstantReminderBuilder(builder);
+    createScheduledReminderBuilder(builder);
   },
 });
 
@@ -51,4 +55,5 @@ export const {
   resetUpdateReminderStatus,
   resetDeleteReminder,
   resetSendInstantReminder,
+  resetCreateScheduledReminder,
 } = reminderSlice.actions;

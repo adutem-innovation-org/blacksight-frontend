@@ -1,5 +1,6 @@
 import { ReminderApiService } from "@/apis";
 import {
+  CreateScheduledReminderBody,
   CreateReminderRes,
   Reminder,
   SendInstantReminderBody,
@@ -102,6 +103,19 @@ export const sendInstantReminder = createAsyncThunk<
 >("send_instant_reminder", async (data, { rejectWithValue }) => {
   try {
     const response = await reminderApiService.sendInstantReminder(data);
+    return response.reminder;
+  } catch (error: any) {
+    return rejectWithValue(error);
+  }
+});
+
+export const createScheduledReminder = createAsyncThunk<
+  CreateReminderRes["reminder"],
+  CreateScheduledReminderBody,
+  { rejectValue: { message: string; errors?: Record<string, string> | null } }
+>("create_scheduled_reminder", async (data, { rejectWithValue }) => {
+  try {
+    const response = await reminderApiService.createScheduledReminder(data);
     return response.reminder;
   } catch (error: any) {
     return rejectWithValue(error);

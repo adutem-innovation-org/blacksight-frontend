@@ -45,3 +45,10 @@ export const resetSendInstantReminderReducer = (state: ReminderState) => {
   state.sendInstantReminderErrors = {};
   state.sendInstantReminderErrorMsg = "";
 };
+
+export const resetCreateScheduledReminderReducer = (state: ReminderState) => {
+  state.creatingScheduledReminder = false;
+  state.scheduledReminderCreated = false;
+  state.createScheduledReminderErrors = {};
+  state.createScheduledReminderErrorMsg = "";
+};

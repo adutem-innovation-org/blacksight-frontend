@@ -41,4 +41,10 @@ export const initialReminderState: ReminderState = {
   instantReminderSent: false,
   sendInstantReminderErrors: {},
   sendInstantReminderErrorMsg: "",
+
+  // Create scheduled reminder
+  creatingScheduledReminder: false,
+  scheduledReminderCreated: false,
+  createScheduledReminderErrors: {},
+  createScheduledReminderErrorMsg: "",
 };

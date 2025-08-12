@@ -5,3 +5,4 @@ export * from "./delete-reminder.builder";
 export * from "./update-reminder-status.builder";
 export * from "./update-reminder.builder";
 export * from "./send-instant-reminder.builder";
+export * from "./create-scheduled-reminder.builder";

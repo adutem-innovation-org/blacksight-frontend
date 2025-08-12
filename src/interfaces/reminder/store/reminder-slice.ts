@@ -43,4 +43,10 @@ export type ReminderState = {
   instantReminderSent: boolean;
   sendInstantReminderErrors: Record<string, string>;
   sendInstantReminderErrorMsg: string;
+
+  // Create scheduled reminder
+  creatingScheduledReminder: boolean;
+  scheduledReminderCreated: boolean;
+  createScheduledReminderErrors: Record<string, string>;
+  createScheduledReminderErrorMsg: string;
 };
