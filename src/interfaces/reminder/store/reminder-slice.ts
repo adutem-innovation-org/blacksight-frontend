@@ -1,17 +1,19 @@
 import { PaginationMetaData } from "@/interfaces/pagination";
-import { Reminder } from "./reminder";
+import { IReminder, Reminder } from "./reminder";
+import { NewReminderAnalyticsRes } from "../api";
 
 export type ReminderState = {
   fetchingReminderAnalytics: boolean;
   reminderAnalyticsFetched: boolean;
   fetchReminderAnalyticsErrorMessage: string;
   reminderAnalytics: Record<string, number> | null;
+  analyticsData: NewReminderAnalyticsRes["data"] | null;
 
   // Get all reminders
   fetchingAllReminders: boolean;
   allRemindersFetched: boolean;
   fetchAllRemindersErrorMessage: string;
-  reminders: Reminder[] | null;
+  reminders: IReminder[] | null;
   meta: PaginationMetaData | null;
 
   // Create reminder
@@ -35,4 +37,10 @@ export type ReminderState = {
   deletingReminder: boolean;
   reminderDeleted: boolean;
   deleteReminderError: string;
+
+  // Send instant reminder
+  sendingInstantReminder: boolean;
+  instantReminderSent: boolean;
+  sendInstantReminderErrors: Record<string, string>;
+  sendInstantReminderErrorMsg: string;
 };

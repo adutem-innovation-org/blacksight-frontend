@@ -5,6 +5,7 @@ import {
   DialogContent,
   DialogDescription,
   DialogHeader,
+  DialogOverlay,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { INDUSTRIES, KBSourceType } from "@/constants";
@@ -205,7 +206,7 @@ export const AddKnowledgeBaseForm = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      {/* <DialogTrigger>Open</DialogTrigger> */}
+      <DialogOverlay className="fixed inset bg-black/40 backdrop-blur-[2px]" />
       <DialogContent
         onPointerDownOutside={(e) => e.preventDefault()}
         onOpenAutoFocus={(e) => e.preventDefault()}

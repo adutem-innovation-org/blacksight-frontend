@@ -239,7 +239,7 @@ export const ConversationTable = ({
                         return (
                           <TableCell
                             key={cell.id}
-                            className="font-sfpro-medium text-gray-900 text-sm whitespace-nowrap"
+                            className="font-dmsans tracking-tight text-gray-900 text-sm whitespace-nowrap"
                           >
                             {new Date(
                               cell.getValue() as string
@@ -250,14 +250,17 @@ export const ConversationTable = ({
 
                       if (cell.id.includes("botStatus")) {
                         return (
-                          <TableCell key={cell.id}>
+                          <TableCell
+                            key={cell.id}
+                            className="font-dmsans tracking-tight"
+                          >
                             <Badge
                               variant={
                                 badgeVariantMap[
                                   cell.getValue() as keyof typeof badgeVariantMap
                                 ]
                               }
-                              className="font-sfpro-medium"
+                              className="font-dmsans"
                               size={"sm"}
                             >
                               {flexRender(
@@ -272,7 +275,7 @@ export const ConversationTable = ({
                       return (
                         <TableCell
                           key={cell.id}
-                          className="font-sfpro-medium text-gray-900 text-sm"
+                          className="font-dmsans tracking-tight text-gray-900 text-sm"
                         >
                           {flexRender(
                             cell.column.columnDef.cell,

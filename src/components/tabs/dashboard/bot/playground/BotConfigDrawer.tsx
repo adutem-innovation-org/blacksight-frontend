@@ -20,6 +20,8 @@ import {
 import { DashboardTabsEnum } from "@/enums";
 import { Loader } from "@/components/progress";
 import toast from "react-hot-toast";
+import { AddKbAction } from "../Action";
+import { kbSources, KBSourceType } from "@/constants";
 
 interface SheetHeaderCompProps {
   currentBot: Bot;
@@ -71,7 +73,7 @@ interface BotConfigDrawerProps {
   isOpen: boolean;
   onOpenChange: (value: boolean) => void;
   currentBot: Bot;
-  addKB: () => void;
+  addKB: (source: KBSourceType) => void;
   showPromptEditor?: boolean;
 }
 
@@ -226,7 +228,7 @@ export function BotConfigDrawer({
       >
         {updatingBotConfig && <Loader />}
         <SheetHeaderComp currentBot={currentBot} onOpenChange={onOpenChange} />
-        <div className="px-4 sm:px-8 overflow-y-auto overflow-x-hidden pb-6">
+        <div className="px-4 sm:px-8 overflow-y-auto overflow-x-hidden pb-6 no-scrollbar">
           {/* config form */}
           <form
             onSubmit={(e) => {
@@ -278,17 +280,13 @@ export function BotConfigDrawer({
                 <EmptySelectOptions
                   description="You are yet to add a knowledge base."
                   // onClickCta={goToKnowledgeBase}
-                  onClickCta={addKB}
+                  onClickCta={() => addKB(kbSources[0])}
                   ctaText="Add knowledge base"
                   loading={fetchingAllKnowledgeBases}
                 />
               }
               containerClassName="gap-2 mt-4"
-              action={
-                <Button onClick={addKB} className="h-8 !text-xs" type="button">
-                  Create <Plus />
-                </Button>
-              }
+              action={<AddKbAction addKB={addKB} />}
             />
             <FormGroup
               type="switch"

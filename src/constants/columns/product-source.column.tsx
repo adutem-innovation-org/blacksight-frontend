@@ -53,6 +53,16 @@ export const productSourceTableColumns: ColumnDef<IProductsSource>[] = [
     ),
   },
   {
+    id: "connectedBots",
+    accessorFn: (row) => row.connectedBots.length,
+    header: "Connected Bots",
+    cell: ({ row }) => (
+      <p className="!text-sm tracking-tight text-center">
+        {row.getValue("connectedBots")}
+      </p>
+    ),
+  },
+  {
     id: "createdBy",
     accessorFn: (row) => row.createdBy.email,
     header: "Created By",
@@ -86,6 +96,7 @@ export const productSourceTableColumns: ColumnDef<IProductsSource>[] = [
     cell: ({ row, table }) => {
       const meta = table.options.meta as {
         triggerDeleteProductsSource: (data: IProductsSource) => void;
+        triggerAttachAgent: (data: IProductsSource) => void;
       };
 
       return (
@@ -103,7 +114,7 @@ export const productSourceTableColumns: ColumnDef<IProductsSource>[] = [
             {
               placeholder: "Attach to Agent",
               onClick: () => {
-                toast.success("Coming soon.🙌😃");
+                meta.triggerAttachAgent(row.original);
               },
               Icon: Unplug,
             },

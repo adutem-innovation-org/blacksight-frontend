@@ -12,6 +12,7 @@ import { ConfigureBotForm } from "./ConfigureBotForm";
 import { BotList } from "./BotList";
 import { AddKnowledgeBaseForm } from "../knowledge-base";
 import { cn } from "@/lib/utils";
+import { KBSourceType } from "@/constants";
 
 const Header = ({ openCreateForm }: { openCreateForm: () => void }) => {
   const { user } = useProfile();
@@ -74,11 +75,11 @@ const Header = ({ openCreateForm }: { openCreateForm: () => void }) => {
         {user?.userType === UserTypes.USER && (
           <Button
             variant={"brand"}
-            className="h-13 items-center gap-3"
+            className="h-12 items-center gap-3"
             onClick={openCreateForm}
           >
-            Configure bot
-            <i className="fi fi-rr-multiple text-2xl flex"></i>
+            Create agent
+            <i className="fi fi-rr-multiple text-xl flex"></i>
           </Button>
         )}
       </div>
@@ -93,13 +94,16 @@ export const BotAnalyticsTab = () => {
 
   // Create knowledge base
   const [createKBFormOpen, setCreateKBFormOpen] = useState(() => false);
+  const [sourceData, setSourceData] = useState<KBSourceType | null>(null);
 
   const onOpenKBFormChange = (val: boolean) => {
     setCreateKBFormOpen(val);
+    if (!val) setSourceData(null);
     setCreateFormOpen(true);
   };
 
-  const addKB = () => {
+  const addKB = (sourceData: KBSourceType) => {
+    setSourceData(sourceData);
     setCreateFormOpen(false);
     setCreateKBFormOpen(true);
   };
@@ -151,6 +155,7 @@ export const BotAnalyticsTab = () => {
       <AddKnowledgeBaseForm
         isOpen={createKBFormOpen}
         onOpenChange={onOpenKBFormChange}
+        sourceData={sourceData}
       />
     </div>
   );

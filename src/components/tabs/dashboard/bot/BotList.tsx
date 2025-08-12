@@ -17,6 +17,7 @@ import toast from "react-hot-toast";
 import { ConfirmationDialog, DeleteDialog } from "@/components/popups";
 import { Loader } from "@/components/progress";
 import { AddKnowledgeBaseForm } from "../knowledge-base";
+import { KBSourceType } from "@/constants";
 
 interface BotListProps {
   bots: Bot[];
@@ -62,9 +63,16 @@ export const BotList = ({ bots }: BotListProps) => {
   const [botToDeactivate, setBotToDeactivate] = useState<Bot | null>(null);
 
   // Add KB
+  const [sourceData, setSourceData] = useState<KBSourceType | null>(null);
   const [createKBFormOpen, setCreateKBFormOpen] = useState(() => false);
 
-  const addKB = () => {
+  const onCreateKBOpenChange = (val: boolean) => {
+    setCreateKBFormOpen(val);
+    if (!val) setSourceData(null);
+  };
+
+  const addKB = (source: KBSourceType) => {
+    setSourceData(source);
     setCreateKBFormOpen(true);
   };
 
@@ -261,7 +269,8 @@ export const BotList = ({ bots }: BotListProps) => {
 
       <AddKnowledgeBaseForm
         isOpen={createKBFormOpen}
-        onOpenChange={setCreateKBFormOpen}
+        onOpenChange={onCreateKBOpenChange}
+        sourceData={sourceData}
       />
     </div>
   );

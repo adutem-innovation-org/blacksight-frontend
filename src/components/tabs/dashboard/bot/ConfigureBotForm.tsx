@@ -7,6 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { kbSources, KBSourceType } from "@/constants";
 import { DashboardTabsEnum, UserTypes } from "@/enums";
 import { useProfile, useStore } from "@/hooks";
 import { botSchema } from "@/schemas";
@@ -22,9 +23,10 @@ import {
   resetGetConnectedProviders,
 } from "@/store";
 import { useFormik } from "formik";
-import { Plus } from "lucide-react";
 import { useEffect, useMemo } from "react";
 import toast from "react-hot-toast";
+import { AddKbAction } from "./Action";
+import { FormDialog } from "@/components/popups";
 
 export const EmptySelectOptions = ({
   description,
@@ -60,7 +62,7 @@ export const EmptySelectOptions = ({
 interface ConfigureBotProps {
   isOpen: boolean;
   onOpenChange: (value: boolean) => void;
-  addKB: () => void;
+  addKB: (sourceData: KBSourceType) => void;
 }
 
 export const ConfigureBotForm = ({
@@ -201,109 +203,82 @@ export const ConfigureBotForm = ({
   }, [configureBotErrorMessage]);
 
   return (
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      {/* <DialogTrigger>Open</DialogTrigger> */}
-      <DialogContent
-        onPointerDownOutside={(e) => e.preventDefault()}
-        onOpenAutoFocus={(e) => e.preventDefault()}
-        className="max-h-[85dvh] overflow-y-auto overflow-x-hidden"
-      >
-        {configuringBot && <Loader />}
-        <DialogHeader>
-          <DialogTitle>Configure bot</DialogTitle>
-          <DialogDescription>
-            Configure your AI assistant and let it serve customers in seconds.
-          </DialogDescription>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              validation.handleSubmit();
-              return false;
-            }}
-          >
-            <FormGroup
-              type="text"
-              groupLabel="Bot name"
-              placeholder="Enter a desired bot name."
-              size="md"
-              name="name"
-              validation={validation}
-              containerClassName="gap-2 mt-4"
-            />
-            <FormGroup
-              type="multi-select"
-              groupLabel="Knowledge base"
-              label="Knowledge base"
-              placeholder="Please select one or more knowledge base"
-              info="This is where your bot get informatio about your business from."
-              size="md"
-              name="knowledgeBaseIds"
-              multiSelectInputData={knowledgeBaseOptions}
-              validation={validation}
-              noOptionsContent={
-                <EmptySelectOptions
-                  description="You are yet to add a knowledge base."
-                  // onClickCta={goToKnowledgeBase}
-                  onClickCta={addKB}
-                  ctaText="Add knowledge base"
-                  loading={fetchingAllKnowledgeBases}
-                />
-              }
-              containerClassName="gap-2 mt-4"
-              action={
-                <Button
-                  onClick={addKB}
-                  className="h-8 !text-xs px-2.5"
-                  type="button"
-                >
-                  Create <Plus />
-                </Button>
-              }
-            />
+    <FormDialog
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+      title="Create agent"
+      description="Configure your AI assistant and let it service customers in seconds"
+      loading={configuringBot}
+      ctaText="Create agent"
+      loadingCtaText="Creating..."
+      validation={validation}
+      ctaDisabled={configuringBot}
+      ctaClassName="bg-primary"
+    >
+      <FormGroup
+        type="text"
+        groupLabel="Bot name"
+        placeholder="Enter a desired bot name."
+        size="md"
+        name="name"
+        validation={validation}
+        containerClassName="gap-2 mt-4"
+      />
+      <FormGroup
+        type="multi-select"
+        groupLabel="Knowledge base"
+        label="Knowledge base"
+        placeholder="Please select one or more knowledge base"
+        info="This is where your bot get informatio about your business from."
+        size="md"
+        name="knowledgeBaseIds"
+        multiSelectInputData={knowledgeBaseOptions}
+        validation={validation}
+        noOptionsContent={
+          <EmptySelectOptions
+            description="You are yet to add a knowledge base."
+            // onClickCta={goToKnowledgeBase}
+            onClickCta={() => addKB(kbSources[0])}
+            ctaText="Add knowledge base"
+            loading={fetchingAllKnowledgeBases}
+          />
+        }
+        containerClassName="gap-2 mt-4"
+        action={<AddKbAction addKB={addKB} />}
+      />
 
-            <FormGroup
-              type="switch"
-              groupLabel="Schedule in calendar?"
-              placeholder="Schedule meetings"
-              info="Decide whatever or not an automatic google meet or zoom meet should be created for you as soon as the appointment is booked."
-              size="md"
-              name="scheduleMeeting"
-              validation={validation}
-              containerClassName="gap-2 mt-4"
+      <FormGroup
+        type="switch"
+        groupLabel="Schedule in calendar?"
+        placeholder="Schedule meetings"
+        info="Decide whatever or not an automatic google meet or zoom meet should be created for you as soon as the appointment is booked."
+        size="md"
+        name="scheduleMeeting"
+        validation={validation}
+        containerClassName="gap-2 mt-4"
+      />
+
+      {validation.values.scheduleMeeting && (
+        <FormGroup
+          type="select"
+          groupLabel="Calendar"
+          placeholder="Select a provider"
+          info="Select a calendar provider, this is where your appointments are scheduled."
+          size="md"
+          name="meetingProviderId"
+          validation={validation}
+          containerClassName="gap-2 mt-4"
+          options={connectedProviderOptions}
+          noOptionsContent={
+            <EmptySelectOptions
+              description="You are yet to setup any calendar provider."
+              onClickCta={goToBookingProviders}
+              ctaText="Setup provider"
+              loading={fetchingConnectedProviders}
             />
-
-            {validation.values.scheduleMeeting && (
-              <FormGroup
-                type="select"
-                groupLabel="Calendar"
-                placeholder="Select a provider"
-                info="Select a calendar provider, this is where your appointments are scheduled."
-                size="md"
-                name="meetingProviderId"
-                validation={validation}
-                containerClassName="gap-2 mt-4"
-                options={connectedProviderOptions}
-                noOptionsContent={
-                  <EmptySelectOptions
-                    description="You are yet to setup any calendar provider."
-                    onClickCta={goToBookingProviders}
-                    ctaText="Setup provider"
-                    loading={fetchingConnectedProviders}
-                  />
-                }
-              />
-            )}
-
-            <Button
-              className="w-full cursor-pointer mt-10"
-              type="submit"
-              disabled={configuringBot}
-            >
-              Configure bot
-            </Button>
-          </form>
-        </DialogHeader>
-      </DialogContent>
-    </Dialog>
+          }
+        />
+      )}
+    </FormDialog>
   );
 };

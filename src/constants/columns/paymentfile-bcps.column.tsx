@@ -28,6 +28,15 @@ export const bcpsTableColumns: ColumnDef<IBCP>[] = [
     ),
   },
   {
+    accessorKey: "phone",
+    header: "Phone",
+    enableSorting: false,
+    enableHiding: true,
+    cell: ({ row }) => (
+      <p className="!text-sm tracking-tight">{row.getValue("phone")}</p>
+    ),
+  },
+  {
     accessorKey: "paymentInterval",
     header: "Interval",
     enableSorting: true,

@@ -9,15 +9,15 @@ import { useProfile, useStore } from "@/hooks";
 import { getAllAppointments, getAnalytics, getUsers } from "@/store";
 import React, { useEffect, useMemo } from "react";
 import {
-  AppointmentWidget,
-  TokenUsageWidget,
+  AppointmentAndTokenUsage,
+  BookingAndResponseTimeChart,
   TopUsersWidget,
 } from "./analytics";
+import { motion } from "framer-motion";
 
 const AnalyticsHeader = () => {
   const { getState } = useStore();
-  const { analytics, fetchingAnalytics, fetchAnalyticsError } =
-    getState("Analytics");
+  const { analytics, fetchAnalyticsError } = getState("Analytics");
   const { user } = useProfile();
 
   const formattedAnalytics = useMemo(() => {
@@ -86,46 +86,16 @@ export const AnalyticsTab = () => {
     <React.Fragment>
       <DashboardContent>
         <DashboardTableLayoutDiv className="no-scrollbar overflow-auto">
-          <AnalyticsHeader />
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <AnalyticsHeader />
+          </motion.div>
           <div className="bg-transparent md:flex-1 grid gap-4">
-            <div
-              className="grid grid-cols-1 md:grid-cols-2 gap-4"
-              style={{ gridAutoRows: "400px" }}
-            >
-              {/* Bookings chart */}
-              <div className="bg-white p-6 flex flex-col gap-4 rounded-sm">
-                <div>
-                  <p className="text-2xl text-brand font-semibold font-urbanist">
-                    Bookings
-                  </p>
-                </div>
-                <div className="h-full rounded-xl flex items-end justify-start pt-5">
-                  <BookingVolumeChart stat={analytics?.bookingStat} />
-                </div>
-              </div>
-
-              {user && user.userType === UserTypes.USER ? (
-                <ResponseTimeWidget analytics={analytics} />
-              ) : (
-                <div className="bg-white p-6 flex flex-col gap-4 rounded-sm"></div>
-              )}
-            </div>
-
-            <div
-              className="grid grid-cols-1 lg:grid-cols-3 gap-4"
-              style={{ gridAutoRows: "600px" }}
-            >
-              <AppointmentWidget />
-
-              <div className="rounded-sm bg-white col-span-1 p-6 flex flex-col gap-4">
-                {user && user.userType === UserTypes.USER ? (
-                  <TokenUsageWidget analytics={analytics} />
-                ) : (
-                  <></>
-                )}
-              </div>
-            </div>
-
+            <BookingAndResponseTimeChart />
+            <AppointmentAndTokenUsage />
             {user && user.userType === UserTypes.ADMIN && (
               <div
                 className="grid grid-cols-1 lg:grid-cols-3 gap-4"
@@ -138,17 +108,6 @@ export const AnalyticsTab = () => {
                 <TopUsersWidget />
               </div>
             )}
-
-            <div className="bg-white h-[400px] rounded-sm p-6 flex flex-col gap-4">
-              <div>
-                <p className="text-2xl text-[#8884d8] font-semibold font-urbanist">
-                  Popular booking time
-                </p>
-              </div>
-              <div className="h-full rounded-xl flex items-end justify-start pt-5">
-                <PopularBookingTimeChart />
-              </div>
-            </div>
           </div>
         </DashboardTableLayoutDiv>
       </DashboardContent>

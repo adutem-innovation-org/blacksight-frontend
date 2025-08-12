@@ -1,12 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   resetAddProductsSourceReducer,
+  resetAttachAgentReducer,
   resetDeleteProductsSourceReducer,
   resetGetProductsSourcesReducer,
 } from "../reducers";
 import { initialProductRecommendationState } from "@/constants";
 import {
   addProductsSourceBuilder,
+  attachAgentToProductSourceBuilder,
   deleteProductsSourceBuilder,
   getProductsSourcesBuilder,
 } from "../builders";
@@ -18,11 +20,13 @@ export const productRecommendationSlice = createSlice({
     resetGetProductsSources: resetGetProductsSourcesReducer,
     resetAddProductsSource: resetAddProductsSourceReducer,
     resetDeleteProductsSource: resetDeleteProductsSourceReducer,
+    resetAttachAgent: resetAttachAgentReducer,
   },
   extraReducers(builder) {
     getProductsSourcesBuilder(builder);
     addProductsSourceBuilder(builder);
     deleteProductsSourceBuilder(builder);
+    attachAgentToProductSourceBuilder(builder);
   },
 });
 
@@ -31,4 +35,5 @@ export const {
   resetGetProductsSources,
   resetAddProductsSource,
   resetDeleteProductsSource,
+  resetAttachAgent,
 } = productRecommendationSlice.actions;

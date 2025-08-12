@@ -61,7 +61,7 @@ const InputComp = ({
   type = "text",
   maxLength,
 }: InputProps) => {
-  const filled = useMemo(() => value.length > 0, [value]);
+  const filled = useMemo(() => value?.length > 0, [value]);
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement | undefined>(undefined);
 
@@ -77,7 +77,7 @@ const InputComp = ({
 
   const onClickRoot = (e: any) => {
     if (e.target.matches(".password-root")) {
-      const valueLength = inputRef?.current?.value.length!;
+      const valueLength = inputRef?.current?.value?.length!;
       inputRef?.current?.focus();
       inputRef?.current?.setSelectionRange(valueLength, valueLength);
     }

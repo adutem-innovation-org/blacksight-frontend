@@ -5,6 +5,7 @@ export const initialReminderState: ReminderState = {
   reminderAnalyticsFetched: false,
   fetchReminderAnalyticsErrorMessage: "",
   reminderAnalytics: null,
+  analyticsData: null,
 
   // Get all reminders
   fetchingAllReminders: false,
@@ -34,4 +35,10 @@ export const initialReminderState: ReminderState = {
   deletingReminder: false,
   reminderDeleted: false,
   deleteReminderError: "",
+
+  // Send instant reminder
+  sendingInstantReminder: false,
+  instantReminderSent: false,
+  sendInstantReminderErrors: {},
+  sendInstantReminderErrorMsg: "",
 };

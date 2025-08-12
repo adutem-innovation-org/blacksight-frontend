@@ -24,10 +24,12 @@ import { IProductsSource } from "@/interfaces";
 
 type ProductSourceTableProps = {
   triggerDeleteProductsSource: (data: IProductsSource) => void;
+  triggerAttachAgent: (data: IProductsSource) => void;
 };
 
 export const ProductSourceTable = ({
   triggerDeleteProductsSource,
+  triggerAttachAgent,
 }: ProductSourceTableProps) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -36,7 +38,7 @@ export const ProductSourceTable = ({
 
   const table = useReactTable({
     data: productsSources || [],
-    meta: { triggerDeleteProductsSource },
+    meta: { triggerDeleteProductsSource, triggerAttachAgent },
     columns: productSourceTableColumns,
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,

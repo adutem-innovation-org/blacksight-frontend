@@ -4,17 +4,30 @@ import { useStore } from "@/hooks";
 import { EmptyRecordsTemplate } from "@/components/templates";
 import notificationIcon from "@/assets/images/schedule.png";
 import { changeTab } from "@/store";
-import { DashboardTabsEnum } from "@/enums";
+import { DashboardTabsEnum, SideBarStateEnum } from "@/enums";
+import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
 export const AppointmentWidget = () => {
   const { getState, dispatch } = useStore();
   const { appointments } = getState("Appointment");
+  const { sidebarState } = getState("Layout");
+  const navigate = useNavigate();
+
+  const isCollapsed = sidebarState === SideBarStateEnum.COLLAPSED;
 
   const goToAppointments = () => {
-    dispatch(changeTab(DashboardTabsEnum.APPOINTMENTS));
+    navigate("/appointments");
   };
   return (
-    <div className="rounded-sm bg-white col-span-1 lg:col-span-2 flex flex-col">
+    <div
+      className={cn(
+        "rounded-sm bg-white col-span-1 xl:col-span-2 flex flex-col",
+        {
+          "lg:col-span-2": isCollapsed,
+        }
+      )}
+    >
       <div className="border-b p-4 px-6 flex justify-between items-center">
         <h3 className="font-sfpro-medium text-xl">Appointments</h3>
         {appointments && appointments.length > 0 && (
@@ -39,6 +52,7 @@ export const AppointmentWidget = () => {
         <AppointmentTable
           hideRefreshButton
           gridContainerClassName={"!grid-rows-[60px_1fr_60px]"}
+          asWidget
         />
       )}
     </div>

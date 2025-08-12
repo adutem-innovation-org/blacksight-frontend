@@ -22,6 +22,7 @@ import { BotConfigDrawer } from "./BotConfigDrawer";
 import { Loader } from "@/components/progress";
 import toast from "react-hot-toast";
 import { AddKnowledgeBaseForm } from "../../knowledge-base";
+import { KBSourceType } from "@/constants";
 
 export const MoreActionsDropdown = ({
   onClearConversation,
@@ -96,9 +97,16 @@ export const BotPlaygroundTab = () => {
   const openBotConfig = () => setBotConfigOpen(true);
 
   // Add KB
+  const [sourceData, setSourceData] = useState<KBSourceType | null>(null);
   const [createKBFormOpen, setCreateKBFormOpen] = useState(() => false);
 
-  const addKB = () => {
+  const onCreateKBOpenChange = (val: boolean) => {
+    setCreateKBFormOpen(val);
+    if (!val) setSourceData(null);
+  };
+
+  const addKB = (source: KBSourceType) => {
+    setSourceData(source);
     setCreateKBFormOpen(true);
   };
 
@@ -162,7 +170,8 @@ export const BotPlaygroundTab = () => {
 
         <AddKnowledgeBaseForm
           isOpen={createKBFormOpen}
-          onOpenChange={setCreateKBFormOpen}
+          onOpenChange={onCreateKBOpenChange}
+          sourceData={sourceData}
         />
       </div>
     </div>

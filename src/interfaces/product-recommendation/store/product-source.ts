@@ -1,4 +1,5 @@
 import { KnowledgeBaseSources } from "@/enums";
+import { Bot } from "@/interfaces/bot";
 
 export type IProductsSource = {
   _id: string;
@@ -10,6 +11,7 @@ export type IProductsSource = {
   createdBy: {
     email: string;
   };
+  connectedBots: Pick<Bot, "_id" | "name" | "status">[];
   documentId: string;
   businessId: string;
   chunks: string[];

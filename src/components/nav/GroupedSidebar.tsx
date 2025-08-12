@@ -1,4 +1,9 @@
-import { ChevronLeft, ChevronRight, EllipsisVertical } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronsUpDown,
+  EllipsisVertical,
+} from "lucide-react";
 import { useProfile, useStore } from "@/hooks";
 import {
   changeSidebarMobileState,
@@ -10,7 +15,7 @@ import { cn } from "@/lib/utils";
 import brandLogo from "@/assets/images/blacksight_logo_side.png";
 import brandLogoVertical from "@/assets/images/blacksight_logo.png";
 import { groupedSideTabs, SidebarGroupType, SideTabType } from "@/constants";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import man from "@/assets/images/man.png";
 import styled from "styled-components";
 import {
@@ -19,7 +24,7 @@ import {
   TooltipTrigger,
   Tooltip,
 } from "../ui/tooltip";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const SidebarHeader = () => {
   const { dispatch, getState } = useStore();
@@ -139,24 +144,106 @@ const TabItem = ({ name, iconClass, tabId, path }: SideTabType) => {
     </TooltipProvider>
   );
 };
-
 const SidebarGroup = ({ group }: { group: SidebarGroupType }) => {
   const { getState } = useStore();
   const { sidebarState } = getState("Layout");
-
+  const btnRef = useRef<HTMLDivElement | null>(null);
+  const tabsRef = useRef<HTMLUListElement | null>(null);
+  const location = useLocation();
   const isCollapsed = sidebarState === SideBarStateEnum.COLLAPSED;
 
+  const openGroup = () => {
+    if (tabsRef.current) {
+      tabsRef.current.style.maxHeight = tabsRef.current.scrollHeight + "px";
+      btnRef.current?.classList.add("active");
+    }
+  };
+
+  const closeGroup = () => {
+    if (tabsRef.current) {
+      tabsRef.current.style.maxHeight = "0px";
+      btnRef.current?.classList.remove("active");
+    }
+  };
+
+  const toggleGroup = () => {
+    if (tabsRef.current) {
+      btnRef.current?.classList.toggle("active");
+      if (
+        tabsRef.current.style.maxHeight &&
+        tabsRef.current.style.maxHeight !== "0px"
+      ) {
+        tabsRef.current.style.maxHeight = "0px";
+      } else {
+        tabsRef.current.style.maxHeight = tabsRef.current.scrollHeight + "px";
+      }
+    }
+  };
+
+  const reworkGroupHeight = () => {
+    if (tabsRef.current) {
+      if (
+        tabsRef.current.style.maxHeight &&
+        tabsRef.current.style.maxHeight !== "0px"
+      ) {
+        if (isCollapsed) {
+          tabsRef.current.style.overflow = "visible";
+          tabsRef.current.style.maxHeight = "max-content";
+        } else {
+          tabsRef.current.style.overflow = "hidden";
+          tabsRef.current.style.maxHeight = tabsRef.current.scrollHeight + "px";
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
+    reworkGroupHeight();
+  }, [isCollapsed]);
+
+  useEffect(() => {
+    // Set initial open state
+    openGroup();
+
+    btnRef.current?.addEventListener("click", toggleGroup);
+
+    // Cleanup event listener
+    return () => {
+      btnRef.current?.removeEventListener("click", toggleGroup);
+    };
+  }, []);
+
+  // Auto-open group when pathname matches any tab's path
+  useEffect(() => {
+    const hasMatchingTab = group.tabs.some(
+      (tab) => tab.path === location.pathname
+    );
+    if (hasMatchingTab) {
+      openGroup();
+    }
+  }, [location.pathname, group.tabs]);
+
   return (
-    <div className="flex flex-col gap-2">
-      <p
-        className={cn("font-dmsans text-base text-gray-700 font-semibold", {
+    <div className="flex flex-col gap-2 border-b border-b-gray-100/80">
+      <div
+        ref={btnRef}
+        className={cn("flex items-center justify-between cursor-pointer py-1", {
           "sm:hidden": isCollapsed,
         })}
       >
-        {group.name}
-      </p>
+        <p
+          className={cn(
+            "font-dmsans text-base text-gray-700 font-semibold pointer-events-none"
+          )}
+        >
+          {group.name}
+        </p>
+
+        <ChevronsUpDown className="w-4 h-4 text-gray-300" />
+      </div>
       <ul
-        className={cn("flex flex-col gap-1", {
+        ref={tabsRef}
+        className={cn("flex flex-col gap-1 duration-500 overflow-hidden", {
           "items-center": isCollapsed,
         })}
       >
@@ -181,7 +268,7 @@ const SidebarTabs = () => {
   const isCollapsed = sidebarState === SideBarStateEnum.COLLAPSED;
 
   return (
-    <div className="px-5 py-8 overflow-auto h-full">
+    <div className="px-5 py-8 overflow-auto h-full no-scrollbar">
       <ul
         className={cn("flex flex-col gap-5", {
           "sm:gap-6 sm:items-center": isCollapsed,

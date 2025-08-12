@@ -1,5 +1,9 @@
 import { ReminderApiService } from "@/apis";
-import { Reminder } from "@/interfaces";
+import {
+  CreateReminderRes,
+  Reminder,
+  SendInstantReminderBody,
+} from "@/interfaces";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const reminderApiService = ReminderApiService.getInstance();
@@ -20,8 +24,8 @@ export const getAllReminders = createAsyncThunk(
   "get_all_reminders",
   async (_: void, thunkAPI) => {
     try {
-      const { data, meta } = await reminderApiService.getReminders();
-      return { data, meta };
+      const { data, ...rest } = await reminderApiService.getReminders();
+      return { data, meta: rest.meta || rest.pagination };
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message as string);
     }
@@ -88,5 +92,18 @@ export const deleteReminder = createAsyncThunk<
     return res.reminder;
   } catch (error: any) {
     return rejectWithValue(error.message);
+  }
+});
+
+export const sendInstantReminder = createAsyncThunk<
+  CreateReminderRes["reminder"],
+  SendInstantReminderBody,
+  { rejectValue: { message: string; errors?: Record<string, string> | null } }
+>("send_instant_reminder", async (data, { rejectWithValue }) => {
+  try {
+    const response = await reminderApiService.sendInstantReminder(data);
+    return response.reminder;
+  } catch (error: any) {
+    return rejectWithValue(error);
   }
 });

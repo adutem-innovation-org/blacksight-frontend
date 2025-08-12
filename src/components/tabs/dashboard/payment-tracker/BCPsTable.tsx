@@ -80,6 +80,8 @@ export const BCPsTable = ({
         return "hidden min-[400px]:table-cell sm:table-cell";
       case "email":
         return "";
+      case "phone":
+        return "hidden xl:table-cell";
       case "paymentInterval":
         return "hidden xl:table-cell";
       case "uploadedBy":

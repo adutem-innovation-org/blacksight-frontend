@@ -38,3 +38,10 @@ export const resetDeleteReminderReducer = (state: ReminderState) => {
   state.reminderDeleted = false;
   state.deleteReminderError = "";
 };
+
+export const resetSendInstantReminderReducer = (state: ReminderState) => {
+  state.sendingInstantReminder = false;
+  state.instantReminderSent = false;
+  state.sendInstantReminderErrors = {};
+  state.sendInstantReminderErrorMsg = "";
+};

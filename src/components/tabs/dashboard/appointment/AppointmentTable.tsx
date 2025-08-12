@@ -38,7 +38,7 @@ import {
   Settings,
   X,
 } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import pinLogo from "@/assets/svgs/pin.svg";
 import {
@@ -144,7 +144,9 @@ export const columns: ColumnDef<Appointment>[] = [
         />
       );
     },
-    cell: ({ row }) => <div>{row.getValue("customerEmail")}</div>,
+    cell: ({ row }) => (
+      <div className="whitespace-nowrap">{row.getValue("customerEmail")}</div>
+    ),
   },
   {
     accessorKey: "customerPhone",
@@ -183,7 +185,9 @@ export const columns: ColumnDef<Appointment>[] = [
         />
       );
     },
-    cell: ({ row }) => <div>{row.getValue("customerPhone")}</div>,
+    cell: ({ row }) => (
+      <div className="whitespace-nowrap">{row.getValue("customerPhone")}</div>
+    ),
   },
   {
     accessorKey: "status",
@@ -393,9 +397,11 @@ const formatters = {
 export const AppointmentTable = ({
   hideRefreshButton,
   gridContainerClassName,
+  asWidget,
 }: {
   hideRefreshButton?: boolean;
   gridContainerClassName?: string;
+  asWidget?: boolean;
 }) => {
   const { dispatch, getState } = useStore();
   const { appointments } = getState("Appointment");
@@ -461,6 +467,15 @@ export const AppointmentTable = ({
     dispatch(getAllAppointments());
   };
 
+  useEffect(() => {
+    setColumnVisibility((prev) => ({
+      ...prev,
+      status: !asWidget,
+      dateTimeInUTC: !asWidget,
+      timezone: !asWidget,
+    }));
+  }, [asWidget]);
+
   return (
     <DashboardGrid
       className={cn(
@@ -495,12 +510,12 @@ export const AppointmentTable = ({
             </Button>
           )}
           <DataExportDropdown exportCSV={exportCSV} exportExcel={exportExcel} />
-          {<TableSettings table={table} />}
+          {<TableSettings table={table} asWidget={asWidget} />}
         </div>
       </div>
 
       {/* Table */}
-      <div className="rounded-md border  flex-1 bg-white p-4 w-full overflow-auto h-full custom-scrollbar no-scrollbar">
+      <div className="rounded-md border flex-1 bg-white p-4 w-full overflow-auto h-full no-scrollbar">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -547,14 +562,17 @@ export const AppointmentTable = ({
                     {row.getVisibleCells().map((cell) => {
                       if (cell.id.includes("status")) {
                         return (
-                          <TableCell key={cell.id}>
+                          <TableCell
+                            key={cell.id}
+                            className="font-dmsans tracking-tight"
+                          >
                             <Badge
                               variant={
                                 badgeVariantMap[
                                   cell.getValue() as keyof typeof badgeVariantMap
                                 ]
                               }
-                              className="font-sfpro-medium"
+                              className="font-dmsans"
                               size={"sm"}
                             >
                               {flexRender(
@@ -570,7 +588,7 @@ export const AppointmentTable = ({
                         return (
                           <TableCell
                             key={cell.id}
-                            className="font-sfpro-medium text-gray-900 text-sm whitespace-nowrap"
+                            className="font-dmsans tracking-tight text-gray-900 text-sm whitespace-nowrap"
                           >
                             {new Date(
                               cell.getValue() as string
@@ -582,7 +600,7 @@ export const AppointmentTable = ({
                       return (
                         <TableCell
                           key={cell.id}
-                          className="font-sfpro-medium text-gray-900 text-sm"
+                          className="font-dmsans tracking-tight text-gray-900 text-sm"
                         >
                           {flexRender(
                             cell.column.columnDef.cell,
@@ -655,6 +673,7 @@ const DashboardGrid = styled.div`
 
 type TableSettingProps = {
   table: TableType<Appointment>;
+  asWidget?: boolean;
 };
 
 const headerMap: Record<string, string> = {
@@ -668,7 +687,7 @@ const headerMap: Record<string, string> = {
   status: "Status",
 };
 
-function TableSettings({ table }: TableSettingProps) {
+function TableSettings({ table, asWidget }: TableSettingProps) {
   const [tableSettingsOpen, setTableSettingsOpen] = useState(false);
 
   const changeTableSettingsState = (value: boolean) =>
@@ -711,7 +730,14 @@ function TableSettings({ table }: TableSettingProps) {
           .getAllColumns()
           .filter(
             (column) =>
-              column.getCanHide() && !["actions", "_id"].includes(column.id)
+              column.getCanHide() &&
+              ![
+                "actions",
+                "_id",
+                ...(asWidget
+                  ? ["conversationId", "status", "dateTimeInUTC"]
+                  : []),
+              ].includes(column.id)
           )
           .map((column) => {
             return (

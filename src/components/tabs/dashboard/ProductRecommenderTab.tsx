@@ -5,11 +5,13 @@ import {
   UploadProductsWidget,
   ProductSourceTable,
   AddProductsForm,
+  AttachAgentForm,
 } from "./product-recommdation";
 import { KBSourceType } from "@/constants";
 import { Loader } from "@/components/progress";
 import { useStore } from "@/hooks";
 import {
+  attachAgentToProductSource,
   deleteProductsSource,
   getAllBots,
   getAllProductsSources,
@@ -34,7 +36,44 @@ export const ProductRecommenderTab = () => {
     deletingProductsSource,
     productsSourceDeleted,
     deleteProductsSourceError,
+
+    // Attach agent to product source
+    attachingAgent,
+    agentAttached,
+    attachAgentErrorMsg,
   } = getState("ProductRecommendation");
+  const { fetchingAllBots, bots } = getState("Bot");
+  // Attach agent to product source
+  const [attachAgentModalOpen, setAttachAgentModalOpen] = useState(false);
+  const [productSourceToAttachAgent, setProductSourceToAttachAgent] =
+    useState<IProductsSource | null>(null);
+
+  const openAttachAgentModal = () => setAttachAgentModalOpen(true);
+  const closeAttachAgentModal = () => setAttachAgentModalOpen(false);
+
+  const triggerAttachAgent = (data: IProductsSource) => {
+    if (!bots || bots.length === 0)
+      return toast.success("Please create an agent first.", {
+        iconTheme: {
+          primary: "#1a5f82",
+          secondary: "#fff",
+        },
+        position: "top-center",
+        style: {
+          color: "#1a5f82",
+        },
+      });
+    setProductSourceToAttachAgent(data);
+    openAttachAgentModal();
+  };
+
+  const endAttachAgentOperation = () => {
+    closeAttachAgentModal();
+    setProductSourceToAttachAgent(null);
+    // Reset pointer event on page ✅ Radix bug
+    resetDocumentElement();
+  };
+
   // Delete product source
   const [deleteModalOpen, setDeleteModalOpen] = useState(() => false);
   const [productsSourceToDelete, setProductsSourceToDelete] =
@@ -75,6 +114,12 @@ export const ProductRecommenderTab = () => {
   useEffect(() => {
     if (!productsSources && !fetchingProductsSources) {
       dispatch(getAllProductsSources());
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!fetchingAllBots && !bots) {
+      dispatch(getAllBots());
     }
   }, []);
 
@@ -126,6 +171,7 @@ export const ProductRecommenderTab = () => {
             {productsSources && productsSources.length > 0 && (
               <ProductSourceTable
                 triggerDeleteProductsSource={triggerDeleteProductsSource}
+                triggerAttachAgent={triggerAttachAgent}
               />
             )}
           </div>
@@ -134,6 +180,12 @@ export const ProductRecommenderTab = () => {
             isOpen={createFormOpen && !!sourceData}
             onOpenChange={onOpenCreateFormChange}
             sourceData={sourceData}
+          />
+
+          <AttachAgentForm
+            isOpen={attachAgentModalOpen && !!productSourceToAttachAgent}
+            endAttachAgentOperation={endAttachAgentOperation}
+            productSource={productSourceToAttachAgent}
           />
 
           <ConfirmationDialog

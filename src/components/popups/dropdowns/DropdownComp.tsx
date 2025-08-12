@@ -7,6 +7,7 @@ import { Ellipsis, LucideProps } from "lucide-react";
 import { CustomDropdownItem } from "./Dropdown";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/form";
+import { JSX } from "react";
 
 export type DropdownItemType = {
   placeholder: string;
@@ -18,13 +19,23 @@ export type DropdownItemType = {
   >;
 };
 
-export const DropdownComp = ({ data }: { data: DropdownItemType[] }) => {
+export const DropdownComp = ({
+  data,
+  Trigger,
+}: {
+  data: DropdownItemType[];
+  Trigger?: () => JSX.Element;
+}) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="border-none outline-none">
-        <Button variant="ghost" className="h-8 w-8 p-0">
-          <Ellipsis />
-        </Button>
+        {Trigger ? (
+          <Trigger />
+        ) : (
+          <Button variant="ghost" className="h-8 w-8 p-0">
+            <Ellipsis />
+          </Button>
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent
         className="px-2 py-2.5 rounded-lg border-none w-52 drop-shadow-lg"

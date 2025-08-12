@@ -53,17 +53,17 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Pagination, Group } from "@mantine/core";
 import pinLogo from "@/assets/svgs/pin.svg";
-import { Reminder } from "@/interfaces";
+import { IReminder, Reminder } from "@/interfaces";
 import { cn } from "@/lib/utils";
 import { useStore } from "@/hooks";
 
 type ColumnMeta = {
-  onEditReminder: (reminder: Reminder) => void;
-  setActiveStatus: (reminder: Reminder, status: boolean) => void;
-  onDeleteReminder: (reminder: Reminder) => void;
+  onEditReminder: (reminder: any) => void;
+  setActiveStatus: (reminder: any, status: boolean) => void;
+  onDeleteReminder: (reminder: any) => void;
 };
 
-export const columns: ColumnDef<Reminder>[] = [
+export const columns: ColumnDef<IReminder>[] = [
   {
     accessorKey: "_id",
     header: "Reminder ID",
@@ -279,11 +279,11 @@ const badgeVariantMap: Record<string, any> = {
 };
 
 interface DashboardTableProps {
-  viewReminderDetails: (data: Reminder) => void;
+  viewReminderDetails: (data: any) => void;
   openCreateForm: () => void;
-  onEditReminder: (reminder: Reminder) => void;
-  setActiveStatus: (reminder: Reminder, status: boolean) => void;
-  onDeleteReminder: (reminder: Reminder) => void;
+  onEditReminder: (reminder: any) => void;
+  setActiveStatus: (reminder: any, status: boolean) => void;
+  onDeleteReminder: (reminder: any) => void;
 }
 
 export function ReminderTable({
@@ -544,7 +544,7 @@ const DashboardGrid = styled.div`
 `;
 
 type TableSettingProps = {
-  table: TableType<Reminder>;
+  table: TableType<any>;
 };
 
 const headerMap: Record<string, string> = {

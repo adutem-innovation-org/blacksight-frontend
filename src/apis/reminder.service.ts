@@ -3,7 +3,9 @@ import {
   CreateReminderRes,
   DeleteReminderRes,
   GetRemindersRes,
+  NewReminderAnalyticsRes,
   ReminderAnalyticsRes,
+  SendInstantReminderBody,
   UpdateReminderBody,
   UpdateReminderRes,
   UpdateReminderStatusRes,
@@ -29,7 +31,7 @@ export class ReminderApiService {
   }
 
   getReminderAnalytics = () => {
-    return this.apiService.get<ReminderAnalyticsRes>(
+    return this.apiService.get<NewReminderAnalyticsRes>(
       this.urls.REMINDER_ANALYTICS
     );
   };
@@ -67,6 +69,13 @@ export class ReminderApiService {
   deleteReminder = (id: string) => {
     return this.apiService.delete<DeleteReminderRes>(
       `${this.urls.DELETE_REMINDER}/${id}`
+    );
+  };
+
+  sendInstantReminder = (data: SendInstantReminderBody) => {
+    return this.apiService.post<SendInstantReminderBody, CreateReminderRes>(
+      this.urls.SEND_INSTANT_REMINDER,
+      data
     );
   };
 }

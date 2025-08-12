@@ -130,11 +130,7 @@ export const PaymentFileBCPsTab = () => {
             <PaymentBCPsHeader />
             {fetchBCPsError && (
               <div className="mt-6 flex flex-col gap-4">
-                <InfoBlock variant={"error"}>
-                  Effortless customer record management. Easily update, remove,
-                  and remind customers — individually or in bulk — right from
-                  your uploaded payment file
-                </InfoBlock>
+                <InfoBlock variant={"error"}>{fetchBCPsError}</InfoBlock>
                 <Button
                   className="font-dmsans tracking-tight rounded-lg duration-500 hover:from-[#EE4266] hover:to-[#7C98DF]
  px-8 h-12 bg-gradient-to-r from-[#028CF3] to-[#3BCEAC] max-w-40 mx-auto"

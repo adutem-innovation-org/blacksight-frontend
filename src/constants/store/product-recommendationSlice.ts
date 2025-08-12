@@ -17,4 +17,9 @@ export const initialProductRecommendationState: ProductRecommendationState = {
   deletingProductsSource: false,
   productsSourceDeleted: false,
   deleteProductsSourceError: "",
+
+  // Attach agent
+  attachingAgent: false,
+  agentAttached: false,
+  attachAgentErrorMsg: "",
 };

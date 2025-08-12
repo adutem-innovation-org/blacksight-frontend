@@ -59,9 +59,9 @@ export const DashboardTabs = () => {
       <Tabs.Panel value={DashboardTabsEnum.CALENDARS} className="w-full h-full">
         <CalendarsTab />
       </Tabs.Panel>
-      <Tabs.Panel value={DashboardTabsEnum.REMINDER} className="w-full h-full">
+      {/* <Tabs.Panel value={DashboardTabsEnum.REMINDER} className="w-full h-full">
         <ReminderTab />
-      </Tabs.Panel>
+      </Tabs.Panel> */}
       <Tabs.Panel value={DashboardTabsEnum.TEMPLATES} className="w-full h-full">
         <TemplateTab />
       </Tabs.Panel>
@@ -101,3 +101,4 @@ export * from "./SecurityTab";
 export * from "./ProductRecommenderTab";
 export * from "./PaymentTrackerTab";
 export * from "./PaymentFileBCPsTab";
+export * from "./reminder";

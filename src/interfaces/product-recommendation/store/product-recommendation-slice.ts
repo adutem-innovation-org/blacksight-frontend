@@ -19,4 +19,9 @@ export interface ProductRecommendationState {
   deletingProductsSource: boolean;
   productsSourceDeleted: boolean;
   deleteProductsSourceError: string;
+
+  // Attach agent to products source
+  attachingAgent: boolean;
+  agentAttached: boolean;
+  attachAgentErrorMsg: string;
 }
