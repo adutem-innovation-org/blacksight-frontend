@@ -20,6 +20,10 @@ export interface SendInstantReminderBody {
   message: string;
   channel: ReminderChannels;
   category: ReminderCategory;
+  email?: string;
+  phone?: string;
+  emails?: string[];
+  phones?: string[];
   fileId: string;
   isBulk: boolean;
   template?: string;

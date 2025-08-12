@@ -86,4 +86,18 @@ export class ReminderApiService {
       data
     );
   };
+
+  sendInstantBCPReminder = (data: SendInstantReminderBody) => {
+    return this.apiService.post<SendInstantReminderBody, CreateReminderRes>(
+      this.urls.SEND_INSTANT_BCP_REMINDER,
+      data
+    );
+  };
+
+  createScheduledBCPReminder = (data: CreateScheduledReminderBody) => {
+    return this.apiService.post<CreateScheduledReminderBody, CreateReminderRes>(
+      this.urls.CREATE_SCHEDULED_BCP_REMINDER,
+      data
+    );
+  };
 }

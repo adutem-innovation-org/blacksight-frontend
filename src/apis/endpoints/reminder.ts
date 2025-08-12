@@ -12,3 +12,5 @@ export const UPDATE_REMINDER = "/update";
 
 export const SEND_INSTANT_REMINDER = "/instant";
 export const CREATE_SCHEDULED_REMINDER = "/create";
+export const SEND_INSTANT_BCP_REMINDER = "/instant/bcp";
+export const CREATE_SCHEDULED_BCP_REMINDER = "/create/bcp";
