@@ -80,12 +80,18 @@ export const InstantFileReminderForm = ({
 
   const templateOptions = useMemo(() => {
     return templates && templates.length > 0
-      ? templates.map((template) => ({
-          label: template.name,
-          value: template._id,
-        }))
+      ? templates
+          .filter(
+            (template) =>
+              (template.type as unknown as ReminderChannels) ===
+              validation.values.channel
+          )
+          .map((template) => ({
+            label: template.name,
+            value: template._id,
+          }))
       : [];
-  }, [templates]);
+  }, [templates, validation.values.channel]);
 
   // Filter out auto-populated fields to get user-required fields
   const userRequiredFields = useMemo(() => {
@@ -284,18 +290,20 @@ export const InstantFileReminderForm = ({
         info="Select a channel to send this reminder to."
       />
 
-      <FormGroup
-        type="select"
-        name="templateId"
-        groupLabel="Template"
-        placeholder="Select a template"
-        size="md"
-        options={templateOptions}
-        validation={validation}
-        containerClassName={"gap-2 mt-4"}
-        info="Select a template to use for this reminder."
-        noOptionsContent={<NoTemplate loading={fetchingTemplates} />}
-      />
+      {validation.values.channel !== ReminderChannels.BOTH && (
+        <FormGroup
+          type="select"
+          name="templateId"
+          groupLabel="Template"
+          placeholder="Select a template"
+          size="md"
+          options={templateOptions}
+          validation={validation}
+          containerClassName={"gap-2 mt-4"}
+          info="Select a template to use for this reminder."
+          noOptionsContent={<NoTemplate loading={fetchingTemplates} />}
+        />
+      )}
 
       {renderDynamicFields()}
 
