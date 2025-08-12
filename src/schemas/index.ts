@@ -9,3 +9,4 @@ export * from "./calendar.schema";
 export * from "./template.schema";
 export * from "./products-source.schema";
 export * from "./payment-tracker.schema";
+export * from "./bcp.schema";

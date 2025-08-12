@@ -9,3 +9,5 @@ export const urlRegex =
 
 export const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W)(?!.*\s).{8,}$/;
+
+export const phoneRegex = /^\+?[0-9\s\-().]{7,20}$/;
