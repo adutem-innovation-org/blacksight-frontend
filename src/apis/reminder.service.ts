@@ -1,4 +1,5 @@
 import {
+  CreateScheduledReminderBody,
   CreateReminderBody,
   CreateReminderRes,
   DeleteReminderRes,
@@ -75,6 +76,13 @@ export class ReminderApiService {
   sendInstantReminder = (data: SendInstantReminderBody) => {
     return this.apiService.post<SendInstantReminderBody, CreateReminderRes>(
       this.urls.SEND_INSTANT_REMINDER,
+      data
+    );
+  };
+
+  createScheduledReminder = (data: CreateScheduledReminderBody) => {
+    return this.apiService.post<CreateScheduledReminderBody, CreateReminderRes>(
+      this.urls.CREATE_SCHEDULED_REMINDER,
       data
     );
   };

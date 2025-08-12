@@ -11,3 +11,4 @@ export const DELETE_REMINDER = "/delete";
 export const UPDATE_REMINDER = "/update";
 
 export const SEND_INSTANT_REMINDER = "/instant";
+export const CREATE_SCHEDULED_REMINDER = "/create";
