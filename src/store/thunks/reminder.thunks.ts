@@ -4,6 +4,7 @@ import {
   CreateReminderRes,
   Reminder,
   SendInstantReminderBody,
+  IReminder,
 } from "@/interfaces";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
@@ -62,7 +63,7 @@ export const updateReminder = createAsyncThunk<
 );
 
 export const updateReminderStatus = createAsyncThunk<
-  Reminder,
+  IReminder,
   { id: string; status: boolean },
   { rejectValue: string }
 >(
@@ -73,8 +74,8 @@ export const updateReminderStatus = createAsyncThunk<
   ) => {
     try {
       const updateApi = status
-        ? reminderApiService.activateReminder
-        : reminderApiService.deactivateReminder;
+        ? reminderApiService.resumeReminder
+        : reminderApiService.pauseReminder;
       const response = await updateApi(id);
       return response.reminder;
     } catch (error: any) {
@@ -84,7 +85,7 @@ export const updateReminderStatus = createAsyncThunk<
 );
 
 export const deleteReminder = createAsyncThunk<
-  Reminder,
+  IReminder,
   string,
   { rejectValue: string }
 >("delete_reminder", async (id: string, { rejectWithValue }) => {
