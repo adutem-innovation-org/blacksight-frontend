@@ -120,13 +120,6 @@ export const ScheduleFileReminderForm = ({
         return;
       }
 
-      if (
-        [ReminderChannels.BOTH, ReminderChannels.SMS].includes(values.channel)
-      ) {
-        toast.success("Coming soon.🙌😃");
-        return;
-      }
-
       if (values.type === ProdReminderTypes.EVENT_BASED) {
         values.triggerOffset = calculateOffsetMinutes(
           values.triggerOffset,
