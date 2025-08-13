@@ -10,6 +10,7 @@ import {
   UpdateReminderBody,
   UpdateReminderRes,
   UpdateReminderStatusRes,
+  CancelReminderRes,
 } from "@/interfaces";
 import { ApiService } from "./api.service";
 import { REMINDER_URLS } from "./endpoints";
@@ -64,6 +65,12 @@ export class ReminderApiService {
   pauseReminder = (id: string) => {
     return this.apiService.update<any, UpdateReminderStatusRes>(
       `${this.urls.PAUSE_REMINDER}/${id}`
+    );
+  };
+
+  cancelReminder = (id: string) => {
+    return this.apiService.update<any, CancelReminderRes>(
+      `${this.urls.CANCEL_REMINDER}/${id}`
     );
   };
 

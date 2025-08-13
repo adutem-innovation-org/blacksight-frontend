@@ -7,6 +7,7 @@ export const PAUSE_REMINDER = "/pause";
 // User
 export const CREATE_REMINDER = "/create";
 export const GET_ALL_REMINDERS = "/all";
+export const CANCEL_REMINDER = "/cancel";
 export const DELETE_REMINDER = "/delete";
 export const UPDATE_REMINDER = "/update";
 

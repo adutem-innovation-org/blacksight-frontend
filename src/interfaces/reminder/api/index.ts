@@ -4,3 +4,4 @@ export * from "./create-reminder";
 export * from "./delete-reminder";
 export * from "./update-reminder";
 export * from "./update-reminder-status";
+export * from "./cancel-reminder";
