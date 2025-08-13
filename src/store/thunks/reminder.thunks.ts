@@ -5,6 +5,7 @@ import {
   Reminder,
   SendInstantReminderBody,
   IReminder,
+  UpdateReminderBody,
 } from "@/interfaces";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
@@ -47,20 +48,17 @@ export const createReminder = createAsyncThunk(
 );
 
 export const updateReminder = createAsyncThunk<
-  Reminder,
-  { id: string; data: FormData },
+  IReminder,
+  { id: string; data: UpdateReminderBody },
   { rejectValue: { message: string; errors?: Record<string, string> } }
->(
-  "update_reminder",
-  async ({ id, data }: { id: string; data: FormData }, { rejectWithValue }) => {
-    try {
-      const response = await reminderApiService.updateReminder(id, data);
-      return response.reminder;
-    } catch (error: any) {
-      return rejectWithValue(error);
-    }
+>("update_reminder", async ({ id, data }, { rejectWithValue }) => {
+  try {
+    const response = await reminderApiService.updateReminder(id, data);
+    return response.reminder;
+  } catch (error: any) {
+    return rejectWithValue(error);
   }
-);
+});
 
 export const updateReminderStatus = createAsyncThunk<
   IReminder,

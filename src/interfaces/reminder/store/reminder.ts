@@ -2,11 +2,13 @@ import {
   EventTrigger,
   ProdReminderTypes,
   RecurrencePattern,
+  ReminderCategory,
   ReminderChannels,
   ReminderStatus,
   ReminderTypes,
 } from "@/enums";
 import { UpdateReminderStatusRes } from "../api";
+import { IPaymentFile } from "@/interfaces/payment-tracker";
 
 export type Reminder = {
   _id: string;
@@ -40,6 +42,7 @@ export type IReminder = {
   // Basic properties
   channel: ReminderChannels;
   type: ProdReminderTypes;
+  category: ReminderCategory;
   status: ReminderStatus;
   isActive: boolean;
   isBulk: boolean;
@@ -50,6 +53,8 @@ export type IReminder = {
   template?: string;
   templateId?: string;
   templateData?: Record<string, any>;
+  fileId?: string;
+  file?: IPaymentFile;
 
   // Scheduling
   remindAt?: Date; // For instant and scheduled
@@ -63,6 +68,8 @@ export type IReminder = {
   recurrenceEnd?: Date; // When to stop recurring
   recurrenceCount?: number; // How many times to repeat
   customCronExpression?: string; // For complex patterns
+  startDate?: Date;
+  endDate?: Date;
 
   // Execution tracking
   nextExecution?: Date;
