@@ -142,7 +142,7 @@ export function UpdateReminderDrawer({
           formData.append(`phone`, phone);
         }
       }
-      dispatch(updateReminder({ id: reminder._id, data: formData }));
+      dispatch(updateReminder({ id: reminder._id, data: formData as any }));
     },
   });
 
