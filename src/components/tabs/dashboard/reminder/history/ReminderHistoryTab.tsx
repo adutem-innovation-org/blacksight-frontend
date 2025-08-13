@@ -25,6 +25,7 @@ import { IReminder } from "@/interfaces";
 import { resetDocumentElement } from "@/helpers";
 import { ConfirmationDialog } from "@/components/popups";
 import toast from "react-hot-toast";
+import { UpdateReminderForm } from "./UpdateReminderForm";
 
 export const ReminderHistoryTab = () => {
   const { dispatch, getState } = useStore();
@@ -49,6 +50,27 @@ export const ReminderHistoryTab = () => {
     reminderCanceled,
     cancelReminderError,
   } = getState("Reminder");
+
+  // Update reminder
+  const [reminderToUpdate, setReminderToUpdate] = useState<IReminder | null>(
+    null
+  );
+  const [updateFormOpen, setUpdateFormOpen] = useState(false);
+
+  const openUpdateForm = (data: IReminder) => {
+    setUpdateFormOpen(true);
+    setReminderToUpdate(data);
+  };
+
+  const onOpenChange = (val: boolean) => {
+    setUpdateFormOpen(val);
+    setReminderToUpdate(null);
+    // Reset pointer event on page ✅ Radix bug
+    let tmo = setTimeout(() => {
+      resetDocumentElement();
+      clearTimeout(tmo);
+    }, 300);
+  };
 
   // Pause reminder
   const [pauseDialogOpen, setPauseDialogOpen] = useState(() => false);
@@ -252,12 +274,20 @@ export const ReminderHistoryTab = () => {
                 transition={{ duration: 0.4, delay: 0.2 }}
               >
                 <ReminderHistoryTable
+                  openUpdateForm={openUpdateForm}
                   triggerDeleteReminder={triggerDeleteReminder}
                   triggerCancelReminder={triggerCancelReminder}
                   triggerSetActiveStatus={triggerSetActiveStatus}
                 />
               </motion.div>
             )}
+
+            {/* Update reminder  */}
+            <UpdateReminderForm
+              isOpen={updateFormOpen}
+              onOpenChange={onOpenChange}
+              reminderToUpdate={reminderToUpdate}
+            />
 
             {/* Delete reminder */}
             <ConfirmationDialog

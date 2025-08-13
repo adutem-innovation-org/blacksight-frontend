@@ -47,12 +47,14 @@ const getColumnClasses = (columnId: string) => {
 };
 
 type ReminderHistoryTableProps = {
+  openUpdateForm: (reminder: IReminder) => void;
   triggerDeleteReminder: (reminder: IReminder) => void;
   triggerCancelReminder: (reminder: IReminder) => void;
   triggerSetActiveStatus: (reminder: IReminder, isActive: boolean) => void;
 };
 
 export const ReminderHistoryTable = ({
+  openUpdateForm,
   triggerDeleteReminder,
   triggerCancelReminder,
   triggerSetActiveStatus,
@@ -72,6 +74,7 @@ export const ReminderHistoryTable = ({
   const table = useReactTable({
     data: reminders || [],
     meta: {
+      openUpdateForm,
       triggerDeleteReminder,
       triggerCancelReminder,
       triggerSetActiveStatus,

@@ -255,6 +255,7 @@ export const remindersHistoryColumns: ColumnDef<IReminder>[] = [
     enableHiding: false,
     cell: ({ row, table }) => {
       const meta = table.options.meta as {
+        openUpdateForm: (reminder: IReminder) => void;
         triggerDeleteReminder: (reminder: IReminder) => void;
         triggerCancelReminder: (reminder: IReminder) => void;
         triggerSetActiveStatus: (
@@ -265,13 +266,21 @@ export const remindersHistoryColumns: ColumnDef<IReminder>[] = [
       return (
         <DropdownComp
           data={[
-            {
-              placeholder: "Update reminder",
-              onClick: () => {
-                toast.success("Coming soon.🙌😃");
-              },
-              Icon: Pencil,
-            },
+            ...(![
+              ReminderStatus.SENT,
+              ReminderStatus.COMPLETED,
+              ReminderStatus.CANCELLED,
+            ].includes(row.original.status)
+              ? [
+                  {
+                    placeholder: "Update reminder",
+                    onClick: () => {
+                      meta.openUpdateForm(row.original);
+                    },
+                    Icon: Pencil,
+                  },
+                ]
+              : []),
             ...(row.original.status === ReminderStatus.PENDING
               ? [
                   {
