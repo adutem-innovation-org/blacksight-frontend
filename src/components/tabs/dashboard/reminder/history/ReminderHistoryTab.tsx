@@ -3,9 +3,11 @@ import { Loader } from "@/components/progress";
 import { useStore } from "@/hooks";
 import { cn } from "@/lib/utils";
 import {
+  cancelReminder,
   deleteReminder,
   getAllReminders,
   getReminderAnalytics,
+  resetCancelReminder,
   resetDeleteReminder,
   resetGetAllReminders,
   resetUpdateReminderStatus,
@@ -41,6 +43,11 @@ export const ReminderHistoryTab = () => {
     deletingReminder,
     reminderDeleted,
     deleteReminderError,
+
+    // Cancel reminder
+    cancelingReminder,
+    reminderCanceled,
+    cancelReminderError,
   } = getState("Reminder");
 
   // Pause reminder
@@ -64,6 +71,30 @@ export const ReminderHistoryTab = () => {
       dispatch(
         updateReminderStatus({ id: reminderToPause._id, status: false })
       );
+    }
+  };
+
+  // Cancel reminder
+  const [reminderToCancel, setReminderToCancel] = useState<IReminder | null>();
+  const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
+
+  const openCancelDialog = () => setCancelDialogOpen(true);
+  const closeCancelDialog = () => setCancelDialogOpen(false);
+
+  const triggerCancelReminder = (reminder: IReminder) => {
+    setReminderToCancel(reminder);
+    openCancelDialog();
+  };
+
+  const endCancelOperation = () => {
+    closeCancelDialog();
+    setReminderToCancel(null);
+    resetDocumentElement();
+  };
+
+  const confirmCancelOperation = () => {
+    if (reminderToCancel) {
+      dispatch(cancelReminder(reminderToCancel._id));
     }
   };
 
@@ -105,6 +136,25 @@ export const ReminderHistoryTab = () => {
   const refreshPage = () => {
     dispatch(getAllReminders());
   };
+
+  // Cancel reminder
+  useEffect(() => {
+    if (reminderCanceled) {
+      toast.success("Reminder canceleed");
+      // Get the lastest analytics
+      dispatch(getReminderAnalytics());
+      dispatch(resetCancelReminder());
+      // Close dialog, reset states and restore pointer event to document element
+      endCancelOperation();
+    }
+  }, [reminderCanceled]);
+
+  useEffect(() => {
+    if (cancelReminderError) {
+      toast.error(cancelReminderError);
+      dispatch(resetCancelReminder());
+    }
+  }, [cancelReminderError]);
 
   // Delete reminder
   useEffect(() => {
@@ -203,11 +253,13 @@ export const ReminderHistoryTab = () => {
               >
                 <ReminderHistoryTable
                   triggerDeleteReminder={triggerDeleteReminder}
+                  triggerCancelReminder={triggerCancelReminder}
                   triggerSetActiveStatus={triggerSetActiveStatus}
                 />
               </motion.div>
             )}
 
+            {/* Delete reminder */}
             <ConfirmationDialog
               cancelOperation={endDeleteOperation}
               confirmOperation={confirmDeleteOperation}
@@ -218,6 +270,19 @@ export const ReminderHistoryTab = () => {
               description="This action cannot be undone. Are you sure you want to delete this reminder?"
               cancelCtaText="Cancel"
               confirmCtaText="Delete"
+            />
+
+            {/* Cancel reminder */}
+            <ConfirmationDialog
+              cancelOperation={endCancelOperation}
+              confirmOperation={confirmCancelOperation}
+              isOpen={cancelDialogOpen}
+              loading={cancelingReminder}
+              onOpenChange={endCancelOperation}
+              title="Cancel reminder"
+              description="This action cannot be undone. Are you sure you want to cancel this reminder?"
+              cancelCtaText="Cancel"
+              confirmCtaText="Continue"
             />
 
             {/* Pause reminder */}

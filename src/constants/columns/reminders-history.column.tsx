@@ -14,9 +14,13 @@ import {
 import { IReminder } from "@/interfaces";
 import { cn } from "@/lib/utils";
 import { ColumnDef, Row } from "@tanstack/react-table";
+import { on } from "events";
 import {
   Ban,
+  BellOff,
+  BellRing,
   CircleFadingArrowUp,
+  Icon,
   ListFilter,
   Pencil,
   Trash,
@@ -252,6 +256,7 @@ export const remindersHistoryColumns: ColumnDef<IReminder>[] = [
     cell: ({ row, table }) => {
       const meta = table.options.meta as {
         triggerDeleteReminder: (reminder: IReminder) => void;
+        triggerCancelReminder: (reminder: IReminder) => void;
         triggerSetActiveStatus: (
           reminder: IReminder,
           isActive: boolean
@@ -270,6 +275,17 @@ export const remindersHistoryColumns: ColumnDef<IReminder>[] = [
             ...(row.original.status === ReminderStatus.PENDING
               ? [
                   {
+                    placeholder: "Cancel reminder",
+                    onClick: () => {
+                      meta.triggerCancelReminder(row.original);
+                    },
+                    Icon: Ban,
+                  },
+                ]
+              : []),
+            ...(row.original.status === ReminderStatus.PENDING
+              ? [
+                  {
                     placeholder: row.getValue("isActive")
                       ? "Pause reminder"
                       : "Resume reminder",
@@ -279,7 +295,7 @@ export const remindersHistoryColumns: ColumnDef<IReminder>[] = [
                         !row.getValue("isActive")
                       );
                     },
-                    Icon: row.getValue("isActive") ? Ban : CircleFadingArrowUp,
+                    Icon: row.getValue("isActive") ? BellOff : BellRing,
                   },
                 ]
               : []),

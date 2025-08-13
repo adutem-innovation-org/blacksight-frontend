@@ -48,11 +48,13 @@ const getColumnClasses = (columnId: string) => {
 
 type ReminderHistoryTableProps = {
   triggerDeleteReminder: (reminder: IReminder) => void;
+  triggerCancelReminder: (reminder: IReminder) => void;
   triggerSetActiveStatus: (reminder: IReminder, isActive: boolean) => void;
 };
 
 export const ReminderHistoryTable = ({
   triggerDeleteReminder,
+  triggerCancelReminder,
   triggerSetActiveStatus,
 }: ReminderHistoryTableProps) => {
   const { getState, dispatch } = useStore();
@@ -71,6 +73,7 @@ export const ReminderHistoryTable = ({
     data: reminders || [],
     meta: {
       triggerDeleteReminder,
+      triggerCancelReminder,
       triggerSetActiveStatus,
     },
     columns: remindersHistoryColumns,
