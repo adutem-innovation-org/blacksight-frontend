@@ -113,6 +113,7 @@ const Calendars = () => {
           cleanup();
           dispatch(setConnectingProviderStatus(false));
           dispatch(resetGetProviderAuthUrl());
+          dispatch(getProfile());
         }
       }, 500);
     }
