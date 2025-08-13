@@ -1,8 +1,9 @@
 import { ApiSuccessResponse } from "@/interfaces/api-response";
-import { Reminder } from "../store";
+import { IReminder, Reminder } from "../store";
+import { CreateScheduledReminderBody } from "./create-reminder";
 
 export interface UpdateReminderRes extends ApiSuccessResponse {
-  reminder: Reminder;
+  reminder: IReminder;
 }
 
-export type UpdateReminderBody = FormData;
+export type UpdateReminderBody = Partial<CreateScheduledReminderBody>;

@@ -50,10 +50,10 @@ export class ReminderApiService {
   };
 
   updateReminder = (id: string, data: UpdateReminderBody) => {
-    return this.apiService.updateWithFile<
-      UpdateReminderBody,
-      UpdateReminderRes
-    >(`${this.urls.UPDATE_REMINDER}/${id}`, data);
+    return this.apiService.update<UpdateReminderBody, UpdateReminderRes>(
+      `${this.urls.UPDATE_REMINDER}/${id}`,
+      data
+    );
   };
 
   resumeReminder = (id: string) => {
