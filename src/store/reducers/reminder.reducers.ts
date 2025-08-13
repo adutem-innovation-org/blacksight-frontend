@@ -39,6 +39,12 @@ export const resetDeleteReminderReducer = (state: ReminderState) => {
   state.deleteReminderError = "";
 };
 
+export const resetCancelReminderReducer = (state: ReminderState) => {
+  state.cancelingReminder = false;
+  state.reminderCanceled = false;
+  state.cancelReminderError = "";
+};
+
 export const resetSendInstantReminderReducer = (state: ReminderState) => {
   state.sendingInstantReminder = false;
   state.instantReminderSent = false;

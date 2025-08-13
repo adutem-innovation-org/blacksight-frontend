@@ -11,6 +11,7 @@ import {
 } from "../reducers";
 import { initialReminderState } from "@/constants";
 import {
+  cancelReminderBuilder,
   createReminderBuilder,
   createScheduledReminderBuilder,
   deleteReminderBuilder,
@@ -33,6 +34,7 @@ const reminderSlice = createSlice({
     resetDeleteReminder: resetDeleteReminderReducer,
     resetSendInstantReminder: resetSendInstantReminderReducer,
     resetCreateScheduledReminder: resetCreateScheduledReminderReducer,
+    resetCancelReminder: resetCreateReminderReducer,
   },
   extraReducers(builder) {
     getReminderAnalyticsBuilder(builder);
@@ -43,6 +45,7 @@ const reminderSlice = createSlice({
     deleteReminderBuilder(builder);
     sendInstantReminderBuilder(builder);
     createScheduledReminderBuilder(builder);
+    cancelReminderBuilder(builder);
   },
 });
 
@@ -56,4 +59,5 @@ export const {
   resetDeleteReminder,
   resetSendInstantReminder,
   resetCreateScheduledReminder,
+  resetCancelReminder,
 } = reminderSlice.actions;

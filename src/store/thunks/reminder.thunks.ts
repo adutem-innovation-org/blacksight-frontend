@@ -84,6 +84,19 @@ export const updateReminderStatus = createAsyncThunk<
   }
 );
 
+export const cancelReminder = createAsyncThunk<
+  IReminder,
+  string,
+  { rejectValue: string }
+>("cancel_reminder", async (id: string, { rejectWithValue }) => {
+  try {
+    const res = await reminderApiService.cancelReminder(id);
+    return res.reminder;
+  } catch (error: any) {
+    return rejectWithValue(error.message);
+  }
+});
+
 export const deleteReminder = createAsyncThunk<
   IReminder,
   string,
