@@ -56,7 +56,7 @@ export const MetricsCard = ({
     | "success-subtle";
 }) => {
   return (
-    <div className="bg-white border-gray-200 rounded-sm shadow py-5 px-5 lg:px-6 flex justify-between">
+    <div className="bg-white border-gray-200 rounded-sm shadow py-5 px-5 lg:px-6 flex justify-between hover:shadow-md hover:translate-y-0.5 duration-300 cursor-pointer">
       <div className="flex flex-col gap-4">
         <div className="text-gray-600 text-sm tracking-tight">{label}</div>
         <div
