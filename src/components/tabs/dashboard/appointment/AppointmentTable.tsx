@@ -176,6 +176,8 @@ export const AppointmentTable = ({
     React.useState<VisibilityState>({
       _id: false,
       conversationId: false,
+      status: false,
+      createdAt: false,
     });
   const [rowSelection, setRowSelection] = React.useState({});
   const [pagination, setPagination] = React.useState({
