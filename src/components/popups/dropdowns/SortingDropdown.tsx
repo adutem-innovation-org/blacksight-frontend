@@ -1,3 +1,4 @@
+import { Button } from "@/components/form";
 import { CustomDropdownItem } from "./Dropdown";
 import {
   DropdownMenu,
@@ -5,6 +6,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import { HeaderContext } from "@tanstack/react-table";
 import { ListFilter } from "lucide-react";
 import { JSX } from "react";
 
@@ -55,4 +57,42 @@ export const SortingDropDown = ({
       </DropdownMenuContent>
     </DropdownMenu>
   );
+};
+
+export const renderSorter = <T extends unknown>(headerName: string) => {
+  return ({ column }: HeaderContext<T, unknown>) => {
+    const sortDirection = column.getIsSorted();
+    const sortDescending = () =>
+      sortDirection === "desc"
+        ? column.clearSorting()
+        : column.toggleSorting(true);
+    const sortAscending = () =>
+      sortDirection === "asc"
+        ? column.clearSorting()
+        : column.toggleSorting(false);
+
+    return (
+      <SortingDropDown
+        Trigger={
+          <Button
+            variant={"ghost"}
+            onClick={column.getToggleSortingHandler()}
+            className="hover:bg-transparent py-4 px-4 w-full h-full justify-start text-xs font-semibold text-[#717680] hover:text-[#535862]"
+          >
+            {headerName}
+            {sortDirection === "asc" && (
+              <ListFilter className="text-blue-600 rotate-180" />
+            )}
+            {sortDirection === "desc" && (
+              <ListFilter className="text-blue-600" />
+            )}
+            {!sortDirection && <ListFilter className="text-[#A4A7AE]" />}
+          </Button>
+        }
+        sortDescending={sortDescending}
+        sortAscending={sortAscending}
+        sortDirection={sortDirection}
+      />
+    );
+  };
 };

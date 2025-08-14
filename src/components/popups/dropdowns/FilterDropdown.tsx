@@ -8,7 +8,7 @@ import { CustomDropdownMenuCheckboxItem } from "./Dropdown";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 import pinLogo from "@/assets/svgs/pin.svg";
-import { Column } from "@tanstack/react-table";
+import { Column, HeaderContext } from "@tanstack/react-table";
 
 type FilterDropdownProps<T> = {
   column: Column<T, unknown>;
@@ -107,4 +107,19 @@ export const TableFilterDropdown = ({
       </DropdownMenuContent>
     </DropdownMenu>
   );
+};
+
+export const renderTableFilter = <T extends unknown>(
+  columnHeader: string,
+  options: any[]
+) => {
+  return ({ column }: HeaderContext<T, unknown>) => {
+    return (
+      <TableFilterDropdown
+        OPTIONS={options}
+        column={column}
+        columnHeader={columnHeader}
+      />
+    );
+  };
 };
