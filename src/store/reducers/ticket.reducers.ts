@@ -1,4 +1,5 @@
-import { TicketState } from "@/interfaces";
+import { Ticket, TicketState } from "@/interfaces";
+import { PayloadAction } from "@reduxjs/toolkit";
 
 export const resetDeleteTicketReducer = (state: TicketState) => {
   state.deletingTicket = false;
