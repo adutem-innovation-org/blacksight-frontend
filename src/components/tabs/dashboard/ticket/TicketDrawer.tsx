@@ -1,17 +1,13 @@
 import { Button } from "@/components/form";
 import { Sheet, SheetContent, SheetHeader } from "@/components/ui/sheet";
-import { Ticket } from "@/interfaces";
 import { X } from "lucide-react";
 import styled from "styled-components";
 import { InvoiceCard } from "@/components/cards";
-import ReactMarkdown from "react-markdown";
-import remarkBreaks from "remark-breaks";
-import { cn } from "@/lib/utils";
-import { TicketRoleEnum } from "@/enums";
 import { useStore } from "@/hooks";
 import { removeOpenedTicket } from "@/store";
 import { DialogOverlay } from "@/components/ui/dialog";
-import patternBg from "@/assets/images/pattern-01.png";
+import { Message, MessageBox } from "./ChatComponents";
+import { TicketStatus } from "@/enums";
 
 interface SheetHeaderCompProps {
   onOpenChange: (value: boolean) => void;
@@ -76,17 +72,15 @@ export function TicketDrawer() {
             </div>
           )}
 
-          <div className="pb-6">
-            <h2 className="font-urbanist text-lg text-gray-900 font-semibold pt-6 border-t px-4 sm:px-8">
-              Source bot
-            </h2>
-            <div className="mt-4 grid grid-cols-1 gap-4 px-4 sm:px-8">
-              <InvoiceCard
-                header={"Chat bot"}
-                content={currentTicket?.bot?.name ?? "Deleted bot"}
-              />
+          {currentTicket?.status !== TicketStatus.CLOSED ? (
+            <MessageBox />
+          ) : (
+            <div className="pb-6">
+              <h2 className="font-dmsans tracking-tight text-lg text-gray-900 font-semibold pt-6 border-t px-4 sm:px-8 text-center">
+                This ticket is already closed!
+              </h2>
             </div>
-          </div>
+          )}
         </div>
       </CustomSheetContent>
     </Sheet>
@@ -108,72 +102,3 @@ const CustomSheetHeader = styled(SheetHeader)`
     margin: 0px !important;
   }
 `;
-
-export const Message = ({
-  role,
-  content,
-}: {
-  role: TicketRoleEnum;
-  content: string;
-}) => {
-  const isUser = role === TicketRoleEnum.USER;
-
-  return (
-    <div
-      className={cn(
-        "flex items-start max-w-9/10 sm:max-w-2/3 opacity-0",
-        {
-          "self-start justify-start": isUser,
-          "self-end justify-end": !isUser,
-        },
-        isUser ? "fade-in-left" : "fade-in-right"
-      )}
-    >
-      {/* Arrow */}
-      <div
-        className={cn("w-0 h-0 border-4", {
-          "border-b-transparent border-t-white border-r-white border-l-transparent":
-            isUser,
-          "border-b-transparent border-t-white border-l-white border-r-transparent order-7":
-            !isUser,
-        })}
-      ></div>
-
-      {/* Text */}
-      <div
-        className={cn(
-          "p-4 bg-white text-xs sm:text-sm whitespace-pre-line break-words",
-          {
-            "rounded-md rounded-tl-none shadow-[2px_2px_4px_#0000001a]": isUser,
-            "rounded-md rounded-tr-none shadow-[-2px_2px_4px_#0000001a]":
-              !isUser,
-          }
-        )}
-      >
-        <ReactMarkdown
-          skipHtml
-          components={{
-            ul: ({ node, className, ...props }) => (
-              <ul
-                {...props}
-                className={cn(
-                  className,
-                  "list-disc list-inside flex flex-col gap-1"
-                )}
-              />
-            ),
-            p: ({ node, className, ...props }) => (
-              <p
-                {...props}
-                className={cn(className, "whitespace-normal break-words")}
-                style={{ wordBreak: "break-word" }}
-              />
-            ),
-          }}
-          children={content}
-          // remarkPlugins={[remarkBreaks]}
-        />
-      </div>
-    </div>
-  );
-};

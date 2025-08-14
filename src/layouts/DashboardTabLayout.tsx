@@ -41,7 +41,7 @@ export const DashboardTabLayout = (props: PropsWithChildren) => {
         </div>
       </DashboardLayoutContainer>
 
-      <InAppLiveAgent />
+      {/* <InAppLiveAgent /> */}
     </div>
   );
 };
