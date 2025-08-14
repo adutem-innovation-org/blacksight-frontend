@@ -2,6 +2,8 @@ import { Button, SearchInput } from "@/components/form";
 import {
   CustomDropdownMenuCheckboxItem,
   DataExportDropdown,
+  renderSorter,
+  renderTableFilter,
   SortingDropDown,
   TableFilterDropdown,
 } from "@/components/popups";
@@ -55,6 +57,13 @@ import { AppointmentStatus } from "@/enums";
 import { downloadCSV, downloadExcel, transformForExport } from "@/helpers";
 import { getAllAppointments, getAppointmentAnalytics } from "@/store";
 
+const APPOINTMENT_STATUS_OPTIONS = [
+  "pending",
+  "scheduled",
+  "cancelled",
+  "completed",
+];
+
 export const columns: ColumnDef<Appointment>[] = [
   {
     accessorKey: "_id",
@@ -70,136 +79,26 @@ export const columns: ColumnDef<Appointment>[] = [
   },
   {
     accessorKey: "customerName",
-    header: ({ column }) => {
-      const sortDirection = column.getIsSorted();
-      const sortDescending = () =>
-        sortDirection === "desc"
-          ? column.clearSorting()
-          : column.toggleSorting(true);
-      const sortAscending = () =>
-        sortDirection === "asc"
-          ? column.clearSorting()
-          : column.toggleSorting(false);
-
-      return (
-        <SortingDropDown
-          Trigger={
-            <Button
-              variant={"ghost"}
-              onClick={column.getToggleSortingHandler()}
-              className="hover:bg-transparent py-4 px-4 w-full h-full justify-start text-xs font-semibold text-[#717680] hover:text-[#535862]"
-            >
-              Customer Name
-              {sortDirection === "asc" && (
-                <ListFilter className="text-blue-600 rotate-180" />
-              )}
-              {sortDirection === "desc" && (
-                <ListFilter className="text-blue-600" />
-              )}
-              {!sortDirection && <ListFilter className="text-[#A4A7AE]" />}
-            </Button>
-          }
-          sortDescending={sortDescending}
-          sortAscending={sortAscending}
-          sortDirection={sortDirection}
-        />
-      );
-    },
+    header: renderSorter("Customer Name"),
     cell: ({ row }) => <div>{row.getValue("customerName")}</div>,
   },
   {
     accessorKey: "customerEmail",
-    header: ({ column }) => {
-      const sortDirection = column.getIsSorted();
-      const sortDescending = () =>
-        sortDirection === "desc"
-          ? column.clearSorting()
-          : column.toggleSorting(true);
-      const sortAscending = () =>
-        sortDirection === "asc"
-          ? column.clearSorting()
-          : column.toggleSorting(false);
-
-      return (
-        <SortingDropDown
-          Trigger={
-            <Button
-              variant={"ghost"}
-              onClick={column.getToggleSortingHandler()}
-              className="hover:bg-transparent py-4 px-4 w-full h-full justify-start text-xs font-semibold text-[#717680] hover:text-[#535862]"
-            >
-              Customer Email
-              {sortDirection === "asc" && (
-                <ListFilter className="text-blue-600 rotate-180" />
-              )}
-              {sortDirection === "desc" && (
-                <ListFilter className="text-blue-600" />
-              )}
-              {!sortDirection && <ListFilter className="text-[#A4A7AE]" />}
-            </Button>
-          }
-          sortDescending={sortDescending}
-          sortAscending={sortAscending}
-          sortDirection={sortDirection}
-        />
-      );
-    },
+    header: renderSorter("Customer Email"),
     cell: ({ row }) => (
       <div className="whitespace-nowrap">{row.getValue("customerEmail")}</div>
     ),
   },
   {
     accessorKey: "customerPhone",
-    header: ({ column }) => {
-      const sortDirection = column.getIsSorted();
-      const sortDescending = () =>
-        sortDirection === "desc"
-          ? column.clearSorting()
-          : column.toggleSorting(true);
-      const sortAscending = () =>
-        sortDirection === "asc"
-          ? column.clearSorting()
-          : column.toggleSorting(false);
-
-      return (
-        <SortingDropDown
-          Trigger={
-            <Button
-              variant={"ghost"}
-              onClick={column.getToggleSortingHandler()}
-              className="hover:bg-transparent py-4 px-4 w-full h-full justify-start text-xs font-semibold text-[#717680] hover:text-[#535862]"
-            >
-              Customer Phone
-              {sortDirection === "asc" && (
-                <ListFilter className="text-blue-600 rotate-180" />
-              )}
-              {sortDirection === "desc" && (
-                <ListFilter className="text-blue-600" />
-              )}
-              {!sortDirection && <ListFilter className="text-[#A4A7AE]" />}
-            </Button>
-          }
-          sortDescending={sortDescending}
-          sortAscending={sortAscending}
-          sortDirection={sortDirection}
-        />
-      );
-    },
+    header: renderSorter("Customer Phone"),
     cell: ({ row }) => (
       <div className="whitespace-nowrap">{row.getValue("customerPhone")}</div>
     ),
   },
   {
     accessorKey: "status",
-    header: ({ column }) => {
-      return (
-        <TableFilterDropdown
-          OPTIONS={["pending", "scheduled", "cancelled", "completed"]}
-          column={column}
-          columnHeader="Status"
-        />
-      );
-    },
+    header: renderTableFilter("Status", APPOINTMENT_STATUS_OPTIONS),
     cell: ({ row }) => (
       <div className="capitalize">{row.getValue("status")}</div>
     ),
@@ -213,41 +112,7 @@ export const columns: ColumnDef<Appointment>[] = [
   },
   {
     accessorKey: "dateTimeInUTC",
-    header: ({ column }) => {
-      const sortDirection = column.getIsSorted();
-      const sortDescending = () =>
-        sortDirection === "desc"
-          ? column.clearSorting()
-          : column.toggleSorting(true);
-      const sortAscending = () =>
-        sortDirection === "asc"
-          ? column.clearSorting()
-          : column.toggleSorting(false);
-
-      return (
-        <SortingDropDown
-          Trigger={
-            <Button
-              variant={"ghost"}
-              onClick={column.getToggleSortingHandler()}
-              className="hover:bg-transparent py-4 px-4 w-full h-full justify-start font-semibold text-xs text-[#717680] hover:text-[#535862]"
-            >
-              Appointment Date (UTC)
-              {sortDirection === "asc" && (
-                <ListFilter className="text-blue-600 rotate-180" />
-              )}
-              {sortDirection === "desc" && (
-                <ListFilter className="text-blue-600" />
-              )}
-              {!sortDirection && <ListFilter className="text-[#A4A7AE]" />}
-            </Button>
-          }
-          sortDescending={sortDescending}
-          sortAscending={sortAscending}
-          sortDirection={sortDirection}
-        />
-      );
-    },
+    header: renderSorter("Appointment Date (UTC)"),
     cell: ({ row }) => (
       <div>{new Date(row.getValue("dateTimeInUTC")).toLocaleString()}</div>
     ),
@@ -256,41 +121,7 @@ export const columns: ColumnDef<Appointment>[] = [
   {
     id: "dateTimeInCustomerTimezone",
     accessorKey: "dateTimeInCustomerTimezone",
-    header: ({ column }) => {
-      const sortDirection = column.getIsSorted();
-      const sortDescending = () =>
-        sortDirection === "desc"
-          ? column.clearSorting()
-          : column.toggleSorting(true);
-      const sortAscending = () =>
-        sortDirection === "asc"
-          ? column.clearSorting()
-          : column.toggleSorting(false);
-
-      return (
-        <SortingDropDown
-          Trigger={
-            <Button
-              variant={"ghost"}
-              onClick={column.getToggleSortingHandler()}
-              className="hover:bg-transparent py-4 px-4 w-full h-full justify-start font-semibold text-xs text-[#717680] hover:text-[#535862]"
-            >
-              Appointment Date (Customer Timezone)
-              {sortDirection === "asc" && (
-                <ListFilter className="text-blue-600 rotate-180" />
-              )}
-              {sortDirection === "desc" && (
-                <ListFilter className="text-blue-600" />
-              )}
-              {!sortDirection && <ListFilter className="text-[#A4A7AE]" />}
-            </Button>
-          }
-          sortDescending={sortDescending}
-          sortAscending={sortAscending}
-          sortDirection={sortDirection}
-        />
-      );
-    },
+    header: renderSorter("Appointment Date (Customer Timezone)"),
     cell: ({ row }) => (
       <div>
         {new Date(row.getValue("dateTimeInUTC")).toLocaleString(undefined, {
@@ -302,80 +133,12 @@ export const columns: ColumnDef<Appointment>[] = [
   },
   {
     accessorKey: "timezone",
-    header: ({ column }) => {
-      const sortDirection = column.getIsSorted();
-      const sortDescending = () =>
-        sortDirection === "desc"
-          ? column.clearSorting()
-          : column.toggleSorting(true);
-      const sortAscending = () =>
-        sortDirection === "asc"
-          ? column.clearSorting()
-          : column.toggleSorting(false);
-
-      return (
-        <SortingDropDown
-          Trigger={
-            <Button
-              variant={"ghost"}
-              onClick={column.getToggleSortingHandler()}
-              className="hover:bg-transparent py-4 px-4 w-full h-full justify-start text-xs font-semibold text-[#717680] hover:text-[#535862]"
-            >
-              Customer timezone
-              {sortDirection === "asc" && (
-                <ListFilter className="text-blue-600 rotate-180" />
-              )}
-              {sortDirection === "desc" && (
-                <ListFilter className="text-blue-600" />
-              )}
-              {!sortDirection && <ListFilter className="text-[#A4A7AE]" />}
-            </Button>
-          }
-          sortDescending={sortDescending}
-          sortAscending={sortAscending}
-          sortDirection={sortDirection}
-        />
-      );
-    },
+    header: renderSorter("Customer timezone"),
     cell: ({ row }) => <div>{row.getValue("timezone")}</div>,
   },
   {
     accessorKey: "createdAt",
-    header: ({ column }) => {
-      const sortDirection = column.getIsSorted();
-      const sortDescending = () =>
-        sortDirection === "desc"
-          ? column.clearSorting()
-          : column.toggleSorting(true);
-      const sortAscending = () =>
-        sortDirection === "asc"
-          ? column.clearSorting()
-          : column.toggleSorting(false);
-
-      return (
-        <SortingDropDown
-          Trigger={
-            <Button
-              variant={"ghost"}
-              onClick={column.getToggleSortingHandler()}
-              className="hover:bg-transparent py-4 px-4 w-full h-full justify-start font-semibold text-xs text-[#717680] hover:text-[#535862]"
-            >
-              Booked On
-              {sortDirection === "asc" && (
-                <ListFilter className="text-blue-600 rotate-180" />
-              )}
-              {sortDirection === "desc" && (
-                <ListFilter className="text-blue-600" />
-              )}
-              {!sortDirection && <ListFilter className="text-[#A4A7AE]" />}
-            </Button>
-          }
-          sortDescending={sortDescending}
-          sortAscending={sortAscending}
-          sortDirection={sortDirection}
-        />
-      );
-    },
+    header: renderSorter("Booked On"),
     sortingFn: "datetime",
   },
 ];
