@@ -110,34 +110,55 @@ export const deleteReminder = createAsyncThunk<
 
 export const sendInstantReminder = createAsyncThunk<
   CreateReminderRes["reminder"],
-  { notFile?: boolean; data: SendInstantReminderBody },
+  { source: "appointment" | "file" | "bcp"; data: SendInstantReminderBody },
   { rejectValue: { message: string; errors?: Record<string, string> | null } }
->(
-  "send_instant_reminder",
-  async ({ notFile = false, data }, { rejectWithValue }) => {
-    try {
-      const api = notFile
-        ? reminderApiService.sendInstantBCPReminder
-        : reminderApiService.sendInstantReminder;
-      const response = await api(data);
-      return response.reminder;
-    } catch (error: any) {
-      return rejectWithValue(error);
+>("send_instant_reminder", async ({ source, data }, { rejectWithValue }) => {
+  try {
+    let api;
+    switch (source) {
+      case "file":
+        api = reminderApiService.sendInstantReminder;
+        break;
+      case "bcp":
+        api = reminderApiService.sendInstantBCPReminder;
+        break;
+      case "appointment":
+        api = reminderApiService.sendInstantAppointmentReminder;
+        break;
+      default:
+        api = reminderApiService.sendInstantReminder;
+        break;
     }
+    const response = await api(data);
+    return response.reminder;
+  } catch (error: any) {
+    return rejectWithValue(error);
   }
-);
+});
 
 export const createScheduledReminder = createAsyncThunk<
   CreateReminderRes["reminder"],
-  { notFile?: boolean; data: CreateScheduledReminderBody },
+  { source: "file" | "appointment" | "bcp"; data: CreateScheduledReminderBody },
   { rejectValue: { message: string; errors?: Record<string, string> | null } }
 >(
   "create_scheduled_reminder",
-  async ({ notFile = false, data }, { rejectWithValue }) => {
+  async ({ source, data }, { rejectWithValue }) => {
     try {
-      const api = notFile
-        ? reminderApiService.createScheduledBCPReminder
-        : reminderApiService.createScheduledReminder;
+      let api;
+      switch (source) {
+        case "file":
+          api = reminderApiService.createScheduledReminder;
+          break;
+        case "bcp":
+          api = reminderApiService.createScheduledBCPReminder;
+          break;
+        case "appointment":
+          api = reminderApiService.createScheduledAppointmentReminder;
+          break;
+        default:
+          api = reminderApiService.createScheduledReminder;
+          break;
+      }
       const response = await api(data);
       return response.reminder;
     } catch (error: any) {

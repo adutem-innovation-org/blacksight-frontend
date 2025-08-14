@@ -111,7 +111,7 @@ export const InstantBCPReminderForm = ({
         return;
       }
 
-      dispatch(sendInstantReminder({ data: values as any, notFile: true }));
+      dispatch(sendInstantReminder({ data: values as any, source: "bcp" }));
     },
   });
 

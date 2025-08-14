@@ -166,7 +166,7 @@ export const ScheduleBCPReminderForm = ({
         return;
       }
 
-      dispatch(createScheduledReminder({ data: values, notFile: true }));
+      dispatch(createScheduledReminder({ data: values, source: "bcp" }));
     },
   });
 
