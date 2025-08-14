@@ -136,7 +136,7 @@ import {
 } from "./payment-tracker.schema";
 
 // Helper functions for reusable validation logic
-const createEmailValidation = (isArray = false) => {
+export const createEmailValidation = (isArray = false) => {
   const baseValidation = (
     isArray
       ? yup.array().min(1, `At least one email is required`)
@@ -167,7 +167,7 @@ const createEmailValidation = (isArray = false) => {
   });
 };
 
-const createPhoneValidation = (isArray = false) => {
+export const createPhoneValidation = (isArray = false) => {
   const baseValidation = (
     isArray
       ? yup
