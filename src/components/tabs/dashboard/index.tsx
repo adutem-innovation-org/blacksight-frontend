@@ -102,3 +102,4 @@ export * from "./ProductRecommenderTab";
 export * from "./PaymentTrackerTab";
 export * from "./PaymentFileBCPsTab";
 export * from "./reminder";
+export * from "./TicketTab";

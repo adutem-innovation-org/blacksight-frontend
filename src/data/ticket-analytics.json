@@ -1,0 +1,22 @@
+[
+    {
+        "id": "openTickets",
+        "label": "Open",
+        "variant": "success-subtle"
+    },
+    {
+        "id": "inProgressTickets",
+        "label": "In Progress",
+        "variant": "warning-subtle"
+    },
+    {
+        "id": "resolvedTickets",
+        "label": "Resolved",
+        "variant": "success"
+    },
+    {
+        "id": "closedTickets",
+        "label": "Closed",
+        "variant": "info"
+    }
+]
