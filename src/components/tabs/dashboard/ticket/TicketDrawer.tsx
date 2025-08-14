@@ -71,7 +71,7 @@ export function TicketDrawer() {
               </div>
             </div>
           ) : (
-            <div className="text-center font-urbanist text-sm text-gray-400 mt-4 font-medium h-20">
+            <div className="text-center font-urbanist text-sm text-gray-400 mt-4 font-medium h-20 flex-1">
               No messages
             </div>
           )}
