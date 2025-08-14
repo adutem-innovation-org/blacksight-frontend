@@ -1,4 +1,9 @@
-import { AppointmentAnalyticsRes, GetAppointmentsRes } from "@/interfaces";
+import {
+  AppointmentAnalyticsRes,
+  GetAppointmentsRes,
+  UpdateAppointmentStatusBody,
+  UpdateAppointmentStatusRes,
+} from "@/interfaces";
 import { ApiService } from "./api.service";
 import { APPOINTMENT_URLS } from "./endpoints";
 
@@ -28,6 +33,19 @@ export class AppointmentApiService {
   getAppointments = () => {
     return this.apiService.get<GetAppointmentsRes>(
       this.urls.GET_ALL_APPOINTMENTS
+    );
+  };
+
+  updateAppointmentStatus = (id: string, data: UpdateAppointmentStatusBody) => {
+    return this.apiService.update<
+      UpdateAppointmentStatusBody,
+      UpdateAppointmentStatusRes
+    >(this.urls.UPDATE_APPOINTMENT_STATUS.replace(":id", id), data);
+  };
+
+  deleteAppointment = (id: string) => {
+    return this.apiService.delete<UpdateAppointmentStatusRes>(
+      this.urls.DELETE_APPOINTMENT.replace(":id", id)
     );
   };
 }
