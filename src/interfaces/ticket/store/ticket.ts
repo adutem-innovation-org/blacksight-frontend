@@ -1,9 +1,11 @@
 import { TicketPriority, TicketRoleEnum, TicketStatus } from "@/enums";
+import { Bot } from "@/interfaces/bot";
 
 export interface Ticket {
   _id: string;
   businessId: string;
   botId: string;
+  bot?: Bot;
   sessionId: string;
   customerEmail: string;
   customerName: string;
