@@ -107,4 +107,18 @@ export class ReminderApiService {
       data
     );
   };
+
+  sendInstantAppointmentReminder = (data: SendInstantReminderBody) => {
+    return this.apiService.post<SendInstantReminderBody, CreateReminderRes>(
+      this.urls.SEND_INSTANT_APPOINTMENT_REMINDER,
+      data
+    );
+  };
+
+  createScheduledAppointmentReminder = (data: CreateScheduledReminderBody) => {
+    return this.apiService.post<CreateScheduledReminderBody, CreateReminderRes>(
+      this.urls.CREATE_SCHEDULED_APPOINTMENT_REMINDER,
+      data
+    );
+  };
 }

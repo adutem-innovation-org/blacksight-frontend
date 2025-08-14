@@ -15,3 +15,5 @@ export const SEND_INSTANT_REMINDER = "/instant";
 export const CREATE_SCHEDULED_REMINDER = "/create";
 export const SEND_INSTANT_BCP_REMINDER = "/instant/bcp";
 export const CREATE_SCHEDULED_BCP_REMINDER = "/create/bcp";
+export const SEND_INSTANT_APPOINTMENT_REMINDER = "/instant/appointment";
+export const CREATE_SCHEDULED_APPOINTMENT_REMINDER = "/create/appointment";
