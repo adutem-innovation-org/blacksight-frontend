@@ -46,6 +46,7 @@ export const resetBookAppointmentReducer = (state: AgentState) => {
   state.bookingAppointment = false;
   state.appointmentBooked = false;
   state.bookAppointmentErrors = {};
+  state.action = null;
   state.bookAppointmentErrorMessage = "";
 };
 
@@ -53,5 +54,6 @@ export const resetSubmitTicketReducer = (state: AgentState) => {
   state.submittingTicket = false;
   state.ticketSubmitted = false;
   state.submitTicketErrors = {};
+  state.action = null;
   state.submitTicketErrorMessage = "";
 };

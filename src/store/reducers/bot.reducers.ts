@@ -131,6 +131,7 @@ export const resetScheduleAppointmentReducer = (state: BotState) => {
   state.schedulingAppointment = false;
   state.appointmentScheduled = false;
   state.scheduleAppointmentErrors = {};
+  state.action = null;
   state.scheduleAppointmentErrorMessage = "";
 };
 
@@ -138,5 +139,6 @@ export const resetEscalateChatReducer = (state: BotState) => {
   state.escalatingChat = false;
   state.chatEscalated = false;
   state.escalateChatErrors = {};
+  state.action = null;
   state.escalateChatErrorMessage = "";
 };

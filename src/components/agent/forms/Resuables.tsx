@@ -2,7 +2,12 @@ import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { Drawer } from "vaul";
 import { motion } from "framer-motion";
 import { useStore } from "@/hooks";
-import { resetBookAppointment, resetScheduleAppointment } from "@/store";
+import {
+  resetBookAppointment,
+  resetEscalateChat,
+  resetScheduleAppointment,
+  resetSubmitTicket,
+} from "@/store";
 import errorLottie from "@/assets/lotties/Error.json";
 import successLottie from "@/assets/lotties/success.json";
 
@@ -151,13 +156,13 @@ export const usePairEscalationState = (source: "bot" | "live-agent") => {
         success: chatEscalated,
         error: escalateChatErrorMessage,
         errors: escalateChatErrors,
-        resetState: resetScheduleAppointment,
+        resetState: resetEscalateChat,
       }
     : {
         loading: submittingTicket,
         success: ticketSubmitted,
         error: submitTicketErrorMessage,
         errors: submitTicketErrors,
-        resetState: resetBookAppointment,
+        resetState: resetSubmitTicket,
       };
 };
