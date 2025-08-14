@@ -8,6 +8,7 @@ import {
   resetGetTicketAnalytics,
 } from "@/store";
 import { Loader } from "@/components/progress";
+import { motion } from "framer-motion";
 
 export const TicketTab = () => {
   const { dispatch, getState } = useStore();
@@ -54,7 +55,13 @@ export const TicketTab = () => {
   return (
     <DashboardContent>
       <div className="flex flex-col gap-4 h-full overflow-hidden">
-        <TicketTabHeader />
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+        >
+          <TicketTabHeader />
+        </motion.div>
       </div>
     </DashboardContent>
   );
