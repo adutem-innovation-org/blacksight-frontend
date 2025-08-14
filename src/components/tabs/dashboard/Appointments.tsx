@@ -16,7 +16,12 @@ import {
 } from "@/store";
 import { EmptyRecordsTemplate } from "@/components/templates";
 import notificationIcon from "@/assets/images/schedule.png";
-import { AppointmentTable, CancelAppointmentForm } from "./appointment";
+import {
+  AppointmentTable,
+  CancelAppointmentForm,
+  InstantAppointmentReminderForm,
+  ScheduledAppointmentReminderForm,
+} from "./appointment";
 import { resetDocumentElement } from "@/helpers";
 import toast from "react-hot-toast";
 import { ConfirmationDialog } from "@/components/popups";
@@ -305,16 +310,18 @@ export const AppointmentsTab = () => {
           appointmentId={appointmentToUpdate?._id}
           onOpenChange={endUpdateOperation}
         />
-        {/* 
+
         <InstantAppointmentReminderForm
           isOpen={instantReminderFormOpen}
           onOpenChange={closeInstantReminderForm}
+          appointment={appointmentToRemind}
         />
 
-        <ScheduleAppointmentReminderForm
+        <ScheduledAppointmentReminderForm
           isOpen={scheduleReminderFormOpen}
           onOpenChange={closeScheduleReminderForm}
-        /> */}
+          appointment={appointmentToRemind}
+        />
       </div>
     </DashboardContent>
   );
