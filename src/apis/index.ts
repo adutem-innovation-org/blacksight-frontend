@@ -10,3 +10,4 @@ export * from "./template.service";
 export * from "./agent.service";
 export * from "./product-recommendation.service";
 export * from "./payment-tracker.service";
+export * from "./ticket.service";

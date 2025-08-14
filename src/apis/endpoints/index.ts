@@ -10,3 +10,4 @@ export * as TEMPLATE_URLS from "./template";
 export * as AGENT_URLS from "./agent";
 export * as RECOMMENDATION_URLS from "./product-recommendation";
 export * as PAYMENT_TRACKER_URLS from "./payment-tracker";
+export * as TICKET_URLS from "./ticket";
