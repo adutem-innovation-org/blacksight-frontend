@@ -11,6 +11,7 @@ import { TemplateState } from "../template";
 import { AgentState } from "../agent";
 import { ProductRecommendationState } from "../product-recommendation";
 import { PaymentTrackerState } from "../payment-tracker";
+import { TicketState } from "../ticket";
 
 export type StoreState = {
   Auth: AuthState;
@@ -26,4 +27,5 @@ export type StoreState = {
   Agent: AgentState;
   ProductRecommendation: ProductRecommendationState;
   PaymentTracker: PaymentTrackerState;
+  Ticket: TicketState;
 };
