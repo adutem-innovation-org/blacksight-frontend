@@ -14,6 +14,7 @@ export const replyTicketBuilder = (
     state.ticketReplied = true;
     if (state.currentTicket && state.currentTicket._id === action.payload._id) {
       state.currentTicket.messages = action.payload.messages;
+      state.currentTicket.status = action.payload.status;
     }
     state.tickets = state.tickets || [];
     state.tickets = state.tickets.map((ticket) => {
@@ -21,6 +22,7 @@ export const replyTicketBuilder = (
         return {
           ...ticket,
           messages: action.payload.messages,
+          status: action.payload.status,
         };
       }
       return ticket;
