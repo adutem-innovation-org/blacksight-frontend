@@ -2,10 +2,6 @@ import { Button, SearchInput } from "@/components/form";
 import {
   CustomDropdownMenuCheckboxItem,
   DataExportDropdown,
-  renderSorter,
-  renderTableFilter,
-  SortingDropDown,
-  TableFilterDropdown,
 } from "@/components/popups";
 import {
   DropdownMenu,
@@ -18,7 +14,6 @@ import { Appointment } from "@/interfaces";
 import { Group, Pagination } from "@mantine/core";
 import { DropdownMenuSeparator } from "@radix-ui/react-dropdown-menu";
 import {
-  ColumnDef,
   ColumnFiltersState,
   getCoreRowModel,
   getFilteredRowModel,
@@ -35,7 +30,6 @@ import {
   ArrowRight,
   Calendar,
   ChevronDown,
-  ListFilter,
   RefreshCcw,
   Settings,
   X,
@@ -56,92 +50,7 @@ import { cn } from "@/lib/utils";
 import { AppointmentStatus } from "@/enums";
 import { downloadCSV, downloadExcel, transformForExport } from "@/helpers";
 import { getAllAppointments, getAppointmentAnalytics } from "@/store";
-
-const APPOINTMENT_STATUS_OPTIONS = [
-  "pending",
-  "scheduled",
-  "cancelled",
-  "completed",
-];
-
-export const columns: ColumnDef<Appointment>[] = [
-  {
-    accessorKey: "_id",
-    header: "Appointment ID",
-    cell: ({ row }) => <div>{row.getValue("_id")}</div>,
-  },
-  {
-    accessorKey: "conversationId",
-    header: "Conversation ID",
-    cell: ({ row }) => (
-      <div className="whitespace-nowrap">{row.getValue("conversationId")}</div>
-    ),
-  },
-  {
-    accessorKey: "customerName",
-    header: renderSorter("Customer Name"),
-    cell: ({ row }) => <div>{row.getValue("customerName")}</div>,
-  },
-  {
-    accessorKey: "customerEmail",
-    header: renderSorter("Customer Email"),
-    cell: ({ row }) => (
-      <div className="whitespace-nowrap">{row.getValue("customerEmail")}</div>
-    ),
-  },
-  {
-    accessorKey: "customerPhone",
-    header: renderSorter("Customer Phone"),
-    cell: ({ row }) => (
-      <div className="whitespace-nowrap">{row.getValue("customerPhone")}</div>
-    ),
-  },
-  {
-    accessorKey: "status",
-    header: renderTableFilter("Status", APPOINTMENT_STATUS_OPTIONS),
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("status")}</div>
-    ),
-    filterFn: (row, columnId, filterOptions: string[]) => {
-      // If no filters are selected, show all
-      if (!filterOptions || filterOptions.length === 0) return true;
-
-      // Check if row's type is in the selected filter options
-      return filterOptions.includes(row.getValue(columnId));
-    },
-  },
-  {
-    accessorKey: "dateTimeInUTC",
-    header: renderSorter("Appointment Date (UTC)"),
-    cell: ({ row }) => (
-      <div>{new Date(row.getValue("dateTimeInUTC")).toLocaleString()}</div>
-    ),
-    sortingFn: "datetime",
-  },
-  {
-    id: "dateTimeInCustomerTimezone",
-    accessorKey: "dateTimeInCustomerTimezone",
-    header: renderSorter("Appointment Date (Customer Timezone)"),
-    cell: ({ row }) => (
-      <div>
-        {new Date(row.getValue("dateTimeInUTC")).toLocaleString(undefined, {
-          timeZone: row.getValue("timezone"),
-        })}
-      </div>
-    ),
-    sortingFn: "datetime",
-  },
-  {
-    accessorKey: "timezone",
-    header: renderSorter("Customer timezone"),
-    cell: ({ row }) => <div>{row.getValue("timezone")}</div>,
-  },
-  {
-    accessorKey: "createdAt",
-    header: renderSorter("Booked On"),
-    sortingFn: "datetime",
-  },
-];
+import { appointmentsColumns } from "@/constants";
 
 const badgeVariantMap: Record<string, any> = {
   completed: "success",
@@ -157,15 +66,22 @@ const formatters = {
   status: (status: AppointmentStatus) => status.toString().toLowerCase(),
 };
 
+type AppointmentTableProps = {
+  triggerUpdateStatus: (data: Appointment, status: AppointmentStatus) => void;
+  triggerDeleteAppointment: (data: Appointment) => void;
+  openInstantReminderForm: (data: Appointment) => void;
+  openScheduleReminderForm: (data: Appointment) => void;
+  hideRefreshButton?: boolean;
+  gridContainerClassName?: string;
+  asWidget?: boolean;
+};
+
 export const AppointmentTable = ({
   hideRefreshButton,
   gridContainerClassName,
   asWidget,
-}: {
-  hideRefreshButton?: boolean;
-  gridContainerClassName?: string;
-  asWidget?: boolean;
-}) => {
+  ...rest
+}: AppointmentTableProps) => {
   const { dispatch, getState } = useStore();
   const { appointments } = getState("Appointment");
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -187,7 +103,10 @@ export const AppointmentTable = ({
 
   const table = useReactTable({
     data: appointments || [],
-    columns,
+    meta: {
+      ...rest,
+    },
+    columns: appointmentsColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -235,7 +154,6 @@ export const AppointmentTable = ({
   useEffect(() => {
     setColumnVisibility((prev) => ({
       ...prev,
-      status: !asWidget,
       dateTimeInUTC: !asWidget,
       timezone: !asWidget,
     }));
@@ -253,19 +171,24 @@ export const AppointmentTable = ({
         <div className="flex items-center gap-4 flex-1">
           <SearchInput
             placeholder="Search..."
-            value={(table.getColumn("_id")?.getFilterValue() as string) ?? ""}
+            value={
+              (table.getColumn("customerEmail")?.getFilterValue() as string) ??
+              ""
+            }
             onChange={(event: any) =>
-              table.getColumn("_id")?.setFilterValue(event.target.value)
+              table
+                .getColumn("customerEmail")
+                ?.setFilterValue(event.target.value)
             }
             className="max-w-80"
           />
-          <Button variant="outline" className="h-11">
+          {/* <Button variant="outline" className="h-11">
             <Calendar />{" "}
             <div className="hidden sm:flex items-center">
               {" "}
               This month <ChevronDown />{" "}
             </div>
-          </Button>
+          </Button> */}
         </div>
         <div className="ml-auto gap-4 flex items-center">
           {!hideRefreshButton && (
@@ -380,7 +303,7 @@ export const AppointmentTable = ({
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={appointmentsColumns.length}
                   className="h-24 text-center"
                 >
                   No results.
