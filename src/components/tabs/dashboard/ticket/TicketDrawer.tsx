@@ -11,16 +11,24 @@ import { TicketRoleEnum } from "@/enums";
 import { useStore } from "@/hooks";
 import { removeOpenedTicket } from "@/store";
 import { DialogOverlay } from "@/components/ui/dialog";
+import patternBg from "@/assets/images/pattern-01.png";
 
 interface SheetHeaderCompProps {
   onOpenChange: (value: boolean) => void;
 }
 
 const SheetHeaderComp = ({ onOpenChange }: SheetHeaderCompProps) => {
+  const { currentTicket } = useStore().getState("Ticket");
+
   return (
     <CustomSheetHeader className="flex p-8 justify-between items-center flex-row border-b border-b-gray-100">
       <div>
-        <p className="font-sfpro text-sm text-gray-400">Chat</p>
+        <h4 className="font-medium tracking-tight font-dmsans">
+          {currentTicket?.customerName}
+        </h4>
+        <p className="font-dmsans font-light tracking-tight text-sm text-gray-400">
+          {currentTicket?.customerEmail}
+        </p>
       </div>
 
       <div className="custom">
@@ -55,7 +63,7 @@ export function TicketDrawer() {
         <SheetHeaderComp onOpenChange={onOpenChange} />
         <div className="flex flex-col flex-1 overflow-hidden">
           {messages.length > 0 ? (
-            <div className="flex-1 overflow-auto no-scrollbar p-4 scroll-smooth bg-gray-100">
+            <div className="flex-1 overflow-auto no-scrollbar p-4 scroll-smooth bg-gray-100 bg-[url('@/assets/images/pattern-01.png')]">
               <div className="flex flex-col gap-3">
                 {messages.map((message) => (
                   <Message {...message} />
