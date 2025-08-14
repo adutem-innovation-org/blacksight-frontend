@@ -6,13 +6,21 @@ import { Appointment } from "@/interfaces";
 import { useEffect, useState } from "react";
 import { useStore } from "@/hooks";
 import {
+  deleteAppointment,
   getAllAppointments,
   getAppointmentAnalytics,
+  resetDeleteAppointment,
   resetGetAppointmentAnalytics,
+  resetUpdateAppointmentStatus,
+  updateAppointmentStatus,
 } from "@/store";
 import { EmptyRecordsTemplate } from "@/components/templates";
 import notificationIcon from "@/assets/images/schedule.png";
-import { AppointmentTable } from "./appointment";
+import { AppointmentTable, CancelAppointmentForm } from "./appointment";
+import { resetDocumentElement } from "@/helpers";
+import toast from "react-hot-toast";
+import { ConfirmationDialog } from "@/components/popups";
+import { AppointmentStatus } from "@/enums";
 
 const Header = () => {
   const { getState } = useStore();
@@ -65,24 +73,176 @@ export const AppointmentsTab = () => {
     fetchingAppointmentAnalytics,
     appointmentAnalyticsFetched,
     appointmentAnalytics,
+
+    // Update status
+    appointmentStatusUpdated,
+    updateAppointmentStatusErrorMsg,
+
+    // Delete appointment
+    deletingAppointment,
+    appointmentDeleted,
+    deleteAppointmentError,
   } = getState("Appointment");
 
-  const [isAppointmentDetailsDrawerOpen, setIsAppointmentDetailsDrawerOpen] =
-    useState(() => false);
-  const [appointmentDetails, setAppointmentDetails] =
+  // Appointment to send reminder to
+  const [appointmentToRemind, setAppointmentToRemind] =
+    useState<Appointment | null>(null);
+  const [instantReminderFormOpen, setInstantReminderFormOpen] = useState(false);
+  const [scheduleReminderFormOpen, setScheduleReminderFormOpen] =
+    useState(false);
+
+  /** =======================
+   * Reminder
+   * ===========================
+   */
+  const openScheduleReminderForm = (appointment: Appointment) => {
+    setAppointmentToRemind(appointment);
+    setScheduleReminderFormOpen(true);
+  };
+
+  const closeScheduleReminderForm = (val: boolean) => {
+    setScheduleReminderFormOpen(val);
+    setAppointmentToRemind(null);
+    resetDocumentElement();
+  };
+
+  const openInstantReminderForm = (appointment: Appointment) => {
+    setAppointmentToRemind(appointment);
+    setInstantReminderFormOpen(true);
+  };
+
+  const closeInstantReminderForm = (val: boolean) => {
+    setInstantReminderFormOpen(val);
+    setAppointmentToRemind(null);
+    resetDocumentElement();
+  };
+
+  /**
+   * ======================
+   * REMINDER
+   * ==================
+   */
+
+  /**
+   * ========================
+   * UPDATE STATUS
+   * ======================
+   */
+  const [newStatus, setNewStatus] = useState<AppointmentStatus | null>(null);
+  const [appointmentToUpdate, setAppointmentToUpdate] =
+    useState<Appointment | null>();
+  const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
+
+  const openUpdateDialog = () => setUpdateDialogOpen(true);
+  const closeUpdateDialog = () => setUpdateDialogOpen(false);
+
+  const triggerUpdateStatus = (
+    appointment: Appointment,
+    status: AppointmentStatus
+  ) => {
+    setAppointmentToUpdate(appointment);
+    setNewStatus(status);
+    openUpdateDialog();
+  };
+
+  const endUpdateOperation = () => {
+    closeUpdateDialog();
+    setAppointmentToUpdate(null);
+    setNewStatus(null);
+    resetDocumentElement();
+  };
+
+  const confirmUpdateOperation = () => {
+    if (appointmentToUpdate && newStatus) {
+      dispatch(
+        updateAppointmentStatus({
+          id: appointmentToUpdate._id,
+          data: {
+            status: newStatus,
+          },
+        })
+      );
+    }
+  };
+
+  // Update ticket status
+  useEffect(() => {
+    if (appointmentStatusUpdated) {
+      toast.success("Updated");
+      // Get latest analytics
+      dispatch(getAppointmentAnalytics());
+      dispatch(resetUpdateAppointmentStatus());
+      // Close dialog, reset states and restore pointer event to document element
+      endUpdateOperation();
+    }
+  }, [appointmentStatusUpdated]);
+
+  useEffect(() => {
+    if (updateAppointmentStatusErrorMsg) {
+      toast.error(updateAppointmentStatusErrorMsg);
+      // Reset states
+      dispatch(resetUpdateAppointmentStatus());
+    }
+  }, [updateAppointmentStatusErrorMsg]);
+  /**
+   * ========================
+   * UPDATE STATUS ENDS
+   * ======================
+   */
+
+  /**
+   * ==================
+   * DELETE APPOINTMENT
+   * ======================
+   */
+  // Delete appointment
+  const [deleteModalOpen, setDeleteModalOpen] = useState(() => false);
+  const [appointmentToDelete, setAppointmentToDelete] =
     useState<Appointment | null>(null);
 
-  const onOpenChange = (value: boolean) => {
-    if (!value) {
-      setAppointmentDetails(null);
-    }
-    setIsAppointmentDetailsDrawerOpen(value);
+  const openDeleteModal = () => setDeleteModalOpen(true);
+  const closeDeleteModal = () => setDeleteModalOpen(false);
+
+  // Delete events
+  const triggerDeleteAppointment = (data: Appointment) => {
+    setAppointmentToDelete(data);
+    openDeleteModal();
   };
 
-  const viewAppointmentDetails = (data: Appointment) => {
-    setAppointmentDetails(data);
-    setIsAppointmentDetailsDrawerOpen(true);
+  const endDeleteOperation = () => {
+    closeDeleteModal();
+    setAppointmentToDelete(null);
+    // Reset pointer event on page ✅ Radix bug
+    resetDocumentElement();
   };
+
+  const confirmDeleteOperation = () => {
+    if (appointmentToDelete) {
+      dispatch(deleteAppointment(appointmentToDelete._id));
+    }
+  };
+
+  useEffect(() => {
+    if (appointmentDeleted) {
+      toast.success("Deleted.");
+      // Reset store state
+      dispatch(resetDeleteAppointment());
+      // Close model, reset states and add pointer event to document element
+      endDeleteOperation();
+    }
+  }, [appointmentDeleted]);
+
+  useEffect(() => {
+    if (deleteAppointmentError) {
+      toast.error(deleteAppointmentError);
+      dispatch(resetDeleteAppointment());
+    }
+  }, [deleteAppointmentError]);
+  /**
+   * ==========================
+   * DELETE APPOINTMENT END
+   * ============================
+   */
 
   useEffect(() => {
     if (!appointmentAnalytics && !fetchingAppointmentAnalytics) {
@@ -119,8 +279,42 @@ export const AppointmentsTab = () => {
             description="You currently have no appointment scheduled."
           />
         ) : (
-          <AppointmentTable />
+          <AppointmentTable
+            triggerUpdateStatus={triggerUpdateStatus}
+            triggerDeleteAppointment={triggerDeleteAppointment}
+            openInstantReminderForm={openInstantReminderForm}
+            openScheduleReminderForm={openScheduleReminderForm}
+          />
         )}
+
+        <ConfirmationDialog
+          isOpen={deleteModalOpen}
+          onOpenChange={endDeleteOperation}
+          cancelOperation={endDeleteOperation}
+          confirmOperation={confirmDeleteOperation}
+          loading={deletingAppointment}
+          title="Delete Appointment"
+          description="This action cannot be undone. Are you sure you want to delete this appointment?"
+          cancelCtaText="Cancel"
+          confirmCtaText="Delete"
+        />
+
+        <CancelAppointmentForm
+          newStatus={newStatus}
+          isOpen={updateDialogOpen}
+          appointmentId={appointmentToUpdate?._id}
+          onOpenChange={endUpdateOperation}
+        />
+        {/* 
+        <InstantAppointmentReminderForm
+          isOpen={instantReminderFormOpen}
+          onOpenChange={closeInstantReminderForm}
+        />
+
+        <ScheduleAppointmentReminderForm
+          isOpen={scheduleReminderFormOpen}
+          onOpenChange={closeScheduleReminderForm}
+        /> */}
       </div>
     </DashboardContent>
   );
