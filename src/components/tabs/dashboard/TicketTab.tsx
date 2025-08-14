@@ -1,5 +1,5 @@
 import { DashboardContent } from "@/components/design";
-import { TicketsTable, TicketTabHeader } from "./ticket";
+import { TicketDrawer, TicketsTable, TicketTabHeader } from "./ticket";
 import { useStore } from "@/hooks";
 import React, { useEffect, useState } from "react";
 import {
@@ -254,6 +254,9 @@ export const TicketTab = () => {
               cancelCtaText="Cancel"
               confirmCtaText="Continue"
             />
+
+            {/* Message center */}
+            <TicketDrawer />
           </div>
         </div>
       </DashboardContent>

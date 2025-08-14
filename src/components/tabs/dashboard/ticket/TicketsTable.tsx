@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { TicketTableHeader } from "./TableHeader";
 import { useStore } from "@/hooks";
-import { getAllTickets } from "@/store";
+import { getAllTickets, openTicket } from "@/store";
 import { useState } from "react";
 import {
   ColumnFiltersState,
@@ -62,10 +62,15 @@ export const TicketsTable = ({
   const { tickets } = getState("Ticket");
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>();
 
   const onRefresh = () => {
     dispatch(getAllTickets());
+  };
+
+  const triggerOpenTicket = (ticket: Ticket) => {
+    dispatch(openTicket(ticket));
   };
 
   const table = useReactTable({
@@ -80,10 +85,12 @@ export const TicketsTable = ({
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    onRowSelectionChange: setRowSelection,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
+      rowSelection,
     },
   });
 
@@ -146,6 +153,7 @@ export const TicketsTable = ({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  onClick={() => triggerOpenTicket(row.original)}
                   className="cursor-pointer hover:bg-gray-200/30"
                 >
                   {row.getVisibleCells().map((cell) => (
