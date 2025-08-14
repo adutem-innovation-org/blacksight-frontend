@@ -13,6 +13,7 @@ import {
   productRecommendationReducer,
   reminderReducer,
   templateReducer,
+  ticketReducer,
 } from "./slices";
 
 export const store = configureStore({
@@ -30,6 +31,7 @@ export const store = configureStore({
     Agent: agentReducer,
     ProductRecommendation: productRecommendationReducer,
     PaymentTracker: paymentTrackedReducer,
+    Ticket: ticketReducer,
   },
 });
 

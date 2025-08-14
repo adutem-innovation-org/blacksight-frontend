@@ -11,3 +11,4 @@ export * from "./templateSlice.state";
 export * from "./agentSlice.state";
 export * from "./product-recommendationSlice";
 export * from "./payment-trackerSlice.state";
+export * from "./ticketSlice.state";
