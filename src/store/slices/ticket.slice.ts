@@ -1,6 +1,8 @@
 import { initialTicketState } from "@/constants";
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  openTicketReducer,
+  removeOpenedTicketReducer,
   resetDeleteTicketReducer,
   resetGetAllTicketsReducer,
   resetGetTicketAnalyticsReducer,
@@ -27,6 +29,8 @@ const ticketSlice = createSlice({
     resetReplyTicket: resetReplyTicketReducer,
     resetUpdateTicketPriority: resetUpdateTicketPriorityReducer,
     resetUpdateTicketStatus: resetUpdateTicketStatusReducer,
+    openTicket: openTicketReducer,
+    removeOpenedTicket: removeOpenedTicketReducer,
   },
   extraReducers(builder) {
     deleteTicketBuilder(builder);
@@ -46,4 +50,6 @@ export const {
   resetReplyTicket,
   resetUpdateTicketPriority,
   resetUpdateTicketStatus,
+  openTicket,
+  removeOpenedTicket,
 } = ticketSlice.actions;

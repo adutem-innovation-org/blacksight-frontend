@@ -36,3 +36,14 @@ export const resetUpdateTicketStatusReducer = (state: TicketState) => {
   state.ticketStatusUpdated = false;
   state.updateTicketStatusErrorMsg = "";
 };
+
+export const openTicketReducer = (
+  state: TicketState,
+  action: PayloadAction<Ticket>
+) => {
+  state.currentTicket = action.payload;
+};
+
+export const removeOpenedTicketReducer = (state: TicketState) => {
+  state.currentTicket = null;
+};
