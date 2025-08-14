@@ -1,4 +1,5 @@
 import { AppointmentApiService } from "@/apis";
+import { Appointment, UpdateAppointmentStatusBody } from "@/interfaces";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const appointmentApiService = AppointmentApiService.getInstance();
@@ -26,3 +27,29 @@ export const getAllAppointments = createAsyncThunk(
     }
   }
 );
+
+export const updateAppointmentStatus = createAsyncThunk<
+  Appointment,
+  { id: string; data: UpdateAppointmentStatusBody },
+  { rejectValue: { message: string; errors?: Record<string, string> } }
+>("update_appointment_status", async ({ id, data }, { rejectWithValue }) => {
+  try {
+    const res = await appointmentApiService.updateAppointmentStatus(id, data);
+    return res.appointment;
+  } catch (error: any) {
+    return rejectWithValue(error);
+  }
+});
+
+export const deleteAppointment = createAsyncThunk<
+  string,
+  string,
+  { rejectValue: string }
+>("delete_appointment", async (id: string, { rejectWithValue }) => {
+  try {
+    const res = await appointmentApiService.deleteAppointment(id);
+    return res.appointment._id;
+  } catch (error: any) {
+    return rejectWithValue(error.message as string);
+  }
+});

@@ -13,4 +13,15 @@ export interface AppointmentState {
   fetchAllAppointmentsError: string;
   appointments: Appointment[] | null;
   meta: PaginationMetaData | null;
+
+  // Update status
+  updatingAppointmentStatus: boolean;
+  appointmentStatusUpdated: boolean;
+  updateAppointmentStatusErrorMsg: string;
+  updateAppointmentStatusErrors: Record<string, string>;
+
+  // Delete
+  deletingAppointment: boolean;
+  appointmentDeleted: boolean;
+  deleteAppointmentError: string;
 }

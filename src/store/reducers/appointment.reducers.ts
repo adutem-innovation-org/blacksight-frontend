@@ -13,3 +13,18 @@ export const resetGetAllAppointmentsReducer = (state: AppointmentState) => {
   state.allAppointmentsFetched = false;
   state.fetchAllAppointmentsError = "";
 };
+
+export const resetUpdateAppointmentStatusReducer = (
+  state: AppointmentState
+) => {
+  state.updatingAppointmentStatus = false;
+  state.appointmentStatusUpdated = false;
+  state.updateAppointmentStatusErrorMsg = "";
+  state.updateAppointmentStatusErrors = {};
+};
+
+export const resetDeleteAppointmentReducer = (state: AppointmentState) => {
+  state.deletingAppointment = false;
+  state.appointmentDeleted = false;
+  state.deleteAppointmentError = "";
+};

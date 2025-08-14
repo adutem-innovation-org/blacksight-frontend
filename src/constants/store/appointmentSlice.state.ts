@@ -12,4 +12,15 @@ export const initialAppointmentState: AppointmentState = {
   fetchAllAppointmentsError: "",
   appointments: null,
   meta: null,
+
+  // Update appointment status
+  updatingAppointmentStatus: false,
+  appointmentStatusUpdated: false,
+  updateAppointmentStatusErrorMsg: "",
+  updateAppointmentStatusErrors: {},
+
+  // Delete appointment
+  deletingAppointment: false,
+  appointmentDeleted: false,
+  deleteAppointmentError: "",
 };
