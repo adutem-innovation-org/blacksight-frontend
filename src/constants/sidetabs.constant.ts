@@ -227,6 +227,12 @@ export const groupedSideTabs: Record<UserTypes, SidebarGroupType[]> = {
           iconClass: "fi fi-rr-messages",
           path: "/conversations",
         },
+        {
+          name: "Tickets",
+          tabId: DashboardTabsEnum.TICKETS,
+          iconClass: "fi fi-rr-user-headset",
+          path: "/tickets",
+        },
       ],
     },
     {
