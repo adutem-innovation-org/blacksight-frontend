@@ -1,9 +1,9 @@
-export function getOrCreateSessionId(): string {
-  let sessionId = getCookie("blacksight_chat_session_id");
+export function getOrCreateSessionId(agentId: string): string {
+  let sessionId = getCookie(`blacksight_chat_session_id_${agentId}`);
 
   if (!sessionId) {
     sessionId = crypto.randomUUID();
-    setCookie("blacksight_chat_session_id", sessionId, 365);
+    setCookie(`blacksight_chat_session_id_${agentId}`, sessionId, 365);
   }
 
   return sessionId;

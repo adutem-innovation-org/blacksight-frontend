@@ -677,7 +677,7 @@ export const LiveAgent = ({
 
   useEffect(() => {
     if (apiKey && agentId && !connected) {
-      const sessionId = getOrCreateSessionId();
+      const sessionId = getOrCreateSessionId(agentId);
 
       const timeout = setTimeout(() => {
         dispatch(connectAgent({ apiKey, agentId, sessionId }));
